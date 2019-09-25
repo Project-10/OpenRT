@@ -1,0 +1,21 @@
+
+include/types.h
+
+# Ignore build directories
+[Dd]ebug
+[Rr]elease
+[Bb]uild
+
+# Ignore install directories (if in same dir)
+[Ii]nstall
+
+# Ignore generated documentation
+doc/html
+
+# VisualStudioCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+./vscode
