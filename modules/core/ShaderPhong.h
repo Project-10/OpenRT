@@ -17,7 +17,7 @@ namespace rt {
 		 * @param ks The specular refelection coefficients
 		 * @param ke The shininess exponent
 		 */
-		CShaderPhong(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke)
+		DllExport CShaderPhong(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke)
 			: CShaderFlat(color)
 			, m_scene(scene)
 			, m_ka(ka)
@@ -25,9 +25,9 @@ namespace rt {
 			, m_ks(ks)
 			, m_ke(ke)
 		{}
-		virtual ~CShaderPhong(void) = default;
+		DllExport virtual ~CShaderPhong(void) = default;
 
-		virtual Vec3f Shade(const Ray& ray) const override
+		DllExport virtual Vec3f Shade(const Ray& ray) const override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return RGB(0, 0, 0);

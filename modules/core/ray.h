@@ -9,9 +9,11 @@ namespace rt {
 	/// Basic ray structure
 	struct Ray
 	{
-		Vec3f					org;		///< Origin
-		Vec3f					dir;		///< Direction
-		float					t;			///< Current/maximum hit distance
-		std::shared_ptr<CPrim> 	hit;		///< Pointer to currently closest primitive
+		Vec3f					org;											///< Origin
+		Vec3f					dir;											///< Direction
+		float					t	= std::numeric_limits<float>::infinity();	///< Current/maximum hit distance
+		std::shared_ptr<CPrim> 	hit = nullptr;									///< Pointer to currently closest primitive
+
+		Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0)) : org(_org), dir(_dir) {}
 	};
 }

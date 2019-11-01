@@ -16,16 +16,16 @@ namespace rt {
 		 * @param origin Point on the plane
 		 * @param normal Normal to the plane
 		 */
-		CPrimPlane(Vec3f origin, Vec3f normal)
+		DllExport CPrimPlane(Vec3f origin, Vec3f normal)
 			: CPrim()
 			, m_normal(normal)
 			, m_origin(origin)
 		{
 			normalize(m_normal);
 		}
-		virtual ~CPrimPlane(void) = default;
+		DllExport virtual ~CPrimPlane(void) = default;
 
-		virtual bool Intersect(Ray& ray) override
+		DllExport virtual bool Intersect(Ray& ray) override
 		{
 			float t = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 			if (t < Epsilon || t > ray.t) return false;
@@ -33,7 +33,7 @@ namespace rt {
 			return true;
 		}
 		
-		virtual Vec3f GetNormal(const Ray& ray) const override
+		DllExport virtual Vec3f GetNormal(const Ray& ray) const override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();

@@ -14,13 +14,13 @@ namespace rt {
 		 * @param position The position (origin) of the light source
 		 * @param intensity The emission color and strength of the light source
 		 */
-		CLightPoint(Vec3f intensity, Vec3f position)
+		DllExport CLightPoint(Vec3f intensity, Vec3f position)
 			: m_intensity(intensity)
 			, m_position(position)
 		{}
-		virtual ~CLightPoint(void) = default;
+		DllExport virtual ~CLightPoint(void) = default;
 
-		virtual std::optional<Vec3f> Illuminate(Ray& ray) override
+		DllExport virtual std::optional<Vec3f> Illuminate(Ray& ray) override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();

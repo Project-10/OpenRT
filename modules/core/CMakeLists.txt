@@ -6,7 +6,7 @@ file(GLOB CORE_HEADERS "*.h")
 
 source_group("Include" FILES ${CORE_INCLUDE})
 source_group("" FILES ${CORE_SOURCES} ${CORE_HEADERS}) 
-source_group("Source Files\\camera" FILES "ICamera.h" "CameraPerspective.h")
+source_group("Source Files\\camera" FILES "ICamera.h" "CameraPerspective.h" "CameraPerspective.cpp")
 source_group("Source Files\\lights" FILES "ILight.h" "LightPoint.h" "LightArea.h")
 source_group("Source Files\\primitives" FILES "Prim.h" "PrimSphere.h" "PrimPlane.h" "PrimTriangle.h")
 source_group("Source Files\\shaders" FILES "IShader.h" "ShaderFlat.h" "ShaderEyelight.h" "ShaderPhong.h")

@@ -19,7 +19,7 @@ namespace rt {
 		 * @param angle (Vertical) full opening angle of the viewing frustum (in degrees)
 		 * @param resolution The image resolution
 		 */
-		CCameraPerspective(Vec3f pos, Vec3f dir, Vec3f up, float angle, Size resolution)
+		DllExport CCameraPerspective(Vec3f pos, Vec3f dir, Vec3f up, float angle, Size resolution)
 			: ICamera(resolution)
 			, m_pos(pos)
 			, m_dir(dir)
@@ -36,21 +36,9 @@ namespace rt {
 			m_aspect = static_cast<float>(resolution.width) / resolution.height;
 			m_focus = 1.0f / tanf(angle * Pif / 360);		// f = 1 / tg(angle / 2)
 		}
-		virtual ~CCameraPerspective(void) = default;
+		DllExport virtual ~CCameraPerspective(void) = default;
 
-		virtual void InitRay(float x, float y, Ray& ray) override
-		{
-			float dx = 0.5f;	// x-shift to the center of the pixel
-			float dy = 0.5f;	// y-shift to the center of the pixel
-			
-			// Screen space coordinates [-1, 1]
-			float sscx = 2 * (x + dx) / getResolution().width - 1;
-			float sscy = 2 * (y + dy) / getResolution().height - 1;
-			
-			ray.org = m_pos;
-			ray.dir = normalize(m_aspect * sscx * m_xAxis + sscy * m_yAxis + m_focus * m_zAxis);
-			ray.t = std::numeric_limits<float>::infinity();
-		}
+		DllExport virtual void InitRay(float x, float y, Ray& ray) override;
 
 
 	private:

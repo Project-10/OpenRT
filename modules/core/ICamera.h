@@ -15,10 +15,10 @@ namespace rt {
 		 * @brief Constructor
 		 * @param resolution The resolution of the camera
 		 */
-		ICamera(Size resolution) : m_resolution(resolution) {}
-		ICamera(const ICamera&) = delete;
-		virtual ~ICamera(void) = default;
-		const ICamera& operator=(const ICamera&) = delete;
+		DllExport ICamera(Size resolution) : m_resolution(resolution) {}
+		DllExport ICamera(const ICamera&) = delete;
+		DllExport virtual ~ICamera(void) = default;
+		DllExport const ICamera& operator=(const ICamera&) = delete;
 		
 		/**
 		 * @brief Initializes the ray
@@ -28,13 +28,13 @@ namespace rt {
 		 * @param[in] y The y-coordinate of the pixel lying on the camera screen
 		 * @param[out] ray Reference to the @ref Ray structure to be filled
 		 */
-		virtual void InitRay(float x, float y, Ray& ray) = 0;
+		DllExport virtual void InitRay(float x, float y, Ray& ray) = 0;
 		
 		/**
 		 * @brief Retuns the camera resolution
 		 * @return The camera resolution
 		 */
-		Size getResolution(void) const { return m_resolution; }
+		DllExport Size getResolution(void) const { return m_resolution; }
 		
 		
 	private:

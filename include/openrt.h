@@ -14,3 +14,7 @@
 
 #include "core/LightPoint.h"
 #include "core/LightArea.h"
+
+/**
+Main page documentation
+*/

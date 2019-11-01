@@ -17,15 +17,15 @@ namespace rt {
 		 * @param b Position of the second vertex
 		 * @param c Position of the third vertex
 		 */
-		CPrimTriangle(Vec3f a, Vec3f b, Vec3f c)
+		DllExport CPrimTriangle(Vec3f a, Vec3f b, Vec3f c)
 			: CPrim()
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
 		{}
-		virtual ~CPrimTriangle(void) = default;
+		DllExport virtual ~CPrimTriangle(void) = default;
 		
-		virtual bool Intersect(Ray& ray) override
+		DllExport virtual bool Intersect(Ray& ray) override
 		{
 			const Vec3f edge1 = m_b - m_a;
 			const Vec3f edge2 = m_c - m_a;
@@ -58,7 +58,7 @@ namespace rt {
 			return true;
 		}
 
-		virtual Vec3f GetNormal(const Ray& ray) const override
+		DllExport virtual Vec3f GetNormal(const Ray& ray) const override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();

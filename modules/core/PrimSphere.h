@@ -16,14 +16,14 @@ namespace rt {
 		 * @param center Position of the center of the sphere
 		 * @param radius Radius of the sphere
 		 */
-		CPrimSphere(Vec3f center, float radius)
+		DllExport CPrimSphere(Vec3f center, float radius)
 			: CPrim()
 			, m_center(center)
 			, m_radius(radius)
 		{}
-		virtual ~CPrimSphere(void) = default;
+		DllExport virtual ~CPrimSphere(void) = default;
 
-		virtual bool Intersect(Ray &ray) override
+		DllExport virtual bool Intersect(Ray &ray) override
 		{
 			// mathematical derivation, numerically not very stable, but simple
 			
@@ -54,7 +54,7 @@ namespace rt {
 			return true;
 		}
 		
-		virtual Vec3f GetNormal(const Ray& ray) const override
+		DllExport virtual Vec3f GetNormal(const Ray& ray) const override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();

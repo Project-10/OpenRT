@@ -26,4 +26,13 @@ static const float	Pif	= 3.1415926f;			///< Pi number
 
 static const float Epsilon = 1E-4;
 
+template <class T>  T& lvalue_cast(T&& t) { return t; }
+#ifdef _WIN32
+	#define EmptyMat	Mat()	
+	#define DllExport	__declspec(dllexport)
+#else
+	#define EmptyMat	lvalue_cast(Mat())	
+	#define DllExport
+#endif
+
 #define RGB(r, g, b)  Vec3f((b), (g), (r))

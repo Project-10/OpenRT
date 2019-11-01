@@ -11,10 +11,10 @@ namespace rt {
 	class IShader
 	{
 	public:
-		IShader(void) = default;
-		IShader(const IShader&) = delete;
-		virtual ~IShader(void) = default;
-		const IShader& operator=(const IShader&) = delete;
+		DllExport IShader(void) = default;
+		DllExport IShader(const IShader&) = delete;
+		DllExport virtual ~IShader(void) = default;
+		DllExport const IShader& operator=(const IShader&) = delete;
 
 		
 		/**
@@ -22,6 +22,6 @@ namespace rt {
 		 * @param ray The ray
 		 * @return The color of the hit objesct
 		 */
-		virtual Vec3f Shade(const Ray& ray) const = 0;
+		DllExport virtual Vec3f Shade(const Ray& ray) const = 0;
 	};
 }

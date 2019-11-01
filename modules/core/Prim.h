@@ -16,10 +16,10 @@ namespace rt {
 		/**
 		* @brief Constructor
 		*/
-		CPrim(void) = default;
-		CPrim(const CPrim&) = delete;
-		virtual ~CPrim(void) = default;
-		const CPrim& operator=(const CPrim&) = delete;
+		DllExport CPrim(void) = default;
+		DllExport CPrim(const CPrim&) = delete;
+		DllExport virtual ~CPrim(void) = default;
+		DllExport const CPrim& operator=(const CPrim&) = delete;
 
 		/**
 		 * @brief Checks for intersection between ray \b Ray and the primitive
@@ -28,16 +28,16 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		virtual bool	Intersect(Ray& ray) = 0;
+		DllExport virtual bool	Intersect(Ray& ray) = 0;
 		/**
 		 * @brief Checks if the \b ray.org is occluded
 		 */
-		virtual bool	Occluded(Ray& ray) { return Intersect(ray); }
+		DllExport virtual bool	Occluded(Ray& ray) { return Intersect(ray); }
 		/**
 		 * @brief Returns the normalized normal of the primitive
 		 * @param ray The ray
 		 * @return The normalized normal of the primitive
 		 */
-		virtual Vec3f	GetNormal(const Ray& ray) const = 0;
+		DllExport virtual Vec3f	GetNormal(const Ray& ray) const = 0;
 	};
 }

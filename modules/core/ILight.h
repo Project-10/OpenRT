@@ -11,10 +11,10 @@ namespace rt {
 	class ILight
 	{
 	public:
-		ILight(void) = default;
-		ILight(const ILight&) = delete;
-		virtual ~ILight(void) = default;
-		const ILight& operator=(const ILight&) = delete;
+		DllExport ILight(void) = default;
+		DllExport ILight(const ILight&) = delete;
+		DllExport virtual ~ILight(void) = default;
+		DllExport const ILight& operator=(const ILight&) = delete;
 
 		/**
 		 * @brief Calculates the light intensity, at the point \b ray.org which is to be illuminated.
@@ -22,6 +22,6 @@ namespace rt {
 		 * @param[in, out] ray The ray from object point to the light source
 		 * @return The intensity of light hitting the point \b ray.org
 		 */
-		virtual std::optional<Vec3f> Illuminate(Ray& ray) = 0;
+		DllExport virtual std::optional<Vec3f> Illuminate(Ray& ray) = 0;
 	};
 }
