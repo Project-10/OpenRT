@@ -8,22 +8,23 @@ namespace rt {
 	/**
 	 * @brief Sphere Geaometrical Primitive class
 	 */
-	class CPrimSphere : public CPrim
+	class CPrimSphere : public IPrim
 	{
 	public:
 		/**
 		 * @brief Constructor
+		 * @param pShader Pointer to the shader to be applied for the prim
 		 * @param center Position of the center of the sphere
 		 * @param radius Radius of the sphere
 		 */
-		DllExport CPrimSphere(Vec3f center, float radius)
-			: CPrim()
+		DllExport CPrimSphere(std::shared_ptr<IShader> pShader, Vec3f center, float radius)
+			: IPrim(pShader)
 			, m_center(center)
 			, m_radius(radius)
 		{}
 		DllExport virtual ~CPrimSphere(void) = default;
 
-		DllExport virtual bool Intersect(Ray &ray) override
+		DllExport virtual bool intersect(Ray &ray) override
 		{
 			// mathematical derivation, numerically not very stable, but simple
 			
@@ -51,13 +52,15 @@ namespace rt {
 			}
 			
 			ray.t = dist;
+			ray.hit = shared_from_this();
 			return true;
 		}
 		
-		DllExport virtual Vec3f GetNormal(const Ray& ray) const override
+		DllExport virtual Vec3f getNormal(const Ray& ray) const override
 		{
-			// --- PUT YOUR CODE HERE ---
-			return Vec3f();
+			Vec3f hit = ray.org + ray.t * ray.dir;
+			Vec3f normal = normalize(hit - m_center);
+			return normal;
 		}
 		
 	private:

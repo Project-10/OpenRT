@@ -27,10 +27,19 @@ namespace rt {
 		{}
 		DllExport virtual ~CShaderPhong(void) = default;
 
-		DllExport virtual Vec3f Shade(const Ray& ray) const override
+		DllExport virtual Vec3f shade(const Ray& ray) const override
 		{
-			// --- PUT YOUR CODE HERE ---
-			return RGB(0, 0, 0);
+			Vec3f res				= Vec3f::all(0);
+			
+			Vec3f ambientIntensity	= Vec3f::all(1);
+			Vec3f color				= CShaderFlat::shade();
+			Vec3f ambientColor		= m_ka * color;
+			Vec3f diffuseColor		= m_kd * color;
+			Vec3f specularColor		= m_ks * RGB(1, 1, 1); // white highlight;
+			
+			res += ambientColor.mul(ambientIntensity);
+			
+			return res;
 		}
 
 		

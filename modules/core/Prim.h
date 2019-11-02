@@ -3,6 +3,7 @@
 #pragma once
 
 #include "types.h"
+#include "IShader.h"
 
 namespace rt {
 	struct Ray;
@@ -10,16 +11,17 @@ namespace rt {
 	/**
 	 * @brief Geometrical Primitives (Prims) base abstract class
 	 */
-	class CPrim
+	class IPrim : public std::enable_shared_from_this<IPrim>
 	{
 	public:
 		/**
-		* @brief Constructor
-		*/
-		DllExport CPrim(void) = default;
-		DllExport CPrim(const CPrim&) = delete;
-		DllExport virtual ~CPrim(void) = default;
-		DllExport const CPrim& operator=(const CPrim&) = delete;
+		 * @brief Constructor
+		 * @param pShader Pointer to the shader to be applied for the prim
+		 */
+		DllExport IPrim(std::shared_ptr<IShader> pShader) : m_pShader(pShader) {}
+		DllExport IPrim(const IPrim&) = delete;
+		DllExport virtual ~IPrim(void) = default;
+		DllExport const IPrim& operator=(const IPrim&) = delete;
 
 		/**
 		 * @brief Checks for intersection between ray \b Ray and the primitive
@@ -28,16 +30,27 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool	Intersect(Ray& ray) = 0;
+		DllExport virtual bool	intersect(Ray& ray) = 0;
 		/**
 		 * @brief Checks if the \b ray.org is occluded
+		 * @retval true If the intersection point is occluded
+		 * @retval false Otherwise
 		 */
-		DllExport virtual bool	Occluded(Ray& ray) { return Intersect(ray); }
+		DllExport virtual bool	occluded(Ray& ray) { return intersect(ray); }
 		/**
 		 * @brief Returns the normalized normal of the primitive
 		 * @param ray The ray
 		 * @return The normalized normal of the primitive
 		 */
-		DllExport virtual Vec3f	GetNormal(const Ray& ray) const = 0;
+		DllExport virtual Vec3f	getNormal(const Ray& ray) const = 0;
+		/**
+		 * @brief Returns the primitive's shader
+		 * @return The pointer to the primitive's shader
+		*/
+		DllExport std::shared_ptr<IShader> getShader(void) const { return m_pShader; }
+	
+	
+	private:
+		std::shared_ptr<IShader>	m_pShader;
 	};
 }

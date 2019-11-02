@@ -20,10 +20,9 @@ namespace rt {
 		{}
 		DllExport virtual ~CShaderEyelight(void) = default;
 
-		DllExport virtual Vec3f Shade(const Ray& ray) const override
+		DllExport virtual Vec3f shade(const Ray& ray) const override
 		{
-			// --- PUT YOUR CODE HERE ---
-			return RGB(0, 0, 0);
+			return CShaderFlat::shade() * fabs(ray.dir.dot(ray.hit->getNormal(ray)));
 		}
 	};
 }

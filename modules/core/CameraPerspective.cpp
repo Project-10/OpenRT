@@ -1,9 +1,16 @@
 #include "CameraPerspective.h"
+#include "macroses.h"
 
 namespace rt
 {
-	void CCameraPerspective::InitRay(float x, float y, Ray& ray)
+	void CCameraPerspective::InitRay(int x, int y, Ray& ray)
 	{
+		// Asserts
+		RT_IF_WARNING(x >= getResolution().width, "Argument x = %d exceeds the camera resolution width (%d)", x, getResolution().width);
+		RT_IF_WARNING(y >= getResolution().height, "Argument y = %d exceeds the camera resolution height (%d)", y, getResolution().height);
+		
+		if (m_uAxes) updateAxes();
+
 		float dx = 0.5f;	// x-shift to the center of the pixel
 		float dy = 0.5f;	// y-shift to the center of the pixel
 

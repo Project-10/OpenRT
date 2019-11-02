@@ -30,13 +30,13 @@ namespace rt {
 			m_normal = normalize(m_normal);
 		}
 
-		DllExport virtual std::optional<Vec3f> Illuminate(Ray& ray) override
+		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();
 		}
 
-		DllExport Vec3f GetNormal(const Vec3f& position) const { return m_normal; }
+		DllExport Vec3f getNormal(const Vec3f& position) const { return m_normal; }
 
 
 	private:

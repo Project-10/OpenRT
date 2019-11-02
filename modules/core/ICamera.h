@@ -28,7 +28,7 @@ namespace rt {
 		 * @param[in] y The y-coordinate of the pixel lying on the camera screen
 		 * @param[out] ray Reference to the @ref Ray structure to be filled
 		 */
-		DllExport virtual void InitRay(float x, float y, Ray& ray) = 0;
+		DllExport virtual void InitRay(int x, int y, Ray& ray) = 0;
 		
 		/**
 		 * @brief Retuns the camera resolution

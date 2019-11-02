@@ -1,10 +1,29 @@
 #pragma once
 
+#define OPENRT_VERSION_MAJOR @OPENRT_VERSION_MAJOR@
+#define OPENRT_VERSION_MINOR @OPENRT_VERSION_MINOR@
+#define OPENRT_VERSION_PATCH @OPENRT_VERSION_PATCH@
+
+#cmakedefine DEBUG_MODE			
+#cmakedefine DEBUG_PRINT_INFO	
+#cmakedefine ENABLE_BSP	
+#cmakedefine ENABLE_SUPERSAMPLING
+#cmakedefine ENABLE_PPL
+#cmakedefine ENABLE_AMP
+
+
 #include <optional>
 #include <vector>
 #include <memory>
 #include <thread>
 #include <math.h>
+#ifdef ENABLE_PPL
+#include <ppl.h>
+#include "concrtrm.h"
+#endif
+#ifdef ENABLE_AMP
+#include <amp.h>
+#endif
 #include "opencv2/opencv.hpp"
 
 using namespace cv;
@@ -24,7 +43,7 @@ using namespace cv;
 static const double	Pi	= 3.1415926;			///< Pi number
 static const float	Pif	= 3.1415926f;			///< Pi number
 
-static const float Epsilon = 1E-4;
+static const float Epsilon = 1E-4f;
 
 template <class T>  T& lvalue_cast(T&& t) { return t; }
 #ifdef _WIN32

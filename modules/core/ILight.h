@@ -22,6 +22,6 @@ namespace rt {
 		 * @param[in, out] ray The ray from object point to the light source
 		 * @return The intensity of light hitting the point \b ray.org
 		 */
-		DllExport virtual std::optional<Vec3f> Illuminate(Ray& ray) = 0;
+		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) = 0;
 	};
 }

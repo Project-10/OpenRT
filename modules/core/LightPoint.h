@@ -20,7 +20,7 @@ namespace rt {
 		{}
 		DllExport virtual ~CLightPoint(void) = default;
 
-		DllExport virtual std::optional<Vec3f> Illuminate(Ray& ray) override
+		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			// --- PUT YOUR CODE HERE ---
 			return Vec3f();
