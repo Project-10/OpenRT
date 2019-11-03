@@ -19,7 +19,7 @@ namespace rt {
 		
 		/**
 		 * @brief Calculates the color of the hit by the ray \ray object
-		 * @param ray The ray
+		 * @param ray The ray hitting the primitive
 		 * @return The color of the hit objesct
 		 */
 		DllExport virtual Vec3f shade(const Ray& ray) const = 0;

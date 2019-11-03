@@ -19,9 +19,14 @@ namespace rt {
 		/**
 		 * @brief Calculates the light intensity, at the point \b ray.org which is to be illuminated.
 		 * @details This function sets the \b ray.dir to be the the direction vector from the surface point \b ray.org to the light source.
-		 * @param[in, out] ray The ray from object point to the light source
+		 * @param[in, out] ray The ray from object point to the light source. The direction ray.dir is modified within the function
 		 * @return The intensity of light hitting the point \b ray.org
 		 */
-		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) = 0;
+		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) = 0;
+		/**
+		 * @brief Returns recommended number of samples for the particular light source implementation
+		 * @return The recommended number of samples 
+		 */
+		DllExport virtual size_t				getNumberOfSamples(void) const { return 1; }
 	};
 }

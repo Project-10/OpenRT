@@ -56,7 +56,10 @@ namespace rt {
 		 *@retuen The active camera index
 		*/
 		DllExport std::shared_ptr<ICamera> getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
-
+		/**
+		 *
+		*/
+		const std::vector<std::shared_ptr<ILight>> getLights(void) const { return m_vpLights; }
 		/*
 		 * @brief Checks intersection of ray \b ray with all contained objects
 		 * @param ray The ray
@@ -71,12 +74,15 @@ namespace rt {
 			return hit;
 		}
 
+
 		/**
-		 * find occluder
+		 * @brief Find occluder
+		 * @param ray The ray
 		 */
 		DllExport bool occluded(Ray& ray)
 		{
-			// --- PUT YOUR CODE HERE ---
+			for (auto& pPrim : m_vpPrims)
+				if (pPrim->occluded(ray)) return true;
 			return false;
 		}
 

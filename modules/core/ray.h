@@ -15,5 +15,7 @@ namespace rt {
 		std::shared_ptr<IPrim> 	hit = nullptr;									///< Pointer to currently closest primitive
 
 		Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0)) : org(_org), dir(_dir) {}
+		
+		inline Vec3f hitPoint(void) const { return org + dir * t; }
 	};
 }

@@ -22,8 +22,13 @@ namespace rt {
 
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
-			// --- PUT YOUR CODE HERE ---
-			return Vec3f();
+			// ray towards point light position
+			ray.dir = m_position - ray.org;
+			ray.t = norm(ray.dir);
+			ray.dir = normalize(ray.dir);
+			
+			float attenuation = 1 / (ray.t * ray.t);
+			return attenuation * m_intensity;
 		}
 
 

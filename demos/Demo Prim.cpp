@@ -31,15 +31,20 @@ int main(int argc, char* argv[])
 {
 	const Size resolution(800, 600);
 
-	CScene scene;
+	CScene scene(Vec3f::all(0.4f));
 
 	// primitives
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(RGB(1, 0, 0)), Vec3f(-3, 2.7f, -1), 2));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(RGB(0, 1, 0)), Vec3f(0, 0, 0), 2));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(RGB(0, 0, 1)), Vec3f(2, 1.8f, -3), 2));
-	scene.add(std::make_shared<CPrimPlane>(std::make_shared<CShaderEyelight>(RGB(1, 1, 0)), Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
-	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderEyelight>(RGB(0, 1, 1)), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
-	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderEyelight>(RGB(1, 1, 1)), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
+	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0),   0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
+	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0),   0.2f, 0.5f, 0.5f, 40), Vec3f(0, 0, 0), 2));
+	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
+	scene.add(std::make_shared<CPrimPlane>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1),    0.2f, 0.5f, 0.5f, 40), Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
+	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
+	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
+
+	// lights
+//	scene.add(std::make_shared<CLightPoint>(Vec3f::all(3000), Vec3f(0, 50, 0)));
+//	scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(-4, 6, 3)));
+	scene.add(std::make_shared<CLightArea>(Vec3f(25, 25, 25), Vec3f(-5, 10, -5), Vec3f(5, 10, 5), Vec3f(5, 10, -5), Vec3f(-5, 10, 5)));
 
 	// camera	
 	const float r = 10.0f;
@@ -50,7 +55,7 @@ int main(int argc, char* argv[])
 	
 	scene.setActiveCamera(0);
 
-	Timer::start("Rendering 60 frames... ");
+	Timer::start("Rendering 1 frame... ");
 	for (int i = 0; ; i++) {
 		float x = r * sinf(i * Pif / 180);
 		float z = r * cosf(i * Pif / 180);
