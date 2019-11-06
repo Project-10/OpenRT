@@ -53,7 +53,7 @@ namespace rt {
 				for (size_t s = 0; s < nSamples; s++) {
 					// get direction to light, and intensity
 					auto radiance = pLight->illuminate(I);
-					if (radiance && !m_scene.occluded(I)) {
+					if (radiance && (!pLight->shadow() || !m_scene.occluded(I))) {
 						// DIffuse term
 						float cosLightNormal = I.dir.dot(normal);
 						if (cosLightNormal > 0)

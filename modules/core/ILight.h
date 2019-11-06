@@ -24,6 +24,13 @@ namespace rt {
 		 */
 		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) = 0;
 		/**
+		 * @brief Flag indicating if the light source casts shadow or not
+		 * @retval true If the light source casts shadow
+		 * @retval false Otherwise
+		 */
+		DllExport virtual bool 					shadow(void) const = 0;
+		
+		/**
 		 * @brief Returns recommended number of samples for the particular light source implementation
 		 * @return The recommended number of samples 
 		 */

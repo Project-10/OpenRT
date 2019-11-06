@@ -30,6 +30,8 @@ namespace rt {
 			float attenuation = 1 / (ray.t * ray.t);
 			return attenuation * m_intensity;
 		}
+		
+		DllExport virtual bool shadow(void) const override { return false; }
 
 
 	private:
