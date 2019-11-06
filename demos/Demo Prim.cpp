@@ -14,20 +14,20 @@ int main(int argc, char* argv[])
 	
 	// primitives
 	scene.add(std::make_shared<CPrimPlane>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40), Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
-	scene.add(std::make_shared<CPrimTriangle>(pShaderTop, Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 2, -1)));
-	scene.add(std::make_shared<CPrimTriangle>(pShaderTop, Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(-1, 2, -1)));
-	
+	// --- cube ---
+	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 2, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(-1, 2, -1)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(-1, 0, 1)));
-	
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(1, 0, -1)));
-	
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(1, 0, -1)));
-	
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(-1, 0, 1)));
+	// --- ---- ---
+	
+//	scene.parseOBJ("/Users/creator/Projects/CG/eyden-tracer-03/data/cow.obj");
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0),   0.2f, 0.5f, 0.5f, 40), Vec3f(0, 1, 0), 1));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0),   0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
@@ -54,7 +54,9 @@ int main(int argc, char* argv[])
 	scene.add(std::make_shared<CCameraPerspective>(camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45, resolution));
 	
 	scene.setActiveCamera(3);
-
+#ifdef ENABLE_BSP
+	scene.buildAccelStructure();
+#endif
 //	Timer::start("Rendering 1 frame... ");
 //	for (int i = 0; ; i++) {
 //		float x = r * sinf(i * Pif / 180);

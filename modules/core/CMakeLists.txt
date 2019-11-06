@@ -11,8 +11,9 @@ source_group("Source Files\\camera" FILES "ICamera.h" "CameraPerspective.h" "Cam
 source_group("Source Files\\lights" FILES "ILight.h" "LightPoint.h" "LightArea.h")
 source_group("Source Files\\primitives" FILES "Prim.h" "PrimSphere.h" "PrimPlane.h" "PrimTriangle.h")
 source_group("Source Files\\shaders" FILES "IShader.h" "ShaderFlat.h" "ShaderEyelight.h" "ShaderPhong.h")
-source_group("Source Files\\scene" FILES "Scene.h")
+source_group("Source Files\\scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\utilities" FILES "ray.h" "random.h" "timer.h")
+source_group("Source Files\\utilities\\BSP Tree" FILES "BSPNode.h" "BSPTree.h" "BoundingBox.h" "BoundingBox.cpp")
 
 
 # Properties -> C/C++ -> General -> Additional Include Directories

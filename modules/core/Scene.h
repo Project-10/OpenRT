@@ -3,6 +3,7 @@
 #include "ILight.h"
 #include "Prim.h"
 #include "CameraPerspective.h"
+#include "BSPTree.h"
 
 namespace rt {
 	/**
@@ -25,9 +26,14 @@ namespace rt {
 		// ------------ TO IMPLEMENT ------------
 		DllExport void save(const std::string& fileName) const {}
 		DllExport void load(const std::string& fileName) {}
-		DllExport void reset(void) {}
+		DllExport void clear(void) {}
 		// ------------ ------------ ------------
 
+		/**
+		 * @brief Loads the primitives from an .obj file and adds them to the scene
+		 * @param fileName The full path to the .obj file
+		 */
+		void parseOBJ(const std::string& fileName);
 		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param prim Pointer to the primitive
@@ -57,9 +63,32 @@ namespace rt {
 		*/
 		DllExport std::shared_ptr<ICamera> getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
 		/**
-		 *
+		 * @brief Returns the container with all scene light objects
+		 * @return The vector with pointers to the scene lights
 		*/
 		const std::vector<std::shared_ptr<ILight>> getLights(void) const { return m_vpLights; }
+		/**
+		 * @brief Calculates and return the bounding box, containing the whole scene
+		 * @return The bounding box, containing the whole scene
+		 */
+		CBoundingBox calcBounds(void)
+		{
+			CBoundingBox res;
+			for (auto pPrim : m_vpPrims)
+				res.extend(pPrim->calcBounds());
+			return res;
+		}
+		/**
+		 * @brief Build the BSP tree for the current scene
+		 * @details This function takes into accound all the primitives in scene and builds the BSP tree with the root node in \b m_pBSPTree variable
+		 */
+		void buildAccelStructure(void)
+		{
+			CBoundingBox box = calcBounds();
+			std::cout << "Scene bounds are : " << box.m_min << " " << box.m_max << std::endl;
+			m_pBSPTree = std::make_unique<BSPTree>(box, m_vpPrims);
+		}
+
 		/*
 		 * @brief Checks intersection of ray \b ray with all contained objects
 		 * @param ray The ray
@@ -68,22 +97,30 @@ namespace rt {
 		 */
 		DllExport bool intersect(Ray& ray) const
 		{
+#ifdef ENABLE_BSP
+			return m_pBSPTree->intersect(ray);
+#else
 			bool hit = false;
 			for (auto& pPrim : m_vpPrims)
 				hit |= pPrim->intersect(ray);
 			return hit;
+#endif
 		}
-
-
 		/**
 		 * @brief Find occluder
 		 * @param ray The ray
+		 * @retval true If point \b ray.org is occluded
+		 * @retval false otherwise
 		 */
 		DllExport bool occluded(Ray& ray)
 		{
+#ifdef ENABLE_BSP
+			return m_pBSPTree->intersect(ray);
+#else
 			for (auto& pPrim : m_vpPrims)
 				if (pPrim->occluded(ray)) return true;
 			return false;
+#endif
 		}
 
 		/**
@@ -103,5 +140,6 @@ namespace rt {
 		std::vector<std::shared_ptr<ILight>>	m_vpLights;		///< Lights
 		std::vector<std::shared_ptr<ICamera>>	m_vpCameras;	///< Cameras
 		size_t									m_activeCamera;	///< The index of the active camera
+		std::unique_ptr<BSPTree>				m_pBSPTree	= nullptr;
 	};
 }

@@ -63,6 +63,13 @@ namespace rt {
 			return normal;
 		}
 		
+		DllExport CBoundingBox	calcBounds(void) const override {
+			CBoundingBox res;
+			res.extend(m_center - Vec3f::all(m_radius));
+			res.extend(m_center + Vec3f::all(m_radius));
+			return res;
+		}
+		
 	private:
 		Vec3f m_center;	///< Position of the center of the sphere
 		float m_radius;	///< Radius of the sphere

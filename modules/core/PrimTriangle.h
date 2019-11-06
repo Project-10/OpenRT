@@ -65,6 +65,15 @@ namespace rt {
 			return normal;
 		}
 		
+		DllExport CBoundingBox	calcBounds(void) const override {
+			CBoundingBox res;
+			res.extend(m_a);
+			res.extend(m_b);
+			res.extend(m_c);
+			return res;
+		}
+		
+		
 	private:
 		Vec3f m_a;	///< Position of the first vertex
 		Vec3f m_b;	///< Position of the second vertex

@@ -37,6 +37,22 @@ namespace rt {
 		
 		DllExport virtual Vec3f getNormal(const Ray& ray) const override { return m_normal; }
 		
+		DllExport CBoundingBox	calcBounds(void) const override {
+			CBoundingBox res;
+			float inf = std::numeric_limits<float>::infinity();
+			Vec3f minPoint = Vec3f::all(-inf);
+			Vec3f maxPoint = Vec3f::all(inf);
+			for (int i = 0; i < 3; i++)
+				if (m_normal.val[i] == 1) {
+					minPoint.val[i] = m_origin.val[i];
+					maxPoint.val[i] = m_origin.val[i];
+					break;
+				}
+			res.extend(minPoint);
+			res.extend(maxPoint);
+			return res;
+		}
+		
 	private:
 		Vec3f m_normal;	///< Point on the plane
 		Vec3f m_origin;	///< Normal to the plane

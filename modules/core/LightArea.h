@@ -34,12 +34,10 @@ namespace rt {
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			Vec3f position = m_p0 + random::U<float>() * m_edge1 + random::U<float>() * m_edge2;
-			//std::cout << "Position: " << position << std::endl;
 			
 			ray.dir = position - ray.org;
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
-
 
 			float cosN = -ray.dir.dot(m_normal) / ray.t;
 			if (cosN <= 0.0f) return std::nullopt;
@@ -50,7 +48,7 @@ namespace rt {
 
 		DllExport virtual bool shadow(void) const override { return true; }
 		
-		DllExport virtual size_t getNumberOfSamples(void) const override { return 10000; }
+		DllExport virtual size_t getNumberOfSamples(void) const override { return 64; }
 
 		DllExport Vec3f getNormal(const Vec3f& position) const { return m_normal; }
 
@@ -64,4 +62,3 @@ namespace rt {
 		Vec3f m_normal;
 	};
 }
-

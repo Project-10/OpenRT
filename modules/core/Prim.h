@@ -4,6 +4,7 @@
 
 #include "types.h"
 #include "IShader.h"
+#include "BoundingBox.h"
 
 namespace rt {
 	struct Ray;
@@ -36,13 +37,25 @@ namespace rt {
 		 * @retval true If the intersection point is occluded
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool	occluded(Ray& ray) { return intersect(ray); }
+		DllExport bool			occluded(Ray& ray) { return intersect(ray); }
 		/**
 		 * @brief Returns the normalized normal of the primitive
 		 * @param ray The ray
 		 * @return The normalized normal of the primitive
 		 */
 		DllExport virtual Vec3f	getNormal(const Ray& ray) const = 0;
+		/**
+		 * @brief Returns the bounding box, which contain the primitive
+		 * @returns The bounding box, which contain the primitive
+		 */
+		DllExport virtual CBoundingBox	calcBounds(void) const = 0;
+		/**
+		 * @brief Check whether the primitive is contained in the bounding box \b box
+		 * @param box The bounding box
+		 * @retval true If the primitive's bounding box overlaps the given bounding box \b box
+		 * @retval false Otherwise
+		 */
+		DllExport  bool 		inVoxel(const CBoundingBox& box) const { return calcBounds().overlaps(box); }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
