@@ -53,8 +53,7 @@ namespace rt {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
 		CSamplerStratified sampler(4, true);
-		size_t nSamples = sampler.getNumSamples();
-		
+	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {
 			Ray ray;
@@ -64,12 +63,12 @@ namespace rt {
 #endif
 			Vec3f *pImg = img.ptr<Vec3f>(y);
 			for (int x = 0; x < img.cols; x++) {
-				for (int s = 0; s < nSamples; s++) {
+				for (int s = 0; s < sampler.getNumSamples(); s++) {
 					Vec2f sample = sampler.getNextSample();
 					getActiveCamera()->InitRay(ray, x, y, sample);
 					pImg[x] += rayTrace(ray);
 				}
-				pImg[x] = (1.0f / nSamples) * pImg[x] ;
+				pImg[x] = (1.0f / sampler.getNumSamples()) * pImg[x] ;
 			}
 		}
 #ifdef ENABLE_PPL

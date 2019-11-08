@@ -14,7 +14,7 @@ source_group("Source Files\\shaders" FILES "IShader.h" "ShaderFlat.h" "ShaderEye
 source_group("Source Files\\scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\utilities" FILES "ray.h" "random.h" "timer.h")
 source_group("Source Files\\utilities\\BSP Tree" FILES "BSPNode.h" "BSPTree.h" "BoundingBox.h" "BoundingBox.cpp")
-source_group("Source Files\\utilities\\samplers" FILES "Sampler.h")
+source_group("Source Files\\utilities\\samplers" FILES "Sampler.h" "Sampler.cpp")
 
 
 # Properties -> C/C++ -> General -> Additional Include Directories

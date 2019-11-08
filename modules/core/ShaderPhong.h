@@ -33,7 +33,7 @@ namespace rt {
 			Vec3f res				= Vec3f::all(0);
 			
 			Vec3f normal			= ray.hit->getNormal(ray);									// shading normal
-			if (normal.dot(ray.dir) > 0) normal = -normal;									// turn normal to front
+			if (normal.dot(ray.dir) > 0) normal = -normal;										// turn normal to front
 			Vec3f reflect			= normalize(ray.dir - 2 * normal.dot(ray.dir) * normal);	// reflection vector
 
 			Vec3f ambientRadiance	= Vec3f::all(1);

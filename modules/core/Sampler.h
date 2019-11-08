@@ -6,30 +6,18 @@
 #include "random.h"	// TODO: delete
 
 namespace rt {
-	
 	class CSampler {
 	public:
 		DllExport CSampler(size_t nSamples, bool isRenewable)
-			: m_vSamples(nSamples * nSamples)
+			: m_vSamples(nSamples* nSamples)
 			, m_renewable(isRenewable)
 		{}
 		DllExport CSampler(const CSampler&) = delete;
 		DllExport virtual ~CSampler(void) = default;
 		DllExport const CSampler& operator=(const CSampler&) = delete;
 		
-		DllExport virtual Vec2f getNextSample(void)
-		{
-			if (m_vSamples.empty())
-				return Vec2f::all(0.5f);
-			
-			int idx = m_idx % m_vSamples.size();
-			if (!m_idx || (!idx && m_renewable))
-				generate();
-			m_idx++;
-			
-			return m_vSamples[idx];
-		}
-		DllExport size_t getNumSamples(void) const { return m_vSamples.size(); }
+		DllExport virtual Vec2f getNextSample(void);
+		DllExport size_t		getNumSamples(void) const { return m_vSamples.size(); }
 		
 	
 	protected:
@@ -41,11 +29,10 @@ namespace rt {
 	
 		
 	private:
-		const bool			m_renewable;
-		size_t				m_idx = 0;
+		const bool					m_renewable;
+		thread_local static size_t	m_idx;
 	};
 
-	
 	class CSamplerRandom : public CSampler {
 	public:
 		DllExport CSamplerRandom(size_t nSamples, bool isRenewable) : CSampler(nSamples, isRenewable) {}
@@ -84,8 +71,6 @@ namespace rt {
 					m_vSamples[s] = delta * Vec2f(fx, fy);
 					s++;
 				}
-
-			
 		}
 		
 	private:
