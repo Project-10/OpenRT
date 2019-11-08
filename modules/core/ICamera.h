@@ -24,11 +24,12 @@ namespace rt {
 		 * @brief Initializes the ray
 		 * @details This function initializes the ray pointing from the camera origin to the pixel
 		 * on the camera screed defyned by the coodrinates \b x and \b y
+		 * @param[out] ray Reference to the @ref Ray structure to be filled
 		 * @param[in] x The x-coordinate of the pixel lying on the camera screen
 		 * @param[in] y The y-coordinate of the pixel lying on the camera screen
-		 * @param[out] ray Reference to the @ref Ray structure to be filled
+		 * @param[in] sample  The x- and y-shifts to the center of the pixel
 		 */
-		DllExport virtual void InitRay(int x, int y, Ray& ray) = 0;
+		DllExport virtual void InitRay(Ray& ray, int x, int y, Vec2f sample = Vec2f::all(0.5f)) = 0;
 		
 		/**
 		 * @brief Retuns the camera resolution

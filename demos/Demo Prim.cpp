@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
 //	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(10, 10, 10)));
 //	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(10, 10, -10)));
 //	scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(-4, 6, 3)));
-	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 2, 10)));
-	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10)));
+	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 2, 10), false));
+	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
 
 	// camera	
 	const float r = 17.5f;
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 
 	// render three images with different camera settings
 	Timer::start("Rendering... ");
-	Mat img1 = RenderFrame(scene);
+	Mat img1 = scene.render();
 	Timer::stop();
 	imshow("Image1", img1);
 	imwrite("cube.jpg", img1);

@@ -14,8 +14,9 @@ namespace rt {
 		 * @param position The position (origin) of the light source
 		 * @param intensity The emission color and strength of the light source
 		 */
-		DllExport CLightPoint(Vec3f intensity, Vec3f position)
-			: m_intensity(intensity)
+		DllExport CLightPoint(Vec3f intensity, Vec3f position, bool castShadow = true)
+			: ILight(castShadow)
+			, m_intensity(intensity)
 			, m_position(position)
 		{}
 		DllExport virtual ~CLightPoint(void) = default;
@@ -30,8 +31,6 @@ namespace rt {
 			float attenuation = 1 / (ray.t * ray.t);
 			return attenuation * m_intensity;
 		}
-		
-		DllExport virtual bool shadow(void) const override { return false; }
 
 
 	private:

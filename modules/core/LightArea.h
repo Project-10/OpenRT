@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ILight.h"
-#include "random.h"
+#include "Sampler.h"
 
 namespace rt {
 	/**
@@ -20,8 +20,10 @@ namespace rt {
 		 * @param p2 The third point defining the quadrangular shape of the light source
 		 * @param p3 The fourth point defining the quadrangular shape of the light source
 		 */
-		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3)
-			: m_intensity(intensity)
+		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true))
+			: ILight(true)
+			, m_pSampler(pSampler)
+			, m_intensity(intensity)
 			, m_p0(p0)
 			, m_edge1(p1 - p0)
 			, m_edge2(p3 - p0)
@@ -33,7 +35,8 @@ namespace rt {
 
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
-			Vec3f position = m_p0 + random::U<float>() * m_edge1 + random::U<float>() * m_edge2;
+			Vec2f sample = m_pSampler->getNextSample();
+			Vec3f position = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
 			
 			ray.dir = position - ray.org;
 			ray.t = norm(ray.dir);
@@ -45,15 +48,14 @@ namespace rt {
 
 			return attenuation * m_intensity;
 		}
-
-		DllExport virtual bool shadow(void) const override { return true; }
 		
-		DllExport virtual size_t getNumberOfSamples(void) const override { return 64; }
+		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 		DllExport Vec3f getNormal(const Vec3f& position) const { return m_normal; }
 
 
 	private:
+		std::shared_ptr<CSampler> m_pSampler;
 		Vec3f m_intensity;
 		Vec3f m_p0;
 		Vec3f m_edge1;

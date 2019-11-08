@@ -11,7 +11,11 @@ namespace rt {
 	class ILight
 	{
 	public:
-		DllExport ILight(void) = default;
+		/**
+		 * @brief Constructor
+		 * @param castShadow Flag indicating whether the light source casts shadows
+		 */
+		DllExport ILight(bool castShadow) : m_shadow(castShadow) {}
 		DllExport ILight(const ILight&) = delete;
 		DllExport virtual ~ILight(void) = default;
 		DllExport const ILight& operator=(const ILight&) = delete;
@@ -28,12 +32,23 @@ namespace rt {
 		 * @retval true If the light source casts shadow
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool 					shadow(void) const = 0;
-		
+		DllExport virtual bool 					shadow(void) const { return m_shadow; }
+		/**
+		 * @brief Turns the shadow casting on
+		 */
+		DllExport void							turnShadowOn(void) { m_shadow = true; }
+		/**
+		 * @brief Turns the shadow casting off
+		 */
+		DllExport void							turnShadowOff(void) { m_shadow = false; }
 		/**
 		 * @brief Returns recommended number of samples for the particular light source implementation
 		 * @return The recommended number of samples 
 		 */
 		DllExport virtual size_t				getNumberOfSamples(void) const { return 1; }
+		
+		
+	private:
+		bool	m_shadow;
 	};
 }

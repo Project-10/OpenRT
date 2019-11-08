@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ILight.h"
-#include "Prim.h"
+#include "IPrim.h"
 #include "CameraPerspective.h"
 #include "BSPTree.h"
 
@@ -68,6 +68,40 @@ namespace rt {
 		*/
 		const std::vector<std::shared_ptr<ILight>> getLights(void) const { return m_vpLights; }
 		/**
+		 * @brief Build the BSP tree for the current scene
+		 * @details This function takes into accound all the primitives in scene and builds the BSP tree with the root node in \b m_pBSPTree variable
+		 */
+		void buildAccelStructure(void)
+		{
+			CBoundingBox box = calcBounds();
+			std::cout << "Scene bounds are : " << box.m_min << " " << box.m_max << std::endl;
+			m_pBSPTree = std::make_unique<BSPTree>(box, m_vpPrims);
+		}
+		/**
+		 * @brief Find occluder
+		 * @param ray The ray
+		 * @retval true If point \b ray.org is occluded
+		 * @retval false otherwise
+		 */
+		DllExport bool occluded(Ray& ray)
+		{
+#ifdef ENABLE_BSP
+			return m_pBSPTree->intersect(ray);
+#else
+			for (auto& pPrim : m_vpPrims)
+				if (pPrim->occluded(ray)) return true;
+			return false;
+#endif
+		}
+		/**
+		 * @brief Renders the view from the active camera
+		 * @returns The rendered image
+		 */
+		DllExport Mat render(void) const;
+	
+	
+	private:
+		/**
 		 * @brief Calculates and return the bounding box, containing the whole scene
 		 * @return The bounding box, containing the whole scene
 		 */
@@ -78,17 +112,6 @@ namespace rt {
 				res.extend(pPrim->calcBounds());
 			return res;
 		}
-		/**
-		 * @brief Build the BSP tree for the current scene
-		 * @details This function takes into accound all the primitives in scene and builds the BSP tree with the root node in \b m_pBSPTree variable
-		 */
-		void buildAccelStructure(void)
-		{
-			CBoundingBox box = calcBounds();
-			std::cout << "Scene bounds are : " << box.m_min << " " << box.m_max << std::endl;
-			m_pBSPTree = std::make_unique<BSPTree>(box, m_vpPrims);
-		}
-
 		/*
 		 * @brief Checks intersection of ray \b ray with all contained objects
 		 * @param ray The ray
@@ -107,23 +130,6 @@ namespace rt {
 #endif
 		}
 		/**
-		 * @brief Find occluder
-		 * @param ray The ray
-		 * @retval true If point \b ray.org is occluded
-		 * @retval false otherwise
-		 */
-		DllExport bool occluded(Ray& ray)
-		{
-#ifdef ENABLE_BSP
-			return m_pBSPTree->intersect(ray);
-#else
-			for (auto& pPrim : m_vpPrims)
-				if (pPrim->occluded(ray)) return true;
-			return false;
-#endif
-		}
-
-		/**
 		 * @brief Traces the given ray and shade it
 		 * @param ray The ray
 		 * @return The color of the shaded ray
@@ -132,8 +138,8 @@ namespace rt {
 		{
 			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
-
-
+		
+		
 	private:
 		Vec3f									m_bgColor;    	///< background color
 		std::vector<std::shared_ptr<IPrim>> 	m_vpPrims;		///< Primitives

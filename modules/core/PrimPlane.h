@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "Prim.h"
+#include "IPrim.h"
 
 namespace rt {
 	/**
