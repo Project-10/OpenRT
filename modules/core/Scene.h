@@ -94,6 +94,16 @@ namespace rt {
 #endif
 		}
 		/**
+		 * @brief Traces the given ray and shade it
+		 * @param ray The ray
+		 * @return The color of the shaded ray
+		 */
+		DllExport Vec3f rayTrace(Ray& ray) const
+		{
+			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+		}
+		
+		/**
 		 * @brief Renders the view from the active camera
 		 * @returns The rendered image
 		 */
@@ -128,15 +138,6 @@ namespace rt {
 				hit |= pPrim->intersect(ray);
 			return hit;
 #endif
-		}
-		/**
-		 * @brief Traces the given ray and shade it
-		 * @param ray The ray
-		 * @return The color of the shaded ray
-		 */
-		DllExport Vec3f rayTrace(Ray& ray) const
-		{
-			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
 		
 		

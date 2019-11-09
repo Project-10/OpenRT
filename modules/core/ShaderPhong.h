@@ -3,8 +3,9 @@
 #include "ShaderFlat.h"
 
 namespace rt {
-	class CScene;
-
+	/**
+	 * @brief Phong shader
+	 */
 	class CShaderPhong : public CShaderFlat
 	{
 	public:

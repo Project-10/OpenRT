@@ -9,6 +9,7 @@
 #include "core/PrimTriangle.h"
 
 #include "core/ShaderFlat.h"
+#include "core/ShaderMirror.h"
 #include "core/ShaderEyelight.h"
 #include "core/ShaderPhong.h"
 
