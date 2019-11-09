@@ -13,7 +13,7 @@ namespace rt {
 			, m_renewable(isRenewable)
 		{}
 		DllExport CSampler(const CSampler&) = delete;
-		DllExport virtual ~CSampler(void) = default;
+		DllExport virtual ~CSampler(void) { m_idx = 0; }
 		DllExport const CSampler& operator=(const CSampler&) = delete;
 		
 		DllExport virtual Vec2f getNextSample(void);

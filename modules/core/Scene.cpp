@@ -52,7 +52,7 @@ namespace rt {
 	Mat CScene::render(void) const {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
-		CSamplerStratified sampler(4, true);
+		CSamplerStratified sampler(2, false);
 	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {
