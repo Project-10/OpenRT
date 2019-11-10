@@ -30,28 +30,29 @@ namespace rt {
 		
 		DllExport virtual bool intersect(Ray& ray) override
 		{
+			// Moeller–Trumbore intersection algorithm
 			const Vec3f pvec = ray.dir.cross(m_edge2);
-			
-			const float det = m_edge1.dot(pvec);
-			if (fabs(det) < Epsilon) return false;
+			const float det  = m_edge1.dot(pvec);
+			if (fabs(det) < Epsilon) 
+				return false;
 			
 			const float inv_det = 1.0f / det;
-			
 			const Vec3f tvec = ray.org - m_a;
 			float lambda = tvec.dot(pvec);
 			lambda *= inv_det;
-			
-			if (lambda < 0.0f || lambda > 1.0f) return false;
+			if (lambda < 0.0f || lambda > 1.0f) 
+				return false;
 			
 			const Vec3f qvec = tvec.cross(m_edge1);
 			float mue = ray.dir.dot(qvec);
 			mue *= inv_det;
-			
-			if (mue < 0.0f || mue + lambda > 1.0f) return false;
+			if (mue < 0.0f || mue + lambda > 1.0f) 
+				return false;
 			
 			float f = m_edge2.dot(qvec);
 			f *= inv_det;
-			if (ray.t <= f || f <  1E-4  ) return false;
+			if (ray.t <= f || f <  1E-4  ) 
+				return false;
 			
 			ray.t = f;
 			ray.hit = shared_from_this();

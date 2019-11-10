@@ -3,6 +3,11 @@
 namespace rt {
 	thread_local size_t CSampler::m_idx = 0;
 	
+	// Destructor
+	CSampler::~CSampler(void) { 
+		m_idx = 0; 
+	}
+
 	Vec2f CSampler::getNextSample(void) {
 		if (m_vSamples.empty())
 			return Vec2f::all(0.5f);
