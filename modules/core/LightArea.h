@@ -40,6 +40,7 @@ namespace rt {
 			
 			ray.dir = position - ray.org;
 			ray.t = norm(ray.dir);
+			ray.hit = nullptr;
 			ray.dir = normalize(ray.dir);
 
 			float cosN = -ray.dir.dot(m_normal) / ray.t;
