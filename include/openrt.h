@@ -10,6 +10,8 @@
 
 #include "core/ShaderFlat.h"
 #include "core/ShaderMirror.h"
+#include "core/ShaderChrome.h"
+#include "core/ShaderGlass.h"
 #include "core/ShaderEyelight.h"
 #include "core/ShaderPhong.h"
 

@@ -7,6 +7,7 @@ set (OPENRT_VERSION_MAJOR 1)
 set (OPENRT_VERSION_MINOR 0)
 set (OPENRT_VERSION_PATCH 0)
 set (OPENRT_VERSION ${OPENRT_VERSION_MAJOR}.${OPENRT_VERSION_MINOR}.${OPENRT_VERSION_PATCH})
+set (MAX_RAY_COUNTER 8 CACHE PATH "Maximum number of the reflected / refracted rays in iteration process")
 
 configure_file(${PROJECT_SOURCE_DIR}/cmake/types.h.in ${PROJECT_SOURCE_DIR}/include/types.h)
 
@@ -46,7 +47,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin) 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install CACHE PATH "Installation directory")
 
-
 #install
 #install(DIRECTORY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_INSTALL_PREFIX})
 #install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION ${CMAKE_INSTALL_PREFIX})
@@ -68,7 +68,7 @@ cmake_dependent_option(ENABLE_PPL "Use Parallel Pattern Library for parallel CPU
 cmake_dependent_option(ENABLE_AMP "Use AMP Algorithms Library for parallel GPU computing" ON "MSVC" OFF)  
 option(ENABLE_BSP "Use Binary Space Partitioning (BSP) Tree for optimized ray traversal" ON) 
 
- # Sub-directories where more CMakeLists.txt exist
+# Sub-directories where more CMakeLists.txt exist
 add_subdirectory(modules/core)
 #add_subdirectory(tests)
 add_subdirectory(demos)

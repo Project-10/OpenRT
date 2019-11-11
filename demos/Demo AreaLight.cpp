@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 1));
 	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(-2, 1, 2), 1));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(2, 1, -2), 1));
+	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderGlass>(scene), Vec3f(2, 1, -2), 1));
 
 	// lights
 	//scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(-10, 10, -10)));
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	//scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(10, 10, 10)));
 	//scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(10, 10, -10)));
 	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 2, 10), false));
-	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(10, true, true)));
+	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
 
 	// camera
 	const float r = 17.5f;

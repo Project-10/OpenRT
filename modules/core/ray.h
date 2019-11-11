@@ -12,7 +12,7 @@ namespace rt {
 		Vec3f					dir;											///< Direction
 		float					t	= std::numeric_limits<float>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<IPrim> 	hit = nullptr;									///< Pointer to currently closest primitive
-		int 					counter = 0;									///< Nummer of re-traced rays
+		size_t 					counter = 0;									///< Nummer of re-traced rays
 		
 		Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0)) : org(_org), dir(_dir) {}
 		
