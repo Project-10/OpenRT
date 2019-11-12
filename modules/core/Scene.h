@@ -103,7 +103,7 @@ namespace rt {
 		 */
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
-			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			return ray.counter >= maxRayCounter ? Vec3f::all(0.5f) : intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
 		
 		/**

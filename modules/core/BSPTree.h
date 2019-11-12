@@ -2,7 +2,7 @@
 
 #include "BSPNode.h"
 #include "BoundingBox.h"
-
+#include "macroses.h"
 
 namespace rt {
 	namespace {
@@ -75,6 +75,8 @@ namespace rt {
 		 */
 		bool intersect(Ray& ray)
 		{
+			RT_ASSERT(!ray.hit);
+			
 			float t0 = 0;
 			float t1 = ray.t;
 

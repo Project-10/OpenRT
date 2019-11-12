@@ -54,4 +54,7 @@ template <class T>  T& lvalue_cast(T&& t) { return t; }
 	#define DllExport
 #endif
 
+namespace rt { 
+    static const size_t maxRayCounter = @MAX_RAY_COUNTER@;
 #define RGB(r, g, b)  Vec3f((b), (g), (r))
+}
