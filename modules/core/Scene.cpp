@@ -9,14 +9,13 @@
 #include <fstream> 
 
 namespace rt {
-	void CScene::parseOBJ(const std::string& fileName)
+	void CScene::parseOBJ(const std::string& fileName, std::shared_ptr<IShader> pShader)
 	{
 		std::ifstream file(fileName);
 
 		if (file.is_open()) {
 			std::cout << "Parsing OBJFile : " << fileName << std::endl;
 
-			std::shared_ptr<IShader> pShader = std::make_shared<CShaderPhong>(*this, RGB(1, 1, 1), 0.5f, 0.5f, 0.5f, 40);
 			std::vector<Vec3f> vVertexes;
 			
 			std::string line;
@@ -29,7 +28,7 @@ namespace rt {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
-					vVertexes.emplace_back(25 * v);
+					vVertexes.emplace_back(0.01f * v);
 				}
 				else if (line == "f") {
 					Vec3i f;
@@ -52,7 +51,7 @@ namespace rt {
 	Mat CScene::render(void) const {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
-		CSamplerStratified sampler(4, false);
+		CSamplerStratified sampler(2, true);
 	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {

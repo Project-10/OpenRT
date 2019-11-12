@@ -32,8 +32,9 @@ namespace rt {
 		/**
 		 * @brief Loads the primitives from an .obj file and adds them to the scene
 		 * @param fileName The full path to the .obj file
+		 * @param pShader Pointer to the shader to be use with the parsed object
 		 */
-		void parseOBJ(const std::string& fileName);
+		DllExport void parseOBJ(const std::string& fileName, std::shared_ptr<IShader> pShader);
 		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param prim Pointer to the primitive
@@ -86,6 +87,8 @@ namespace rt {
 		DllExport bool occluded(Ray& ray)
 		{
 #ifdef ENABLE_BSP
+			//Ray R;
+			//R = ray;
 			return m_pBSPTree->intersect(ray);
 #else
 			for (auto& pPrim : m_vpPrims)
