@@ -8,10 +8,7 @@
 namespace rt {
 	class CSampler {
 	public:
-		DllExport CSampler(size_t nSamples, bool isRenewable)
-			: m_vSamples(nSamples* nSamples)
-			, m_renewable(isRenewable)
-		{}
+		DllExport CSampler(size_t nSamples, bool isRenewable);
 		DllExport CSampler(const CSampler&) = delete;
 		DllExport virtual ~CSampler(void);
 		DllExport const CSampler& operator=(const CSampler&) = delete;
@@ -30,9 +27,12 @@ namespace rt {
 		
 	private:
 		const bool					m_renewable;
+		bool						m_needGeneration = true;
 		thread_local static size_t	m_idx;
 	};
 
+
+	// =============================== Random Sampler ===============================
 	class CSamplerRandom : public CSampler {
 	public:
 		DllExport CSamplerRandom(size_t nSamples, bool isRenewable) : CSampler(nSamples, isRenewable) {}
@@ -47,7 +47,8 @@ namespace rt {
 		}
 	};
 
-	
+
+	// =============================== Stratified Sampler ===============================
 	class CSamplerStratified : public CSampler {
 	public:
 		DllExport CSamplerStratified(size_t nSamples, bool isRenewable = false, bool jitter = false)
@@ -60,7 +61,7 @@ namespace rt {
 	protected:
 		virtual void generate(void) override
 		{
-			size_t nSamples = sqrt(m_vSamples.size());
+			size_t nSamples = static_cast<size_t>(sqrt(m_vSamples.size()));
 			float delta = 1.0f / nSamples;
 			
 			int s = 0;
