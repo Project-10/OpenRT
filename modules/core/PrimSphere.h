@@ -58,12 +58,7 @@ namespace rt {
 		
 		DllExport virtual bool if_intersect(const Ray& ray) const override { return intersect(Ray(ray)); }
 
-		DllExport virtual Vec3f getNormal(const Ray& ray) const override
-		{
-			Vec3f hit = ray.org + ray.t * ray.dir;
-			Vec3f normal = normalize(hit - m_center);
-			return normal;
-		}
+		DllExport virtual Vec3f getNormal(const Vec3f& p) const override { return normalize(p - m_center); }
 		
 		DllExport CBoundingBox	calcBounds(void) const override {
 			CBoundingBox res;

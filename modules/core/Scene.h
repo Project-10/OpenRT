@@ -101,7 +101,7 @@ namespace rt {
 		 */
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
-			return ray.counter >= maxRayCounter ? Vec3f::all(0.5f) : intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			return (ray.counter < maxRayCounter) && intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
 		
 		/**
@@ -143,7 +143,7 @@ namespace rt {
 		
 		
 	private:
-		Vec3f									m_bgColor;    	///< background color
+		const Vec3f								m_bgColor;    	///< background color
 		std::vector<std::shared_ptr<IPrim>> 	m_vpPrims;		///< Primitives
 		std::vector<std::shared_ptr<ILight>>	m_vpLights;		///< Lights
 		std::vector<std::shared_ptr<ICamera>>	m_vpCameras;	///< Cameras

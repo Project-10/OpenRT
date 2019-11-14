@@ -12,7 +12,7 @@ namespace rt {
 		{
 			const float k = 1.517f;
 			
-			Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+			Vec3f normal = ray.hit->getNormal(ray.hitPoint());						// shading normal
 			bool inside = false;
 			if (normal.dot(ray.dir) > 0) {
 				normal = -normal;													// turn normal to front

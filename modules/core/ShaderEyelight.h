@@ -22,7 +22,7 @@ namespace rt {
 
 		DllExport virtual Vec3f shade(const Ray& ray) const override
 		{
-			return CShaderFlat::shade() * fabs(ray.dir.dot(ray.hit->getNormal(ray)));
+			return CShaderFlat::shade() * fabs(ray.dir.dot(ray.hit->getNormal(ray.hitPoint())));
 		}
 	};
 }

@@ -25,6 +25,7 @@ namespace rt {
 			, m_c(c)
 			, m_edge1(b - a)
 			, m_edge2(c - a)
+			, m_normal(normalize(m_edge1.cross(m_edge2)))
 		{}
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
@@ -42,11 +43,7 @@ namespace rt {
 
 		DllExport virtual bool if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
 
-		DllExport virtual Vec3f getNormal(const Ray& ray) const override
-		{
-			Vec3f normal = normalize(m_edge1.cross(m_edge2));
-			return normal;
-		}
+		DllExport virtual Vec3f getNormal(const Vec3f&) const override { return m_normal; }
 		
 		DllExport CBoundingBox	calcBounds(void) const override {
 			CBoundingBox res;
@@ -92,5 +89,6 @@ namespace rt {
 		Vec3f m_c;	///< Position of the third vertex
 		Vec3f m_edge1;	///< Edge AB
 		Vec3f m_edge2;	///< Edge AC
+		Vec3f m_normal;	///< Triangle normal
 	};
 }

@@ -11,12 +11,11 @@ namespace rt {
 		DllExport virtual ~CShaderChrome(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override
-		{
-			
+		{		
 			const int nSamples = 64;
 			Vec3f res = Vec3f::all(0);
 			for (int s = 0; s < nSamples; s++) {
-				Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+				Vec3f normal = ray.hit->getNormal(ray.hitPoint());						// shading normal
 				if (normal.dot(ray.dir) > 0) normal = -normal;							// turn normal to front
 
 				for (int i = 0; i < 3; i++)

@@ -44,10 +44,10 @@ namespace rt {
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the normalized normal of the primitive
-		 * @param ray The ray
+		 * @param p Point at the surface
 		 * @return The normalized normal of the primitive
 		 */
-		DllExport virtual Vec3f				getNormal(const Ray& ray) const = 0;
+		DllExport virtual Vec3f				getNormal(const Vec3f& p) const = 0;
 		/**
 		 * @brief Returns the bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
