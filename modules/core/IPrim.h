@@ -50,6 +50,11 @@ namespace rt {
 		 */
 		DllExport virtual CBoundingBox	calcBounds(void) const = 0;
 		/**
+		 * @brief Sets the new shader to the prim
+		 * @param pShader Pointer to the shader to be applied for the prim
+		*/
+		DllExport void setShader(std::shared_ptr<IShader> m_pShader) { m_pShader = m_pShader; }
+		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		*/
