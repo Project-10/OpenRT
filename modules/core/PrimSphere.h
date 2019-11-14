@@ -24,7 +24,7 @@ namespace rt {
 		{}
 		DllExport virtual ~CPrimSphere(void) = default;
 
-		DllExport virtual bool intersect(Ray &ray) override
+		DllExport virtual bool intersect(Ray& ray) const override
 		{
 			// mathematical derivation, numerically not very stable, but simple
 			
@@ -56,6 +56,8 @@ namespace rt {
 			return true;
 		}
 		
+		DllExport virtual bool if_intersect(const Ray& ray) const override { return intersect(Ray(ray)); }
+
 		DllExport virtual Vec3f getNormal(const Ray& ray) const override
 		{
 			Vec3f hit = ray.org + ray.t * ray.dir;

@@ -26,39 +26,43 @@ namespace rt {
 
 		/**
 		 * @brief Checks for intersection between ray \b Ray and the primitive
-		 * @details If a valid intersection has been found with the primitive, set Ray::t to the distance to this intersection point (if current t < ray.t)
+		 * @details If a valid intersection has been found with the primitive, it sets Ray::t to the distance to this intersection 
+		 * point (if current t < ray.t) and sets Ray::hit to point to the current primitive
 		 * @param[in,out] ray The ray (Ref. @ref Ray for details)
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool	intersect(Ray& ray) = 0;
+		DllExport virtual bool				intersect(Ray& ray) const = 0;
 		/**
-		 * @brief Checks if the \b ray.org is occluded
-		 * @retval true If the intersection point is occluded
+		 * @brief Checks for intersection between ray \b Ray and the primitive
+		 * @details This function does not modify argeument \b ray and is used just to check if there is an intersection.
+		 * One may use this function for a fast check if the \b ray.org is occluded from a light source by a pritive.
+		 * @param ray The ray (Ref. @ref Ray for details)
+		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport bool			occluded(Ray& ray) { return intersect(ray); }
+		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the normalized normal of the primitive
 		 * @param ray The ray
 		 * @return The normalized normal of the primitive
 		 */
-		DllExport virtual Vec3f	getNormal(const Ray& ray) const = 0;
+		DllExport virtual Vec3f				getNormal(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
 		 */
-		DllExport virtual CBoundingBox	calcBounds(void) const = 0;
+		DllExport virtual CBoundingBox		calcBounds(void) const = 0;
 		/**
 		 * @brief Sets the new shader to the prim
 		 * @param pShader Pointer to the shader to be applied for the prim
 		*/
-		DllExport void setShader(std::shared_ptr<IShader> m_pShader) { m_pShader = m_pShader; }
+		DllExport void						setShader(std::shared_ptr<IShader> m_pShader) { m_pShader = m_pShader; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		*/
-		DllExport std::shared_ptr<IShader> getShader(void) const { return m_pShader; }
+		DllExport std::shared_ptr<IShader>	getShader(void) const { return m_pShader; }
 	
 	
 	private:

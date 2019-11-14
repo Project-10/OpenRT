@@ -28,37 +28,19 @@ namespace rt {
 		{}
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
-		DllExport virtual bool intersect(Ray& ray) override
+		DllExport virtual bool intersect(Ray& ray) const override
 		{
-			// Moeller–Trumbore intersection algorithm
-			const Vec3f pvec = ray.dir.cross(m_edge2);
-			const float det  = m_edge1.dot(pvec);
-			if (fabs(det) < Epsilon) 
+			auto t = MoellerTrumbore(ray);
+			if (t) {
+				ray.t = t.value();
+				ray.hit = shared_from_this();
+				return true;
+			}
+			else
 				return false;
-			
-			const float inv_det = 1.0f / det;
-			const Vec3f tvec = ray.org - m_a;
-			float lambda = tvec.dot(pvec);
-			lambda *= inv_det;
-			if (lambda < 0.0f || lambda > 1.0f) 
-				return false;
-			
-			const Vec3f qvec = tvec.cross(m_edge1);
-			float mue = ray.dir.dot(qvec);
-			mue *= inv_det;
-			if (mue < 0.0f || mue + lambda > 1.0f) 
-				return false;
-			
-			float f = m_edge2.dot(qvec);
-			f *= inv_det;
-			if (ray.t <= f || f <  1E-4  ) 
-				return false;
-			
-			ray.t = f;
-			ray.hit = shared_from_this();
-			
-			return true;
 		}
+
+		DllExport virtual bool if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
 
 		DllExport virtual Vec3f getNormal(const Ray& ray) const override
 		{
@@ -74,6 +56,35 @@ namespace rt {
 			return res;
 		}
 		
+	private:
+		// Moeller–Trumbore intersection algorithm
+		std::optional<float> MoellerTrumbore(const Ray& ray) const 
+		{
+			const Vec3f pvec = ray.dir.cross(m_edge2);
+			const float det = m_edge1.dot(pvec);
+			if (fabs(det) < Epsilon)
+				return std::nullopt;
+
+			const float inv_det = 1.0f / det;
+			const Vec3f tvec = ray.org - m_a;
+			float lambda = tvec.dot(pvec);
+			lambda *= inv_det;
+			if (lambda < 0.0f || lambda > 1.0f)
+				return std::nullopt;
+
+			const Vec3f qvec = tvec.cross(m_edge1);
+			float mue = ray.dir.dot(qvec);
+			mue *= inv_det;
+			if (mue < 0.0f || mue + lambda > 1.0f)
+				return std::nullopt;
+
+			float t = m_edge2.dot(qvec);
+			t *= inv_det;
+			if (ray.t <= t || t < Epsilon)
+				return std::nullopt;
+
+			return t;
+		}
 		
 	private:
 		Vec3f m_a;	///< Position of the first vertex

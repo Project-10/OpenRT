@@ -26,12 +26,19 @@ namespace rt {
 		}
 		DllExport virtual ~CPrimPlane(void) = default;
 
-		DllExport virtual bool intersect(Ray& ray) override
+		DllExport virtual bool intersect(Ray& ray) const override
 		{
 			float t = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 			if (t < Epsilon || t > ray.t) return false;
 			ray.t = t;
 			ray.hit = shared_from_this();
+			return true;
+		}
+
+		DllExport virtual bool if_intersect(const Ray& ray) const override
+		{
+			float t = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
+			if (t < Epsilon || t > ray.t) return false;
 			return true;
 		}
 		

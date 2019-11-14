@@ -84,15 +84,13 @@ namespace rt {
 		 * @retval true If point \b ray.org is occluded
 		 * @retval false otherwise
 		 */
-		DllExport bool occluded(Ray& ray)
+		DllExport bool occluded(const Ray& ray)
 		{
 #ifdef ENABLE_BSP
-			//Ray R;
-			//R = ray;
-			return m_pBSPTree->intersect(ray);
+			return m_pBSPTree->intersect(Ray(ray));
 #else
 			for (auto& pPrim : m_vpPrims)
-				if (pPrim->occluded(ray)) return true;
+				if (pPrim->if_intersect(ray)) return true;
 			return false;
 #endif
 		}
