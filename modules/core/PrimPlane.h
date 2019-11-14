@@ -44,8 +44,8 @@ namespace rt {
 		
 		DllExport virtual Vec3f getNormal(const Vec3f&) const override { return m_normal; }
 		
-		DllExport CBoundingBox	calcBounds(void) const override {
-			CBoundingBox res;
+		DllExport CBoundingBox	calcBounds(void) const override
+		{
 			float inf = std::numeric_limits<float>::infinity();
 			Vec3f minPoint = Vec3f::all(-inf);
 			Vec3f maxPoint = Vec3f::all(inf);
@@ -55,9 +55,7 @@ namespace rt {
 					maxPoint.val[i] = m_origin.val[i];
 					break;
 				}
-			res.extend(minPoint);
-			res.extend(maxPoint);
-			return res;
+			return CBoundingBox(minPoint, maxPoint);
 		}
 		
 	private:

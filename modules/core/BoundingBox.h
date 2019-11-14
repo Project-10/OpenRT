@@ -11,7 +11,15 @@ namespace rt {
 	class CBoundingBox
 	{
 	public:
-		DllExport CBoundingBox(void) = default;
+		/**
+		 * @brief Constructor
+		 * @param minPoint The minimal point defying the size of the bounding box
+		 * @param maxPoint The maximal point defying the size of the bounding box
+		*/
+		DllExport CBoundingBox(Vec3f minPoint = Vec3f::all(std::numeric_limits<float>::infinity()), Vec3f maxPoint = Vec3f::all(-std::numeric_limits<float>::infinity())) 
+			: m_min(minPoint)
+			, m_max(maxPoint) 
+		{}
 		DllExport ~CBoundingBox(void)= default;
 		
 		/**
@@ -44,7 +52,7 @@ namespace rt {
 		
 		
 	public:
-		Vec3f m_min = Vec3f::all(std::numeric_limits<float>::infinity());	///< The minimal point defying the size of the bounding box
-		Vec3f m_max = Vec3f::all(-std::numeric_limits<float>::infinity());	///< The maximal point defying the size of the bounding box
+		Vec3f m_min;	///< The minimal point defying the size of the bounding box
+		Vec3f m_max;	///< The maximal point defying the size of the bounding box
 	};
 }

@@ -60,12 +60,7 @@ namespace rt {
 
 		DllExport virtual Vec3f getNormal(const Vec3f& p) const override { return normalize(p - m_center); }
 		
-		DllExport CBoundingBox	calcBounds(void) const override {
-			CBoundingBox res;
-			res.extend(m_center - Vec3f::all(m_radius));
-			res.extend(m_center + Vec3f::all(m_radius));
-			return res;
-		}
+		DllExport CBoundingBox	calcBounds(void) const override { return CBoundingBox(m_center - Vec3f::all(m_radius), m_center - Vec3f::all(m_radius)); }
 		
 	private:
 		Vec3f m_center;	///< Position of the center of the sphere

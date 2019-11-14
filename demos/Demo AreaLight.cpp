@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	//scene.parseOBJ("D:\\Tenerife House.obj", std::make_shared<CShaderMirror>(scene));
 
 	// primitives
-	//scene.add(std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
+	// scene.add(std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
 	const float s = 100;
 	const float h = -0.06f;
 	scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(-s, h, -s), Vec3f(-s, h, s), Vec3f(s, h, -s)));
@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
 	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
 	
 	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 1));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(-2, 1, 2), 1));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(2, 1, -2), 1));
+//	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(-2, 1, 2), 1));
+//	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(2, 1, -2), 1));
 
 	// lights
 	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 0, 0), Vec3f(-10, 10, -10)));
