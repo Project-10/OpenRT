@@ -56,9 +56,9 @@ namespace rt {
 			std::vector<std::shared_ptr<IPrim>> rPrim;
 
 			for (auto pPrim : vpPrims) {
-				if (pPrim->inVoxel(lBounds))
+				if (pPrim->calcBounds().overlaps(lBounds))
 					lPrim.push_back(pPrim);
-				if (pPrim->inVoxel(rBounds))
+				if (pPrim->calcBounds().overlaps(rBounds))
 					rPrim.push_back(pPrim);
 			}
 

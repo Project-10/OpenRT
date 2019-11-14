@@ -50,13 +50,6 @@ namespace rt {
 		 */
 		DllExport virtual CBoundingBox	calcBounds(void) const = 0;
 		/**
-		 * @brief Check whether the primitive is contained in the bounding box \b box
-		 * @param box The bounding box
-		 * @retval true If the primitive's bounding box overlaps the given bounding box \b box
-		 * @retval false Otherwise
-		 */
-		DllExport  bool 		inVoxel(const CBoundingBox& box) const { return calcBounds().overlaps(box); }
-		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		*/
