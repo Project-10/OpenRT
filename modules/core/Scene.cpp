@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 #include "ShaderEyelight.h"
-#include "ShaderPhong.h"
+#include "Shader.h"
 #include "PrimTriangle.h"
 
 #include "Sampler.h"
@@ -51,7 +51,7 @@ namespace rt {
 	Mat CScene::render(void) const {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
-		CSamplerStratified sampler(2, false);
+		CSamplerStratified sampler(4, false);
 	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {

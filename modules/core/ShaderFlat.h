@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IShader.h"
+#include "ray.h"
 
 namespace rt {
 	/**
