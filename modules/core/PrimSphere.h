@@ -56,7 +56,7 @@ namespace rt {
 			return true;
 		}
 		
-		DllExport virtual bool if_intersect(const Ray& ray) const override { return intersect(Ray(ray)); }
+		DllExport virtual bool if_intersect(const Ray& ray) const override { return intersect(lvalue_cast(Ray(ray))); }
 
 		DllExport virtual Vec3f getNormal(const Vec3f& p) const override { return normalize(p - m_center); }
 		

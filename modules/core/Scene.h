@@ -87,7 +87,7 @@ namespace rt {
 		DllExport bool occluded(const Ray& ray)
 		{
 #ifdef ENABLE_BSP
-			return m_pBSPTree->intersect(Ray(ray));
+			return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));
 #else
 			for (auto& pPrim : m_vpPrims)
 				if (pPrim->if_intersect(ray)) return true;
