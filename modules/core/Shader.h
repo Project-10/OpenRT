@@ -15,12 +15,14 @@ namespace rt {
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 * @param color The color of the object
+		 * @param ka The ambient coefficient
 		 * @param kd The diffuse reflection coefficients
 		 * @param ks The specular refelection coefficients
 		 * @param ke The shininess exponent
 		 * @param km The perfect reflection (mirror) coefficient
 		 * @param kt The perfect transmission coefficient
 		 * @param refractiveIndex The refractive index of the medium (for glass use 1.517)
+		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(1, false) )
 			: CShaderFlat(color)
@@ -40,7 +42,7 @@ namespace rt {
 	
 	
 	private:
-		
+		Vec3f reTrace(const Ray& ray) const;
 		
 	private:
 		CScene& m_scene;

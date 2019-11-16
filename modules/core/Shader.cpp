@@ -3,9 +3,13 @@
 #include "ray.h"
 
 namespace rt {
+	const static Vec3f exitColor	 = RGB(0.4f, 0.4f, 0.4f);	// errors area
+	const static Vec3f ambientColor	 = RGB(1, 1, 1);	// ambient radiance
+	const static Vec3f specularColor = RGB(1, 1, 1);	// white highlight;
+	
 	Vec3f CShader::shade(const Ray& ray) const
 	{
-		Vec3f normal = ray.hit->getNormal(ray.hitPoint());						// shading normal
+		Vec3f normal = ray.hit->getNormal(ray);									// shading normal
 		bool inside = false;
 		if (normal.dot(ray.dir) > 0) {
 			normal = -normal;													// turn normal to front
@@ -20,7 +24,7 @@ namespace rt {
 		
 		// ------ ambient ------
 		if (m_ka > 0)
-			res += m_ka * Vec3f::all(1).mul(color);
+			res += m_ka * ambientColor.mul(color);
 		
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
@@ -43,7 +47,7 @@ namespace rt {
 						if (m_ks > 0) {
 							float cosLightReflect = I.dir.dot(reflected.dir);
 							if (cosLightReflect > 0)
-								L += m_ks * powf(cosLightReflect, m_ke) * Vec3f::all(1).mul(radiance.value());
+								L += m_ks * powf(cosLightReflect, m_ke) * specularColor.mul(radiance.value());
 						}
 					}
 				} // s
@@ -52,16 +56,22 @@ namespace rt {
 		}
 		
 		// ------ reflection ------
-		if (m_km > 0)
-			res += m_km * m_scene.rayTrace(reflected);
+		if (m_km > 0) {
+			res += m_km * reTrace(reflected);
+		}
 
 		// ------ refraction ------
 		if (m_kt > 0) {
 			Ray refracted = ray.refracted(normal, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
-			res += m_kt * m_scene.rayTrace(refracted);
+			res += m_kt * reTrace(refracted);
 		}
 
 		return res;
+	}
+
+	Vec3f CShader::reTrace(const Ray& ray) const
+	{
+		return ray.counter >= maxRayCounter ? exitColor : m_scene.rayTrace(lvalue_cast(Ray(ray.org, ray.dir, ray.counter)));
 	}
 }
 

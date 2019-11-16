@@ -42,7 +42,7 @@ namespace rt {
 			return true;
 		}
 		
-		DllExport virtual Vec3f getNormal(const Vec3f&) const override { return m_normal; }
+		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
 		
 		DllExport CBoundingBox	calcBounds(void) const override
 		{

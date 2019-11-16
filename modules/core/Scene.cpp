@@ -2,7 +2,7 @@
 
 #include "ShaderEyelight.h"
 #include "Shader.h"
-#include "PrimTriangle.h"
+#include "PrimTriangleSmooth.h"
 
 #include "Sampler.h"
 
@@ -17,7 +17,9 @@ namespace rt {
 			std::cout << "Parsing OBJFile : " << fileName << std::endl;
 
 			std::vector<Vec3f> vVertexes;
-			
+			std::vector<Vec3f> vNormals;
+			std::vector<Vec2f> vTextures;
+
 			std::string line;
 
 			for (;;) {
@@ -28,13 +30,36 @@ namespace rt {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
-					vVertexes.emplace_back(0.01f * v);
+					vVertexes.push_back(1 * v);
+				}
+				else if (line == "vt") {
+					Vec2f vt;
+					for (int i = 0; i < 2; i++) ss >> vt.val[i];
+					vTextures.push_back(vt);
+				}
+				else if (line == "vn") {
+					Vec3f vn;
+					for (int i = 0; i < 3; i++) ss >> vn.val[i];
+					vNormals.push_back(vn);
 				}
 				else if (line == "f") {
-					Vec3i f;
-					for (int i = 0; i < 3; i++) ss >> f.val[i];
-					// std::cout << "Face: " << f << std::endl;
-					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[f.val[0] - 1], vVertexes[f.val[1] - 1], vVertexes[f.val[2] - 1]));
+					int v, n, t;
+					Vec3i V, N, T;
+					for (int i = 0; i < 3; i++) {
+						getline(ss, line, ' ');
+						sscanf(line.c_str(), "%d/%d/%d", &v, &t, &n);
+						V.val[i] = v - 1;
+						T.val[i] = t - 1;
+						N.val[i] = n - 1;
+					}
+					// std::cout << "Face: " << V << std::endl;
+					//std::cout << "Normal: " << N << std::endl;
+					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+					add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+																		vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					//add(std::make_shared<CPrimTriangleSmoothTextured>(vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+					//	vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]],
+					//	vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]], pShader));
 				}
 				else {
 					std::cout << "Unknown key [" << line << "] met in the OBJ file" << std::endl;
@@ -43,7 +68,8 @@ namespace rt {
 
 			file.close();
 			std::cout << "Finished Parsing" << std::endl;
-		} else
+		}
+		else
 			std::cout << "ERROR: Can't open OBJFile" << std::endl;
 	}
 
@@ -51,7 +77,7 @@ namespace rt {
 	Mat CScene::render(void) const {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
-		CSamplerStratified sampler(4, false);
+		CSamplerStratified sampler(1, false);
 	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {

@@ -14,7 +14,7 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
-		 * @param camera The reference to the camera
+		 * @param bgColor The default bachground color
 		 * @todo Background may be image
 		 */
 		DllExport CScene(Vec3f bgColor = RGB(0,0,0))
@@ -37,7 +37,7 @@ namespace rt {
 		DllExport void parseOBJ(const std::string& fileName, std::shared_ptr<IShader> pShader);
 		/**
 		 * @brief Adds a new primitive to the scene
-		 * @param prim Pointer to the primitive
+		 * @param pPrim Pointer to the primitive
 		 */
 		DllExport void add(const std::shared_ptr<IPrim> pPrim) { m_vpPrims.push_back(pPrim); }
 		/**
@@ -60,7 +60,7 @@ namespace rt {
 		DllExport void setActiveCamera(size_t activeCamera) { if (activeCamera < m_vpCameras.size()) m_activeCamera = activeCamera; }
 		/**
 		 *@brief Returns the active camera
-		 *@retuen The active camera index
+		 *@return The active camera index
 		*/
 		DllExport std::shared_ptr<ICamera> getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
 		/**
@@ -101,7 +101,7 @@ namespace rt {
 		 */
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
-			return (ray.counter < maxRayCounter) && intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
 		
 		/**

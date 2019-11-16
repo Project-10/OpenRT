@@ -18,7 +18,7 @@ namespace rt {
 
 		
 		/**
-		 * @brief Calculates the color of the hit by the ray \ray object
+		 * @brief Calculates the color of the hit by the ray \b ray object
 		 * @param ray The ray hitting the primitive
 		 * @return The color of the hit objesct
 		 */

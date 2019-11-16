@@ -33,7 +33,9 @@ namespace rt {
 		{
 			auto t = MoellerTrumbore(ray);
 			if (t) {
-				ray.t = t.value();
+				ray.t = t.value().val[0];
+				ray.u = t.value().val[1];
+				ray.v = t.value().val[2];
 				ray.hit = shared_from_this();
 				return true;
 			}
@@ -43,7 +45,7 @@ namespace rt {
 
 		DllExport virtual bool if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
 
-		DllExport virtual Vec3f getNormal(const Vec3f&) const override { return m_normal; }
+		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
 		
 		DllExport CBoundingBox	calcBounds(void) const override {
 			CBoundingBox res;
@@ -55,7 +57,7 @@ namespace rt {
 		
 	private:
 		// Moeller–Trumbore intersection algorithm
-		std::optional<float> MoellerTrumbore(const Ray& ray) const 
+		std::optional<Vec3f> MoellerTrumbore(const Ray& ray) const 
 		{
 			const Vec3f pvec = ray.dir.cross(m_edge2);
 			const float det = m_edge1.dot(pvec);
@@ -80,10 +82,10 @@ namespace rt {
 			if (ray.t <= t || t < Epsilon)
 				return std::nullopt;
 
-			return t;
+			return Vec3f(t, lambda, mue);
 		}
 		
-	private:
+	protected:
 		Vec3f m_a;	///< Position of the first vertex
 		Vec3f m_b;	///< Position of the second vertex
 		Vec3f m_c;	///< Position of the third vertex

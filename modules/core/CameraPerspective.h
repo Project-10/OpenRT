@@ -37,15 +37,15 @@ namespace rt {
 		/**
 		 * @brief Sets new camera position
 		 * @param pos Camera origin (center of projection)
-		*/
+		 */
 		DllExport void	setPosition(Vec3f pos) {
 			m_pos = pos;
 			m_uAxes = true;
 		}
 		/**
 		 * @brief Sets new camera direction
-		 * @param pos Camera origin (center of projection)
-		*/
+		 * @param dir Camera viewing direction
+		 */
 		DllExport void	setDirection(Vec3f dir) {
 			m_dir = dir;
 			m_uAxes = true;

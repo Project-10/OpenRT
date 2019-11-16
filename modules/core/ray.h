@@ -10,12 +10,15 @@ namespace rt {
 	{
 		Vec3f							org;												///< Origin
 		Vec3f							dir;												///< Direction
+		size_t 							counter = 0;										///< Nummer of re-traced rays
+		
 		float							t		= std::numeric_limits<float>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<const IPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
-		size_t 							counter	= 0;										///< Nummer of re-traced rays
+		float							u = 0;												///< Barycentric u coordinate
+		float							v = 0;												///< Barycentric v coordinate
 		
 		// Constructor
-		Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0), size_t _counter = 0)
+		explicit Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0), size_t _counter = 0)
 			: org(_org)
 			, dir(_dir)
 			, counter(_counter)

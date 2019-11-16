@@ -11,8 +11,9 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
-		 * @param position The position (origin) of the light source
 		 * @param intensity The emission color and strength of the light source
+		 * @param position The position (origin) of the light source
+		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
 		DllExport CLightPoint(Vec3f intensity, Vec3f position, bool castShadow = true)
 			: ILight(castShadow)

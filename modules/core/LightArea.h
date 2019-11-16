@@ -19,6 +19,7 @@ namespace rt {
 		 * @param p1 The second point defining the quadrangular shape of the light source
 		 * @param p2 The third point defining the quadrangular shape of the light source
 		 * @param p3 The fourth point defining the quadrangular shape of the light source
+		 * @param pSampler Pointer to the sampler to be used with the area light
 		 */
 		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true))
 			: ILight(true)
