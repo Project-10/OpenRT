@@ -2,6 +2,7 @@
 
 #include "ILight.h"
 #include "IPrim.h"
+#include "Solid.h"
 #include "CameraPerspective.h"
 #include "BSPTree.h"
 
@@ -34,12 +35,19 @@ namespace rt {
 		 * @param fileName The full path to the .obj file
 		 * @param pShader Pointer to the shader to be use with the parsed object
 		 */
-		DllExport void parseOBJ(const std::string& fileName, std::shared_ptr<IShader> pShader);
+		DllExport void parseOBJ(const std::string& fileName, ptr_shader_t pShader);
 		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param pPrim Pointer to the primitive
 		 */
-		DllExport void add(const std::shared_ptr<IPrim> pPrim) { m_vpPrims.push_back(pPrim); }
+		DllExport void add(const ptr_prim_t pPrim) { m_vpPrims.push_back(pPrim); }
+		/**
+		 * @brief Add a new solid to the scene
+		 * @param solid The reference to the solid
+		 */
+		DllExport void add(const CSolid& solid) {
+			for (const auto pPrim : solid.getPrims()) add(pPrim);
+		}
 		/**
 		 * @brief Adds a new light to the scene
 		 * @param pLight Pointer to the light
@@ -144,7 +152,7 @@ namespace rt {
 		
 	private:
 		const Vec3f								m_bgColor;    	///< background color
-		std::vector<std::shared_ptr<IPrim>> 	m_vpPrims;		///< Primitives
+		std::vector<ptr_prim_t> 	m_vpPrims;		///< Primitives
 		std::vector<std::shared_ptr<ILight>>	m_vpLights;		///< Lights
 		std::vector<std::shared_ptr<ICamera>>	m_vpCameras;	///< Cameras
 		size_t									m_activeCamera;	///< The index of the active camera

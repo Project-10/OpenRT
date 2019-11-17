@@ -4,8 +4,8 @@
 
 namespace rt {
 	const static Vec3f exitColor	 = RGB(0.4f, 0.4f, 0.4f);	// errors area
-	const static Vec3f ambientColor	 = RGB(1, 1, 1);	// ambient radiance
-	const static Vec3f specularColor = RGB(1, 1, 1);	// white highlight;
+	const static Vec3f ambientColor	 = RGB(1, 1, 1);			// ambient radiance
+	const static Vec3f specularColor = RGB(1, 1, 1);			// white highlight;
 	
 	namespace {
 		std::pair<Vec3f, Vec3f> getRandomTangents(Vec3f normal)

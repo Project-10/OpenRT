@@ -18,7 +18,7 @@ namespace rt {
 		 * @param b Position of the second vertex
 		 * @param c Position of the third vertex
 		 */
-		DllExport CPrimTriangle(std::shared_ptr<IShader> pShader, Vec3f a, Vec3f b, Vec3f c)
+		DllExport CPrimTriangle(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c)
 			: IPrim(pShader)
 			, m_a(a)
 			, m_b(b)

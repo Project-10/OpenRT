@@ -8,6 +8,8 @@
 #include "core/PrimPlane.h"
 #include "core/PrimTriangle.h"
 
+#include "core/Solid.h"
+
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"
 #include "core/ShaderChrome.h"

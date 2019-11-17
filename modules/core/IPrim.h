@@ -19,7 +19,7 @@ namespace rt {
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the prim
 		 */
-		DllExport IPrim(std::shared_ptr<IShader> pShader) : m_pShader(pShader) {}
+		DllExport IPrim(ptr_shader_t pShader) : m_pShader(pShader) {}
 		DllExport IPrim(const IPrim&) = delete;
 		DllExport virtual ~IPrim(void) = default;
 		DllExport const IPrim& operator=(const IPrim&) = delete;
@@ -57,15 +57,17 @@ namespace rt {
 		 * @brief Sets the new shader to the prim
 		 * @param pShader Pointer to the shader to be applied for the prim
 		*/
-		DllExport void						setShader(std::shared_ptr<IShader> pShader) { m_pShader = pShader; }
+		DllExport void						setShader(ptr_shader_t pShader) { m_pShader = pShader; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		*/
-		DllExport std::shared_ptr<IShader>	getShader(void) const { return m_pShader; }
+		DllExport ptr_shader_t	getShader(void) const { return m_pShader; }
 	
 	
 	private:
-		std::shared_ptr<IShader>	m_pShader;
+		ptr_shader_t	m_pShader;
 	};
+
+	using ptr_prim_t = std::shared_ptr<IPrim>;
 }

@@ -17,7 +17,7 @@ namespace rt {
 		 * @param center Position of the center of the sphere
 		 * @param radius Radius of the sphere
 		 */
-		DllExport CPrimSphere(std::shared_ptr<IShader> pShader, Vec3f center, float radius)
+		DllExport CPrimSphere(ptr_shader_t pShader, Vec3f center, float radius)
 			: IPrim(pShader)
 			, m_center(center)
 			, m_radius(radius)

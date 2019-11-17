@@ -12,7 +12,7 @@ namespace rt {
 		 * @brief Leaf node constructor
 		 * @param vpPrims The vector of pointers to the primitives included in the leaf node
 		 */
-		CBSPNode(const std::vector<std::shared_ptr<IPrim>>& vpPrims)
+		CBSPNode(const std::vector<ptr_prim_t>& vpPrims)
 			: CBSPNode(vpPrims, 0, 0, nullptr, nullptr)
 		{}
 		/**
@@ -87,7 +87,7 @@ namespace rt {
 
 		
 	private:
-		CBSPNode(std::optional<std::vector<std::shared_ptr<IPrim>>> vpPrims, float splitVal, int splitDim, std::shared_ptr<CBSPNode> left, std::shared_ptr<CBSPNode> right)
+		CBSPNode(std::optional<std::vector<ptr_prim_t>> vpPrims, float splitVal, int splitDim, std::shared_ptr<CBSPNode> left, std::shared_ptr<CBSPNode> right)
 			: m_splitVal(splitVal)
 			, m_splitDim(splitDim)
 			, m_pLeft(left)
@@ -98,7 +98,7 @@ namespace rt {
 		
 		
 	private:
-		std::vector<std::shared_ptr<IPrim>> m_vpPrims;
+		std::vector<ptr_prim_t> m_vpPrims;
 		float 					 			m_splitVal;
 		int 					 			m_splitDim;
 		std::shared_ptr<CBSPNode> 			m_pLeft;

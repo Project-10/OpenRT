@@ -20,7 +20,7 @@ namespace rt {
 		 * @param bounds The scene bounding box
 		 * @param vpPrims The vector of pointers to the primitives in the scene
 		 */
-		BSPTree(CBoundingBox& bounds, const std::vector<std::shared_ptr<IPrim>>& vpPrims)
+		BSPTree(CBoundingBox& bounds, const std::vector<ptr_prim_t>& vpPrims)
 			: m_bounds(bounds)
 			, m_maxDepth(20)
 			, m_minTri(3)
@@ -36,7 +36,7 @@ namespace rt {
 		 * @param vpPrims The vector of pointers to the primitives included in the bounding box \b box
 		 * @param depth The distance from the root node of the tree
 		 */
-		std::shared_ptr<CBSPNode> buildTree(const CBoundingBox& box, const std::vector<std::shared_ptr<IPrim>>& vpPrims, int depth)
+		std::shared_ptr<CBSPNode> buildTree(const CBoundingBox& box, const std::vector<ptr_prim_t>& vpPrims, int depth)
 		{
 			if (depth > m_maxDepth || vpPrims.size() <= m_minTri) {
 				// could do some optimizations here..
@@ -52,8 +52,8 @@ namespace rt {
 
 			float splitVal = lBounds.m_max[splitDim] = rBounds.m_min[splitDim] = (box.m_min[splitDim] + box.m_max[splitDim]) * 0.5f;
 
-			std::vector<std::shared_ptr<IPrim>> lPrim;
-			std::vector<std::shared_ptr<IPrim>> rPrim;
+			std::vector<ptr_prim_t> lPrim;
+			std::vector<ptr_prim_t> rPrim;
 
 			for (auto pPrim : vpPrims) {
 				if (pPrim->calcBounds().overlaps(lBounds))

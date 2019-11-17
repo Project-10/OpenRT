@@ -24,4 +24,6 @@ namespace rt {
 		 */
 		DllExport virtual Vec3f shade(const Ray& ray) const = 0;
 	};
+
+	using ptr_shader_t = std::shared_ptr<IShader>;
 }

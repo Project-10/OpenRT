@@ -20,7 +20,7 @@ namespace rt {
 		 * @param nb Normal at vertex b
 		 * @param nc Normal at vertex c
 		 */
-		DllExport CPrimTriangleSmooth(std::shared_ptr<IShader> pShader, Vec3f a, Vec3f b, Vec3f c, Vec3f na, Vec3f nb, Vec3f nc)
+		DllExport CPrimTriangleSmooth(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c, Vec3f na, Vec3f nb, Vec3f nc)
 			: CPrimTriangle(pShader, a, b, c)
 			, m_na(na)
 			, m_nb(nb)

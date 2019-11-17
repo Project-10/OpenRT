@@ -9,7 +9,7 @@
 #include <fstream> 
 
 namespace rt {
-	void CScene::parseOBJ(const std::string& fileName, std::shared_ptr<IShader> pShader)
+	void CScene::parseOBJ(const std::string& fileName, ptr_shader_t pShader)
 	{
 		std::ifstream file(fileName);
 

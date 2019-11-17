@@ -17,7 +17,7 @@ namespace rt {
 		 * @param origin Point on the plane
 		 * @param normal Normal to the plane
 		 */
-		DllExport CPrimPlane(std::shared_ptr<IShader> pShader, Vec3f origin, Vec3f normal)
+		DllExport CPrimPlane(ptr_shader_t pShader, Vec3f origin, Vec3f normal)
 			: IPrim(pShader)
 			, m_normal(normal)
 			, m_origin(origin)
