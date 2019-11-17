@@ -2,8 +2,10 @@
 #include "macroses.h"
 
 namespace rt {
-	thread_local size_t CSampler::m_idx = 0;
-	
+#ifdef ENABLE_PPL
+thread_local size_t CSampler::m_idx = 0;
+#endif
+
 	// Constructor
 	CSampler::CSampler(size_t nSamples, bool isRenewable)
 		: m_vSamples(nSamples* nSamples)

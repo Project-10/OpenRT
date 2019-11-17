@@ -28,14 +28,21 @@ namespace rt {
 	private:
 		const bool					m_renewable;
 		bool						m_needGeneration = true;
+#ifdef ENABLE_PPL
 		thread_local static size_t	m_idx;
+#else
+		size_t 						m_idx = 0;
+#endif
 	};
 
 
 	// =============================== Random Sampler ===============================
 	class CSamplerRandom : public CSampler {
 	public:
-		DllExport CSamplerRandom(size_t nSamples, bool isRenewable) : CSampler(nSamples, isRenewable) {}
+		DllExport CSamplerRandom(size_t nSamples, bool isRenewable, float sigma = -1)
+			: CSampler(nSamples, isRenewable)
+			, m_sigma(sigma)
+		{}
 		DllExport virtual ~CSamplerRandom(void) = default;
 	
 	protected:
@@ -43,8 +50,11 @@ namespace rt {
 		{
 			for (auto& sample : m_vSamples)
 				for (int i = 0; i < 2; i++)
-					sample.val[i] = random::U<float>();
+					sample.val[i] = m_sigma > 0 ? random::N<float>(0, m_sigma) : random::U<float>();
 		}
+		
+	private:
+		const float m_sigma;
 	};
 
 
