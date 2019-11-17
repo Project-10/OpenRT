@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0, 0.5f, 1), 0.0, 0.0, 2, 80, 0.15f, 0.85f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0.5, 0.5, 2, 80, 0, 0, 1.5f);
 
 	//scene.parseOBJ("D:\\Projects\\OpenRT\\data\\Torus Knot.obj", pShaderGlass);
 
@@ -39,17 +39,17 @@ int main(int argc, char* argv[])
 	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
 	
 	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 1));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShader>(scene, Vec3f::all(0), 0, 0, 1, 80, 1, 0, 0), Vec3f(-2, 1, 2), 1));
+	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShader>(scene, RGB(0, 0.5f, 1), 0, 0, 1, 80, 0.2f, 0.8f, 2.4f, std::make_shared<CSamplerRandom>(3, true, 0.1f)), Vec3f(-2, 1, 2), 1));
 	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShader>(scene, 0.35f, 0.65f, 1.517), Vec3f(2, 1, -2), 1));
 	
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderChrome>(scene, std::make_shared<CSamplerRandom>(4, true, 0.1f)), Vec3f(2, 1, -2), 1));
+	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderChrome>(scene, std::make_shared<CSamplerRandom>(4, true, 0.05f)), Vec3f(2, 1, -2), 1));
 
 
 	// lights
-	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 0, 0), Vec3f(-10, 10, -10)));
-	//scene.add(std::make_shared<CLightPoint>(Vec3f(0, 50, 0), Vec3f(-10, 10, 10)));
-	//scene.add(std::make_shared<CLightPoint>(Vec3f(0, 0, 50), Vec3f(10, 10, 10)));
-	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(10, 10, -10)));
+	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(-10, 10, -10), true));
+	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(-10, 10, 10), true));
+	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(10, 10, 10), true));
+	//scene.add(std::make_shared<CLightPoint>(Vec3f(50, 50, 50), Vec3f(10, 10, -10), true));
 	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 1, 10), false));
 	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
 

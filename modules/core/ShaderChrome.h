@@ -38,7 +38,7 @@ namespace rt {
 		{		
 			Vec3f res = Vec3f::all(0);
 			
-			Vec3f normal = ray.hit->getNormal(ray);						// shading normal
+			Vec3f normal = ray.hit->getNormal(ray);								// shading normal
 			if (normal.dot(ray.dir) > 0) normal = -normal;						// turn normal to front
 			const auto tangents = getRandomTangents(normal);					// two random tangent vectors
 			

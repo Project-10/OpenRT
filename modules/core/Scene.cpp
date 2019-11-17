@@ -30,7 +30,7 @@ namespace rt {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
-					vVertexes.push_back(1 * v);
+					vVertexes.push_back(2 * v);
 				}
 				else if (line == "vt") {
 					Vec2f vt;
@@ -54,9 +54,9 @@ namespace rt {
 					}
 					// std::cout << "Face: " << V << std::endl;
 					//std::cout << "Normal: " << N << std::endl;
-					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
-					add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-																		vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+					//add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+					//													vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
 					//add(std::make_shared<CPrimTriangleSmoothTextured>(vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 					//	vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]],
 					//	vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]], pShader));
@@ -77,7 +77,7 @@ namespace rt {
 	Mat CScene::render(void) const {
 		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
-		CSamplerStratified sampler(1, false);
+		CSamplerStratified sampler(2, false);
 	
 #ifdef ENABLE_PPL
 		concurrency::parallel_for(0, img.rows, [&](int y) {

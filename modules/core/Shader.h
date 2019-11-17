@@ -24,7 +24,7 @@ namespace rt {
 		 * @param refractiveIndex The refractive index of the medium (for glass use 1.517)
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
-		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(1, false) )
+		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = nullptr )
 			: CShaderFlat(color)
 			, m_scene(scene)
 			, m_ka(ka)
