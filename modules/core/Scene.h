@@ -31,12 +31,6 @@ namespace rt {
 		// ------------ ------------ ------------
 
 		/**
-		 * @brief Loads the primitives from an .obj file and adds them to the scene
-		 * @param fileName The full path to the .obj file
-		 * @param pShader Pointer to the shader to be use with the parsed object
-		 */
-		DllExport void parseOBJ(const std::string& fileName, ptr_shader_t pShader);
-		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param pPrim Pointer to the primitive
 		 */
