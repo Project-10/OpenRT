@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
 
-	CSolid torus(pShaderTop, "../../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
+	//CSolid torus(pShaderTop, "../../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
 
 	// primitives
 	//scene.add(std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	CSolidBox cube(pShaderGlass, Vec3f(0, 1.01f, 0), 0.1f, 2, 6);
 	scene.add(quad);
 	scene.add(cube);
-	scene.add(torus);
+	//scene.add(torus);
 	
 	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-10, 10.01f, -10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
@@ -57,10 +57,17 @@ int main(int argc, char* argv[])
 
 	// render three images with different camera settings
 	Timer::start("Rendering... ");
-	Mat img1 = scene.render();
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, false));
+	Mat depth = scene.renderDepth();
 	Timer::stop();
-	imshow("Image1", img1);
-	imwrite("cube.jpg", img1);
+	
+	imshow("Image", img);
+	imwrite("cube.jpg", img);
+	
+	depth.convertTo(depth, CV_8UC1, 10);
+	imshow("Depth", depth);
+	imwrite("depth.jpg", depth);
+	
 	waitKey();
 	return 0;
 }

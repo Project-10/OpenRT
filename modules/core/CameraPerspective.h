@@ -32,7 +32,7 @@ namespace rt {
 		}
 		DllExport virtual ~CCameraPerspective(void) = default;
 
-		DllExport virtual void InitRay(Ray& ray, int x, int y, Vec2f sample) override;
+		DllExport virtual void InitRay(Ray& ray, int x, int y, Vec2f sample = Vec2f::all(0.5f)) override;
 
 		/**
 		 * @brief Sets new camera position

@@ -5,6 +5,7 @@
 #include "Solid.h"
 #include "CameraPerspective.h"
 #include "BSPTree.h"
+#include "Sampler.h"
 
 namespace rt {
 	/**
@@ -105,12 +106,16 @@ namespace rt {
 		{
 			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
 		}
-		
+		DllExport float rayTraceDepth(Ray& ray) const
+		{
+			return intersect(ray) ? ray.t : 0;
+		}
 		/**
 		 * @brief Renders the view from the active camera
 		 * @returns The rendered image
 		 */
-		DllExport Mat render(void) const;
+		DllExport Mat render(std::shared_ptr<CSampler> pSampler = nullptr) const;
+		DllExport Mat renderDepth(void) const;
 	
 	
 	private:
