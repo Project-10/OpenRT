@@ -58,6 +58,9 @@ namespace rt {
 		
 		DllExport virtual bool if_intersect(const Ray& ray) const override { return intersect(lvalue_cast(Ray(ray))); }
 
+		/// @todo: Implement this function
+		DllExport virtual void transform(const Mat& t) override { printf("CPrimSphere::NOT_IMPLEMENTED\n"); }
+		
 		DllExport virtual Vec3f getNormal(const Ray& ray) const override { return normalize(ray.hitPoint() - m_center); }
 		
 		DllExport CBoundingBox	calcBounds(void) const override { return CBoundingBox(m_center - Vec3f::all(m_radius), m_center + Vec3f::all(m_radius)); }

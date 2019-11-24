@@ -10,6 +10,7 @@
 
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"
+#include "core/SolidCone.h"
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"
@@ -20,6 +21,8 @@
 #include "core/LightArea.h"
 
 #include "core/Sampler.h"
+
+#include "core/Transform.h"
 
 /**
 Main page documentation

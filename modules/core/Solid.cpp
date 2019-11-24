@@ -2,6 +2,7 @@
 #include "ray.h"
 #include "PrimTriangleSmooth.h"
 #include "Shader.h"
+#include "Transform.h"
 
 #include <fstream> 
 
@@ -27,7 +28,7 @@ namespace rt {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
-					vVertexes.push_back(2 * v);
+					vVertexes.push_back(v);
 				}
 				else if (line == "vt") {
 					Vec2f vt;
@@ -69,6 +70,21 @@ namespace rt {
 		}
 		else
 			std::cout << "ERROR: Can't open OBJFile " << fileName << std::endl;
+	}
+
+	void CSolid::transform(const Mat& t)
+	{
+		CTransform tr;
+		Mat T1 = tr.translate(-m_pivot).get();
+		Mat T2 = tr.translate(m_pivot).get();
+		
+		// Apply transformation
+		for (auto& pPrim : m_vpPrims) pPrim->transform(t * T1);
+		for (auto& pPrim : m_vpPrims) pPrim->transform(T2);
+		
+		// Update pivot point
+		for (int i = 0; i < 3; i++)
+			m_pivot.val[i] += t.at<float>(i, 3);
 	}
 }
 

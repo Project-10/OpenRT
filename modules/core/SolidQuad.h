@@ -8,7 +8,9 @@
 namespace rt {
 	class CSolidQuad : public CSolid {
 	public:
-		DllExport CSolidQuad(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c, Vec3f d) {
+		DllExport CSolidQuad(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c, Vec3f d)
+			: CSolid(0.25f * (a + b + c + d))
+		{
 			add(std::make_shared<CPrimTriangle>(pShader, a, b, c));
 			add(std::make_shared<CPrimTriangle>(pShader, a, c, d));
 		}

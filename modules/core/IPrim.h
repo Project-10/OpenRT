@@ -43,6 +43,10 @@ namespace rt {
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
 		/**
+		  
+		 */
+		DllExport virtual void				transform(const Mat& t) = 0;
+		/**
 		 * @brief Returns the normalized normal of the primitive
 		 * @param ray Point at the surface
 		 * @return The normalized normal of the primitive
@@ -62,7 +66,7 @@ namespace rt {
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		*/
-		DllExport ptr_shader_t	getShader(void) const { return m_pShader; }
+		DllExport ptr_shader_t				getShader(void) const { return m_pShader; }
 	
 	
 	private:

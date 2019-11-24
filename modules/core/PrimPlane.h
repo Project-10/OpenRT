@@ -42,6 +42,9 @@ namespace rt {
 			return true;
 		}
 		
+		/// @todo: Implement this function
+		DllExport virtual void transform(const Mat& t) override { printf("CPrimPlane::NOT_IMPLEMENTED\n"); }
+		
 		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
 		
 		DllExport CBoundingBox	calcBounds(void) const override

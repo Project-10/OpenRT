@@ -11,7 +11,7 @@ namespace rt {
 	public:
 		DllExport CSolidBox(void) : CSolidBox(std::make_shared<CShaderEyelight>(), Vec3f::all(0), 1) {}
 		DllExport CSolidBox(ptr_shader_t pShader, Vec3f org, float r) : CSolidBox(pShader, org, 2*r, 2*r, 2*r) {}
-		DllExport CSolidBox(ptr_shader_t pShader, Vec3f org, float width, float height, float depth)
+		DllExport CSolidBox(ptr_shader_t pShader, Vec3f org, float width, float height, float depth) : CSolid(org)
 		{
 			width /= 2; height /= 2; depth /= 2;
 
