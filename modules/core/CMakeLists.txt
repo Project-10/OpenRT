@@ -11,7 +11,7 @@ source_group("Source Files\\camera" FILES "ICamera.h" "CameraPerspective.h" "Cam
 source_group("Source Files\\lights" FILES "ILight.h" "LightPoint.h" "LightArea.h")
 source_group("Source Files\\primitives" FILES "IPrim.h" "PrimSphere.h" "PrimPlane.h")
 source_group("Source Files\\primitives\\triangle" FILES "PrimTriangle.h" "PrimTriangleSmooth.h")
-source_group("Source Files\\solids" FILES "Solid.h" "Solid.cpp" "SolidQuad.h" "SolidBox.h" "SolidCone.h")
+source_group("Source Files\\solids" FILES "Solid.h" "Solid.cpp" "SolidQuad.h" "SolidBox.h" "SolidCone.h" "SolidCylinder.h")
 source_group("Source Files\\shaders" FILES "IShader.h" "Shader.h" "Shader.cpp" "ShaderFlat.h" "ShaderEyelight.h" "ShaderChrome.h")
 source_group("Source Files\\scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\utilities" FILES "ray.h" "random.h" "timer.h")

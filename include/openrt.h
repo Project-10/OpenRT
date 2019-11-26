@@ -11,6 +11,7 @@
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"
 #include "core/SolidCone.h"
+#include "core/SolidCylinder.h"
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"

@@ -30,24 +30,33 @@ namespace rt {
 
 		
 		// TODO: check OpneCV affine3d class
-		static void affineTransform(Vec3f& v, const Mat& t) {
+		static void affineTransform_1(Vec3f& v, const Mat& t) {
 			Vec4f V = Vec4f(v.val[0], v.val[1], v.val[2], 1);
 			V = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(V)).data));
 			v = Vec3f(V.val[0], V.val[1], V.val[2]) / V.val[3];
 		}
 		
+		static void affineTransform_0(Vec3f& v, const Mat& t) {
+			Vec4f V = Vec4f(v.val[0], v.val[1], v.val[2], 0);
+			V = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(V)).data));
+			v = Vec3f(V.val[0], V.val[1], V.val[2]);
+		}
 		
 		DllExport virtual void transform(const Mat& t) override
 		{
 			//std::cout << "Point A: " << m_a << std::endl;
 			//std::cout << "T Matrix: " << std::endl << t << std::endl;
-			affineTransform(m_a, t);
-			affineTransform(m_b, t);
-			affineTransform(m_c, t);
+			affineTransform_1(m_a, t);
+			affineTransform_1(m_b, t);
+			affineTransform_1(m_c, t);
 			
-			affineTransform(m_na, t);
-			affineTransform(m_nb, t);
-			affineTransform(m_nc, t);
+			//invert(t, m_sigmaInv, DECOMP_SVD);
+			Mat t1 = t.inv().t();
+			
+			affineTransform_0(m_na, t1);
+			affineTransform_0(m_nb, t1);
+			affineTransform_0(m_nc, t1);
+			
 			m_na = normalize(m_na);
 			m_nb = normalize(m_nb);
 			m_nc = normalize(m_nc);

@@ -9,7 +9,8 @@ namespace rt {
 	class CSolidCone : public CSolid {
 	public:
 		DllExport CSolidCone(void) : CSolidCone(std::make_shared<CShaderEyelight>(), Vec3f::all(0), 1, 1) {}
-		DllExport CSolidCone(ptr_shader_t pShader, Vec3f org, float radius, float height, size_t sides = 24) : CSolid(org) {
+		DllExport CSolidCone(ptr_shader_t pShader, Vec3f org, float radius, float height, size_t sides = 24, bool smooth = true ) : CSolid(org)
+		{
 			Vec3f h(0, radius / height, 0);
 			Vec3f dir(1, 0, 0);
 			Vec3f p0 = org + radius * dir;
@@ -22,12 +23,13 @@ namespace rt {
 				n1 = normalize(dir + h);
 
 				if (height > 0) {
-					//add(std::make_shared<CPrimTriangle>(pShader, org + Vec3f(0, height, 0), p1, p0));
-					add(std::make_shared<CPrimTriangleSmooth>(pShader, org + Vec3f(0, height, 0), p1, p0, normalize(n0 + n1), n1, n0));
+					if (smooth) add(std::make_shared<CPrimTriangleSmooth>(pShader, org + Vec3f(0, height, 0), p1, p0, normalize(n0 + n1), n1, n0));
+					else add(std::make_shared<CPrimTriangle>(pShader, org + Vec3f(0, height, 0), p1, p0));
 					add(std::make_shared<CPrimTriangle>(pShader, org, p0, p1));
 				} else {
-					//add(std::make_shared<CPrimTriangle>(pShader, org + Vec3f(0, height, 0), p0, p1));
-					add(std::make_shared<CPrimTriangleSmooth>(pShader, org + Vec3f(0, height, 0), p0, p1, normalize(n0 + n1), n0, n1));
+					if (smooth) add(std::make_shared<CPrimTriangleSmooth>(pShader, org + Vec3f(0, height, 0), p0, p1, normalize(n0 + n1), n0, n1));
+					else add(std::make_shared<CPrimTriangle>(pShader, org + Vec3f(0, height, 0), p0, p1));
+					
 					add(std::make_shared<CPrimTriangle>(pShader, org, p1, p0));
 				}
 				p0 = p1;

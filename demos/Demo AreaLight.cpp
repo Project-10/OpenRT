@@ -23,14 +23,17 @@ int main(int argc, char* argv[])
 	const float h = 0;
 	CSolidQuad floor(pShaderFloor, Vec3f(-s, h, -s), Vec3f(-s, h, s), Vec3f(s, h, s), Vec3f(s, h, -s));
 	CSolidQuad areaLamp(pShaderWhite, Vec3f(-10, 10.01f, -10), Vec3f(10, 10.01f, -10), Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10));
-	CSolidBox  glassbox(pShaderGlass, Vec3f(0, 1, 0), 0, 2, 6);
-	CSolidBox  cube1(pShaderTop, Vec3f(-2, 0, 2), 0.01f);
-	CSolidBox  cube2(pShaderSide, Vec3f(-2, 1, 2), 1);
-	CSolidCone cone1(pShaderSide, Vec3f(2, 0, 0), 1, 2);
-	CSolidCone cone2(pShaderSide, Vec3f(0, 0, 0), 1, 2);
+	CSolidBox  		glassbox(pShaderGlass, Vec3f(0, 1, 0), 0, 2, 6);
+	CSolidBox  		cube1(pShaderTop, Vec3f(-2, 0, 2), 0.01f);
+	CSolidBox  		cube2(pShaderSide, Vec3f(-2, 1, 2), 1);
+	CSolidCone 		cone1(pShaderSide, Vec3f(1, 0, 0), 0.5f, 1, 24, false);
+	CSolidCone 		cone2(pShaderSide, Vec3f(0, 2, 0), 1, 2, 24, true);
+	CSolidCylinder	cylinder(pShaderSide, Vec3f(0, 0.01f, 0), 1, 2);
 	
 	torus.transform(CTransform().scale(2).get());
-	cone2.transform(CTransform().rotate(Vec3f(0, 1, 0), Pif / 2).get());
+	cone1.transform(CTransform().rotate(Vec3f(0, 1, 0), Pif / 2).scale(2, 2.5f, 4).get());
+	cone2.transform(CTransform().scale(1, -1, 1).get());
+	cylinder.transform(CTransform().rotate(Vec3f(1, 0, 0), Pif/2).translate(0, 1, 0).get());
 	
 	//Mat t = CTransform().scale(100).rotate(normalize(Vec3f(1, 0, 1)), Pif / 3.289f).translate(Vec3f(0, sqrtf(3), 0)).get();
 	// std::cout << "transform matrix:" << std::endl << t << std::endl;
@@ -42,8 +45,9 @@ int main(int argc, char* argv[])
 	//scene.add(cube1);
 	//scene.add(cube2);
 	//scene.add(torus);
-	scene.add(cone1);
-	scene.add(cone2);
+	//scene.add(cone1);
+	//scene.add(cone2);
+	scene.add(cylinder);
 	scene.add(areaLamp);
 	
 	
@@ -67,8 +71,8 @@ int main(int argc, char* argv[])
 	// camera
 	const float r = 17.5f;
 	Vec3f camPos(sqrt(r), sqrt(r), sqrt(r));
-	//scene.add(std::make_shared<CCameraPerspective>(camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45, resolution));
-	scene.add(std::make_shared<CCameraPerspective>(Vec3f(0, 9.99f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 45, resolution));
+	scene.add(std::make_shared<CCameraPerspective>(camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45, resolution));
+	//scene.add(std::make_shared<CCameraPerspective>(Vec3f(0, 9.99f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 45, resolution));
 	
 #ifdef ENABLE_BSP
 	scene.buildAccelStructure();
@@ -76,7 +80,7 @@ int main(int argc, char* argv[])
 
 	// render three images with different camera settings
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(1, false));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
 	Mat depth = scene.renderDepth();
 	Timer::stop();
 	
