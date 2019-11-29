@@ -18,7 +18,7 @@ namespace rt {
 			Vec3f p1, n1;
 			for (size_t i = 0; i < sides; i++) {
 				float alpha = (2.0f * (i + 1) * Pif) / sides;
-				Vec3f dir(cosf(alpha), 0, sinf(alpha));
+				dir = Vec3f(cosf(alpha), 0, sinf(alpha));
 				p1 = org + radius * dir;
 				n1 = normalize(dir + h);
 

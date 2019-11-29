@@ -2,6 +2,7 @@
 
 #include "PrimTriangle.h"
 #include "IShader.h"
+#include "Transform.h"
 
 namespace rt {
 	/**
@@ -27,46 +28,23 @@ namespace rt {
 			, m_nc(nc)
 		{}
 		DllExport virtual ~CPrimTriangleSmooth(void) = default;
-
-		
-		// TODO: check OpneCV affine3d class
-		static void affineTransform_1(Vec3f& v, const Mat& t) {
-			Vec4f V = Vec4f(v.val[0], v.val[1], v.val[2], 1);
-			V = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(V)).data));
-			v = Vec3f(V.val[0], V.val[1], V.val[2]) / V.val[3];
-		}
-		
-		static void affineTransform_0(Vec3f& v, const Mat& t) {
-			Vec4f V = Vec4f(v.val[0], v.val[1], v.val[2], 0);
-			V = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(V)).data));
-			v = Vec3f(V.val[0], V.val[1], V.val[2]);
-		}
 		
 		DllExport virtual void transform(const Mat& t) override
 		{
-			//std::cout << "Point A: " << m_a << std::endl;
-			//std::cout << "T Matrix: " << std::endl << t << std::endl;
-			affineTransform_1(m_a, t);
-			affineTransform_1(m_b, t);
-			affineTransform_1(m_c, t);
+			// Transform vertexes
+			m_a = CTransform::point(m_a, t);
+			m_b = CTransform::point(m_b, t);
+			m_c = CTransform::point(m_c, t);
 			
-			//invert(t, m_sigmaInv, DECOMP_SVD);
+			// Transform normals
 			Mat t1 = t.inv().t();
 			
-			affineTransform_0(m_na, t1);
-			affineTransform_0(m_nb, t1);
-			affineTransform_0(m_nc, t1);
+			m_na = normalize(CTransform::vector(m_na, t1));
+			m_nb = normalize(CTransform::vector(m_nb, t1));
+			m_nc = normalize(CTransform::vector(m_nc, t1));
 			
-			m_na = normalize(m_na);
-			m_nb = normalize(m_nb);
-			m_nc = normalize(m_nc);
-			
-			
-			// TODO: can we also transform these values with t ?
 			m_edge1 = m_b - m_a;
 			m_edge2 = m_c - m_a;
-			//m_normal = normalize(m_edge1.cross(m_edge2));
-			// std::cout << "Point Y: " << y << std::endl;
 		}
 		
 		DllExport virtual Vec3f getNormal(const Ray& ray) const override

@@ -26,40 +26,12 @@ namespace rt {
 		}
 		DllExport virtual ~CPrimPlane(void) = default;
 
-		DllExport virtual bool intersect(Ray& ray) const override
-		{
-			float t = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
-			if (t < Epsilon || t > ray.t) return false;
-			ray.t = t;
-			ray.hit = shared_from_this();
-			return true;
-		}
+		DllExport virtual bool 			intersect(Ray& ray) const override;
+		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
+		DllExport virtual void 			transform(const Mat& t) override;
+		DllExport virtual Vec3f 		getNormal(const Ray&) const override { return m_normal; }
+		DllExport virtual CBoundingBox	calcBounds(void) const override;
 
-		DllExport virtual bool if_intersect(const Ray& ray) const override
-		{
-			float t = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
-			if (t < Epsilon || t > ray.t) return false;
-			return true;
-		}
-		
-		/// @todo: Implement this function
-		DllExport virtual void transform(const Mat& t) override { printf("CPrimPlane::NOT_IMPLEMENTED\n"); }
-		
-		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
-		
-		DllExport CBoundingBox	calcBounds(void) const override
-		{
-			float inf = std::numeric_limits<float>::infinity();
-			Vec3f minPoint = Vec3f::all(-inf);
-			Vec3f maxPoint = Vec3f::all(inf);
-			for (int i = 0; i < 3; i++)
-				if (m_normal.val[i] == 1) {
-					minPoint.val[i] = m_origin.val[i];
-					maxPoint.val[i] = m_origin.val[i];
-					break;
-				}
-			return CBoundingBox(minPoint, maxPoint);
-		}
 		
 	private:
 		Vec3f m_normal;	///< Point on the plane

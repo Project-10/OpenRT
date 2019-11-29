@@ -25,6 +25,7 @@ namespace rt {
 #else
 		Ray ray;
 		for (int y = 0; y < img.rows; y++) {
+			//printf("%.2f%%\n", static_cast<float>(100 * y)/img.rows);
 #endif
 			Vec3f* pImg = img.ptr<Vec3f>(y);
 			for (int x = 0; x < img.cols; x++) {

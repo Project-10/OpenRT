@@ -3,6 +3,7 @@
 #pragma once
 
 #include "IPrim.h"
+#include "Transform.h"
 
 namespace rt {
 	/**
@@ -45,27 +46,19 @@ namespace rt {
 
 		DllExport virtual bool if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
 
-		DllExport virtual void transform(const Mat& t) override {
-			//std::cout << "Point A: " << m_a << std::endl;
-			//std::cout << "T Matrix: " << std::endl << t << std::endl;
-			
-			Vec4f a = Vec4f(m_a.val[0], m_a.val[1], m_a.val[2], 1);
-			Vec4f b = Vec4f(m_b.val[0], m_b.val[1], m_b.val[2], 1);
-			Vec4f c = Vec4f(m_c.val[0], m_c.val[1], m_c.val[2], 1);
-			
-			a = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(a)).data));
-			b = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(b)).data));
-			c = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(c)).data));
-			
-			m_a = Vec3f(a.val[0], a.val[1], a.val[2]) / a.val[3];
-			m_b = Vec3f(b.val[0], b.val[1], b.val[2]) / b.val[3];
-			m_c = Vec3f(c.val[0], c.val[1], c.val[2]) / c.val[3];
-			
-			// TODO: can we also transform these values with t ?
+		DllExport virtual void transform(const Mat& t) override
+		{
+			// Transform vertexes
+			m_a = CTransform::point(m_a, t);
+			m_b = CTransform::point(m_b, t);
+			m_c = CTransform::point(m_c, t);
+
+			// Transform normals
+			Mat t1 = t.inv().t();
+			m_normal = normalize(CTransform::vector(m_normal, t1));
+
 			m_edge1 = m_b - m_a;
 			m_edge2 = m_c - m_a;
-			m_normal = normalize(m_edge1.cross(m_edge2));
-			// std::cout << "Point Y: " << y << std::endl;
 		}
 		
 		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
