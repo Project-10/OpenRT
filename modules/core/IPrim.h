@@ -43,15 +43,22 @@ namespace rt {
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
 		/**
-		  
+		 * @brief Performs affine transformation
+		 * @param t Transformation matrix (size: 4 x 4; type: CV_32FC1)
 		 */
 		DllExport virtual void				transform(const Mat& t) = 0;
 		/**
-		 * @brief Returns the normalized normal of the primitive
+		 * @brief Returns the normalized normal of the primitive  in the ray - primitive intercection point
 		 * @param ray Point at the surface
 		 * @return The normalized normal of the primitive
 		 */
 		DllExport virtual Vec3f				getNormal(const Ray& ray) const = 0;
+		/**
+		 * @brief Returns the texture coordinates in the ray - primitive intercection point
+		 * @param ray Point at the surface
+		 * @return The texture coordinates
+		 */
+		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive

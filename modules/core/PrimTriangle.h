@@ -3,7 +3,6 @@
 #pragma once
 
 #include "IPrim.h"
-#include "Transform.h"
 
 namespace rt {
 	/**
@@ -30,83 +29,29 @@ namespace rt {
 		{}
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
-		DllExport virtual bool intersect(Ray& ray) const override
-		{
-			auto t = MoellerTrumbore(ray);
-			if (t) {
-				ray.t = t.value().val[0];
-				ray.u = t.value().val[1];
-				ray.v = t.value().val[2];
-				ray.hit = shared_from_this();
-				return true;
-			}
-			else
-				return false;
-		}
-
-		DllExport virtual bool if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
-
-		DllExport virtual void transform(const Mat& t) override
-		{
-			// Transform vertexes
-			m_a = CTransform::point(m_a, t);
-			m_b = CTransform::point(m_b, t);
-			m_c = CTransform::point(m_c, t);
-
-			// Transform normals
-			Mat t1 = t.inv().t();
-			m_normal = normalize(CTransform::vector(m_normal, t1));
-
-			m_edge1 = m_b - m_a;
-			m_edge2 = m_c - m_a;
-		}
-		
+		DllExport virtual bool	intersect(Ray& ray) const override;
+		DllExport virtual bool	if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
+		DllExport virtual void	transform(const Mat& t) override;
 		DllExport virtual Vec3f getNormal(const Ray&) const override { return m_normal; }
+		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
+		DllExport CBoundingBox	calcBounds(void) const override;
 		
-		DllExport CBoundingBox	calcBounds(void) const override {
-			CBoundingBox res;
-			res.extend(m_a);
-			res.extend(m_b);
-			res.extend(m_c);
-			return res;
-		}
 		
 	private:
-		// Moeller–Trumbore intersection algorithm
-		std::optional<Vec3f> MoellerTrumbore(const Ray& ray) const 
-		{
-			const Vec3f pvec = ray.dir.cross(m_edge2);
-			const float det = m_edge1.dot(pvec);
-			if (fabs(det) < Epsilon)
-				return std::nullopt;
-
-			const float inv_det = 1.0f / det;
-			const Vec3f tvec = ray.org - m_a;
-			float lambda = tvec.dot(pvec);
-			lambda *= inv_det;
-			if (lambda < 0.0f || lambda > 1.0f)
-				return std::nullopt;
-
-			const Vec3f qvec = tvec.cross(m_edge1);
-			float mue = ray.dir.dot(qvec);
-			mue *= inv_det;
-			if (mue < 0.0f || mue + lambda > 1.0f)
-				return std::nullopt;
-
-			float t = m_edge2.dot(qvec);
-			t *= inv_det;
-			if (ray.t <= t || t < Epsilon)
-				return std::nullopt;
-
-			return Vec3f(t, lambda, mue);
-		}
+		// Moeller-Trumbore intersection algorithm
+		std::optional<Vec3f> MoellerTrumbore(const Ray& ray) const;
+		
 		
 	protected:
-		Vec3f m_a;	///< Position of the first vertex
-		Vec3f m_b;	///< Position of the second vertex
-		Vec3f m_c;	///< Position of the third vertex
+		Vec3f m_a;		///< Position of the first vertex
+		Vec3f m_b;		///< Position of the second vertex
+		Vec3f m_c;		///< Position of the third vertex
 		Vec3f m_edge1;	///< Edge AB
 		Vec3f m_edge2;	///< Edge AC
 		Vec3f m_normal;	///< Triangle normal
+		
+		Vec2f m_ta	= Vec2f(0, 0);		///<	 vertex a texture coordiante
+		Vec2f m_tb  = Vec2f(1, 0);		///< vertex b texture coordiante
+		Vec2f m_tc	= Vec2f(1, 1);		///< vertex c texture coordiante
 	};
 }

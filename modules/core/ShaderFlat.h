@@ -2,6 +2,7 @@
 
 #include "IShader.h"
 #include "ray.h"
+#include "Texture.h"
 
 namespace rt {
 	/**
@@ -15,13 +16,18 @@ namespace rt {
 		 * @details This is a texture-free and light-source-free shader
 		 * @param color The color of the object
 		 */
-		DllExport CShaderFlat(Vec3f color = RGB(0.5f, 0.5f, 0.5f)) : m_color(color) {}
+		DllExport CShaderFlat(const Vec3f& color) : m_color(color) {}
+		DllExport CShaderFlat(const ptr_texture_t pTexture = nullptr) : m_pTexture(pTexture) {}
 		DllExport virtual ~CShaderFlat(void) = default;
 
-		DllExport virtual Vec3f shade(const Ray& ray = Ray()) const override { return m_color; }
+		DllExport virtual Vec3f shade(const Ray& ray) const override
+		{
+			return m_pTexture ? m_pTexture->getTexel(ray.hit->getTextureCoords(ray)) : m_color;
+		}
 
 
 	private:
-		Vec3f m_color;
+		const Vec3f 		m_color		= Vec3f::all(0.5f);
+		const ptr_texture_t m_pTexture	= nullptr;
 	};
 }

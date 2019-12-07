@@ -25,6 +25,8 @@
 
 #include "core/Transform.h"
 
+#include "core/Texture.h"
+
 /**
 Main page documentation
 */

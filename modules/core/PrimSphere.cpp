@@ -54,5 +54,13 @@ namespace rt {
 	{
 		return normalize(ray.hitPoint() - m_origin);
 	}
+
+	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
+	{
+		Vec2f res;
+		res.val[0] = ray.org.val[0] + ray.t * ray.dir.val[0];	// x-coord
+		res.val[1] = ray.org.val[2] + ray.t * ray.dir.val[2];	// z-coord
+		return res;
+	}
 }
 
