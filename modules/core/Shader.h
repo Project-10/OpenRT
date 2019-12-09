@@ -36,6 +36,18 @@ namespace rt {
 			, m_refractiveIndex(refractiveIndex)
 			, m_pSampler(pSampler)
 		{}
+		DllExport CShader(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = nullptr)
+			: CShaderFlat(pTexture)
+			, m_scene(scene)
+			, m_ka(ka)
+			, m_kd(kd)
+			, m_ks(ks)
+			, m_ke(ke)
+			, m_km(km)
+			, m_kt(kt)
+			, m_refractiveIndex(refractiveIndex)
+			, m_pSampler(pSampler)
+		{}
 		DllExport virtual ~CShader(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
@@ -90,6 +102,8 @@ namespace rt {
 	public:
 		DllExport CShaderPhong(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke)
 			: CShader(scene, color, ka, kd, ks, ke, 0, 0, 0) {}
+		DllExport CShaderPhong(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
+			: CShader(scene, pTexture, ka, kd, ks, ke, 0, 0, 0) {}
 		DllExport virtual ~CShaderPhong(void) = default;
 	};
 }

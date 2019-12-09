@@ -27,8 +27,8 @@ namespace rt {
 		DllExport CTransform	rotate(const Vec3f& v, float theta) const;
 			
 		// TODO: check OpneCV affine3d class
-		static Vec3f point(const Vec3f& p, const Mat& t);
-		static Vec3f vector(Vec3f& v, const Mat& t);
+		DllExport static Vec3f point(const Vec3f& p, const Mat& t);
+		DllExport static Vec3f vector(const Vec3f& v, const Mat& t);
 	
 	
 	protected:

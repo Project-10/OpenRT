@@ -45,7 +45,7 @@ namespace rt {
 		return Vec3f(P.val[0], P.val[1], P.val[2]) / P.val[3];
 	}
 
-	Vec3f CTransform::vector(Vec3f& v, const Mat& t) {
+	Vec3f CTransform::vector(const Vec3f& v, const Mat& t) {
 		Vec4f V = Vec4f(v.val[0], v.val[1], v.val[2], 0);
 		V = Vec4f(reinterpret_cast<float*>(Mat(t * Mat(V)).data));
 		return Vec3f(V.val[0], V.val[1], V.val[2]);

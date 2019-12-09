@@ -39,7 +39,7 @@ namespace rt {
 		
 	private:
 		// Moeller-Trumbore intersection algorithm
-		std::optional<Vec3f> MoellerTrumbore(const Ray& ray) const;
+		DllExport std::optional<Vec3f> MoellerTrumbore(const Ray& ray) const;
 		
 		
 	protected:
