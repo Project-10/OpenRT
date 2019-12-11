@@ -7,22 +7,22 @@ int main(int argc, char* argv[])
 {
 	const Size resolution(800, 600);
 
-	CScene scene(Vec3f::all(0.4f));
+	CScene scene(Vec3f::all(0.0f));
 
 	// textures
-	auto pTextureFloor = std::make_shared<CTexture>("../../data/tnf.jpg");
+	auto pTextureFloor = std::make_shared<CTexture>("../../../data/1_earth_8k.jpg");
 
 	// matherials
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40);
-	//auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, pTextureFloor, 0.5f, 0.5f, 0.0f, 40);
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
+	auto pShaderFloorTxt = std::make_shared<CShaderPhong>(scene, pTextureFloor, 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	
 	// primitives
 	auto floor = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0));
 
-	scene.add(floor);
+	//scene.add(floor);
 	//const float s = 100;
 	//scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)));
 	//scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(s, 0, s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)));
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 2));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0),   0.2f, 0.5f, 0.5f, 40), Vec3f(0, 0, 0), 2));
+	scene.add(std::make_shared<CPrimSphere>(pShaderFloorTxt, Vec3f(0, 0, 0), 4));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
@@ -72,9 +72,9 @@ int main(int argc, char* argv[])
 		float z = r * cosf(i * Pif / 180);
 		Vec3f pos(x, 1, z);
 		Vec3f dir = normalize(Vec3f::all(0) - pos);
-		//mainCam->setPosition(pos);
-		//mainCam->setDirection(dir);
-		Mat img = scene.render();
+		mainCam->setPosition(pos);
+		mainCam->setDirection(dir);
+		Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
 		imshow("Image", img);
 		auto key = waitKey(5);
 		if (key == 27) break;
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 			Timer::stop();
 			Timer::start("Rendering 60 frames... ");
 		}
-		floor->transform(CTransform().rotate(normalize(Vec3f(1, 0, 1)), 0.01f).get());
+		//floor->transform(CTransform().rotate(normalize(Vec3f(1, 0, 1)), 0.01f).get());
 	}
 
 	// render three images with different camera settings

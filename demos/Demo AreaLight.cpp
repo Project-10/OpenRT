@@ -9,16 +9,17 @@ int main(int argc, char* argv[])
 
 	CScene scene(RGB(0.4f, 0.4f, 0.4f));
 
-	auto txt_cb = std::make_shared<CTexture>();//"/Users/creator/Projects/OpenRT/data/tnf.jpg");
+	auto txt_cb = std::make_shared<CTexture>("../../../data/tnf.jpg");
 	
 	
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.5f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderFloor	= std::make_shared<CShaderFlat>(txt_cb);
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderFloos	= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
-
+	auto pShaderTxt		= std::make_shared<CShaderFlat>(txt_cb);
+	
 	CSolid torus(pShaderFloor, "../../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
 
 	// primitives
@@ -28,7 +29,7 @@ int main(int argc, char* argv[])
 //	CSolidQuad 		floor(pShaderFloor, Vec3f(-s, h, -s), Vec3f(-s, h, s), Vec3f(s, h, s), Vec3f(s, h, -s));
 //	CSolidQuad 		floos(pShaderFloos, Vec3f(0, h + 0.005f, -s), Vec3f(0, h + 0.005f, s), Vec3f(s, h + 0.005f, s), Vec3f(s, h + 0.005f, -s));
 	
-	auto			sphere = std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 1);
+	auto			sphere = std::make_shared<CPrimSphere>(pShaderTxt, Vec3f(0, 1, 0), 1);
 	CSolidQuad 		areaLamp(pShaderWhite, Vec3f(-10, 10.01f, -10), Vec3f(10, 10.01f, -10), Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10));
 	CSolidBox  		glassbox(pShaderGlass, Vec3f(0, 1, 0), 0, 2, 6);
 	CSolidBox  		cube1(pShaderTop, Vec3f(-2, 0, 2), 0.01f);
@@ -38,7 +39,7 @@ int main(int argc, char* argv[])
 	CSolidCylinder	cylinder(std::make_shared<CShaderMirror>(scene), Vec3f(0, 0.01f, 0), 0.01f, 2, 36, true);
 	
 	//floor->transform(CTransform().rotate(Vec3f(0, 1, 0), -Pif / 6).translate(0, -0.1f, 0).scale(1, -1, 1).get());
-	sphere->transform(CTransform().rotate(Vec3f(0, 1, 0), -Pif / 6).translate(0, 0, 0).scale(2).get());
+	//sphere->transform(CTransform().rotate(Vec3f(0, 1, 0), -Pif / 6).translate(0, 0, 0).scale(2).get());
 	torus.transform(CTransform().scale(2.0f).get());
 	//cone1.transform(CTransform().rotate(Vec3f(0, 1, 0), Pif / 2).scale(2, -2.5f, 4).get());
 	//cone2.transform(CTransform().scale(1, -1, 1).get());

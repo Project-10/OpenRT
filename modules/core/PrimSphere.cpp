@@ -57,10 +57,14 @@ namespace rt {
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
-		Vec2f res;
-		res.val[0] = ray.org.val[0] + ray.t * ray.dir.val[0];	// x-coord
-		res.val[1] = ray.org.val[2] + ray.t * ray.dir.val[2];	// z-coord
-		return res;
+		Vec3f hitPoint = ray.hitPoint() - m_origin;
+		float theta = acosf(hitPoint.val[1] / m_radius);	// [0; Pif]
+
+		float phi 	= sinf(theta) > Epsilon ? acosf(hitPoint.val[0] / (m_radius * sinf(theta))) : 0;	// [0; Pif]
+		if (hitPoint.val[2] < 0) phi = - phi;															// [-Pif; Pif]
+		if (isnan(phi)) phi = 0;
+	
+		return Vec2f(-0.5f * (1 + phi / Pif), theta / Pif);
 	}
 }
 
