@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40);
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderFloorTxt = std::make_shared<CShaderPhong>(scene, pTextureFloor, 0.5f, 0.5f, 0.0f, 40);
+	auto pShaderFloorTxt = std::make_shared<CShaderPhong>(scene, pTextureFloor, 0.1f, 0.9f, 0.0f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	
 	// primitives
@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 2));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
 	scene.add(std::make_shared<CPrimSphere>(pShaderFloorTxt, Vec3f(0, 0, 0), 4));
+//	scene.add(CSolidCylinder(pShaderFloorTxt, Vec3f(0, -2, 0), 4, 4, 24, true));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));

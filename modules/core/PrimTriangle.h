@@ -17,12 +17,18 @@ namespace rt {
 		 * @param a Position of the first vertex
 		 * @param b Position of the second vertex
 		 * @param c Position of the third vertex
+		 * @param ta Texture coordinate for the first vertex
+		 * @param tb Texture coordinate for the second vertex
+		 * @param tc Texture coordinate for the third vertex
 		 */
-		DllExport CPrimTriangle(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c)
+		DllExport CPrimTriangle(ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0))
 			: IPrim(pShader)
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
+			, m_ta(ta)
+			, m_tb(tb)
+			, m_tc(tc)
 			, m_edge1(b - a)
 			, m_edge2(c - a)
 			, m_normal(normalize(m_edge1.cross(m_edge2)))
@@ -46,12 +52,11 @@ namespace rt {
 		Vec3f m_a;		///< Position of the first vertex
 		Vec3f m_b;		///< Position of the second vertex
 		Vec3f m_c;		///< Position of the third vertex
+		Vec2f m_ta;		///<	 vertex a texture coordiante
+		Vec2f m_tb;		///< vertex b texture coordiante
+		Vec2f m_tc;		///< vertex c texture coordiante
 		Vec3f m_edge1;	///< Edge AB
 		Vec3f m_edge2;	///< Edge AC
 		Vec3f m_normal;	///< Triangle normal
-		
-		Vec2f m_ta	= Vec2f(0, 0);		///<	 vertex a texture coordiante
-		Vec2f m_tb  = Vec2f(1, 0);		///< vertex b texture coordiante
-		Vec2f m_tc	= Vec2f(1, 1);		///< vertex c texture coordiante
 	};
 }

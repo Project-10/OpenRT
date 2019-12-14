@@ -21,8 +21,24 @@ namespace rt {
 		 * @param nb Normal at vertex b
 		 * @param nc Normal at vertex c
 		 */
-		DllExport CPrimTriangleSmooth(ptr_shader_t pShader, Vec3f a, Vec3f b, Vec3f c, Vec3f na, Vec3f nb, Vec3f nc)
+		DllExport CPrimTriangleSmooth(ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& na, const Vec3f& nb, const Vec3f& nc)
 			: CPrimTriangle(pShader, a, b, c)
+			, m_na(na)
+			, m_nb(nb)
+			, m_nc(nc)
+		{}
+		/**
+		 * @brief Constructor
+		 * @param pShader Pointer to the shader to be applied for the prim
+		 * @param a Position of the first vertex
+		 * @param b Position of the second vertex
+		 * @param c Position of the third vertex
+		 * @param na Normal at vertex a
+		 * @param nb Normal at vertex b
+		 * @param nc Normal at vertex c
+		 */
+		DllExport CPrimTriangleSmooth(ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, const Vec3f& na, const Vec3f& nb, const Vec3f& nc)
+			: CPrimTriangle(pShader, a, b, c, ta, tb, tc)
 			, m_na(na)
 			, m_nb(nb)
 			, m_nc(nc)
