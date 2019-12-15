@@ -15,14 +15,14 @@ namespace rt {
 		{
 			width /= 2; height /= 2; depth /= 2;
 
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f( width, -height, -depth), org + Vec3f( width,  height, -depth), org + Vec3f( width, height, depth), org + Vec3f( width, -height,  depth)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width, -height,  depth), org + Vec3f(-width, height, depth), org + Vec3f(-width,  height, -depth)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f( width, -height, -depth), org + Vec3f( width,  height, -depth), org + Vec3f( width, height, depth), org + Vec3f( width, -height,  depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width, -height,  depth), org + Vec3f(-width, height, depth), org + Vec3f(-width,  height, -depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
 
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width,  height, -depth), org + Vec3f(-width,  height,  depth), org + Vec3f(width,  height, depth), org + Vec3f( width,  height, -depth)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f( width, -height, -depth), org + Vec3f(width, -height, depth), org + Vec3f(-width, -height,  depth)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width,  height, -depth), org + Vec3f(-width,  height,  depth), org + Vec3f(width,  height, depth), org + Vec3f( width,  height, -depth), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f( width, -height, -depth), org + Vec3f(width, -height, depth), org + Vec3f(-width, -height,  depth), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1)));
 
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height,  depth), org + Vec3f( width, -height,  depth), org + Vec3f(width, height,  depth), org + Vec3f(-width,  height,  depth)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width,  height, -depth), org + Vec3f(width, height, -depth), org + Vec3f( width, -height, -depth)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height,  depth), org + Vec3f( width, -height,  depth), org + Vec3f(width, height,  depth), org + Vec3f(-width,  height,  depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
+			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width,  height, -depth), org + Vec3f(width, height, -depth), org + Vec3f( width, -height, -depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
 		}
 		DllExport virtual ~CSolidBox(void) = default;
 	};

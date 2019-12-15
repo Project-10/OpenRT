@@ -1,10 +1,13 @@
 #include "Texture.h"
+#include <math.h>
 
 namespace rt{
 	Vec3f CTexture::getTexel(const Vec2f& uv) const
 	{
-		float u = uv.val[0] - static_cast<int>(uv.val[0]);
-		float v = uv.val[1] - static_cast<int>(uv.val[1]);
+		float t;
+		float u = modff(uv.val[0] + Epsilon, &t);
+		float v = modff(uv.val[1] + Epsilon, &t);
+
 		if (u < 0) u += 1;
 		if (v < 0) v += 1;
 		

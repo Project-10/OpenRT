@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	CScene scene(Vec3f::all(0.0f));
 
 	// textures
-	auto pTextureFloor = std::make_shared<CTexture>("../../../data/1_earth_8k.jpg");
+	auto pTextureFloor = std::make_shared<CTexture>("../../data/tri.bmp");
 
 	// matherials
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
@@ -45,15 +45,19 @@ int main(int argc, char* argv[])
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 2));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
-	scene.add(std::make_shared<CPrimSphere>(pShaderFloorTxt, Vec3f(0, 0, 0), 4));
-//	scene.add(CSolidCylinder(pShaderFloorTxt, Vec3f(0, -2, 0), 4, 4, 24, true));
+//	scene.add(std::make_shared<CPrimSphere>(pShaderFloorTxt, Vec3f(0, 0, 0), 4));
+	auto cylinder	= CSolidCylinder(pShaderFloorTxt, Vec3f(0, 0, 0), 2, 3, 18, true);
+	auto cone		= CSolidCone(pShaderFloorTxt, Vec3f(0, 0, 0), 2, 3, 24, true);
+	auto cube		= CSolidBox(pShaderFloorTxt, Vec3f(0, 1, 0), 1);
+	//cylinder.transform(CTransform().reflectY().reflectX().get());
+	scene.add(cube);
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
 
 	// lights
-	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(-4, 6, 3)));
-	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 10, 0)));
+	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(-4, 6, 3), false));
+	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 10, 0), false));
 //	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(10, true, true)));
 
 	// camera	
@@ -71,7 +75,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; ; i++) {
 		float x = r * sinf(i * Pif / 180);
 		float z = r * cosf(i * Pif / 180);
-		Vec3f pos(x, 1, z);
+		Vec3f pos(x, 5, z);
 		Vec3f dir = normalize(Vec3f::all(0) - pos);
 		mainCam->setPosition(pos);
 		mainCam->setDirection(dir);
