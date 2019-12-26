@@ -13,7 +13,7 @@ namespace rt {
 		 * @param pShader Pointer to the shader
 		 * @param org The origin of the cylinder
 		 * @param radius The radius of the cylinder
-		 * @param height The height of the height
+		 * @param height The height of the cylinder
 		 * @param height_segments The number of height segments
 		 * @param sides The number of sides
 		 * @param smooth Flag indicating whether the normals should be smoothed
@@ -40,7 +40,7 @@ namespace rt {
 					if (smooth)	add(std::make_shared<CSolidQuad>(pShader, p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0), n0, n0, n1, n1));
 					else		add(std::make_shared<CSolidQuad>(pShader, p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0)));
 					h0 = h1;
-				}
+				} // h
 				
 				// Caps
 				if (height >= 0) {

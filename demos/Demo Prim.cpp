@@ -45,12 +45,12 @@ int main(int argc, char* argv[])
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 2));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
-	scene.add(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4));
+//	scene.add(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4));
 	auto cylinder	= CSolidCylinder(pShaderEarth, Vec3f(0, 0, 0), 4, 4, 5, 36, true);
-//	auto cone		= CSolidCone(pShaderFloorTxt, Vec3f(0, 0, 0), 2, 3, 24, true);
+	auto cone		= CSolidCone(pShaderEarth, Vec3f(0, 0, 0), 4, 5, 5, 24, true);
 //	auto cube		= CSolidBox(pShaderFloorTxt, Vec3f(0, 1, 0), 1);
 	//cylinder.transform(CTransform().reflectY().reflectX().get());
-//	scene.add(cylinder);
+	scene.add(cone);
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
@@ -75,14 +75,14 @@ int main(int argc, char* argv[])
 	for (int i = 0; ; i++) {
 		float x = r * sinf(i * Pif / 180);
 		float z = r * cosf(i * Pif / 180);
-		Vec3f pos(x, -20, z);
+		Vec3f pos(x, -5, z);
 		Vec3f dir = normalize(Vec3f::all(0) - pos);
 		mainCam->setPosition(pos);
 		mainCam->setDirection(dir);
 		Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
 		imshow("Image", img);
 		auto key = waitKey(5);
-		if (key == 27) break;
+		if (key == 27 || key == 'q') break;
 		if (i % 60 == 0) {
 			Timer::stop();
 			Timer::start("Rendering 60 frames... ");
