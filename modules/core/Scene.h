@@ -21,7 +21,6 @@ namespace rt {
 		 */
 		DllExport CScene(Vec3f bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
-			, m_activeCamera(0)
 		{}
 		DllExport ~CScene(void) = default;
 	  
@@ -41,7 +40,7 @@ namespace rt {
 		 * @param solid The reference to the solid
 		 */
 		DllExport void add(const CSolid& solid) {
-			for (const auto pPrim : solid.getPrims()) add(pPrim);
+			for (const auto& pPrim : solid.getPrims()) add(pPrim);
 		}
 		/**
 		 * @brief Adds a new light to the scene
@@ -52,7 +51,7 @@ namespace rt {
 		 * @brief Adds a new camera to the scene and makes it to ba active
 		 * @param pCamera Pointer to the camera
 		 */
-		DllExport void add(const std::shared_ptr<ICamera> pCamera) { 
+		DllExport void add(const ptr_camera_t pCamera) {
 			m_vpCameras.push_back(pCamera); 
 			m_activeCamera = m_vpCameras.size() - 1; 
 		}
@@ -65,7 +64,7 @@ namespace rt {
 		 *@brief Returns the active camera
 		 *@return The active camera index
 		*/
-		DllExport std::shared_ptr<ICamera> getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
+		DllExport ptr_camera_t getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
 		/**
 		 * @brief Returns the container with all scene light objects
 		 * @return The vector with pointers to the scene lights
@@ -150,11 +149,11 @@ namespace rt {
 		
 		
 	private:
-		const Vec3f								m_bgColor;    	///< background color
-		std::vector<ptr_prim_t> 	m_vpPrims;		///< Primitives
-		std::vector<std::shared_ptr<ILight>>	m_vpLights;		///< Lights
-		std::vector<std::shared_ptr<ICamera>>	m_vpCameras;	///< Cameras
-		size_t									m_activeCamera;	///< The index of the active camera
-		std::unique_ptr<BSPTree>				m_pBSPTree	= nullptr;
+		const Vec3f								m_bgColor;    			///< background color
+		std::vector<ptr_prim_t> 				m_vpPrims;				///< Primitives
+		std::vector<std::shared_ptr<ILight>>	m_vpLights;				///< Lights
+		std::vector<ptr_camera_t>				m_vpCameras;			///< Cameras
+		size_t									m_activeCamera	= 0;	///< The index of the active camera
+		std::unique_ptr<BSPTree>				m_pBSPTree		= nullptr;
 	};
 }

@@ -30,7 +30,7 @@ namespace rt {
 	
 	Vec3f CShader::shade(const Ray& ray) const
 	{
-		Vec3f res = Vec3f::all(0);
+		Vec3f res(0, 0, 0);
 
 		Vec3f color = CShaderFlat::shade(ray);
 

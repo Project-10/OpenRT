@@ -38,3 +38,19 @@ target_link_libraries(Demo_AreaLight ${OpenCV_LIBS} ${CORE_LIB})
 
 #install
 install(TARGETS Demo_AreaLight RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+# ================================================= DEMO CORNELL BOX ============================================
+add_executable(Demo_CornellBox "Demo CornellBox.cpp")
+add_dependencies(Demo_CornellBox core)
+
+source_group("Source Files" FILES "Demo CornellBox.cpp")
+
+set_target_properties(Demo_CornellBox PROPERTIES PROJECT_LABEL "Demo CornellBox")						# in Visual Studio
+set_target_properties(Demo_CornellBox PROPERTIES OUTPUT_NAME "Demo CornellBox")
+set_target_properties(Demo_CornellBox PROPERTIES FOLDER "Demos")
+
+# Properties->Linker->Input->Additional Dependencies
+target_link_libraries(Demo_CornellBox ${OpenCV_LIBS} ${CORE_LIB})
+
+#install
+install(TARGETS Demo_CornellBox RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

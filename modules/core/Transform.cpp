@@ -17,7 +17,7 @@ namespace rt {
 	CTransform CTransform::rotate(const Vec3f& v, float theta) const
 	{
 		Mat t = Mat::eye(4, 4, CV_32FC1);
-		
+		theta *= Pif/180;
 		float cos_theta = cosf(theta);
 		float sin_theta = sinf(theta);
 		float x = v.val[0];

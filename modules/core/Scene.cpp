@@ -1,14 +1,13 @@
 #include "Scene.h"
-
-#include "PrimTriangleSmooth.h"
-
 #include "Sampler.h"
-
-#define noop
+#include "macroses.h"
 
 namespace rt {
-	Mat CScene::render(std::shared_ptr<CSampler> pSampler) const {
-		Mat img(getActiveCamera()->getResolution(), CV_32FC3, Scalar(0)); 	// image array
+	Mat CScene::render(std::shared_ptr<CSampler> pSampler) const
+	{
+		ptr_camera_t activeCamera = getActiveCamera();
+		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
+		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
 		
 #ifdef DEBUG_PRINT_INFO
 		std::cout << "\nNumber of Primitives: " << m_vpPrims.size() << std::endl;
@@ -45,7 +44,9 @@ namespace rt {
 	}
 								  
 	Mat CScene::renderDepth(void) const {
-		Mat depth(getActiveCamera()->getResolution(), CV_32FC1, Scalar(0)); 	// image array
+		ptr_camera_t activeCamera = getActiveCamera();
+		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
+		Mat depth(activeCamera->getResolution(), CV_32FC1, Scalar(0)); 	// image array
 		Ray ray;
 		for (int y = 0; y < depth.rows; y++) {
 			float* pDepth = depth.ptr<float>(y);
