@@ -4,7 +4,7 @@
 #include <corecrt_math_defines.h>
 namespace rt {
 	/**
-	 * @brief Point light source class
+	 * @brief Spot light source class
 	 */
 	class CLightSpot : public ILight
 	{
@@ -28,7 +28,7 @@ namespace rt {
 
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
-			// ray towards point light position
+			// ray towards spot light position
 			ray.dir = ray.org - m_position;
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
@@ -36,7 +36,7 @@ namespace rt {
 			float attenuation = 1 / (ray.t * ray.t);
 			float scale;
 			if (angle_light_ray > m_angle) {
-				scale = 3;
+				// Light Intensity reduces away from m_direction
 				scale = (1.0 - (1.0 - angle_light_ray) * 1.0 / (1.0 - m_angle));
 			}
 			else {
