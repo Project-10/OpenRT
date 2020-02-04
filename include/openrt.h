@@ -27,6 +27,8 @@
 
 #include "core/Texture.h"
 
+#include "core/LightSpot.h"
+
 /**
 Main page documentation
 */
