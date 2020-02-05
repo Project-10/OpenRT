@@ -75,4 +75,25 @@ namespace rt {
 		float m_focus;		///< The focal length
 		
 	};
+
+
+	/**
+	 * @brief Target Perspective Camera class
+	 */
+	class CCameraTarget : public CCameraPerspective
+	{
+	public:
+		/**
+		 * @brief Constructor
+		 * @param pos Camera origin (center of projection)
+		 * @param target The target point
+		 * @param up Camera up-vector
+		 * @param angle (Vertical) full opening angle of the viewing frustum (in degrees)
+		 * @param resolution The image resolution
+		 */
+		DllExport CCameraTarget(Vec3f pos, Vec3f target, Vec3f up, float angle, Size resolution)
+			: CCameraPerspective(pos, normalize(target - pos), up, angle, resolution)
+		{}
+		DllExport virtual ~CCameraTarget(void) = default;
+	};
 }
