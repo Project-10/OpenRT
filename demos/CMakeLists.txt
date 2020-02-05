@@ -51,6 +51,21 @@ set_target_properties(Demo_CornellBox PROPERTIES FOLDER "Demos")
 
 # Properties->Linker->Input->Additional Dependencies
 target_link_libraries(Demo_CornellBox ${OpenCV_LIBS} ${CORE_LIB})
-
 #install
 install(TARGETS Demo_CornellBox RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+# ================================================= DEMO SPOT LIGHT ============================================
+add_executable(Demo_SpotLight "Demo SpotLight.cpp")
+add_dependencies(Demo_SpotLight core)
+
+source_group("Source Files" FILES "Demo SpotLight.cpp")
+
+set_target_properties(Demo_SpotLight PROPERTIES PROJECT_LABEL "Demo SpotLight")						# in Visual Studio
+set_target_properties(Demo_SpotLight PROPERTIES OUTPUT_NAME "Demo SpotLight")
+set_target_properties(Demo_SpotLight PROPERTIES FOLDER "Demos")
+
+# Properties->Linker->Input->Additional Dependencies
+target_link_libraries(Demo_SpotLight ${OpenCV_LIBS} ${CORE_LIB})
+# --------
+#install
+install(TARGETS Demo_SpotLight RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
