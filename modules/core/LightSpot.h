@@ -1,7 +1,10 @@
 #pragma once
 
 #include "LightPoint.h"
-#include <corecrt_math_defines.h>
+
+#define _USE_MATH_DEFINES // for C++
+#include <cmath>
+
 namespace rt {
 	/**
 	 * @brief Spot light source class
@@ -17,31 +20,28 @@ namespace rt {
 		 * @param angle The opening angle of the cone
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightSpot(Vec3f intensity, Vec3f position, Vec3f direction,float angle, bool castShadow = true)
+		DllExport CLightSpot(Vec3f intensity, Vec3f position, Vec3f direction, float angle, bool castShadow = true)
 			: ILight(castShadow)
 			, m_intensity(intensity)
 			, m_position(position)
 			, m_direction(normalize(direction))
-			, m_angle(cos(angle *M_PI/180.0f))
+			, m_cosAngle(cosf(angle * M_PI / 360))	// 360 instead of 180 -> we use halfangle
 		{}
 		DllExport virtual ~CLightSpot(void) = default;
 
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			// ray towards spot light position
-			ray.dir = m_position - ray.org ;
+			ray.dir = m_position - ray.org;
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
-			float angle_light_ray = ray.dir.dot(-m_direction);
-			float attenuation = 1 / (ray.t * ray.t);
-			//if (acos(angle_light_ray) <  acos(m_angle)) {
-			if (angle_light_ray > m_angle) {
-				// Light Intensity reduces away from m_direction
-				float scale = (1.0 - (1.0 - angle_light_ray) * 1.0 / (1.0 - m_angle));
-				return attenuation * m_intensity * scale;
-			}
+			
+			float cosAngle = m_direction.dot(-ray.dir);
+			if (cosAngle < m_cosAngle) return std::nullopt;	// bacause working not with angle but with their cosines
 			else {
-				return std::nullopt;
+				float attenuation = 1 / (ray.t * ray.t);
+				attenuation *= (1.0 - (1.0 - cosAngle) / (1.0 - m_cosAngle));	// additional linear attenuation
+				return attenuation * m_intensity;
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace rt {
 		Vec3f m_intensity; ///< emission (red, green, blue)
 		Vec3f m_position;  ///< The light source origin
 		Vec3f m_direction;
-		float m_angle;
+		float m_cosAngle;
 	};
 }
 
