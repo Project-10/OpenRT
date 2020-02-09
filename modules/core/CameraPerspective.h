@@ -80,7 +80,7 @@ namespace rt {
 	/**
 	 * @brief Target Perspective Camera class
 	 */
-	class CCameraTarget : public CCameraPerspective
+	class CCameraPerspectiveTarget : public CCameraPerspective
 	{
 	public:
 		/**
@@ -91,9 +91,9 @@ namespace rt {
 		 * @param angle (Vertical) full opening angle of the viewing frustum (in degrees)
 		 * @param resolution The image resolution
 		 */
-		DllExport CCameraTarget(Vec3f pos, Vec3f target, Vec3f up, float angle, Size resolution)
+		DllExport CCameraPerspectiveTarget(Vec3f pos, Vec3f target, Vec3f up, float angle, Size resolution)
 			: CCameraPerspective(pos, normalize(target - pos), up, angle, resolution)
 		{}
-		DllExport virtual ~CCameraTarget(void) = default;
+		DllExport virtual ~CCameraPerspectiveTarget(void) = default;
 	};
 }
