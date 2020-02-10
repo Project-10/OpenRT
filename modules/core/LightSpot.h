@@ -2,9 +2,6 @@
 
 #include "LightPoint.h"
 
-#define _USE_MATH_DEFINES // for C++
-#include <cmath>
-
 namespace rt {
 	/**
 	 * @brief Spot light source class
@@ -26,7 +23,7 @@ namespace rt {
 			, m_intensity(intensity)
 			, m_position(position)
 			, m_direction(normalize(direction))
-			, m_cosAngle(cosf(angle * M_PI / 360))	// 360 instead of 180 -> we use halfangle
+			, m_cosAngle(cosf(angle * Pif / 360))	// 360 instead of 180 -> we use halfangle
 		{}
 		DllExport virtual ~CLightSpot(void) = default;
 
