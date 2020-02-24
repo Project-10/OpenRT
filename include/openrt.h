@@ -29,6 +29,8 @@
 
 #include "core/LightSpot.h"
 
+#include "core/ShaderAmbientOcclusion.h"
+
 /**
 Main page documentation
 */
