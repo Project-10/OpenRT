@@ -20,7 +20,7 @@ int main() {
 	
 	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(Vec3f(4, 4, 4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f, Size(640, 480));
 	auto pLightPoint = std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0));
-	auto pLightSpot  = std::make_shared<CLightSpotDirected>(RGB(10, 10, 10), Vec3f(4, 4, 0), Vec3f(0, 0, 0), 20.0f,10.0f);
+	auto pLightSpot  = std::make_shared<CLightSpotDirected>(RGB(10, 10, 10), Vec3f(4, 4, 0), Vec3f(0, 0, 0), 20.0f, 10.0f);
 	scene.add(pCamera);
 	if (false) scene.add(pLightPoint);
 	else scene.add(pLightSpot);

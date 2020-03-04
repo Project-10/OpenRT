@@ -5,7 +5,7 @@
 namespace rt {
 	/**
 	 * @brief Spot light source class
-	 * @todo Add attenuation angle
+	 * @author Takundey Gora, T.Gora@jacobs-university.de
 	 */
 	class CLightSpot : public ILight
 	{
@@ -14,12 +14,12 @@ namespace rt {
 		 * @brief Constructor
 		 * @param intensity The emission color and strength of the light source
 		 * @param position The position (origin) of the light source
-		 * @param direction The direction f the light source
+		 * @param direction The direction of the light source
 		 * @param alpha The opening angle of the cone with constant surface illumination
-		 * @param beta Added to alpha for attenuted illumination on the surface away from angle alpha
+		 * @param beta The additional opening angle for attenuted illumination
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightSpot(Vec3f intensity, Vec3f position, Vec3f direction, float alpha,float beta = 0.0f, bool castShadow = true)
+		DllExport CLightSpot(Vec3f intensity, Vec3f position, Vec3f direction, float alpha, float beta = 0.0f, bool castShadow = true)
 			: ILight(castShadow)
 			, m_intensity(intensity)
 			, m_position(position)
@@ -36,25 +36,31 @@ namespace rt {
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
 			
-			float angle = acosf(m_direction.dot(-ray.dir)) * 180/Pif;
-			if (angle > (m_alpha  + m_beta)) return std::nullopt;
-			else {
-				float attenuation = 1 / (ray.t * ray.t);
-				//float scale = (angle <= m_alpha) ? 1.0f : cosf(1.5f*(angle - m_alpha) / m_beta); // (0.07 , 1]
-				float scale = (angle <= m_alpha) ? 1.0f : -1*powf((angle - m_alpha) / m_beta,2) + 1; // [0,1]
-				//float scale = (angle <= m_alpha) ? 1.0f : 1.0f - (angle - m_alpha) / m_beta;
-
-				return attenuation * m_intensity*scale;
+			float angle = acosf(m_direction.dot(-ray.dir)) * 180 / Pif;
+			if (angle > (m_alpha  + m_beta)) return std::nullopt;	// no light
+	
+			float attenuation = 1 / (ray.t * ray.t);
+			if (angle <= m_alpha) return attenuation * m_intensity;	// 100% light
+			
+			// angle \in (m_alpha; m_alpha + m_beta]
+			float k = (angle - m_alpha) / m_beta;					// k \in (0, 1]
+			float scale;
+			switch (2) {
+				case 0: scale = 1 - k; 					 break;
+				case 1: scale = 1 - k * k; 				 break;
+				case 2: scale = (1 + cosf(Pif * k)) / 2; break;
+				default: scale = 1;
 			}
+			return attenuation * m_intensity * scale;				// attenuated light
 		}
 
 
 	private:
-		Vec3f m_intensity; ///< emission (red, green, blue)
-		Vec3f m_position;  ///< The light source origin
-		Vec3f m_direction;
-		float m_alpha;
-		float m_beta;
+		Vec3f m_intensity;	///< Emission (red, green, blue)
+		Vec3f m_position;	///< The light source origin
+		Vec3f m_direction;	///< The direction of the light source
+		float m_alpha;		///< The opening angle of the cone with constant surface illumination
+		float m_beta;		///< The additional opening angle for attenuted illumination
 	};
 
 	/**
@@ -69,10 +75,10 @@ namespace rt {
 		 * @param position The position (origin) of the light source
 		 * @param target  The target point
 		 * @param alpha The opening angle of the cone with constant surface illumination
-		 * @param beta The opening angle of the cone with attenuted illumination on the surface away from angle alpha
+		 * @param beta The additional opening angle for attenuted illumination
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightSpotDirected(Vec3f intensity, Vec3f position, Vec3f target, float alpha,float beta = 0.0f, bool castShadow = true)
+		DllExport CLightSpotDirected(Vec3f intensity, Vec3f position, Vec3f target, float alpha, float beta = 0.0f, bool castShadow = true)
 			: CLightSpot(intensity, position, normalize(target - position), alpha,beta, castShadow) {}
 		DllExport virtual ~CLightSpotDirected(void) = default;
 	};
