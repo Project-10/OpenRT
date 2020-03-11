@@ -22,6 +22,7 @@
 #include "core/LightArea.h"
 
 #include "core/Sampler.h"
+#include "core/CosineSampler.h"
 
 #include "core/Transform.h"
 

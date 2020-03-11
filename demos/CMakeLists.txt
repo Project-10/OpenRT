@@ -54,9 +54,6 @@ target_link_libraries(Demo_CornellBox ${OpenCV_LIBS} ${CORE_LIB})
 #install
 install(TARGETS Demo_CornellBox RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
-# ================================================= DEMO SPOT LIGHT ============================================
-
-
 function(create_demo target source)
 	add_executable(${target} "${source}.cpp")
 	add_dependencies(${target} core)
