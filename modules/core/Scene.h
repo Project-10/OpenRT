@@ -111,9 +111,9 @@ namespace rt {
 		{
 			bool intersect_ = intersect(ray);
 			Ray c = ray;
-			Vec3f L = intersect_ ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			// Vec3f L = intersect_ ? ray.hit->getShader()->shade(ray) : m_bgColor;
 			float ao = intersect_ ? ambientOcclusion(c) : 0;
-			return ao*L;
+			return ao*Vec3f::all(1);
 			
 		}
 
@@ -123,6 +123,7 @@ namespace rt {
 			for (auto pShderAO : m_vpAOs) {
 				ao += pShderAO->shade(ray);
 			}
+			ao = m_vpAOs.empty() ? Vec3f::all(1) : ao;
 			return ao[0];
 			
 		}

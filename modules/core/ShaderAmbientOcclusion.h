@@ -62,10 +62,11 @@ namespace rt {
 				Ray E;
 				E.org = ray.hitPoint();
 				E.dir = S.sample;
+				E.t = m_radius;
 				float d = m_scene.rayTraceDepth(E);
 				//rayTraceDepth returns 0 if depth is INFINITY => no hit
-				d = d == 0 ? INFINITY : d;
-				occlusion += d < m_radius ? (S.sample.dot(normal))/(1-S.pdf) : 0.0f;
+				d = d == 0 ? 0 : 1;
+				occlusion += d *(S.sample.dot(normal))/(1-S.pdf);
 			}
 			return Vec3f::all(1) *(1.0f - (occlusion / m_nSamples)) ;
 		}
