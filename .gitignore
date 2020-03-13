@@ -18,8 +18,9 @@ doc/html
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-./vscode
+.vscode/
 
 CMakeSettings.json
 out/
 .vs/
+code/

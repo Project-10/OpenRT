@@ -6,6 +6,7 @@
 #include "CameraPerspective.h"
 #include "BSPTree.h"
 #include "Sampler.h"
+#include "IShader.h"
 
 namespace rt {
 	/**
@@ -47,6 +48,11 @@ namespace rt {
 		 * @param pLight Pointer to the light
 		 */
 		DllExport void add(const std::shared_ptr<ILight> pLight) { m_vpLights.push_back(pLight); }
+		/**
+		 * @brief Adds Sky Light
+		 * @param pLight Pointer to the light
+		 */
+		DllExport void add(const ptr_shader_t pShaderAO) { m_vpAOs.push_back(pShaderAO); }
 		/**
 		 * @brief Adds a new camera to the scene and makes it to ba active
 		 * @param pCamera Pointer to the camera
@@ -103,8 +109,25 @@ namespace rt {
 		 */
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
-			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			bool intersect_ = intersect(ray);
+			Ray c = ray;
+			// Vec3f L = intersect_ ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			float ao = intersect_ ? ambientOcclusion(c) : 0;
+			return ao*Vec3f::all(1);
+			
 		}
+
+		DllExport float ambientOcclusion(Ray& ray) const
+		{
+			Vec3f ao  = 0;
+			for (auto pShderAO : m_vpAOs) {
+				ao += pShderAO->shade(ray);
+			}
+			ao = m_vpAOs.empty() ? Vec3f::all(1) : ao;
+			return ao[0];
+			
+		}
+
 		DllExport float rayTraceDepth(Ray& ray) const
 		{
 			return intersect(ray) ? ray.t : 0;
@@ -155,5 +178,6 @@ namespace rt {
 		std::vector<ptr_camera_t>				m_vpCameras;			///< Cameras
 		size_t									m_activeCamera	= 0;	///< The index of the active camera
 		std::unique_ptr<BSPTree>				m_pBSPTree		= nullptr;
+		std::vector<ptr_shader_t>				m_vpAOs;
 	};
 }

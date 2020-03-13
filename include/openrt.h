@@ -22,12 +22,15 @@
 #include "core/LightArea.h"
 
 #include "core/Sampler.h"
+#include "core/CosineSampler.h"
 
 #include "core/Transform.h"
 
 #include "core/Texture.h"
 
 #include "core/LightSpot.h"
+
+#include "core/ShaderAmbientOcclusion.h"
 
 /**
 Main page documentation
