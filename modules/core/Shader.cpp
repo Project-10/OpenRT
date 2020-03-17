@@ -72,6 +72,7 @@ namespace rt {
 					const size_t nSamples = pLight->getNumberOfSamples();
 					for (size_t s = 0; s < nSamples; s++) {
 						// get direction to light, and intensity
+						I.hit = ray.hit;	// TODO: double check
 						auto radiance = pLight->illuminate(I);
 						if (radiance && (!pLight->shadow() || !m_scene.occluded(I))) {
 							// ------ diffuse ------

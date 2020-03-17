@@ -20,6 +20,7 @@
 
 #include "core/LightPoint.h"
 #include "core/LightArea.h"
+#include "core/LightSky.h"
 
 #include "core/Sampler.h"
 #include "core/CosineSampler.h"

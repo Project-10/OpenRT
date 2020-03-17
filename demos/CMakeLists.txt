@@ -25,7 +25,7 @@ function(create_demo target source)
 endfunction()
 
 #Add Demos
-create_demo(Demo_Prim "Demo SpotLight")
+create_demo(Demo_Prim "Demo Prim")
 create_demo(Demo_AreaLight "Demo AreaLight")
 create_demo(Demo_CornellBox "Demo CornellBox")
 create_demo(Demo_SpotLight "Demo SpotLight")
