@@ -21,8 +21,8 @@ namespace rt {
 	class CosineSampler
 	{
 	public:
-		DllExport CosineSampler(size_t nSamples, bool isRenewable)
-			: m_nSamples(nSamples), m_renewable(isRenewable), m_vSamples(m_nSamples)
+		DllExport CosineSampler(size_t nSamples, bool isRenewable,float m = 1)
+			: m_nSamples(nSamples), m_renewable(isRenewable), m_vSamples(m_nSamples), m(m)
 		{
 			m_idx = 0;
 		}
@@ -70,6 +70,7 @@ namespace rt {
 		bool m_renewable;
 		bool m_needGeneration = true;
 		std::vector<Vec3f> m_vSamples;
+		float m;
 #ifdef ENABLE_PPL
 		thread_local static size_t	m_idx;
 #else
@@ -112,9 +113,21 @@ namespace rt {
 
 	Vec3f CosineSampler::conv2cartesian(float zeta_1, float zeta_2)
 	{
-		float x = cosf(2 * Pif * zeta_2) * sqrt(zeta_1);
-		float y = sinf(2 * Pif * zeta_2) * sqrt(zeta_1);
-		float z = sqrt(1 - zeta_1);
+		/*
+		Samples in sperical coordinates :
+			theta = acos((1 - zeta_1)^(1/(m+1))
+			phi = 2*pi*zeta_2
+		Samples to cartesian coordinates:
+			let A = (1 - zeta_1)^(1/(m+1)
+			x = sin(theta)*cos(phi) = sqrt(1 - A^2)*cos(2*pi*zeta_2)
+			y = sin(theta)*sin(phi) = sqrt(1 - A^2)*sin(2*pi*zeta_2)
+			z = cos(theta)			= A
+
+		*/
+		float A = powf(1 - zeta_1,1/(m+1));
+		float x = cosf(2 * Pif * zeta_2) * sqrt(1 - powf(A,2));
+		float y = sinf(2 * Pif * zeta_2) * sqrt(1 - powf(A,2));
+		float z = A;
 		Vec3f ret(x, y, z);
 		return normalize(ret);
 	}

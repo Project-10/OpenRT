@@ -24,3 +24,5 @@ CMakeSettings.json
 out/
 .vs/
 code/
+*.png
+time.bat
