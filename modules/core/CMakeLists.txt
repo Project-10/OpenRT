@@ -18,7 +18,7 @@ source_group("Source Files\\shaders" FILES "IShader.h" "Shader.h" "Shader.cpp" "
 source_group("Source Files\\scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\utilities" FILES "ray.h" "random.h" "timer.h")
 source_group("Source Files\\utilities\\BSP Tree" FILES "BSPNode.h" "BSPTree.h" "BoundingBox.h" "BoundingBox.cpp")
-source_group("Source Files\\utilities\\samplers" FILES "Sampler.h" "Sampler.cpp" "Sampler3f.h")
+source_group("Source Files\\utilities\\samplers" FILES "Sampler.h" "Sampler.cpp" "Sampler3f.h" "Sampler3f.cpp")
 source_group("Source Files\\utilities\\transform" FILES "Transform.h" "Transform.cpp")
 source_group("Source Files\\utilities\\texture" FILES "Texture.h" "Texture.cpp")
 
