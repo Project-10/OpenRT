@@ -89,5 +89,34 @@ namespace rt {
 	{
 		return ray.counter >= maxRayCounter ? exitColor : m_scene.rayTrace(lvalue_cast(Ray(ray.org, ray.dir, ray.counter)));
 	}
+
+	std::optional<Ray> CShader::interaction(Ray &ray){
+		Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+		bool inside = false;
+		if (normal.dot(ray.dir) > 0) {
+			normal = -normal;													// turn normal to front
+			inside = true;
+		}
+		Vec3f n = normal;	
+		if (m_dSampler) {
+				n = m_dSampler->getNextSample(n);
+		}
+		Ray reflected = (m_ks > 0 || m_km > 0 || m_kt > 0) ? ray.reflected(n) : ray;
+
+		// TODO use russian roulette to decide wht to do if both reflection and refraction
+		// ------ refraction ------
+		if (m_kt > 0) {
+			Ray refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
+			return refracted;
+		}
+		// ------ reflection ------
+		if (m_km > 0) 
+			return reflected;
+		
+        return std::nullopt;
+
+
+
+	}
 }
 

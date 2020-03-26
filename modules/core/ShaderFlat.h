@@ -25,6 +25,8 @@ namespace rt {
 			return m_pTexture ? m_pTexture->getTexel(ray.hit->getTextureCoords(ray)) : m_color;
 		}
 
+		DllExport virtual std::optional<Ray> interaction(Ray &ray) {return std::nullopt;}
+
 
 	private:
 		const Vec3f 		m_color		= Vec3f::all(0.5f);

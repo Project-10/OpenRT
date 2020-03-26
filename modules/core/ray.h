@@ -23,7 +23,6 @@ namespace rt {
 			, dir(_dir)
 			, counter(_counter)
 		{}
-		
 		/**
 		 */
 		inline Vec3f 				hitPoint(void) const { return org + dir * t; }

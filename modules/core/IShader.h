@@ -23,6 +23,7 @@ namespace rt {
 		 * @return The color of the hit objesct
 		 */
 		DllExport virtual Vec3f shade(const Ray& ray) const = 0;
+		DllExport virtual std::optional<Ray> interaction(Ray &ray)= 0;
 	};
 
 	using ptr_shader_t = std::shared_ptr<IShader>;

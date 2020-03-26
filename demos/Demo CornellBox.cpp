@@ -15,7 +15,7 @@ int main()
 	auto pShaderWhite	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.8f, 0.0f, 0.0f);
 	auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.8f, 0.0f, 0.0f);
 	auto pShaderGreen	= std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0), 0.2f, 0.8f, 0.0f, 0.0f);
-	auto pShader		= std::make_shared<CShader>(scene, RGB(1, 1, 1), 0, 0.5f, 0, 0, 0.5f, 0, 0, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShader		= std::make_shared<CShader>(scene, RGB(1, 1, 1), 0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, std::make_shared<CSampler3fTangent>(4,2.0f,-1.0f));
 	
 	// Lights
 	auto pLight			= std::make_shared<CLightArea>(10000 * RGB(1.0f, 0.839f, 0.494f), Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerStratified>(6, true, true));
@@ -51,6 +51,9 @@ int main()
 #endif
 	
 	Timer::start("Rendering... ");
+	PPM gi(scene);
+	gi.render(std::make_shared<CSamplerStratified>(1));
+	return 0;
 	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
 	Timer::stop();
 	imshow("image", img);
