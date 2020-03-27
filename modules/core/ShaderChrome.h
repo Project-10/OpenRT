@@ -7,9 +7,9 @@ namespace rt {
 	class CShaderChrome : public IShader
 	{
 	public:
-		DllExport CShaderChrome(CScene& scene, std::shared_ptr<CSampler3f> dSampler = nullptr)
+		DllExport CShaderChrome(CScene& scene, std::shared_ptr<CSampler3f> pSampler = nullptr)
 			: m_scene(scene)
-			, m_dSampler(dSampler)
+			, m_pSampler(pSampler)
 		{}
 		DllExport virtual ~CShaderChrome(void) = default;
 		
@@ -20,12 +20,12 @@ namespace rt {
 			Vec3f normal = ray.hit->getNormal(ray);								// shading normal
 			if (normal.dot(ray.dir) > 0) normal = -normal;						// turn normal to front
 			
-			size_t nSamples = m_dSampler ? m_dSampler->getNumSamples() : 1;
+			size_t nSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
 			for (size_t s = 0; s < nSamples; s++) {
 				
 				Vec3f n = normal;
-				if (m_dSampler) {
-					n = m_dSampler->getNextSample(n);
+				if (m_pSampler) {
+					n = m_pSampler->getNextSample(n);
 				}
 					
 				Ray I = ray.reflected(n);	// reflection vector
@@ -42,7 +42,7 @@ namespace rt {
 		
 	private:
 		CScene& 					m_scene;
-		std::shared_ptr<CSampler3f>	m_dSampler;
+		std::shared_ptr<CSampler3f>	m_pSampler;
 	};
 }
 
