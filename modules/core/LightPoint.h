@@ -28,7 +28,7 @@ namespace rt {
 			ray.dir = m_position - ray.org;
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
-			
+			ray.hit = nullptr;	
 			float attenuation = 1 / (ray.t * ray.t);
 			return attenuation * m_intensity;
 		}

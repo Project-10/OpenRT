@@ -5,28 +5,7 @@
 namespace rt {
 	const static Vec3f exitColor	 = RGB(0.4f, 0.4f, 0.4f);	// errors area
 	const static Vec3f ambientColor	 = RGB(1, 1, 1);			// ambient radiance
-	const static Vec3f specularColor = RGB(1, 1, 1);			// white highlight;
-	
-	namespace {
-		std::pair<Vec3f, Vec3f> getRandomTangents(Vec3f normal)
-		{
-			std::pair<Vec3f, Vec3f> res;
-			float s1 = random::U<float>();
-			float s2 = random::U<float>();
-
-			if (fabs(normal.val[0]) > 0.1f)
-				res.first = Vec3f(-(s1 * normal.val[1] + s2 * normal.val[2]) / normal.val[0], s1, s2);
-			else if (fabs(normal.val[1]) > 0.1f)
-				res.first = Vec3f(s1, -(s1 * normal.val[0] + s2 * normal.val[2] / normal.val[1]), s2);
-			else
-				res.first = Vec3f(s1, s2, -(s1 * normal.val[0] + s2 * normal.val[1]) / normal.val[2]);
-
-			res.second = normal.cross(res.first);
-			res.first = normalize(res.first);
-			res.second = normalize(res.second);
-			return res;
-		}
-	}	
+	const static Vec3f specularColor = RGB(1, 1, 1);			// white highlight;	
 	
 	Vec3f CShader::shade(const Ray& ray) const
 	{
@@ -40,20 +19,18 @@ namespace rt {
 			normal = -normal;													// turn normal to front
 			inside = true;
 		}
-		const auto tangents = getRandomTangents(normal);						// two random tangent vectors
 
 #ifdef DEBUG_MODE
 		color = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
 #endif
 
-		size_t nNormalSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
+		size_t nNormalSamples = m_dSampler ? m_dSampler->getNumSamples() : 1;
 		for (size_t ns = 0; ns < nNormalSamples; ns++) {
 
 			// Distort the normal vector
 			Vec3f n = normal;
-			if (m_pSampler) {
-				Vec2f sample = m_pSampler->getNextSample();
-				n = normalize(n + sample.val[0] * tangents.first + sample.val[1] * tangents.second);
+			if (m_dSampler) {
+				n = m_dSampler->getNextSample(n);
 			}
 
 			// Needed by   ks, km, kt

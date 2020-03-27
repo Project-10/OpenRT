@@ -23,15 +23,13 @@
 #include "core/LightSky.h"
 
 #include "core/Sampler.h"
-#include "core/CosineSampler.h"
+#include "core/Sampler3f.h"
 
 #include "core/Transform.h"
 
 #include "core/Texture.h"
 
 #include "core/LightSpot.h"
-
-#include "core/ShaderAmbientOcclusion.h"
 
 /**
 Main page documentation
