@@ -110,11 +110,6 @@ namespace rt {
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
 			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
-			//bool intersect_ = intersect(ray);
-			//Ray c = ray;
-			//// Vec3f L = intersect_ ? ray.hit->getShader()->shade(ray) : m_bgColor;
-			//float ao = intersect_ ? ambientOcclusion(c) : 0;
-			//return Vec3f::all(ao);			
 		}
 
 		DllExport float ambientOcclusion(Ray& ray) const

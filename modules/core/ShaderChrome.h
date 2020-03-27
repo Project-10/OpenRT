@@ -7,7 +7,7 @@ namespace rt {
 	class CShaderChrome : public IShader
 	{
 	public:
-		DllExport CShaderChrome(CScene& scene, std::shared_ptr<CSampler3f> pSampler = nullptr)
+		DllExport CShaderChrome(CScene& scene, std::shared_ptr<CSampler> pSampler = nullptr)
 			: m_scene(scene)
 			, m_pSampler(pSampler)
 		{}
@@ -25,7 +25,7 @@ namespace rt {
 				
 				Vec3f n = normal;
 				if (m_pSampler) {
-					n = m_pSampler->getNextSample(n);
+					n = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), n, 10);
 				}
 					
 				Ray I = ray.reflected(n);	// reflection vector
@@ -42,7 +42,7 @@ namespace rt {
 		
 	private:
 		CScene& 					m_scene;
-		std::shared_ptr<CSampler3f>	m_pSampler;
+		std::shared_ptr<CSampler>	m_pSampler;
 	};
 }
 

@@ -30,7 +30,7 @@ namespace rt {
 			// Distort the normal vector
 			Vec3f n = normal;
 			if (m_pSampler) {
-				n = m_pSampler->getNextSample(n);
+				n = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), n, 10);
 			}
 
 			// Needed by   ks, km, kt
