@@ -16,7 +16,15 @@ namespace rt {
 		DllExport virtual Vec2f getNextSample(void);
 		DllExport size_t		getNumSamples(void) const { return m_vSamples.size(); }
 		
-	
+		// static auxiliary function
+		DllExport static Vec2f uniformSampleDisk(const Vec2f& sample);
+		DllExport static Vec2f concentricSampleDisk(const Vec2f& sample);
+		DllExport static Vec3f uniformSampleHemisphere(const Vec2f& sample);
+		DllExport static Vec3f uniformSampleSphere(const Vec2f& sample);
+		DllExport static Vec3f cosineSampleHemisphere(const Vec2f& sample);
+		DllExport static Vec3f ourSampleHemisphere(const Vec2f& sample, float m);
+
+
 	protected:
 		virtual void generate(void) = 0;
 

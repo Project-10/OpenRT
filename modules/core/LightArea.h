@@ -53,7 +53,7 @@ namespace rt {
 
 		DllExport virtual void sample_le(Ray& ray){
 			Vec2f sample = m_pSampler->getNextSample();
-			Ray.org = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
+			ray.org = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
 		}
 		
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }

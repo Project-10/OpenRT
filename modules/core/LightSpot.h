@@ -35,6 +35,7 @@ namespace rt {
 			ray.dir = m_position - ray.org;
 			ray.t = norm(ray.dir);
 			ray.dir = normalize(ray.dir);
+			ray.hit = nullptr;
 			
 			float angle = acosf(m_direction.dot(-ray.dir)) * 180 / Pif;
 			if (angle > (m_alpha  + m_beta)) return std::nullopt;	// no light

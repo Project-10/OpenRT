@@ -24,7 +24,7 @@ namespace rt {
 		 * @param refractiveIndex The refractive index of the medium (\a e.g. for glass use 1.517)
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
-		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler3f> dSampler = nullptr )
+		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = nullptr )
 			: CShaderFlat(color)
 			, m_scene(scene)
 			, m_ka(ka)
@@ -34,9 +34,9 @@ namespace rt {
 			, m_km(km)
 			, m_kt(kt)
 			, m_refractiveIndex(refractiveIndex)
-			, m_dSampler(dSampler)
+			, m_pSampler(pSampler)
 		{}
-		DllExport CShader(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler3f> dSampler = nullptr)
+		DllExport CShader(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, std::shared_ptr<CSampler> pSampler = nullptr)
 			: CShaderFlat(pTexture)
 			, m_scene(scene)
 			, m_ka(ka)
@@ -46,7 +46,7 @@ namespace rt {
 			, m_km(km)
 			, m_kt(kt)
 			, m_refractiveIndex(refractiveIndex)
-			, m_dSampler(dSampler)
+			, m_pSampler(pSampler)
 		{}
 		DllExport virtual ~CShader(void) = default;
 		
@@ -68,7 +68,7 @@ namespace rt {
 		
 		float m_refractiveIndex;	///< The refractive index for transmitted rays
 		
-		std::shared_ptr<CSampler3f>	m_dSampler;
+		std::shared_ptr<CSampler>	m_pSampler;
 	};
 
 

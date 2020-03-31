@@ -24,13 +24,13 @@ namespace rt {
 		color = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
 #endif
 
-		size_t nNormalSamples = m_dSampler ? m_dSampler->getNumSamples() : 1;
+		size_t nNormalSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
 		for (size_t ns = 0; ns < nNormalSamples; ns++) {
 
 			// Distort the normal vector
 			Vec3f n = normal;
-			if (m_dSampler) {
-				n = m_dSampler->getNextSample(n);
+			if (m_pSampler) {
+				n = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), n, 10);
 			}
 
 			// Needed by   ks, km, kt
