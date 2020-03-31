@@ -33,7 +33,7 @@ namespace rt {
 			ray.hit = nullptr;
 			ray.t = m_radius;
 			
-			return m_intensity;
+			return m_intensity/ray.dir.dot(normal);
 		}
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_dSampler->getNumSamples(); }
 

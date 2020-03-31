@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	
 	// Light 
 //	scene.add(std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
-	scene.add(std::make_shared<CLightSky>(RGB(1, 1, 1)));
+	scene.add(std::make_shared<CLightSky>(RGB(1, 1, 1), std::numeric_limits<float>::infinity(),std::make_shared<CSampler3fCosine>(1.0f,std::make_shared<CSamplerRandom>(20, true))));
 
 //	auto pSkyLight = std::make_shared<CShaderAmbientOccluson>(scene, Vec3f(1, -1, 1), 0.7, samples);
 //	scene.add(pSkyLight);

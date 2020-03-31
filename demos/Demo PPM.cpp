@@ -37,13 +37,16 @@ int main(int argc, char* argv[]) {
 	#endif
 	
 	Timer::start("Rendering... ");
-	PPM gi(scene);
-	gi.render(std::make_shared<CSamplerStratified>(2));
-	// Mat img = scene.render(std::make_shared<CSamplerStratified>(2));
+	PPM gippm(scene);
+	std::shared_ptr<CSamplerStratified> s3f = std::make_shared<CSamplerStratified>(2);
+	Mat img = gippm.render(s3f);
+	// Mat imk = scene.render(s3f);
+	// imwrite("out.png",imk);
 	Timer::stop();
 
 	// imshow("image", img);
 	waitKey();
+	imwrite("ppm.png",img);
 	//imwrite( std::to_string(samples) + "time" +std::to_string(delta.count()) +".png", img);
 
 	return 0;

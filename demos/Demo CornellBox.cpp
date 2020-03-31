@@ -33,8 +33,8 @@ int main()
 	
 	scene.add(pCamera);
 	scene.add(pLight);
-	scene.add(pLightGreen);
-	scene.add(pLightRed);
+	// scene.add(pLightGreen);
+	// scene.add(pLightRed);
 	
 	scene.add(CSolidQuad(pShaderWhite, Vec3f(552.8f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 0, 559.2f), Vec3f(549.6f, 0, 559.2f)));				// floor
 	scene.add(CSolidQuad(pShaderWhite, Vec3f(556, 548.8f, 0), Vec3f(556, 548.8f, 559.2f), Vec3f(0, 548.8f, 559.2f), Vec3f(0, 548.8f, 0)));	// ceiling
@@ -52,11 +52,12 @@ int main()
 	
 	Timer::start("Rendering... ");
 	PPM gi(scene);
-	gi.render(std::make_shared<CSamplerStratified>(1));
+	Mat img  = gi.render(std::make_shared<CSamplerStratified>(2));
+	imwrite("cornell_box_ppm.png",img);
 	return 0;
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
+	// Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
 	Timer::stop();
-	imshow("image", img);
+	// imshow("image", img);
 	imwrite("cornell box.jpg", img);
 	waitKey();
 	return 0;
