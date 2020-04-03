@@ -26,15 +26,15 @@ namespace rt {
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			ray.t = 0;
-			Vec3f normal = ray.hit->getNormal(ray);
-			ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);
+			Vec3f normal = ray.hit->getNormal(ray);												// normal to the object from which the ray was casted
+			ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);	// sample the hemisphere in respect to the object's normal
 	
 			// ray towards point light position
 			ray.hit = nullptr;
 			ray.t = m_radius;
 
-			float angle = ray.dir.dot(normal);
-			if (angle > 0) return m_intensity/angle;
+			float cos_a = ray.dir.dot(normal);													// angle between the object's normal and sample ray
+			if (cos_a > 0) return m_intensity / cos_a;
 			return std::nullopt;
 		}
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
