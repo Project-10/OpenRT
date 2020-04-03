@@ -32,8 +32,10 @@ namespace rt {
 			// ray towards point light position
 			ray.hit = nullptr;
 			ray.t = m_radius;
-			
-			return m_intensity;
+
+			float angle = ray.dir.dot(normal);
+			if (angle > 0) return m_intensity/angle;
+			return std::nullopt;
 		}
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
 
