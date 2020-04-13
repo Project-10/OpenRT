@@ -133,7 +133,7 @@ namespace rt {
 		 */
 		DllExport Mat render(std::shared_ptr<CSampler> pSampler = nullptr) const;
 		DllExport Mat renderDepth(void) const;
-		DllExport Vec3f dimension(void){return m_bBox.m_max - m_bBox.m_max;}
+		DllExport Vec3f dimension(void){return m_bBox.m_max - m_bBox.m_min;}
 		DllExport bool pathTrace(Ray& ray){return intersect(ray);}
 	
 	private:

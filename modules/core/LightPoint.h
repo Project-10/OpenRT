@@ -32,6 +32,10 @@ namespace rt {
 			float attenuation = 1 / (ray.t * ray.t);
 			return attenuation * m_intensity;
 		}
+		DllExport virtual Photon sample_le(void) override{
+			Photon ray;
+			return ray;
+		}
 
 
 	private:

@@ -16,6 +16,7 @@ namespace rt {
 		std::shared_ptr<const IPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
 		float							u = 0;												///< Barycentric u coordinate
 		float							v = 0;												///< Barycentric v coordinate
+		float							brdf = 1;
 		
 		// Constructor
 		explicit Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0), size_t _counter = 0)

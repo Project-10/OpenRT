@@ -3,24 +3,84 @@
 #include "ray.h"
 namespace rt{
 
+    Vec3f TkeyHash::shape = 0;
+
     PPM::PPM(CScene& scene,int nPhotons, int nIt)
     :m_scene(scene)
     ,m_nPhotons(nPhotons)
     ,m_nIterations(nIt)
     {
-        bounds = scene.dimension();
+        TkeyHash::shape = scene.dimension();
+
+        std::cout<<" Size of scene "<<TkeyHash::shape<<std::endl;
     }
     Mat PPM::render(std::shared_ptr<CSampler> pSampler){
         rtPass(pSampler);
-        directIllumination();
+        for (int i = 0; i < 20; i ++){
+            Mat_<float> m_features(0, 3);
+            m_photons.clear();
+            pmPass(m_features);
+            indirectIllumination(m_features);
+            Mat imgi = getImage(pSampler ? pSampler->getNumSamples() : 1);
+            imwrite(std::to_string(i) + ".png",imgi);
+            std::cout<<"Done : "<<i<<std::endl;
+        }
+        
+        // directIllumination();
+        // saveRT(m_hitpoints,"rtPass0.xyz",mn,mx);
+        // Mat imgd = getImage(pSampler ? pSampler->getNumSamples() : 1);
+	    // imwrite("cornell_box_ppm_direct.png",imgd);
+
+        // savePM(m_photons,"pmPass.xyz",mn,mx);
         Mat img = getImage(pSampler ? pSampler->getNumSamples() : 1);
-        savePCL(m_hitpoints,"rtPass.xyz",mn,mx);
+        saveRT(m_hitpoints,"rtPass.xyz",mn,mx);
         return img;
     }
+    void PPM::indirectIllumination(Mat_<float> &features){
+        //collect illumination for allhitpoints
+        flann::GenericIndex<cv::flann::L2<float> > index(features, cvflann::KDTreeIndexParams());
+        #ifdef ENABLE_PPL
+        concurrency::parallel_for_each(begin(m_hitpoints), end(m_hitpoints), [&](Hitpoint &hp)
+        #else            
+        for(auto &hp : m_hitpoints)
+        #endif
+        {
+            std::vector<int> ind(max_elmem,-1);
+            std::vector<float> d(max_elmem);
+            Mat query =  (Mat_<float>(1, 3) << hp.hit[0], hp.hit[1],hp.hit[2]);
+            index.radiusSearch(query, ind, d, hp.radius, cvflann::SearchParams(max_elmem));
+            int cnt = 0;
+            Vec3f radiance = Vec3f::all(0);
+            for (int i = 0; i < ind.size(); i++) {
+                if (ind[i] < 0) break;
+                Photon photon(features.row(ind[i]));
+                auto res = m_photons.equal_range(photon);
+                for (auto it = res.first; it != res.second; ++it){
+                    if(hp.normal.dot(it->normal) < 0.01f){ //only contributions from the same surface
+                        radiance += it->radiance;
+                        cnt ++;
+                    }
+                }
+            }
+            float area = Pif*pow(hp.radius,2);
+            area = 1.0f;
+            if(cnt > 0 ) hp.color += radiance ;//(cnt*area);
+            hp.nPhotons += cnt;
+            hp.radius += -hp.radius*0.1f;
+        }
+        #ifdef ENABLE_PPL
+		);
+        #endif
+    }
+
 
     void PPM::directIllumination(void){
-
-        for (auto &hp : m_hitpoints){
+        #ifdef ENABLE_PPL
+        concurrency::parallel_for_each(begin(m_hitpoints), end(m_hitpoints), [&](Hitpoint &hp)
+        #else            
+        for(auto &hp : m_hitpoints)
+        #endif
+        {
             Ray D;
             D.org = hp.hit;
             D.hit = hp.prim;
@@ -28,28 +88,57 @@ namespace rt{
             D.t = 0;
             hp.color = hp.prim->getShader()->shade(D);
         }
+        #ifdef ENABLE_PPL
+		);
+        #endif
     }
 
-    void PPM::pmPass(){
+    void PPM::pmPass(Mat_<float> &m_features){
+        for (auto& pLight : m_scene.getLights()) {
+        int max_iter = 1900000;
+            for(int ii = 0; ii < max_iter; ii++)
+            {
+                Photon p = pLight->sample_le();
+                for(int i = 0; i < 3; i++){ //FIXME # iterationd
+                    Ray ray(p.org,p.dir);
+                    auto pt = getVisiblePoint(ray);
+                    if(pt.has_value()){
+                        Hitpoint ht = pt.value();
+                        p.hit = ht.hit;
+                        p.prim = ht.prim;
+                        Vec3f dir = ht.prim->getShader()->shadePhoton(p);
+                        // p.radiance *= ht.brdf;
+                        mn = comp(mn,p.radiance,0);
+                        mx = comp(mx,p.radiance,1);
+                            m_photons.insert(Photon(p));
+                            Mat pt = (Mat_<float>(1, 3) << p.hit[0], p.hit[1],p.hit[2]);
+                            m_features.push_back(pt);
+                        //initialise photon for next round
+                        // p.radiance *= ht.brdf;
+                        p.org = ht.hit;
+                        p.dir = dir;
+                    }else{
+                        break; //ray has left scene, stop recursive lookup
+                    }
+                }
+            }
+        }
         //find light intesities
         //distribute #photons to all the lights
         //sample points from each light source
 
     }
-    void PPM::indirectIllumination(void){
-        //collect illumination for allhitpoints
-    }
-
+    
     Mat PPM::getImage(int nSamples){
         ptr_camera_t activeCamera = m_scene.getActiveCamera();
         RT_ASSERT_MSG(activeCamera, "ERROR : Camera not Found");
 		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
         for (auto &hp : m_hitpoints){
             Vec3f *px = img.ptr<Vec3f>(hp.px.x,hp.px.y);
-            *px += (hp.color/nSamples);
+            *px += (hp.color/nSamples*hp.nPhotons);
         }
         minMaxLoc(img,&mn,&mx);
-        img.convertTo(img, CV_8UC3, 255);
+        img.convertTo(img, CV_16UC3);
         return img;
     }
 
@@ -88,7 +177,7 @@ namespace rt{
             ht.normal = ray.hit->getNormal(ray);
             ht.dir = ray.dir;
             ht.prim = ray.hit;
-            ht.brdf = 1; //TODO Set a value her
+            ht.brdf = ray.brdf; //TODO Set a value her
             //Check if surface is reflective/refractive
             auto I = ray.hit->getShader()->interaction(ray);
             if(I){

@@ -4,7 +4,7 @@
 
 namespace rt {
 	struct Ray;
-
+	struct Photon;
 	/**
 	 * @brief Base shader abstract interface class
 	 */
@@ -23,6 +23,7 @@ namespace rt {
 		 * @return The color of the hit objesct
 		 */
 		DllExport virtual Vec3f shade(const Ray& ray) const = 0;
+		DllExport virtual Vec3f shadePhoton(Photon& ray) = 0;
 		DllExport virtual std::optional<Ray> interaction(Ray &ray)= 0;
 	};
 

@@ -27,7 +27,12 @@ int main(int argc, char* argv[]) {
 	
 	// Light 
 //	scene.add(std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
-	scene.add(std::make_shared<CLightSky>(RGB(1, 1, 1)));
+	// scene.add(std::make_shared<CLightSky>(RGB(1, 1, 1)));
+
+	auto pShaderLight	= std::make_shared<CShaderFlat>(RGB(1, 1, 1));
+	auto pLight			= std::make_shared<CLightArea>(40 * RGB(1.0f, 0.839f, 0.494f), Vec3f(3, 5.78f, 5), Vec3f(3, 5.78f, 3), Vec3f(5, 5.78f, 3), Vec3f(5, 5.78f, 2), std::make_shared<CSamplerRandom>(2, true));
+	scene.add(pLight);
+
 
 //	auto pSkyLight = std::make_shared<CShaderAmbientOccluson>(scene, Vec3f(1, -1, 1), 0.7, samples);
 //	scene.add(pSkyLight);
@@ -38,8 +43,9 @@ int main(int argc, char* argv[]) {
 	
 	Timer::start("Rendering... ");
 	PPM gippm(scene);
-	std::shared_ptr<CSamplerStratified> s3f = std::make_shared<CSamplerStratified>(2);
+	std::shared_ptr<CSamplerStratified> s3f = std::make_shared<CSamplerStratified>(1);
 	Mat img = gippm.render(s3f);
+
 	// Mat imk = scene.render(s3f);
 	// imwrite("out.png",imk);
 	Timer::stop();

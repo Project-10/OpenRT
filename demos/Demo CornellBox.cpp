@@ -15,10 +15,10 @@ int main()
 	auto pShaderWhite	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.8f, 0.0f, 0.0f);
 	auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.8f, 0.0f, 0.0f);
 	auto pShaderGreen	= std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0), 0.2f, 0.8f, 0.0f, 0.0f);
-	auto pShader		= std::make_shared<CShader>(scene, RGB(1, 1, 1), 0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, std::make_shared<CSampler3fTangent>(4,2.0f,-1.0f));
-	
+	auto pShader		= std::make_shared<CShader>(scene, RGB(1, 1, 1), 0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, std::make_shared<CSamplerStratified>(10, true, true));
+	auto pShaderGlass = std::make_shared<CShaderGlass>(scene,0.4f);
 	// Lights
-	auto pLight			= std::make_shared<CLightArea>(10000 * RGB(1.0f, 0.839f, 0.494f), Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerStratified>(6, true, true));
+	auto pLight			= std::make_shared<CLightArea>(1.0f* RGB(1.0f, 0.839f, 0.494f), Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerRandom>(2, true));
 	float d = 100;
 	auto pLightGreen	= std::make_shared<CLightArea>(RGB(0, 50, 0), Vec3f(0.1f, d, 559.2f - d), Vec3f(0.1f, d, d), Vec3f(0.1f, 548.8f - d, d), Vec3f(0.1f, 548.8f - d, 559.2f - d),  std::make_shared<CSamplerStratified>(6, true, true));
 	auto pLightRed		= std::make_shared<CLightArea>(RGB(50, 0, 0), Vec3f(552.7f, d, d), Vec3f(549.5f, d, 559.2f - d), Vec3f(555.9f, 548.8f - d, 559.2f - d), Vec3f(555.9f, 548.8f - d, d), std::make_shared<CSamplerStratified>(6, true, true));
@@ -52,13 +52,13 @@ int main()
 	
 	Timer::start("Rendering... ");
 	PPM gi(scene);
-	Mat img  = gi.render(std::make_shared<CSamplerStratified>(2));
+	Mat img  = gi.render(std::make_shared<CSamplerStratified>(1));
 	imwrite("cornell_box_ppm.png",img);
-	return 0;
-	// Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
+	// return 0;
+	// Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
 	Timer::stop();
 	// imshow("image", img);
-	imwrite("cornell box.jpg", img);
+	// imwrite("cornell box.jpg", img);
 	waitKey();
 	return 0;
 }

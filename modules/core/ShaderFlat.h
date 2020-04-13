@@ -26,6 +26,7 @@ namespace rt {
 		}
 
 		DllExport virtual std::optional<Ray> interaction(Ray &ray) {return std::nullopt;}
+		DllExport virtual Vec3f shadePhoton(Photon& p){return m_color;}
 
 
 	private:
