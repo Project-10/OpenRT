@@ -16,17 +16,18 @@ namespace rt{
     }
     Mat PPM::render(std::shared_ptr<CSampler> pSampler){
         rtPass(pSampler);
-        for (int i = 0; i < 20; i ++){
+        directIllumination();
+
+        for (int i = 0; i < m_nIterations; i ++){
             Mat_<float> m_features(0, 3);
             m_photons.clear();
             pmPass(m_features);
             indirectIllumination(m_features);
             Mat imgi = getImage(pSampler ? pSampler->getNumSamples() : 1);
-            imwrite(std::to_string(i) + ".png",imgi);
+            imwrite("ppm/" + std::to_string(i) + ".png",imgi);
             std::cout<<"Done : "<<i<<std::endl;
         }
         
-        // directIllumination();
         // saveRT(m_hitpoints,"rtPass0.xyz",mn,mx);
         // Mat imgd = getImage(pSampler ? pSampler->getNumSamples() : 1);
 	    // imwrite("cornell_box_ppm_direct.png",imgd);
@@ -49,7 +50,7 @@ namespace rt{
             std::vector<float> d(max_elmem);
             Mat query =  (Mat_<float>(1, 3) << hp.hit[0], hp.hit[1],hp.hit[2]);
             index.radiusSearch(query, ind, d, hp.radius, cvflann::SearchParams(max_elmem));
-            int cnt = 0;
+            int M = 0;
             Vec3f radiance = Vec3f::all(0);
             for (int i = 0; i < ind.size(); i++) {
                 if (ind[i] < 0) break;
@@ -57,16 +58,16 @@ namespace rt{
                 auto res = m_photons.equal_range(photon);
                 for (auto it = res.first; it != res.second; ++it){
                     if(hp.normal.dot(it->normal) < 0.01f){ //only contributions from the same surface
-                        radiance += it->radiance;
-                        cnt ++;
+                        radiance +=  it->radiance*hp.brdf;
+                        M ++;
                     }
                 }
             }
-            float area = Pif*pow(hp.radius,2);
-            area = 1.0f;
-            if(cnt > 0 ) hp.color += radiance ;//(cnt*area);
-            hp.nPhotons += cnt;
-            hp.radius += -hp.radius*0.1f;
+            hp.radius *= sqrtf( (hp.nPhotons + m_alpha*M) / (hp.nPhotons + M));
+            hp.color = (hp.color +  radiance)*( (hp.nPhotons + m_alpha*M) / (hp.nPhotons + M));//hp.brdf*
+            hp.nPhotons += m_alpha*M;
+            m_nEmmited += M;
+
         }
         #ifdef ENABLE_PPL
 		);
@@ -86,7 +87,7 @@ namespace rt{
             D.hit = hp.prim;
             D.dir = hp.dir;
             D.t = 0;
-            hp.color = hp.prim->getShader()->shade(D);
+            hp.colorDirect = hp.prim->getShader()->shade(D);
         }
         #ifdef ENABLE_PPL
 		);
@@ -95,26 +96,25 @@ namespace rt{
 
     void PPM::pmPass(Mat_<float> &m_features){
         for (auto& pLight : m_scene.getLights()) {
-        int max_iter = 1900000;
-            for(int ii = 0; ii < max_iter; ii++)
+            for(int ii = 0; ii < m_nPhotons; ii++)
             {
                 Photon p = pLight->sample_le();
-                for(int i = 0; i < 3; i++){ //FIXME # iterationd
+                for(int i = 0; i < m_nReflections; i++){ //FIXME # iterationd
                     Ray ray(p.org,p.dir);
-                    auto pt = getVisiblePoint(ray);
+                    auto pt = getVisiblePoint(ray,-1);
                     if(pt.has_value()){
                         Hitpoint ht = pt.value();
                         p.hit = ht.hit;
                         p.prim = ht.prim;
                         Vec3f dir = ht.prim->getShader()->shadePhoton(p);
-                        // p.radiance *= ht.brdf;
+                        p.radiance *= m_attenuation;
                         mn = comp(mn,p.radiance,0);
                         mx = comp(mx,p.radiance,1);
                             m_photons.insert(Photon(p));
                             Mat pt = (Mat_<float>(1, 3) << p.hit[0], p.hit[1],p.hit[2]);
                             m_features.push_back(pt);
                         //initialise photon for next round
-                        // p.radiance *= ht.brdf;
+                        p.radiance *= ht.brdf;
                         p.org = ht.hit;
                         p.dir = dir;
                     }else{
@@ -135,10 +135,11 @@ namespace rt{
 		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
         for (auto &hp : m_hitpoints){
             Vec3f *px = img.ptr<Vec3f>(hp.px.x,hp.px.y);
-            *px += (hp.color/nSamples*hp.nPhotons);
+            // *px += (hp.color/nSamples*hp.nPhotons);
+            *px += hp.colorDirect +  hp.color/(Pif*hp.radius*hp.radius*m_nEmmited);
         }
         minMaxLoc(img,&mn,&mx);
-        img.convertTo(img, CV_16UC3);
+        img.convertTo(img, CV_8UC3,255);
         return img;
     }
 
@@ -156,6 +157,7 @@ namespace rt{
                     if(pt.has_value()){
                         Hitpoint ht = pt.value();
                         ht.px = Point2i(j,i);
+                        ht.brdf=ray.brdf;
                         m_hitpoints.push_back(ht);
                         //TODO Keep track of samples per px, e.g we cant div by nSamples if some rays went outside the scene (may put noise towards the ends of the scene )
                     }
@@ -169,7 +171,7 @@ namespace rt{
 
     }
 
-    std::optional<Hitpoint> PPM::getVisiblePoint(Ray &ray){
+    std::optional<Hitpoint> PPM::getVisiblePoint(Ray &ray,int max){
         if(m_scene.pathTrace(ray)){
             //Ray hits an object, create hitpoint
             Hitpoint ht;
@@ -182,13 +184,13 @@ namespace rt{
             auto I = ray.hit->getShader()->interaction(ray);
             if(I){
                 //Trace ray to find diffuse surface
-                if(I.value().counter < 5){//TODO use Russian Roulette
+                if(I.value().counter < max){//TODO use Russian Roulette
                     //continue RT until a non specular surface is found, otherwise use the last contact point (is ray goes out of bounds)
                     return (getVisiblePoint(I.value())).value_or(ht);
                 }
-            }else{
-                return ht;
             }
+            return ht;
+
         }
         return std::nullopt;
 

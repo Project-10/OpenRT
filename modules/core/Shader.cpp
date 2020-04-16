@@ -105,6 +105,12 @@ namespace rt {
 
 		// TODO use russian roulette to decide wht to do if both reflection and refraction
 		ray.brdf = 1;
+		// if (m_ka > 0)
+		// 	ray.brdf *= m_ka;
+		// if (m_kd > 0)
+		// 	ray.brdf *= m_kd;
+		// if (m_ks > 0)
+		// 	ray.brdf *= m_ks;
 		// ------ refraction ------
 		if (m_kt > 0) {
 			Ray refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
@@ -138,14 +144,13 @@ namespace rt {
 #endif
 
 		// Distort the normal vector
-		Vec3f n = normal;
+		Vec3f dir = normal;
+		Ray reflected = ray.reflected(normal);// reflection vector
 		if (m_pSampler) {
-			n = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), n, 10);
+			dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);
 		}
 
 		// Needed by   ks, km, kt
-		Ray reflected = ray.reflected(n);// reflection vector
-
 		// ------ ambient ------
 		if (m_ka > 0)
 			res += m_ka * ambientColor.mul(color);
@@ -154,32 +159,35 @@ namespace rt {
 			// ------ diffuse ------
 		if (m_kd > 0)
 		{
-			float cosLightNormal = abs(photon.dir.dot(-n));
+			float cosLightNormal = 1.0f;//abs(photon.dir.dot(-normal));
 			if (cosLightNormal > 0)
 				res += m_kd * cosLightNormal * color.mul(photon.radiance);
 		}
 		// ------ specular ------
 		if (m_ks > 0)
 		{
-			float cosLightReflect = abs(photon.dir.dot(reflected.dir));
+			float cosLightReflect =  1.0f;//abs(photon.dir.dot(reflected.dir));
 			if (cosLightReflect > 0)
 				res += m_ks * powf(cosLightReflect, m_ke) * specularColor.mul(photon.radiance);
 		}
 		// ------ refraction ------
 		photon.brdf = 1.0f;
+		photon.radiance = res / pow(norm(photon.org - photon.hit),0.0); //REVIEW
+
 		if (m_kt > 0) {
 			photon.brdf *= m_kt;
-			// res*= m_kt;
+			Ray refracted = ray.refracted(normal, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
+			return refracted.dir;
+
 		}
 		// ------ reflection ------
 		if (m_km > 0)
 			photon.brdf *= m_km;
-			// res*= m_km;
+			return reflected.dir;
 
 		// ------ reflection ------
-		photon.radiance = res;
-		photon.radiance = photon.radiance / pow(norm(photon.org - photon.hit),1); //REVIEW
-		return ray.reflected(n).dir; ;
+		// return ray.reflected(n).dir; 
+		return dir;
 
 	}
 }

@@ -13,9 +13,11 @@ namespace rt{
         float  brdf = 1;      //brdf index
         Point2i px = 0;       //pixel coords
         Vec3f pxWqt = 1;    //Weight of the pixel
-        float radius = 5.10f;   //current photon radius
-        int nPhotons = 0;   //Accumulated Photon count
+        float radius = 4.0f;   //current photon radius
+        int nPhotons = 1;   //Accumulated Photon count
         Vec3f color = Vec3f::all(0);    //Accumulated reflected flux at hitpoint
+        Vec3f colorDirect = Vec3f::all(0);    //Accumulated reflected flux at hitpoint
+
         std::shared_ptr<const IPrim>	prim		= nullptr;
         Hitpoint() = default;
         Hitpoint(const Hitpoint& b){
@@ -65,11 +67,11 @@ namespace rt{
     {
 
     public:
-        DllExport PPM(CScene& scene,int nPhotons = 100, int nIt = 10);
+        DllExport PPM(CScene& scene,int nPhotons = 150000, int nIt = 1000);
         DllExport ~PPM() = default;
         DllExport Mat render(std::shared_ptr<CSampler> pSampler = nullptr);
     protected :
-        DllExport std::optional<Hitpoint> getVisiblePoint(Ray &);
+        DllExport std::optional<Hitpoint> getVisiblePoint(Ray &,int mx = 9);
         DllExport void rtPass(std::shared_ptr<CSampler> = nullptr);
         DllExport void directIllumination(void);
         DllExport void pmPass(Mat_<float> &features);
@@ -78,7 +80,11 @@ namespace rt{
     private:
         float m_radius;
         int m_nPhotons;
+        int m_nReflections = 3;
         int m_nIterations;
+        float m_alpha = 0.7f;
+        float m_attenuation = 0.7;//0.7
+        float m_nEmmited = 0;
         CScene &m_scene;
         Vec3f bounds;
         std::vector<Hitpoint> m_hitpoints;

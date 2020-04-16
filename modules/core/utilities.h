@@ -15,7 +15,7 @@ void saveRT(std::vector<Hitpoint> &data,char* fn,double mn = 0,double mx = 1){
 void savePM(std::unordered_set<Photon,TkeyHash> &data,char* fn,double mn = 0,double mx = 1){
     std::ofstream pcl(fn,std::ofstream::out);
     pcl<<std::setprecision(8);
-    auto scale = [mn,mx](float c){return static_cast<double>(1000*(c - mn)*255/(mx - mn)) ;};
+    auto scale = [mn,mx](float c){return static_cast<double>(c) ;};
     for (auto it : data ){
         pcl << it.hit[0]<<" "<<it.hit[1]<<" "<<it.hit[2]<<" "<<scale(it.radiance[0])<<" "<<scale(it.radiance[1])<<" "<<scale(it.radiance[2])<<std::endl;
     }

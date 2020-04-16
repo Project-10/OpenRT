@@ -57,7 +57,7 @@ namespace rt {
 			p.org = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
 			p.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), m_normal, 0);
 			float cosN = p.dir.dot(m_normal);
-			p.radiance = m_intensity*m_area*cosN;// /m_area
+			p.radiance = m_intensity*m_area;//*cosN;// /m_area
 			return p;
 		}
 		
