@@ -51,7 +51,7 @@ int main()
 #endif
 	
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
 	Timer::stop();
 	imshow("image", img);
 	imwrite("cornell box.jpg", img);
