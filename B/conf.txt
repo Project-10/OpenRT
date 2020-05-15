@@ -1,8 +1,0 @@
-alpha = 0.85
-attenuation = 0.55
-nPhotons = 350k
-nIt = 200
-reflections = 3
-pLight *= 450.0f
-radius = 3.0f; //initial
-3 bounces

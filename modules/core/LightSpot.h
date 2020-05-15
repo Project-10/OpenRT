@@ -54,9 +54,8 @@ namespace rt {
 			}
 			return attenuation * m_intensity * scale;				// attenuated light
 		}
-		DllExport virtual Photon sample_le(void) override{
-			Photon ray;
-			return ray;
+		DllExport virtual std::optional<Photon> sample_le(void) override{
+			return std::nullopt;
 		}
 
 	private:

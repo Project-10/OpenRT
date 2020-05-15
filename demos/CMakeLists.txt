@@ -18,7 +18,7 @@ function(create_demo target source)
 	set_target_properties(${target} PROPERTIES FOLDER "Demos")
 
 	# Properties->Linker->Input->Additional Dependencies
-	target_link_libraries(${target} core ${OpenCV_LIBS} ${CORE_LIB}		)
+	target_link_libraries(${target} ${OpenCV_LIBS} ${CORE_LIB})
 	# --------
 	#install
 	install(TARGETS ${target} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

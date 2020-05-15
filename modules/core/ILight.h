@@ -48,7 +48,7 @@ namespace rt {
 		 */
 		DllExport virtual size_t				getNumberOfSamples(void) const { return 1; }
 
-		DllExport virtual Photon sample_le(void) = 0;
+		DllExport virtual std::optional<Photon> sample_le(void) = 0;
 		
 		
 	private:

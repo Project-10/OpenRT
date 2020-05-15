@@ -37,10 +37,9 @@ namespace rt {
 			if (cos_a > 0) return m_intensity / cos_a;
 			return std::nullopt;
 		}
-		
-		DllExport virtual Photon sample_le(void) override{
-			Photon p;
-			return p;
+
+		DllExport virtual std::optional<Photon> sample_le(void) override{
+			return std::nullopt;
 		}
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
 

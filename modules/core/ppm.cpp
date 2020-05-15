@@ -98,9 +98,15 @@ namespace rt{
 
     void PPM::photonTracingStep(Mat_<float> &m_features){
         for (auto& pLight : m_scene.getLights()) {
+            auto phtn = pLight->sample_le();
+            //Some lights still have sample_le() as a stub, and Skylight has no definition for this method
+            if(!phtn.has_value()){
+                    continue;
+            }
             for(int ii = 0; ii < m_nPhotons; ii++)
             {
-                Photon p = pLight->sample_le();
+                auto phtn = pLight->sample_le();
+                Photon p = phtn.value();
                 for(int i = 0; i < m_nReflections; i++){ //FIXME # iterationd
                     Ray ray(p.org,p.dir);
                     auto pt = getVisiblePoint(ray,-1);

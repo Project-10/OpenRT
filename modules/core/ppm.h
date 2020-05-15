@@ -20,18 +20,7 @@ namespace rt{
 
         std::shared_ptr<const IPrim>	prim		= nullptr;
         VisiblePoint() = default;
-        VisiblePoint(const VisiblePoint& b){
-            hit     = b.hit;
-            normal  = b.normal;
-            dir     = b.dir;
-            brdf    = b.brdf;
-            px      = b.px;
-            pxWqt   = b.pxWqt;
-            radius  = b.radius;
-            nPhotons= b.nPhotons;
-            color   = b.color;
-            prim    = b.prim;
-        }
+
     };
 
     struct Photon{
@@ -43,10 +32,6 @@ namespace rt{
         float   brdf     = 1;
         std::shared_ptr<const IPrim> prim = nullptr;
         Photon() = default;
-        Photon(const Photon& b){
-            hit = b.hit;
-            radiance = b.radiance;
-        }
         bool operator==(const Photon &r) const{ 
             return (hit[0] == r.hit[0]  && hit[1]  == r.hit[1]  && hit[2] == r.hit[2] );
         }

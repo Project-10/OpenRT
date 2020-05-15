@@ -51,7 +51,7 @@ namespace rt {
 			return attenuation * m_intensity;
 		}
 
-		DllExport virtual Photon sample_le(void) override{
+		DllExport virtual std::optional<Photon> sample_le(void) override{
 			Photon p;
 			Vec2f sample = m_pSampler->getNextSample();
 			p.org = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
