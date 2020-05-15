@@ -26,8 +26,8 @@ namespace rt {
 		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
 		{
 			ray.t = 0;
-			Vec3f normal = ray.hit->getNormal(ray);
-			ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);
+			Vec3f normal = ray.hit->getNormal(ray);												// normal to the object from which the ray was casted
+			ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);	// sample the hemisphere in respect to the object's normal
 	
 			// ray towards point light position
 			ray.hit = nullptr;

@@ -20,14 +20,20 @@ int main(int argc, char* argv[]) {
 	scene.add(CSolidQuad(pShaderWhite, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
 	
 	// Ball
-	scene.add(std::make_shared<CPrimSphere>(pShaderWhite, Vec3f(0, 0.5, 0), 1.5f));
+	//scene.add(std::make_shared<CPrimSphere>(pShaderWhite, Vec3f(0, 0.5, 0), 1.5f));
 	
 	// Camera
-	scene.add(std::make_shared<CCameraPerspectiveTarget>(Vec3f(4, 4, 4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f, Size(720, 720)));
+	scene.add(std::make_shared<CCameraPerspectiveTarget>(Vec3f(1.5f, 4, 8.4f), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f, Size(720, 720)));
 	
+	// Tenerife House
+	CSolid house(pShaderWhite, "C:\\Users\\Creator\\iCloudDrive\\Data\\Tenerife House.obj");
+	CTransform t;
+	house.transform(t.scale(0.01f).translate(-3.2f, 0, 1.5).get());
+	scene.add(house);
+
 	// Light 
-//	scene.add(std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
-	scene.add(std::make_shared<CLightSky>(RGB(1, 1, 1)));
+	//scene.add(std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
+	scene.add(std::make_shared<CLightSky>(Vec3f::all(1.0f)));
 
 //	auto pSkyLight = std::make_shared<CShaderAmbientOccluson>(scene, Vec3f(1, -1, 1), 0.7, samples);
 //	scene.add(pSkyLight);
@@ -42,7 +48,8 @@ int main(int argc, char* argv[]) {
 
 	imshow("image", img);
 	waitKey();
-	//imwrite( std::to_string(samples) + "time" +std::to_string(delta.count()) +".png", img);
+	imwrite("res_tangents_new.bmp", img);
+	///imwrite( std::to_string(samples) + "time" +std::to_string(delta.count()) +".png", img);
 
 	return 0;
 }
