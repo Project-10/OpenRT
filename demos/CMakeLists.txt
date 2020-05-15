@@ -6,6 +6,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 
 # Properties -> Linker -> General -> Additional Library Directories
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+
 function(create_demo target source)
 	add_executable(${target} "${source}.cpp")
 	add_dependencies(${target} core)
@@ -17,8 +18,6 @@ function(create_demo target source)
 	set_target_properties(${target} PROPERTIES FOLDER "Demos")
 
 	# Properties->Linker->Input->Additional Dependencies
-	target_compile_options(${target}  PUBLIC /MT)
-	target_link_options(${target} PUBLIC /INCREMENTAL:NO /NODEFAULTLIB:MSVCRT)
 	target_link_libraries(${target} core ${OpenCV_LIBS} ${CORE_LIB}		)
 	# --------
 	#install

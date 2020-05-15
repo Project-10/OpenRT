@@ -16,7 +16,7 @@ thread_local size_t CSampler::m_idx = 0;
 
 	// Destructor
 	CSampler::~CSampler(void) {
-		// RT_ASSERT(m_idx == 0);
+		RT_ASSERT(m_idx == 0);
 	}
 
 	Vec2f CSampler::getNextSample(void) {
