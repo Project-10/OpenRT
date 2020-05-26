@@ -16,7 +16,7 @@ namespace rt {
 		 * @param intensity The emission color and strength of the light source
 		 * @param pSampler Pointer to the sampler to be used with the area light
 		 */
-		DllExport CLightSky(Vec3f intensity, float radius = std::numeric_limits<float>::infinity(), std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true, true), bool castShadow = true)// std::make_shared<CSampler3fTangent>(4,2.0f,-1.0f))
+		DllExport CLightSky(Vec3f intensity, float radius = std::numeric_limits<float>::infinity(), std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true, true), bool castShadow = true)
 			: ILight(castShadow)
 			, m_intensity(intensity)
 			, m_radius(radius)
@@ -32,9 +32,13 @@ namespace rt {
 			// ray towards point light position
 			ray.hit = nullptr;
 			ray.t = m_radius;
-
+			
 			float cos_a = ray.dir.dot(normal);													// angle between the object's normal and sample ray
 			if (cos_a > 0) return m_intensity / cos_a;
+			return std::nullopt;
+		}
+
+		DllExport virtual std::optional<Photon> sample_le(void) override{
 			return std::nullopt;
 		}
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }

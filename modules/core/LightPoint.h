@@ -32,6 +32,9 @@ namespace rt {
 			float attenuation = 1 / (ray.t * ray.t);
 			return attenuation * m_intensity;
 		}
+		DllExport virtual std::optional<Photon> sample_le(void) override{
+			return std::nullopt;
+		}
 
 
 	private:

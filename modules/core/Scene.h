@@ -109,7 +109,7 @@ namespace rt {
 		 */
 		DllExport Vec3f rayTrace(Ray& ray) const
 		{
-			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;
+			return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor;			
 		}
 
 		DllExport float ambientOcclusion(Ray& ray) const
@@ -133,7 +133,8 @@ namespace rt {
 		 */
 		DllExport Mat render(std::shared_ptr<CSampler> pSampler = nullptr) const;
 		DllExport Mat renderDepth(void) const;
-	
+		DllExport Vec3f dimension(void){return m_bBox.m_max - m_bBox.m_min;}
+		DllExport bool pathTrace(Ray& ray){return intersect(ray);}
 	
 	private:
 		/**
@@ -142,10 +143,9 @@ namespace rt {
 		 */
 		CBoundingBox calcBounds(void)
 		{
-			CBoundingBox res;
 			for (auto pPrim : m_vpPrims)
-				res.extend(pPrim->calcBounds());
-			return res;
+				m_bBox.extend(pPrim->calcBounds());
+			return m_bBox;
 		}
 		/*
 		 * @brief Checks intersection of ray \b ray with all contained objects
@@ -174,5 +174,6 @@ namespace rt {
 		size_t									m_activeCamera	= 0;	///< The index of the active camera
 		std::unique_ptr<BSPTree>				m_pBSPTree		= nullptr;
 		std::vector<ptr_shader_t>				m_vpAOs;
+		CBoundingBox							m_bBox;					//Scene Bounding box
 	};
 }

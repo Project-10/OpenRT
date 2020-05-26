@@ -6,7 +6,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 
 # Properties -> Linker -> General -> Additional Library Directories
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-				
+
 function(create_demo target source)
 	add_executable(${target} "${source}.cpp")
 	add_dependencies(${target} core)
@@ -30,4 +30,5 @@ create_demo(Demo_AreaLight "Demo AreaLight")
 create_demo(Demo_CornellBox "Demo CornellBox")
 create_demo(Demo_SpotLight "Demo SpotLight")
 create_demo(Demo_SkyLight "Demo SkyLight")
+create_demo(Demo_PPM "Demo PPM")
 create_demo(Demo_SSLT "Demo SSLT")

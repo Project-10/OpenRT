@@ -1,9 +1,10 @@
 #pragma once
 
 #include "types.h"
-
+#include "ppm.h"
 namespace rt {
 	struct Ray;
+	struct Photon;
 
 	/**
 	 * @brief Base light source abstract interface class
@@ -46,6 +47,8 @@ namespace rt {
 		 * @return The recommended number of samples 
 		 */
 		DllExport virtual size_t				getNumberOfSamples(void) const { return 1; }
+
+		DllExport virtual std::optional<Photon> sample_le(void) = 0;
 		
 		
 	private:

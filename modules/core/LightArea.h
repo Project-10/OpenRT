@@ -50,6 +50,16 @@ namespace rt {
 
 			return attenuation * m_intensity;
 		}
+
+		DllExport virtual std::optional<Photon> sample_le(void) override{
+			Photon p;
+			Vec2f sample = m_pSampler->getNextSample();
+			p.org = m_p0 + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
+			p.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), m_normal, 1);
+			float cosN = p.dir.dot(m_normal);
+			p.radiance = m_intensity*m_area;//*cosN;// /m_area
+			return p;
+		}
 		
 		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
 

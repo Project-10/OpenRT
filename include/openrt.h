@@ -31,6 +31,9 @@
 
 #include "core/LightSpot.h"
 
+#include "core/utilities.h"
+#include "core/ppm.h"
+
 /**
 Main page documentation
 */

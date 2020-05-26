@@ -54,7 +54,9 @@ namespace rt {
 			}
 			return attenuation * m_intensity * scale;				// attenuated light
 		}
-
+		DllExport virtual std::optional<Photon> sample_le(void) override{
+			return std::nullopt;
+		}
 
 	private:
 		Vec3f m_intensity;	///< Emission (red, green, blue)

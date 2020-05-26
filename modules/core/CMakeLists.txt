@@ -16,6 +16,7 @@ source_group("Source Files\\primitives\\triangle" FILES "PrimTriangle.h" "PrimTr
 source_group("Source Files\\solids" FILES "Solid.h" "Solid.cpp" "SolidQuad.h" "SolidBox.h" "SolidCone.h" "SolidCylinder.h")
 source_group("Source Files\\shaders" FILES "IShader.h" "Shader.h" "Shader.cpp" "ShaderFlat.h" "ShaderEyelight.h" "ShaderChrome.h")
 source_group("Source Files\\scene" FILES "Scene.h" "Scene.cpp")
+source_group("Source Files\\ppm" FILES "ppm.h" "ppm.cpp" "utilities.h")
 source_group("Source Files\\utilities" FILES "ray.h" "random.h" "timer.h")
 source_group("Source Files\\utilities\\BSP Tree" FILES "BSPNode.h" "BSPTree.h" "BoundingBox.h" "BoundingBox.cpp")
 source_group("Source Files\\utilities\\samplers" FILES "Sampler.h" "Sampler.cpp" "Sampler3f.h" "Sampler3f.cpp")

@@ -51,8 +51,10 @@ namespace rt {
 		DllExport virtual ~CShader(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
+
+		DllExport virtual Vec3f shadePhoton(Photon&) override;
 	
-	
+		DllExport virtual std::optional<Ray> interaction(Ray &ray) override;
 	private:
 		Vec3f reTrace(const Ray& ray) const;
 		
