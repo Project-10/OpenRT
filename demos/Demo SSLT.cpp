@@ -6,6 +6,7 @@ using namespace rt;
 int main() {
 	CScene scene(Vec3f::all(0.0f));
 	auto pShaderFloor = std::make_shared<CShaderFlat>(Vec3f::all(1));
+	auto pShaderBall = std::make_shared<CShaderFlat>(Vec3f::all(1));
 
 	float s = 50;
 	//Ball

@@ -11,7 +11,7 @@ namespace rt{
         Vec3f   normal  = 0;            //Normal at hit
         Vec3f   dir     = 0;            //ray direction
         float   brdf    = 1;            //brdf index
-        Point2i px      = 0;            //pixel coords
+        Point2i px      = Point2i(0, 0);//pixel coords
         Vec3f   pxWqt   = 1;            //Weight of the pixel
         float   radius  = 1.5f;         //current photon radius
         int     nPhotons = 1;           //Accumulated Photon count

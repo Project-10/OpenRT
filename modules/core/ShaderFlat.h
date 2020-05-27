@@ -25,8 +25,8 @@ namespace rt {
 			return m_pTexture ? m_pTexture->getTexel(ray.hit->getTextureCoords(ray)) : m_color;
 		}
 
-		DllExport virtual std::optional<Ray> interaction(Ray &ray) {return std::nullopt;}
-		DllExport virtual Vec3f shadePhoton(Photon& p){return m_color;}
+		DllExport virtual std::optional<Ray> interaction(Ray &ray) override {return std::nullopt;}
+		DllExport virtual Vec3f shadePhoton(Photon& p) override {return m_color;}
 
 
 	private:
