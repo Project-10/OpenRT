@@ -20,6 +20,7 @@ namespace rt {
 
 			std::string line;
 
+			int nFaces = 0;
 			for (;;) {
 				if (!getline(file, line)) break;
 				std::stringstream ss(line);
@@ -41,6 +42,8 @@ namespace rt {
 					vNormals.push_back(vn);
 				}
 				else if (line == "f") {
+					nFaces++;
+					//if (nFaces > 10000) continue;
 					int v, n, t;
 					Vec3i V, N, T;
 					for (int i = 0; i < 3; i++) {
@@ -50,11 +53,11 @@ namespace rt {
 						T.val[i] = t - 1;
 						N.val[i] = n - 1;
 					}
-					// std::cout << "Face: " << V << std::endl;
+					//std::cout << "Face: " << V << std::endl;
 					//std::cout << "Normal: " << N << std::endl;
-					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
-					//add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-					//													vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+					add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+																		vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
 					//add(std::make_shared<CPrimTriangleSmoothTextured>(vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 					//	vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]],
 					//	vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]], pShader));
