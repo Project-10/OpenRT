@@ -7,7 +7,9 @@ file(GLOB CORE_HEADERS "*.h")
 
 source_group("Include" FILES ${CORE_INCLUDE})
 source_group("" FILES ${CORE_SOURCES} ${CORE_HEADERS}) 
-source_group("Source Files\\camera" FILES "ICamera.h" "CameraPerspective.h" "CameraPerspective.cpp")
+source_group("Source Files\\cameras" FILES "ICamera.h" )
+source_group("Source Files\\cameras\\perspective" FILES "CameraPerspective.h" "CameraPerspective.cpp"  "CameraPerspectiveTarget.h")
+
 source_group("Source Files\\lights" FILES "ILight.h" "LightPoint.h" "LightArea.h" "LightSpot.h" "LightSky.cpp" "LightSky.h")
 source_group("Source Files\\primitives" FILES "IPrim.h")
 source_group("Source Files\\primitives\\plane" FILES "PrimPlane.h" "PrimPlane.cpp")

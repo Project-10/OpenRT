@@ -83,8 +83,8 @@ int main(int argc, char* argv[])
 	// camera
 	const float r = 17.5f;
 	Vec3f camPos(sqrt(r), sqrt(r), sqrt(r));
-	scene.add(std::make_shared<CCameraPerspective>(camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45, resolution));
-	scene.add(std::make_shared<CCameraPerspective>(Vec3f(0, 9.99f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 45, resolution));
+	scene.add(std::make_shared<CCameraPerspective>(resolution, camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45));
+	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 9.99f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 45));
 	scene.setActiveCamera(0);
 	
 #ifdef ENABLE_BSP

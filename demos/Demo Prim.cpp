@@ -10,13 +10,13 @@ int main(int argc, char* argv[])
 	CScene scene(Vec3f::all(0.0f));
 
 	// textures
-	auto pTextureEarth = std::make_shared<CTexture>("../../../data/1_earth_8k.jpg");
+	auto pTextureEarth = std::make_shared<CTexture>("../../data/1_earth_8k.jpg");
 
 	// matherials
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40);
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.5f, 0.5f, 0.0f, 40);
+	auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	
 	// primitives
@@ -45,12 +45,12 @@ int main(int argc, char* argv[])
 	
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderMirror>(scene), Vec3f(0, 1, 0), 2));
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 2.7f, -1), 2));
-//	scene.add(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4));
+	auto sphere		= std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4);
 	auto cylinder	= CSolidCylinder(pShaderEarth, Vec3f(0, 0, 0), 4, 4, 5, 36, true);
 	auto cone		= CSolidCone(pShaderEarth, Vec3f(0, 0, 0), 4, 5, 5, 24, true);
 //	auto cube		= CSolidBox(pShaderFloorTxt, Vec3f(0, 1, 0), 1);
 	//cylinder.transform(CTransform().reflectY().reflectX().get());
-	scene.add(cone);
+	scene.add(sphere);
 //	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
@@ -62,10 +62,10 @@ int main(int argc, char* argv[])
 
 	// camera	
 	const float r = 10;
-	auto mainCam = std::make_shared<CCameraPerspective>(Vec3f(0, 0, r), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 60, resolution);
+	auto mainCam = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 0, r), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 60);
 	scene.add(mainCam);
-	scene.add(std::make_shared<CCameraPerspective>(Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45, resolution));
-	scene.add(std::make_shared<CCameraPerspective>(Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45, resolution));
+	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45));
+	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45));
 	
 	scene.setActiveCamera(0);
 #ifdef ENABLE_BSP
@@ -75,10 +75,12 @@ int main(int argc, char* argv[])
 	for (int i = 0; ; i++) {
 		float x = r * sinf(i * Pif / 180);
 		float z = r * cosf(i * Pif / 180);
-		Vec3f pos(x, -5, z);
-		Vec3f dir = normalize(Vec3f::all(0) - pos);
+		Vec3f pos(x, 5, z);
 		mainCam->setPosition(pos);
-		mainCam->setDirection(dir);
+		float angle = mainCam->getAngle();
+		angle -= 0.1f;
+		mainCam->setAngle(angle);
+
 		Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
 		imshow("Image", img);
 		auto key = waitKey(5);

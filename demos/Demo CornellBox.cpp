@@ -8,7 +8,7 @@ int main()
 	CScene scene;
 	
 	// Camera
-	auto pCamera = std::make_shared<CCameraPerspective>(Vec3f(278, 273, -800), Vec3f(0, 0, 1), Vec3f(0, 1, 0), 39.3f, Size(512, 512));
+	auto pCamera = std::make_shared<CCameraPerspective>(Size(512, 512), Vec3f(278, 273, -800), Vec3f(0, 0, 1), Vec3f(0, 1, 0), 39.3f);
 	
 	// Shaders
 	auto pShaderLight	= std::make_shared<CShaderFlat>(RGB(1, 1, 1));

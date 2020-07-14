@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 	//scene.add(std::make_shared<CPrimSphere>(pShaderWhite, Vec3f(0, 0.5, 0), 1.5f));
 	
 	// Camera
-	scene.add(std::make_shared<CCameraPerspectiveTarget>(Vec3f(1.5f, 4, 8.4f), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f, Size(720, 720)));
+	scene.add(std::make_shared<CCameraPerspectiveTarget>(Size(720, 720), Vec3f(1.5f, 4, 8.4f), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f));
 	
 	// Tenerife House
 	CSolid house(pShaderWhite, "C:\\Users\\Creator\\iCloudDrive\\Data\\Tenerife House.obj");

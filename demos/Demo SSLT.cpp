@@ -20,7 +20,7 @@ int main() {
 	dragon.transform(t.scale(2.01f).get());
 	scene.add(dragon);
 	
-	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(Vec3f(0, 20, 40), Vec3f(0, 10, 0), Vec3f(0, 1, 0), 45.0f, Size(640, 480));
+	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(Size(640, 480), Vec3f(0, 20, 40), Vec3f(0, 10, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pLightPoint = std::make_shared<CLightPoint>(RGB(1000, 1000, 1000), Vec3f(40, 40, 0));
 	auto pLightSpot = std::make_shared<CLightSpotDirected>(RGB(5000, 5000, 5000), Vec3f(0, 100, 0), Vec3f(0, 0, 0), 15.0f, 30.0f);
 	scene.add(pCamera);
