@@ -1,0 +1,46 @@
+#-----------------------------------------------------------------------------
+#  Configuration for continuous integration service at appveyor.com
+#-----------------------------------------------------------------------------
+version: 1.0.0.{build}
+
+branches:
+  only:
+  - master
+
+# Operating system (build VM template)
+os: Visual Studio 2019
+
+# scripts that are called at very beginning, before repo cloning
+init:
+
+# clone directory
+clone_folder: c:\projects\openrt
+
+platform: x64
+
+#install:
+#  -cmd: choco install OpenCV
+
+build_script:
+  - choco install opencv
+  - cd c:\projects\openrt
+  - md build
+  - cd build
+  - cmake -DOpenCV_DIR=c:\tools\opencv\build -G"Visual Studio 16 Win64" -DUSE_OPENGL=ON ..
+  - msbuild /m /p:Configuration=Release /p:Platform="x64" OpenRT.sln
+
+test_script:
+  - cmd: |-
+      copy C:\tools\opencv\build\x64\vc16\bin\opencv_world???.dll  ".\bin\Release"
+      copy C:\tools\opencv\build\x64\vc16\bin\opencv_world???d.dll ".\bin\Debug"
+      .\bin\Release\Tests.exe --gtest_output=xml:tests.xml > tests.txt
+
+after_test:
+  - ps: |
+      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f "tests.xml" -t 7f81e53e-1ebf-44f8-8b49-54da37b0a0a8
+
+on_finish:
+  - ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path c:\projects\OpenRT\build\tests.xml))
+
