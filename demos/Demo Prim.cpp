@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
 
 	// lights
-	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(-4, 6, 3), false));
-//	scene.add(std::make_shared<CLightPoint>(Vec3f::all(50), Vec3f(0, 10, 0), false));
+	scene.add(std::make_shared<CLightOmni>(Vec3f::all(50), Vec3f(-4, 6, 3), false));
+//	scene.add(std::make_shared<CLightOmni>(Vec3f::all(50), Vec3f(0, 10, 0), false));
 //	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(10, true, true)));
 
 	// camera	

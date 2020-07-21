@@ -51,7 +51,7 @@ namespace rt {
 			return attenuation * m_intensity;
 		}
 		
-		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
+		DllExport virtual size_t getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 		DllExport Vec3f getNormal(const Vec3f& position) const { return m_normal; }
 

@@ -46,7 +46,7 @@ namespace rt {
 
 				for (auto& pLight : m_scene.getLights()) {
 					Vec3f L = Vec3f::all(0);
-					const size_t nSamples = pLight->getNumberOfSamples();
+					const size_t nSamples = pLight->getNumSamples();
 					for (size_t s = 0; s < nSamples; s++) {
 						// get direction to light, and intensity
 						I.hit = ray.hit;	// TODO: double check

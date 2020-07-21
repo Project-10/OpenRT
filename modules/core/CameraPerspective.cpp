@@ -1,4 +1,5 @@
 #include "CameraPerspective.h"
+#include "ray.h"
 #include "macroses.h"
 
 namespace rt

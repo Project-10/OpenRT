@@ -12,7 +12,7 @@ namespace rt {
 		Vec3f							dir;												///< Direction
 		size_t 							counter = 0;										///< Nummer of re-traced rays
 		
-		float							t		= std::numeric_limits<float>::infinity();	///< Current/maximum hit distance
+		double							t		= std::numeric_limits<double>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<const IPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
 		float							u = 0;												///< Barycentric u coordinate
 		float							v = 0;												///< Barycentric v coordinate

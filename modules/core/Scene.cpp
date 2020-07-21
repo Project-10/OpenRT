@@ -13,7 +13,7 @@ namespace rt {
 		std::cout << "\nNumber of Primitives: " << m_vpPrims.size() << std::endl;
 		std::cout << "Number of light sources: " << m_vpLights.size() << std::endl;
 		size_t nSamples = 0;
-		for (const auto& pLight : m_vpLights) nSamples += pLight->getNumberOfSamples();
+		for (const auto& pLight : m_vpLights) nSamples += pLight->getNumSamples();
 		if (pSampler) nSamples *= pSampler->getNumSamples();
 		std::cout << "Rays per Pixel: " << nSamples << std::endl;
 #endif

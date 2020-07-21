@@ -2,9 +2,10 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "ray.h"
+#include "types.h"
 
 namespace rt {
+	struct Ray;
 	// ================================ Camera Interface Class ================================
 	/**
 	 * @brief Basic camera abstract interface class

@@ -42,7 +42,7 @@ namespace rt {
 		/**
 		 * @brief Sets new camera position
 		 * @param pos Camera origin (center of projection)
-		 */
+		 */	
 		DllExport virtual void	setPosition(const Vec3f& pos) { m_pos = pos; }
 		/**
 		 * @brief Sets new camera direction
@@ -71,13 +71,11 @@ namespace rt {
 		 * @return The camera position
 		 */
 		DllExport Vec3f			getPosition(void) const { return m_pos; }
-
 		/**
 		 * @brief Returns the camera direction
 		 * @return The camera direction
 		 */
 		DllExport Vec3f			getDirection(void) const { return m_dir; }
-
 		/**
 		 * @brief Returns the camera up-vector
 		 * @return The camera up-vector

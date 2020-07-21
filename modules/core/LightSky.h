@@ -37,7 +37,7 @@ namespace rt {
 			if (cos_a > 0) return m_intensity / cos_a;
 			return std::nullopt;
 		}
-		DllExport virtual size_t getNumberOfSamples(void) const override { return m_pSampler->getNumSamples(); }
+		DllExport virtual size_t getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 
 

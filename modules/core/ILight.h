@@ -1,3 +1,5 @@
+// Light Source Abstract Interface class
+// Written by Dr. Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
 #include "types.h"
@@ -5,8 +7,11 @@
 namespace rt {
 	struct Ray;
 
+	// ================================ Light Interface Class ================================
 	/**
 	 * @brief Base light source abstract interface class
+	 * @ingroup moduleLight
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class ILight
 	{
@@ -28,6 +33,11 @@ namespace rt {
 		 */
 		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) = 0;
 		/**
+		 * @brief Returns recommended number of samples for the particular light source implementation
+		 * @return The recommended number of samples
+		 */
+		DllExport virtual size_t				getNumSamples(void) const = 0;
+		/**
 		 * @brief Flag indicating if the light source casts shadow or not
 		 * @retval true If the light source casts shadow
 		 * @retval false Otherwise
@@ -41,11 +51,6 @@ namespace rt {
 		 * @brief Turns the shadow casting off
 		 */
 		DllExport void							turnShadowOff(void) { m_shadow = false; }
-		/**
-		 * @brief Returns recommended number of samples for the particular light source implementation
-		 * @return The recommended number of samples 
-		 */
-		DllExport virtual size_t				getNumberOfSamples(void) const { return 1; }
 		
 		
 	private:

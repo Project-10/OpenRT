@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ray.h"
 #include "ILight.h"
 #include "IPrim.h"
 #include "Solid.h"

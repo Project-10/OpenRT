@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	scene.add(house);
 
 	// Light 
-	//scene.add(std::make_shared<CLightPoint>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
+	//scene.add(std::make_shared<CLightOmni>(RGB(10, 10, 10), Vec3f(4, 4, 0)));
 	scene.add(std::make_shared<CLightSky>(Vec3f::all(1.0f)));
 
 //	auto pSkyLight = std::make_shared<CShaderAmbientOccluson>(scene, Vec3f(1, -1, 1), 0.7, samples);

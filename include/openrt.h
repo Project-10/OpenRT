@@ -5,6 +5,13 @@
 #include "core/CameraPerspective.h"
 #include "core/CameraPerspectiveTarget.h"
 
+#include "core/LightOmni.h"
+#include "core/LightSpot.h"
+#include "core/LightSpotTarget.h"
+
+#include "core/LightArea.h"
+#include "core/LightSky.h"
+
 #include "core/PrimSphere.h"
 #include "core/PrimPlane.h"
 #include "core/PrimTriangle.h"
@@ -18,10 +25,6 @@
 #include "core/ShaderFlat.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderEyelight.h"
-
-#include "core/LightPoint.h"
-#include "core/LightArea.h"
-#include "core/LightSky.h"
 
 #include "core/Sampler.h"
 #include "core/Sampler3f.h"
@@ -47,10 +50,14 @@ The OpenRT framework consist of the following essential blocks:
 	- <b>Perspective Camera:</b> @ref rt::CCameraPerspective
 
 @subsubsection sec_main_light Light sources
-	- <b>Point Light:</b> @ref rt::CLightPoint
-	- <b>Spot Light:</b> @ref rt::CLightSpot
+	- <b>Omnidirectional point light source:</b> @ref rt::CLightOmni
+	- <b>Directional spot light source:</b> @ref rt::CLightSpot
 	- <b>Area Light:</b> @ref rt::CLightArea
 	- <b>Sky Light:</b> @ref rt::CLightSky
 
+	@todo Implement class CLightDirect
+	@todo Implement class CLightSpotTarget
+
 */
+
 
