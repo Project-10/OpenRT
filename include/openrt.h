@@ -52,11 +52,10 @@ The OpenRT framework consist of the following essential blocks:
 @subsubsection sec_main_light Light sources
 	- <b>Omnidirectional point light source:</b> @ref rt::CLightOmni
 	- <b>Directional spot light source:</b> @ref rt::CLightSpot
-	- <b>Area Light:</b> @ref rt::CLightArea
-	- <b>Sky Light:</b> @ref rt::CLightSky
+	- <b>Area light source:</b> @ref rt::CLightArea
+	- <b>Skylight (ambient occlusion) light source:</b> @ref rt::CLightSky
 
 	@todo Implement class CLightDirect
-	@todo Implement class CLightSpotTarget
 
 */
 
