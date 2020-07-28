@@ -5,29 +5,76 @@ using namespace rt;
 
 int main(int argc, char* argv[])
 {
-	const Size resolution(800, 600);
+	const Vec3f	bgColor = RGB(0, 0, 0);
+	const Size	resolution = Size(800, 600);
+	const float intensity = 20;
 
-	CScene scene(RGB(0.4f, 0.4f, 0.4f));
+	CScene scene(bgColor);
 
-	auto txt_cb = std::make_shared<CTexture>("../../../data/tnf.jpg");
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40);
+	auto pShaderBall	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.9f, 40.0f);
+	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
+	auto pShaderRed		= std::make_shared<CShaderFlat>(RGB(1, 0, 0));
+	auto pShaderGreen	= std::make_shared<CShaderFlat>(RGB(0, 1, 0));
+	auto pShaderBlue	= std::make_shared<CShaderFlat>(RGB(0, 0, 1));
+
+	//Floor
+	float s = 50;
+	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
+	//Ball
+	scene.add(std::make_shared<CPrimSphere>(pShaderBall, Vec3f(0, 0.75f, 0), 0.75f));
+
+	CSolidQuad 		areaLampRed(pShaderRed, Vec3f(0.5f, 0, 3.001f), Vec3f(-0.5f, 0, 3.001f), Vec3f(-0.5f, 10, 3.001f), Vec3f(0.5f, 10, 3.001f));
+	CSolidQuad 		areaLampGreen(pShaderGreen, Vec3f(2.471f, 0, 1.771f), Vec3f(1.771f, 0, 2.471f), Vec3f(1.771f, 10, 2.471f), Vec3f(2.471f, 10, 1.771f));
+	CSolidQuad 		areaLampBlue(pShaderBlue, Vec3f(3.001f, 0, -0.5f), Vec3f(3.001f, 0, 0.5f), Vec3f(3.001f, 10, 0.5f), Vec3f(3.001f, 10, -0.5f));
+
+	scene.add(areaLampRed);
+	scene.add(areaLampGreen);
+	scene.add(areaLampBlue);
+
+	// camera
+	const float r = 4;
+	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-4, 4, -4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f);
+	auto pLight			= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 10, 0));
+	auto pLightRed		= std::make_shared<CLightArea>(RGB(intensity, 0, 0 ), Vec3f(0.5f, 0, 3), Vec3f(-0.5f, 0, 3), Vec3f(-0.5f, 10, 3), Vec3f(0.5f, 10, 3), std::make_shared<CSamplerStratified>(4, true, true));
+	auto pLightGreen	= std::make_shared<CLightArea>(RGB(0, intensity, 0), Vec3f(2.47f, 0, 1.77f), Vec3f(1.77f, 0, 2.47f), Vec3f(1.77f, 10, 2.47f), Vec3f(2.47f, 10, 1.77f), std::make_shared<CSamplerStratified>(4, true, true));
+	auto pLightBlue		= std::make_shared<CLightArea>(RGB(0, 0, intensity), Vec3f(3, 0, -0.5f), Vec3f(3, 0, 0.5f), Vec3f(3, 10, 0.5f), Vec3f(3, 10, -0.5f), std::make_shared<CSamplerStratified>(4, true, true));
+	
+	scene.add(pCamera);
+	//scene.add(pLight);
+	scene.add(pLightRed);
+	scene.add(pLightGreen);
+	scene.add(pLightBlue);
+
+#ifdef ENABLE_BSP
+	scene.buildAccelStructure();
+#endif
+
+	Timer::start("Rendering... ");
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
+	Timer::stop();
+
+	imshow("image", img);
+	waitKey();
+	return 0;
+}
+
+
+/*
+void foo() {
+
+	auto txt_cb = std::make_shared<CTexture>("../../data/tnf.jpg");
 	
 	
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.5f, 40);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderFloos	= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.5f, 0.5f, 0.0f, 40);
 	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
 	auto pShaderTxt		= std::make_shared<CShaderFlat>(txt_cb);
 	
-	CSolid torus(pShaderFloor, "../../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
+	//CSolid torus(pShaderFloor, "../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
 
-	// primitives
-	const float s = 50;
-	const float h = 0;
-	auto			floor = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, h, 0), normalize(Vec3f(0, 1.0f, 0)));
-//	CSolidQuad 		floor(pShaderFloor, Vec3f(-s, h, -s), Vec3f(-s, h, s), Vec3f(s, h, s), Vec3f(s, h, -s));
-//	CSolidQuad 		floos(pShaderFloos, Vec3f(0, h + 0.005f, -s), Vec3f(0, h + 0.005f, s), Vec3f(s, h + 0.005f, s), Vec3f(s, h + 0.005f, -s));
 	
 	auto			sphere = std::make_shared<CPrimSphere>(pShaderTxt, Vec3f(0, 1, 0), 1);
 	CSolidQuad 		areaLamp(pShaderWhite, Vec3f(-10, 10.01f, -10), Vec3f(10, 10.01f, -10), Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10));
@@ -40,7 +87,7 @@ int main(int argc, char* argv[])
 	
 	//floor->transform(CTransform().rotate(Vec3f(0, 1, 0), -Pif / 6).translate(0, -0.1f, 0).scale(1, -1, 1).get());
 	//sphere->transform(CTransform().rotate(Vec3f(0, 1, 0), -Pif / 6).translate(0, 0, 0).scale(2).get());
-	torus.transform(CTransform().scale(2.0f).get());
+	//torus.transform(CTransform().scale(2.0f).get());
 	//cone1.transform(CTransform().rotate(Vec3f(0, 1, 0), Pif / 2).scale(2, -2.5f, 4).get());
 	//cone2.transform(CTransform().scale(1, -1, 1).get());
 	//cylinder.transform(CTransform().rotate(Vec3f(1, 0, 0), Pif/2).translate(0, 1, 0).get());
@@ -76,36 +123,12 @@ int main(int argc, char* argv[])
 	//scene.add(std::make_shared<CLightOmni>(Vec3f(50, 50, 50), Vec3f(-10, 10, 10), true));
 	//scene.add(std::make_shared<CLightOmni>(Vec3f(50, 50, 50), Vec3f(10, 10, 10), true));
 	//scene.add(std::make_shared<CLightOmni>(Vec3f(50, 50, 50), Vec3f(10, 10, -10), true));
-	scene.add(std::make_shared<CLightOmni>(Vec3f::all(50), Vec3f(0, 4, 10), false));
-	//scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
+	//scene.add(std::make_shared<CLightOmni>(Vec3f::all(50), Vec3f(0, 4, 10), false));
+	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
 
 
-	// camera
-	const float r = 17.5f;
-	Vec3f camPos(sqrt(r), sqrt(r), sqrt(r));
-	scene.add(std::make_shared<CCameraPerspective>(resolution, camPos, normalize(Vec3f(0, 0.5f, 0) - camPos), Vec3f(0, 1, 0), 45));
-	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 9.99f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 45));
-	scene.setActiveCamera(0);
-	
-#ifdef ENABLE_BSP
-	scene.buildAccelStructure();
-#endif
 
-	// render three images with different camera settings
-	Timer::start("Rendering... ");
-	Mat img = scene.render(); //std::make_shared<CSamplerStratified>(4, true, true));
-	Mat depth = scene.renderDepth();
-	Timer::stop();
 	
-	imshow("Image", img);
-	imwrite("cube.jpg", img);
-	
-	depth.convertTo(depth, CV_8UC1, 10);
-	//imshow("Depth", depth);
-	imwrite("cube_depth.jpg", depth);
-	
-	waitKey();
-	return 0;
-}
+}*/
 
 

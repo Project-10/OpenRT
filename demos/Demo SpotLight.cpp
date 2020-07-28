@@ -4,7 +4,9 @@
 using namespace rt;
 
 int main() {
-	CScene scene(Vec3f::all(0.0f));
+	const Vec3f	bgColor = RGB(0, 0, 0);
+	
+	CScene scene(bgColor);
 																			
 	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
 	auto pShaderBall  = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.9f, 40.0f);
