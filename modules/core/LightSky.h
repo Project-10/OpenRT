@@ -4,9 +4,13 @@
 #include "Sampler3f.h"
 
 namespace rt {
+	// ================================ Skylight Class ================================
 	/**
 	 * @brief Sky light sourse class
-	 * @details This class implements Ambient Occlusion idea
+	 * @details This class implements the Ambient Occlusion (AO) method which spearheaded by the film industry for emulating the look of true global illumination by using shaders that calculate 
+	 * the extent to which an area is occluded, or prevented from receiving incoming light. Used alone, an AO shader, such as the separate mental ray Ambient / Reflective Occlusion shader, 
+	 * creates a grayscale output that is dark in areas light cannot reach and bright in areas where it can.
+	 * @author Takundey Gora, T.Gora@jacobs-university.de
 	 */
 	class CLightSky : public ILight
 	{
@@ -14,36 +18,26 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param intensity The emission color and strength of the light source
-		 * @param pSampler Pointer to the sampler to be used with the area light
+		 * @param maxDistance Defines the radius within which the renderer looks for occluding objects. 
+		 * Smaller values restrict the AO effect to small crevices only but are much faster to render. Larger values cover larger areas but render more slowly. 
+		 * @param pSampler Pointer to the sampler to be used with the sky light
+		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightSky(Vec3f intensity, float radius = std::numeric_limits<float>::infinity(), std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true, true), bool castShadow = true)// std::make_shared<CSampler3fTangent>(4,2.0f,-1.0f))
+		DllExport CLightSky(Vec3f intensity, float maxDistance = 4, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true, true), bool castShadow = true)
 			: ILight(castShadow)
 			, m_intensity(intensity)
-			, m_radius(radius)
+			, m_maxDistance(maxDistance > std::numeric_limits<float>::epsilon() ? maxDistance : std::numeric_limits<float>::infinity())
 			, m_pSampler(pSampler)
 		{}
 
-		DllExport virtual std::optional<Vec3f> illuminate(Ray& ray) override
-		{
-			ray.t = 0;
-			Vec3f normal = ray.hit->getNormal(ray);												// normal to the object from which the ray was casted
-			ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);	// sample the hemisphere in respect to the object's normal
-	
-			// ray towards point light position
-			ray.hit = nullptr;
-			ray.t = m_radius;
-
-			float cos_a = ray.dir.dot(normal);													// angle between the object's normal and sample ray
-			if (cos_a > 0) return m_intensity / cos_a;
-			return std::nullopt;
-		}
-		DllExport virtual size_t getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
+		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) override;
+		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 
 
 	private:
-		Vec3f m_intensity;
-		float m_radius;
-		std::shared_ptr<CSampler> m_pSampler;
+		Vec3f						m_intensity;	///< The emission (red, green, blue)
+		float						m_maxDistance;	///< The radius within which the renderer looks for occluding objects
+		std::shared_ptr<CSampler>	m_pSampler;		///< Pointer to the sampler ref @ref CSampler
 	};
 }
