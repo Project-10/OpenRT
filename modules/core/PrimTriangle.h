@@ -5,8 +5,11 @@
 #include "IPrim.h"
 
 namespace rt {
+	// ================================ Triangle Primitive Class ================================
 	/**
-	 * @brief Triangle Geaometrical Primitive class
+	 * @brief Triangle Geometrical Primitive class
+	 * @ingroup modulePrimitive
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CPrimTriangle : public IPrim
 	{
@@ -52,9 +55,9 @@ namespace rt {
 		Vec3f m_a;		///< Position of the first vertex
 		Vec3f m_b;		///< Position of the second vertex
 		Vec3f m_c;		///< Position of the third vertex
-		Vec2f m_ta;		///<	 vertex a texture coordiante
-		Vec2f m_tb;		///< vertex b texture coordiante
-		Vec2f m_tc;		///< vertex c texture coordiante
+		Vec2f m_ta;		///< Vertex a texture coordiante
+		Vec2f m_tb;		///< Vertex b texture coordiante
+		Vec2f m_tc;		///< Vertex c texture coordiante
 		Vec3f m_edge1;	///< Edge AB
 		Vec3f m_edge2;	///< Edge AC
 		Vec3f m_normal;	///< Triangle normal

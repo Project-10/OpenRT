@@ -17,17 +17,18 @@ namespace rt {
 			return false;
 	}
 
-	void CPrimTriangle::transform(const Mat& t)
+	void CPrimTriangle::transform(const Mat& T)
 	{
 		// Transform vertexes
-		m_a = CTransform::point(m_a, t);
-		m_b = CTransform::point(m_b, t);
-		m_c = CTransform::point(m_c, t);
+		m_a = CTransform::point(m_a, T);
+		m_b = CTransform::point(m_b, T);
+		m_c = CTransform::point(m_c, T);
 
 		// Transform normals
-		Mat t1 = t.inv().t();
-		m_normal = normalize(CTransform::vector(m_normal, t1));
+		Mat T1 = T.inv().t();
+		m_normal = normalize(CTransform::vector(m_normal, T1));
 
+		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
 	}

@@ -43,7 +43,7 @@ namespace rt {
 		 * @param[in,out] t0 The distance from ray origin at which the ray enters the scene
 		 * @param[in,out] t1 The distance from ray origin at which the ray leaves the scene
 		 */
-		virtual bool traverse(Ray& ray, float& t0, float& t1)
+		virtual bool traverse(Ray& ray, double& t0, double& t1)
 		{
 			if (isLeaf()) {
 				for (auto pPrim : m_vpPrims)
@@ -51,7 +51,7 @@ namespace rt {
 				return (ray.hit != NULL && ray.t < t1);
 			}
 			else {
-				float d = (m_splitVal - ray.org[m_splitDim]) / ray.dir[m_splitDim];
+				double d = (m_splitVal - ray.org[m_splitDim]) / ray.dir[m_splitDim];
 
 				auto frontNode = (ray.dir[m_splitDim] < 0) ? Right() : Left();
 				auto backNode = (ray.dir[m_splitDim] < 0) ? Left() : Right();

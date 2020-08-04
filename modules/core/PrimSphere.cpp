@@ -6,7 +6,6 @@ namespace rt {
 	bool CPrimSphere::intersect(Ray& ray) const
 	{
 		// mathematical derivation, numerically not very stable, but simple
-		
 		// --> find roots of f(t) = ((R+tD)-C)^2 - r^2
 		// f(t) = (R-C)^2 + 2(R-C)(tD) + (tD)^2 -r^2
 		// --> f(t) = [D^2] t^2 + [2D(R-C)] t + [(R-C)^2 - r^2]
@@ -17,7 +16,8 @@ namespace rt {
 		
 		// use 'abc'-formula for finding root t_1,2 = (-b +/- sqrt(b^2-4ac))/(2a)
 		float inRoot = b * b - 4 * a * c;
-		if (inRoot < 0) return false;
+		if (inRoot < 0) 
+			return false;
 		float root = sqrtf(inRoot);
 		
 		float dist = (-b - root) / (2 * a);
@@ -35,18 +35,20 @@ namespace rt {
 		return true;
 	}
 
+	/// @todo Optimize it
 	bool CPrimSphere::if_intersect(const Ray& ray) const
 	{
 		return intersect(lvalue_cast(Ray(ray)));
 	}
 
-	void CPrimSphere::transform(const Mat& t)
+	void CPrimSphere::transform(const Mat& T)
 	{
 		// Transform origin
-		m_origin = CTransform::point(m_origin, t);
+		m_origin = CTransform::point(m_origin, T);
 		
+		// Transform radius
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
-		r = CTransform::vector(r, t);
+		r = CTransform::vector(r, T);
 		m_radius = norm(r);
 	}
 

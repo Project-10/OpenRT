@@ -48,7 +48,7 @@ namespace rt {
 		 * @param[in,out] t0 The distance from ray origin at which the ray enters the bounding box
 		 * @param[in,out] t1 The distance from ray origin at which the ray leaves the bounding box
 		 */
-		DllExport void clip(const Ray& ray, float& t0, float& t1);
+		DllExport void clip(const Ray& ray, double& t0, double& t1);
 		
 		
 	public:

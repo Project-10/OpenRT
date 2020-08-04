@@ -1,13 +1,17 @@
+// Smoothed Triangle Geaometrical Primitive class
+// Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
 #include "PrimTriangle.h"
-#include "IShader.h"
 #include "Transform.h"
 
 namespace rt {
+	// ================================ Smooth Triangle Primitive Class ================================
 	/**
-	* @brief Triangle Geaometrical Primitive class with interpolation of normal
-	*/
+	 * @brief Triangle Geaometrical Primitive class with interpolation of normal
+	 * @ingroup modulePrimitive
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CPrimTriangleSmooth : public CPrimTriangle
 	{
 	public:
@@ -45,30 +49,8 @@ namespace rt {
 		{}
 		DllExport virtual ~CPrimTriangleSmooth(void) = default;
 		
-		DllExport virtual void transform(const Mat& t) override
-		{
-			// Transform vertexes
-			m_a = CTransform::point(m_a, t);
-			m_b = CTransform::point(m_b, t);
-			m_c = CTransform::point(m_c, t);
-			
-			// Transform normals
-			Mat t1 = t.inv().t();
-			
-			m_na = normalize(CTransform::vector(m_na, t1));
-			m_nb = normalize(CTransform::vector(m_nb, t1));
-			m_nc = normalize(CTransform::vector(m_nc, t1));
-			
-			m_edge1 = m_b - m_a;
-			m_edge2 = m_c - m_a;
-		}
-		
-		DllExport virtual Vec3f getNormal(const Ray& ray) const override
-		{
-			// assume u/v coordinates in ray correspond to beta(u) and gamma(v) barycentric coordinates of 
-			// hitpoint on triangle (have to be stored like this in the intersection code!)
-			return  normalize(ray.u * m_nb + ray.v * m_nc + (1.0f - ray.u - ray.v) * m_na);
-		}
+		DllExport virtual void	transform(const Mat& T) override;
+		DllExport virtual Vec3f	getNormal(const Ray& ray) const override;
 
 
 	private:

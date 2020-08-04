@@ -42,7 +42,7 @@ namespace rt {
 		return true;
 	}
 
-	void CBoundingBox::clip(const Ray& ray, float& t0, float& t1)
+	void CBoundingBox::clip(const Ray& ray, double& t0, double& t1)
 	{
 		float d, den;
 		den = 1.0f / ray.dir.val[0];

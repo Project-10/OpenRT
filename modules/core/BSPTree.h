@@ -77,8 +77,8 @@ namespace rt {
 		{
 			RT_ASSERT(!ray.hit);
 			
-			float t0 = 0;
-			float t1 = ray.t;
+			double t0 = 0;
+			double t1 = ray.t;
 
 			m_bounds.clip(ray, t0, t1);
 
