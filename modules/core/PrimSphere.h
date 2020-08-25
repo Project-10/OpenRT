@@ -36,7 +36,7 @@ namespace rt {
 		
 		
 	private:
-		Vec3f m_origin;	///< Position of the center of the sphere
+		Vec3f m_origin;		///< Position of the center of the sphere
 		float m_radius;	///< Radius of the sphere
 	};
 }

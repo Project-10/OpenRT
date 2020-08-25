@@ -49,7 +49,7 @@ namespace rt {
 		// Transform radius
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
-		m_radius = norm(r);
+		m_radius = static_cast<float>(norm(r));
 	}
 
 	Vec3f CPrimSphere::getNormal(const Ray& ray) const
