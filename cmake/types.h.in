@@ -7,7 +7,6 @@
 #cmakedefine DEBUG_MODE			
 #cmakedefine DEBUG_PRINT_INFO	
 #cmakedefine ENABLE_BSP	
-#cmakedefine ENABLE_SUPERSAMPLING
 #cmakedefine ENABLE_PPL
 #cmakedefine ENABLE_AMP
 
