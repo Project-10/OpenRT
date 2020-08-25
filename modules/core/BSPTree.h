@@ -6,6 +6,16 @@
 
 namespace rt {
 	namespace {
+		// Calculates and return the bounding box, containing the whole scene
+		CBoundingBox calcBounds(const std::vector<ptr_prim_t>& vpPrims)
+		{
+			CBoundingBox res;
+			for (auto pPrim : vpPrims)
+				res.extend(pPrim->calcBounds());
+			return res;
+		}
+
+		// 
 		inline int MaxDim(Vec3f v)
 		{
 			return (v.val[0] > v.val[1]) ? ((v.val[0] > v.val[2]) ? 0 : 2) : ((v.val[1] > v.val[2]) ? 1 : 2);
@@ -20,13 +30,16 @@ namespace rt {
 		 * @param bounds The scene bounding box
 		 * @param vpPrims The vector of pointers to the primitives in the scene
 		 */
-		BSPTree(CBoundingBox& bounds, const std::vector<ptr_prim_t>& vpPrims)
-			: m_bounds(bounds)
-			, m_maxDepth(20)
+		BSPTree(const std::vector<ptr_prim_t>& vpPrims)
+			: m_maxDepth(20)
 			, m_minTri(3)
 			, m_root(nullptr)
 		{
-			m_root = buildTree(bounds, vpPrims, 0);
+			m_bounds = calcBounds(vpPrims);
+#ifdef DEBUG_PRINT_INFO
+			std::cout << "Scene bounds are : " << m_bounds.m_min << " " << m_bounds.m_max << std::endl;
+#endif			
+			m_root = buildTree(m_bounds, vpPrims, 0);
 		}
 		
 		/**

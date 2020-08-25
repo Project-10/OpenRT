@@ -3,6 +3,7 @@
 #pragma once
 
 #include "types.h"
+#include "ray.h"
 
 namespace rt {
 	class CBSPNode

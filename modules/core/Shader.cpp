@@ -51,7 +51,7 @@ namespace rt {
 						// get direction to light, and intensity
 						I.hit = ray.hit;	// TODO: double check
 						auto radiance = pLight->illuminate(I);
-						if (radiance && (!pLight->shadow() || !m_scene.occluded(I))) {
+						if (radiance && (!pLight->shadow() || !m_scene.if_intersect(I))) {
 							// ------ diffuse ------
 							if (m_kd > 0) {
 								float cosLightNormal = I.dir.dot(n);

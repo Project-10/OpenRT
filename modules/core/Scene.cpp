@@ -1,9 +1,52 @@
 #include "Scene.h"
-#include "Sampler.h"
+#include "ray.h"
+#include "Solid.h"
 #include "macroses.h"
 
+//#include "Sampler.h"
+//#include "macroses.h"
+
 namespace rt {
-	Mat CScene::render(std::shared_ptr<CSampler> pSampler) const
+	void CScene::add(const ptr_prim_t pPrim) 
+	{ 
+		m_vpPrims.push_back(pPrim);
+	}
+
+	void CScene::add(const CSolid& solid)
+	{
+		for (const auto& pPrim : solid.getPrims())
+			add(pPrim);
+	}
+
+	void CScene::add(const ptr_light_t pLight) 
+	{ 
+		m_vpLights.push_back(pLight); 
+	}
+
+	void CScene::add(const ptr_camera_t pCamera) 
+	{
+		m_vpCameras.push_back(pCamera);
+		m_activeCamera = m_vpCameras.size() - 1;
+	}
+
+	void CScene::setActiveCamera(size_t activeCamera) 
+	{ 
+		if (activeCamera < m_vpCameras.size())
+			m_activeCamera = activeCamera;
+		else
+			RT_WARNING("Camera index (%zu) exseeds the number of cameras in scene (%zu) and was not set.", activeCamera, m_vpCameras.size());
+	}
+
+	void CScene::buildAccelStructure(void) 
+	{ 
+#ifdef ENABLE_BSP
+		m_pBSPTree = std::make_unique<BSPTree>(m_vpPrims); 
+#else 
+		RT_WARNING("BSP support is not enabled");
+#endif		
+	}
+
+	Mat CScene::render(ptr_sampler_t pSampler) const
 	{
 		ptr_camera_t activeCamera = getActiveCamera();
 		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
@@ -30,7 +73,7 @@ namespace rt {
 			for (int x = 0; x < img.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
 				for (size_t s = 0; s < nSamples; s++) {
-					getActiveCamera()->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
 					pImg[x] += rayTrace(ray);
 				}
 				pImg[x] = (1.0f / nSamples) * pImg[x] ;
@@ -42,20 +85,68 @@ namespace rt {
 		img.convertTo(img, CV_8UC3, 255);
 		return img;
 	}
-								  
-	Mat CScene::renderDepth(void) const {
+			
+	Mat CScene::renderDepth(ptr_sampler_t pSampler) const 
+	{
 		ptr_camera_t activeCamera = getActiveCamera();
 		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
-		Mat depth(activeCamera->getResolution(), CV_32FC1, Scalar(0)); 	// image array
+		Mat depth(activeCamera->getResolution(), CV_64FC1, Scalar(0)); 	// depth-image array
+
+#ifdef ENABLE_PPL
+		concurrency::parallel_for(0, depth.rows, [&](int y) {
+			Ray ray;
+#else
 		Ray ray;
 		for (int y = 0; y < depth.rows; y++) {
-			float* pDepth = depth.ptr<float>(y);
+#endif
+			double* pDepth = depth.ptr<double>(y);
 			for (int x = 0; x < depth.cols; x++) {
-				getActiveCamera()->InitRay(ray, x, y);
-				pDepth[x] = rayTraceDepth(ray);
+				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
+				for (size_t s = 0; s < nSamples; s++) {
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					pDepth[x] += rayTraceDepth(ray);
+				}
+				pDepth[x] = (1.0f / nSamples) * pDepth[x];
 			}
 		}
-
+#ifdef ENABLE_PPL
+		);
+#endif
 		return depth;
 	}
+
+	// -------------------------------------- Service Methods --------------------------------------
+	bool CScene::intersect(Ray& ray) const
+	{
+#ifdef ENABLE_BSP
+		return m_pBSPTree->intersect(ray);
+#else
+		bool hit = false;
+		for (auto& pPrim : m_vpPrims)
+			hit |= pPrim->intersect(ray);
+		return hit;
+#endif
+	}
+
+	bool CScene::if_intersect(const Ray& ray)
+	{
+#ifdef ENABLE_BSP
+		return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));
+#else
+		for (auto& pPrim : m_vpPrims)
+			if (pPrim->if_intersect(ray)) return true;
+		return false;
+#endif
+	}
+
+	Vec3f CScene::rayTrace(Ray& ray) const 
+	{ 
+		return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor; 
+	}
+
+	double CScene::rayTraceDepth(Ray& ray) const 
+	{ 
+		return intersect(ray) ? ray.t : std::numeric_limits<double>::infinity();
+	}
+	
 }

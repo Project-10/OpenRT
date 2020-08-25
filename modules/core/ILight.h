@@ -56,4 +56,6 @@ namespace rt {
 	private:
 		bool	m_shadow;
 	};
+
+	using ptr_light_t = std::shared_ptr<ILight>;
 }

@@ -27,7 +27,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used with the area light
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, std::shared_ptr<CSampler> pSampler = std::make_shared<CSamplerStratified>(4, true), bool castShadow = true)
+		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, ptr_sampler_t pSampler = std::make_shared<CSamplerStratified>(4, true), bool castShadow = true)
 			: CLightOmni(intensity, p0, castShadow)
 			, m_org(p0)
 			, m_edge1(p1 - p0)
@@ -50,11 +50,11 @@ namespace rt {
 
 
 	private:
-		Vec3f						m_org;		///< The origin of the area light source
-		Vec3f						m_edge1;	///< The vector defyning the first edge of the area
-		Vec3f						m_edge2;	///< The vector defyning the second edge of the area
-		double						m_area;		///< Area of the light source
-		Vec3f						m_normal;	///< Normal to the light source surface
-		std::shared_ptr<CSampler>	m_pSampler;	///< Pointer to the sampler ref @ref CSampler
+		Vec3f			m_org;		///< The origin of the area light source
+		Vec3f			m_edge1;	///< The vector defyning the first edge of the area
+		Vec3f			m_edge2;	///< The vector defyning the second edge of the area
+		double			m_area;		///< Area of the light source
+		Vec3f			m_normal;	///< Normal to the light source surface
+		ptr_sampler_t	m_pSampler;	///< Pointer to the sampler ref @ref CSampler
 	};
 }

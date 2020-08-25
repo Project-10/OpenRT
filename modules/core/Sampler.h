@@ -43,6 +43,7 @@ namespace rt {
 #endif
 	};
 
+	using ptr_sampler_t = std::shared_ptr<CSampler>;
 
 	// =============================== Random Sampler ===============================
 	class CSamplerRandom : public CSampler {
