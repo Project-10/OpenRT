@@ -1,6 +1,4 @@
-<img align="left" width="250" height="50" src="doc/openrt_logo.png">
-
-# Open Source Ray Tracing Library
+# <img align="left" width="250" height="50" src="doc/openrt_logo.png"> Open Source Ray Tracing Library
 
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-green.svg)](License.txt)
 [![CodeFactor](https://www.codefactor.io/repository/github/project-10/openrt/badge)](https://www.codefactor.io/repository/github/project-10/openrt)
