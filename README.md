@@ -1,4 +1,4 @@
-<img align="left" src="doc/openrt_logo.png" width="250px;">
+<img align="left" src="doc/openrt_logo.png" width="250px">
 
 # Open Source Ray Tracing Library
 
