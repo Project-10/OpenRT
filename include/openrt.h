@@ -25,6 +25,7 @@
 #include "core/ShaderFlat.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderEyelight.h"
+#include "core/ShaderSSLT.h"
 
 #include "core/Sampler.h"
 #include "core/Sampler3f.h"
