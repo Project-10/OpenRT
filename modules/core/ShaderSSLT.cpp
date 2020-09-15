@@ -7,15 +7,13 @@ namespace rt
 	{
 		Vec3f res = Vec3f::all(0);
 
-		Vec3f color = m_color;
-
 		Ray I(ray.hitPoint(), ray.dir, ray.counter + 1);
-		res = color + reTrace(I);
+		res = m_opacity * m_color + (1.0f - m_opacity) * reTrace(I);
 		return res;
 	}
 
 	Vec3f CShaderSSLT::reTrace(const Ray& ray) const
 	{
-		return ray.counter >= maxRayCounter ? exitColor : m_scene.rayTrace(lvalue_cast(Ray(ray.org, ray.dir, ray.counter)));
+		return ray.counter >= maxRayCounter ? m_exitColor : m_scene.rayTrace(lvalue_cast(Ray(ray.org, ray.dir, ray.counter)));
 	}
 }
