@@ -1,3 +1,5 @@
+// Axis - Aligned Bounding Box (AABB) class
+// Written by Dr. Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
 #include "types.h"
@@ -5,9 +7,11 @@
 namespace rt {
 	struct Ray;
 
-	/**
-	 * @brief Bounding Box class
-	 */
+    // ================================ AABB Class ================================
+    /**
+     * @brief Axis Aligned Bounding Box (AABB) class
+     * @author  Sergey G. Kosov, sergey.kosov@project-10.de
+    */
 	class CBoundingBox
 	{
 	public:
@@ -16,7 +20,7 @@ namespace rt {
 		 * @param minPoint The minimal point defying the size of the bounding box
 		 * @param maxPoint The maximal point defying the size of the bounding box
 		*/
-		DllExport CBoundingBox(Vec3f minPoint = Vec3f::all(std::numeric_limits<float>::infinity()), Vec3f maxPoint = Vec3f::all(-std::numeric_limits<float>::infinity())) 
+		DllExport CBoundingBox(const Vec3f& minPoint = Vec3f::all(std::numeric_limits<float>::infinity()), const Vec3f& maxPoint = Vec3f::all(-std::numeric_limits<float>::infinity()))
 			: m_min(minPoint)
 			, m_max(maxPoint) 
 		{}
@@ -28,10 +32,10 @@ namespace rt {
 		 */
 		DllExport void clear(void);
 		/**
-		 * @brief Extends the bounding box to contain point \b a
-		 * @param a A point
+		 * @brief Extends the bounding box to contain point \b p
+		 * @param p A point
 		 */
-		DllExport void extend(Vec3f a);
+		DllExport void extend(const Vec3f& p);
 		/**
 		 * @brief Extends the bounding box to contain bounding box \b box
 		 * @param box The second bounding box
@@ -48,11 +52,11 @@ namespace rt {
 		 * @param[in,out] t0 The distance from ray origin at which the ray enters the bounding box
 		 * @param[in,out] t1 The distance from ray origin at which the ray leaves the bounding box
 		 */
-		DllExport void clip(const Ray& ray, double& t0, double& t1);
+		DllExport void clip(const Ray& ray, double& t0, double& t1) const;
 		
 		
 	public:
-		Vec3f m_min;	///< The minimal point defying the size of the bounding box
-		Vec3f m_max;	///< The maximal point defying the size of the bounding box
+        Vec3f m_min;	///< The minimal point defying the size of the bounding box
+        Vec3f m_max;	///< The maximal point defying the size of the bounding box
 	};
 }

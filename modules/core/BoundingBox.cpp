@@ -4,12 +4,12 @@
 namespace rt {
 
 	namespace {
-		inline Vec3f Min3f(const Vec3f a, const Vec3f b)
+		inline Vec3f Min3f(const Vec3f& a, const Vec3f& b)
 		{
 			return Vec3f(MIN(a.val[0], b.val[0]), MIN(a.val[1], b.val[1]), MIN(a.val[2], b.val[2]));
 		}
 
-		inline Vec3f Max3f(const Vec3f a, const Vec3f b)
+		inline Vec3f Max3f(const Vec3f& a, const Vec3f& b)
 		{
 			return Vec3f(MAX(a.val[0], b.val[0]), MAX(a.val[1], b.val[1]), MAX(a.val[2], b.val[2]));
 		}
@@ -21,10 +21,10 @@ namespace rt {
 		m_max = Vec3f::all(-std::numeric_limits<float>::infinity());
 	}
 
-	void CBoundingBox::extend(Vec3f a)
+	void CBoundingBox::extend(const Vec3f& p)
 	{
-		m_min = Min3f(a, m_min);
-		m_max = Max3f(a, m_max);
+		m_min = Min3f(p, m_min);
+		m_max = Max3f(p, m_max);
 	}
 
 	void CBoundingBox::extend(const CBoundingBox& box)
@@ -42,9 +42,9 @@ namespace rt {
 		return true;
 	}
 
-	void CBoundingBox::clip(const Ray& ray, double& t0, double& t1)
+	void CBoundingBox::clip(const Ray& ray, double& t0, double& t1) const
 	{
-		float d, den;
+        float d, den;
 		den = 1.0f / ray.dir.val[0];
 		if (ray.dir.val[0] > 0) {
 			if ((d = (m_min.val[0] - ray.org.val[0]) * den) > t0) t0 = d;

@@ -146,7 +146,7 @@ namespace rt {
 		std::vector<ptr_camera_t>		m_vpCameras;				///< Cameras
 		size_t							m_activeCamera	= 0;		///< The index of the active camera
 #ifdef ENABLE_BSP		
-		std::unique_ptr<BSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
+		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
 #endif
 	};
 }

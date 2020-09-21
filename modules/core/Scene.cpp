@@ -40,7 +40,7 @@ namespace rt {
 	void CScene::buildAccelStructure(void) 
 	{ 
 #ifdef ENABLE_BSP
-		m_pBSPTree = std::make_unique<BSPTree>(m_vpPrims); 
+		m_pBSPTree = std::make_unique<CBSPTree>(m_vpPrims); 
 #else 
 		RT_WARNING("BSP support is not enabled");
 #endif		

@@ -26,3 +26,4 @@ out/
 code/
 *.png
 time.bat
+.DS_Store
