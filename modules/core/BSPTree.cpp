@@ -5,59 +5,99 @@
 namespace rt {
     namespace {
         // Calculates and return the bounding box, containing the whole scene
-        CBoundingBox calcBounds(const std::vector<ptr_prim_t>& vpPrims)
+        CBoundingBox calcBoundingBox(const std::vector<ptr_prim_t>& vpPrims)
         {
             CBoundingBox res;
             for (auto pPrim : vpPrims)
-                res.extend(pPrim->calcBounds());
+                res.extend(pPrim->getBoundingBox());
             return res;
         }
 
         // Returns the best dimension index for next split
-        inline int MaxDim(Vec3f v)
+        inline int MaxDim(const Vec3f& v)
         {
             return (v.val[0] > v.val[1]) ? ((v.val[0] > v.val[2]) ? 0 : 2) : ((v.val[1] > v.val[2]) ? 1 : 2);
+        }
+    
+        /**
+         * @brief Clips the ray with the bounding box
+         * @param[in] ray The ray
+         * @param[in] box The bounding box
+         * @param[in,out] t0 The distance from ray origin at which the ray enters the bounding box
+         * @param[in,out] t1 The distance from ray origin at which the ray leaves the bounding box
+         */
+        void clip(const Ray& ray, const CBoundingBox& box, double& t0, double& t1)
+        {
+            float d, den;
+            den = 1.0f / ray.dir.val[0];
+            if (ray.dir.val[0] > 0) {
+                if ((d = (box.getMinPoint().val[0] - ray.org.val[0]) * den) > t0) t0 = d;
+                if ((d = (box.getMaxPoint().val[0] - ray.org.val[0]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (box.getMaxPoint().val[0] - ray.org.val[0]) * den) > t0) t0 = d;
+                if ((d = (box.getMinPoint().val[0] - ray.org.val[0]) * den) < t1) t1 = d;
+            }
+            if (t0 > t1) return;
+
+            den = 1.0f / ray.dir.val[1];
+            if (ray.dir.val[1] > 0) {
+                if ((d = (box.getMinPoint().val[1] - ray.org.val[1]) * den) > t0) t0 = d;
+                if ((d = (box.getMaxPoint().val[1] - ray.org.val[1]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (box.getMaxPoint().val[1] - ray.org.val[1]) * den) > t0) t0 = d;
+                if ((d = (box.getMinPoint().val[1] - ray.org.val[1]) * den) < t1) t1 = d;
+            }
+            if (t0 > t1) return;
+
+            den = 1.0f / ray.dir.val[2];
+            if (ray.dir.val[2] > 0) {
+                if ((d = (box.getMinPoint().val[2] - ray.org.val[2]) * den) > t0) t0 = d;
+                if ((d = (box.getMaxPoint().val[2] - ray.org.val[2]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (box.getMaxPoint().val[2] - ray.org.val[2]) * den) > t0) t0 = d;
+                if ((d = (box.getMinPoint().val[2] - ray.org.val[2]) * den) < t1) t1 = d;
+            }
         }
     }
 
     // Constructor
     CBSPTree::CBSPTree(const std::vector<ptr_prim_t>& vpPrims)
     {
-        m_boundingBox = calcBounds(vpPrims);
+        m_boundingBox = calcBoundingBox(vpPrims);
 #ifdef DEBUG_PRINT_INFO
-        std::cout << "Scene bounds are : " << m_boundingBox.m_min << " " << m_boundingBox.m_max << std::endl;
+        std::cout << "Scene bounds are : " << m_boundingBox << std::endl;
 #endif
         m_root = build(m_boundingBox, vpPrims, 0);
     }
 
     ptr_bspnode_t CBSPTree::build(const CBoundingBox& box, const std::vector<ptr_prim_t>& vpPrims, size_t depth)
     {
-        if (depth > m_maxDepth || vpPrims.size() <= m_minTri) {
-            // could do some optimizations here..
+        // Check for stoppong criteria
+        if (depth > m_maxDepth || vpPrims.size() <= m_minTri)
             return std::make_shared<CBSPNode>(vpPrims);
-        }
 
-        Vec3f diam = box.m_max - box.m_min;
-
-        int splitDim = MaxDim(diam);
-
-        CBoundingBox lBounds = box;
-        CBoundingBox rBounds = box;
-
-        float splitVal = lBounds.m_max[splitDim] = rBounds.m_min[splitDim] = (box.m_min[splitDim] + box.m_max[splitDim]) * 0.5f;
+        int splitDim    = MaxDim(box.getMaxPoint() - box.getMinPoint());                        // Calculate split dimension as the dimension where the aabb is the widest
+        float splitVal  = (box.getMinPoint()[splitDim] + box.getMaxPoint()[splitDim]) / 2;      // Split the aabb exactly in two halfes
+        
+        auto splitBoxes = box.split(splitDim, splitVal);
+        CBoundingBox& lBox = splitBoxes.first;
+        CBoundingBox& rBox = splitBoxes.second;
 
         std::vector<ptr_prim_t> lPrim;
         std::vector<ptr_prim_t> rPrim;
 
         for (auto pPrim : vpPrims) {
-            if (pPrim->calcBounds().overlaps(lBounds))
+            if (pPrim->getBoundingBox().overlaps(lBox))
                 lPrim.push_back(pPrim);
-            if (pPrim->calcBounds().overlaps(rBounds))
+            if (pPrim->getBoundingBox().overlaps(rBox))
                 rPrim.push_back(pPrim);
         }
 
-        auto pLeft  = build(lBounds, lPrim, depth + 1);
-        auto pRight = build(rBounds, rPrim, depth + 1);
+        auto pLeft  = build(lBox, lPrim, depth + 1);
+        auto pRight = build(rBox, rPrim, depth + 1);
 
         return std::make_shared<CBSPNode>(splitVal, splitDim, pLeft, pRight);
     }
@@ -69,9 +109,9 @@ namespace rt {
         double t0 = 0;
         double t1 = ray.t;
 
-        m_boundingBox.clip(ray, t0, t1);
+        clip(ray, m_boundingBox, t0, t1);
 
-        if (t1 - t0 < Epsilon)
+        if (t1 - t0 < Epsilon)      // i.e. if t0 == t1
             return false;
 
         m_root->traverse(ray, t0, t1);

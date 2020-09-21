@@ -59,7 +59,7 @@ namespace rt {
 		return res;
 	}
 
-	CBoundingBox CPrimPlane::calcBounds(void) const
+	CBoundingBox CPrimPlane::getBoundingBox(void) const
 	{
 		Vec3f minPoint = Vec3f::all(-Infty);
 		Vec3f maxPoint = Vec3f::all(Infty);

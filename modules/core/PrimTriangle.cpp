@@ -38,7 +38,7 @@ namespace rt {
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
 
-	CBoundingBox CPrimTriangle::calcBounds(void) const
+	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{
 		CBoundingBox res;
 		res.extend(m_a);

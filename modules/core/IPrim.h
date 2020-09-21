@@ -63,10 +63,10 @@ namespace rt {
 		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
-		 * @brief Returns the bounding box, which contain the primitive
+		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
 		 */
-		DllExport virtual CBoundingBox		calcBounds(void) const = 0;
+		DllExport virtual CBoundingBox		getBoundingBox(void) const = 0;
 		/**
 		 * @brief Sets the new shader to the prim
 		 * @param pShader Pointer to the shader to be applied for the prim
