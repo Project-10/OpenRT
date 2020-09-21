@@ -20,7 +20,7 @@ namespace rt {
 		 * @param minPoint The minimal point defying the size of the bounding box
 		 * @param maxPoint The maximal point defying the size of the bounding box
 		*/
-		DllExport CBoundingBox(const Vec3f& minPoint = Vec3f::all(std::numeric_limits<float>::infinity()), const Vec3f& maxPoint = Vec3f::all(-std::numeric_limits<float>::infinity()))
+		DllExport CBoundingBox(const Vec3f& minPoint = Vec3f::all(Infty), const Vec3f& maxPoint = Vec3f::all(-Infty))
 			: m_min(minPoint)
 			, m_max(maxPoint) 
 		{}

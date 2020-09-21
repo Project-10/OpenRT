@@ -17,8 +17,8 @@ namespace rt {
 
 	void CBoundingBox::clear(void)
 	{
-		m_min = Vec3f::all(std::numeric_limits<float>::infinity());
-		m_max = Vec3f::all(-std::numeric_limits<float>::infinity());
+		m_min = Vec3f::all(Infty);
+		m_max = Vec3f::all(-Infty);
 	}
 
 	void CBoundingBox::extend(const Vec3f& p)

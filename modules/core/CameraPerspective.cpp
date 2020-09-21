@@ -27,7 +27,7 @@ namespace rt
 
 		ray.org = m_pos;
 		ray.dir = normalize(getAspectRatio() * sscx * m_xAxis + sscy * m_yAxis + m_focus * m_zAxis);
-		ray.t	= std::numeric_limits<float>::infinity();
+		ray.t	= std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
 	} 
 }

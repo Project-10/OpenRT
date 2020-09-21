@@ -61,9 +61,8 @@ namespace rt {
 
 	CBoundingBox CPrimPlane::calcBounds(void) const
 	{
-		constexpr float inf = std::numeric_limits<float>::infinity();
-		Vec3f minPoint = Vec3f::all(-inf);
-		Vec3f maxPoint = Vec3f::all(inf);
+		Vec3f minPoint = Vec3f::all(-Infty);
+		Vec3f maxPoint = Vec3f::all(Infty);
 		for (int i = 0; i < 3; i++)
 			if (m_normal.val[i] == 1) {
 				minPoint.val[i] = m_origin.val[i];
