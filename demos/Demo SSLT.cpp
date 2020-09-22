@@ -8,7 +8,7 @@ int main() {
 	
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40);
-	auto pShaderSSLT = std::make_shared<CShaderSSLT>(scene, RGB(0.153f, 0.682f, 0.376f), 0.3f);
+	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(0.153f, 0.682f, 0.376f), 0.3f);
 	
 	float s = 500;
 	//Floor
@@ -30,7 +30,7 @@ int main() {
 
 
 #ifdef ENABLE_BSP
-	scene.buildAccelStructure();
+	scene.buildAccelStructure(25, 5);
 #endif
 
 	Timer::start("Rendering...");

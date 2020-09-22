@@ -28,6 +28,9 @@ namespace rt {
 		 */
 		DllExport CScene(Vec3f bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
+#ifdef ENABLE_BSP	
+			, m_pBSPTree(new CBSPTree())
+#endif
 		{}
 		DllExport CScene(const CScene&) = delete;
 		DllExport ~CScene(void) = default;
@@ -68,11 +71,15 @@ namespace rt {
 		 */
 		DllExport void					setActiveCamera(size_t activeCamera);
 		/**
-		 * @brief Build the BSP tree for the current geometry present in scene
+		 * @brief (Re-) Build the BSP tree for the current geometry present in scene
 		 * @details This function takes into accound all the primitives in scene and builds the BSP tree with the root node in \b m_pBSPTree variable.
 		 * If the geometry in the scene was updated the BSP tree should be re-built
+		 * @param maxDepth The maximum allowed depth of the tree.
+		 * Increasing the depth of the tree may speed-up rendering, but increse the memory consumption.
+		 * @param minPrimitives The minimum number of primitives in a leaf-node.
+		 * This parameters should be alway above 1.
 		 */
-		DllExport void					buildAccelStructure(void);
+		DllExport void					buildAccelStructure(size_t maxDepth = 20, size_t minPrimitives = 3);
 		/**
 		 * @brief Renders the view from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.

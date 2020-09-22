@@ -37,10 +37,10 @@ namespace rt {
 			RT_WARNING("Camera index (%zu) exseeds the number of cameras in scene (%zu) and was not set.", activeCamera, m_vpCameras.size());
 	}
 
-	void CScene::buildAccelStructure(void) 
+	void CScene::buildAccelStructure(size_t maxDepth, size_t minPrimitives)
 	{ 
 #ifdef ENABLE_BSP
-		m_pBSPTree = std::make_unique<CBSPTree>(m_vpPrims); 
+		m_pBSPTree->build(m_vpPrims, maxDepth, minPrimitives);
 #else 
 		RT_WARNING("BSP support is not enabled");
 #endif		

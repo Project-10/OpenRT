@@ -64,25 +64,46 @@ namespace rt {
         }
     }
 
-    // Constructor
-    CBSPTree::CBSPTree(const std::vector<ptr_prim_t>& vpPrims)
+    void CBSPTree::build(const std::vector<ptr_prim_t>& vpPrims, size_t maxDepth, size_t minPrimitives)
     {
-        m_boundingBox = calcBoundingBox(vpPrims);
+        m_treeBoundingBox = calcBoundingBox(vpPrims);
+        m_maxDepth = maxDepth;
+        m_minPrimitives = minPrimitives;
 #ifdef DEBUG_PRINT_INFO
-        std::cout << "Scene bounds are : " << m_boundingBox << std::endl;
+        std::cout << "Scene bounds are : " << m_treeBoundingBox << std::endl;
 #endif
-        m_root = build(m_boundingBox, vpPrims, 0);
+        m_root = build(m_treeBoundingBox, vpPrims, 0);
+    }
+
+    bool CBSPTree::intersect(Ray& ray) const
+    {
+        RT_ASSERT(!ray.hit);
+        
+        double t0 = 0;
+        double t1 = ray.t;
+
+        clip(ray, m_treeBoundingBox, t0, t1);
+
+        if (t1 - t0 < Epsilon)      // i.e. if t0 == t1
+            return false;
+
+        m_root->intersect(ray, t0, t1);
+
+        if (ray.hit)
+            return true;
+
+        return false;
     }
 
     ptr_bspnode_t CBSPTree::build(const CBoundingBox& box, const std::vector<ptr_prim_t>& vpPrims, size_t depth)
     {
         // Check for stoppong criteria
-        if (depth > m_maxDepth || vpPrims.size() <= m_minTri)
+        if (depth > m_maxDepth || vpPrims.size() <= m_minPrimitives)
             return std::make_shared<CBSPNode>(vpPrims);
 
-        int splitDim    = MaxDim(box.getMaxPoint() - box.getMinPoint());                        // Calculate split dimension as the dimension where the aabb is the widest
-        float splitVal  = (box.getMinPoint()[splitDim] + box.getMaxPoint()[splitDim]) / 2;      // Split the aabb exactly in two halfes
-        
+        int splitDim = MaxDim(box.getMaxPoint() - box.getMinPoint());                        // Calculate split dimension as the dimension where the aabb is the widest
+        float splitVal = (box.getMinPoint()[splitDim] + box.getMaxPoint()[splitDim]) / 2;      // Split the aabb exactly in two halfes
+
         auto splitBoxes = box.split(splitDim, splitVal);
         CBoundingBox& lBox = splitBoxes.first;
         CBoundingBox& rBox = splitBoxes.second;
@@ -97,30 +118,10 @@ namespace rt {
                 rPrim.push_back(pPrim);
         }
 
-        auto pLeft  = build(lBox, lPrim, depth + 1);
+        auto pLeft = build(lBox, lPrim, depth + 1);
         auto pRight = build(rBox, rPrim, depth + 1);
 
-        return std::make_shared<CBSPNode>(splitVal, splitDim, pLeft, pRight);
-    }
-
-    bool CBSPTree::intersect(Ray& ray) const
-    {
-        RT_ASSERT(!ray.hit);
-        
-        double t0 = 0;
-        double t1 = ray.t;
-
-        clip(ray, m_boundingBox, t0, t1);
-
-        if (t1 - t0 < Epsilon)      // i.e. if t0 == t1
-            return false;
-
-        m_root->traverse(ray, t0, t1);
-
-        if (ray.hit)
-            return true;
-
-        return false;
+        return std::make_shared<CBSPNode>(splitDim, splitVal, pLeft, pRight);
     }
 
 }
