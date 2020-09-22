@@ -15,12 +15,6 @@ namespace rt {
 		}
 	}
 
-	void CBoundingBox::clear(void)
-	{
-		m_minPoint = Vec3f::all(Infty);
-		m_maxPoint = Vec3f::all(-Infty);
-	}
-
 	void CBoundingBox::extend(const Vec3f& p)
 	{
 		m_minPoint = Min3f(p, m_minPoint);
