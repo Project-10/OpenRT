@@ -36,6 +36,12 @@
 
 #include "core/LightSpot.h"
 
+#ifdef WIN32
+const std::string dataPath = "../../data/";
+#else
+const std::string dataPath = "../../../data/";
+#endif
+
 /**
 @mainpage Introduction
 @section sec_main Open-source Ray-Tracing (OpenRT) C++ library

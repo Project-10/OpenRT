@@ -5,7 +5,7 @@ using namespace rt;
 
 int main() 
 {
-	const Vec3f	bgColor = RGB(0, 0, 0);
+	const Vec3f	bgColor = RGB(255, 255, 255);
 	const Size	resolution = Size(800, 600);
 	const float intensity = 1000;
 
@@ -23,9 +23,9 @@ int main()
 	RT_WARNING("BSP is not enabled");
 #endif // !ENABLE_BSP
 	// Stanford Dragon
-	CSolid dragon(pShaderDragon, "..\\..\\data\\Stanford Dragon.obj");
+	CSolid dragon(pShaderDragon, dataPath + "Stanford Dragon.obj");
 	CTransform t;
-	dragon.transform(t.scale(2.01f).rotate(Vec3f(0, 1, 0), 45).get());
+	dragon.transform(t.scale(2.51f).rotate(Vec3f(0, 1, 0), 45).get());
 	scene.add(dragon);
 	
 
@@ -44,9 +44,9 @@ int main()
 	scene.buildAccelStructure();
 	
 	Timer::start("Rendering... ");
-	Mat img;// = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
-	Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4, true, true));
-	depth.convertTo(img, CV_8UC1);
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
+	//Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4, true, true));
+	//depth.convertTo(img, CV_8UC1);
 	Timer::stop();
 
 	imshow("image", img);

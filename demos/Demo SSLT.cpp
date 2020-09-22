@@ -15,7 +15,7 @@ int main() {
 	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
 	
 	// Stanford Dragon
-	CSolid dragon(pShaderSSLT, "..\\..\\data\\Stanford Dragon.obj");
+	CSolid dragon(pShaderSSLT, dataPath + "Stanford Dragon.obj");
 	CTransform t;
 	dragon.transform(t.scale(2.01f).get());
 	scene.add(dragon);
@@ -34,7 +34,7 @@ int main() {
 #endif
 
 	Timer::start("Rendering...");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(2));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
 	Timer::stop();
 	imshow("image", img);
 	waitKey();

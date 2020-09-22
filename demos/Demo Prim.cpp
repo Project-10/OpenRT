@@ -5,12 +5,13 @@ using namespace rt;
 
 int main(int argc, char* argv[])
 {
+	const Vec3f	bgColor = RGB(0, 0, 0);
 	const Size resolution(800, 600);
 
-	CScene scene(Vec3f::all(0.0f));
+	CScene scene(bgColor);
 
 	// textures
-	auto pTextureEarth = std::make_shared<CTexture>("../../data/1_earth_8k.jpg");
+	auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
 
 	// matherials
 	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
