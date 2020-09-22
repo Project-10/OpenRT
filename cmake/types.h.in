@@ -55,6 +55,11 @@ template <class T>  T& lvalue_cast(T&& t) { return t; }
 #endif
 
 namespace rt { 
-    static const size_t maxRayCounter = @MAX_RAY_COUNTER@;
+	class IPrim;
+	using ptr_prim_t 	= std::shared_ptr<IPrim>;
+    class CBSPNode;
+    using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
+	
+	static const size_t maxRayCounter = @MAX_RAY_COUNTER@;
 #define RGB(r, g, b)  Vec3f((b), (g), (r))
 }
