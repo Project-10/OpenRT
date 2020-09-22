@@ -1,4 +1,5 @@
 #include "BSPNode.h"
+#include "ray.h"
 
 namespace rt {
     bool CBSPNode::traverse(Ray& ray, double& t0, double& t1)

@@ -3,9 +3,9 @@
 #pragma once
 
 #include "BSPNode.h"
+#include "BoundingBox.h"
 
 namespace rt {
-
     // ================================ BSP Tree Class ================================
     /**
      * @brief Binary Space Partitioning (BSP) tree class

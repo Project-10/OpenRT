@@ -3,11 +3,9 @@
 #pragma once
 
 #include "types.h"
-#include "ray.h"
 
 namespace rt {
-    class CBSPNode;
-    using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
+	struct Ray;
     
     // ================================ BSP Node Class ================================
     /**

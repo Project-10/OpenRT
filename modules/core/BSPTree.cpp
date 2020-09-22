@@ -1,5 +1,6 @@
 #include "BSPTree.h"
-#include "BoundingBox.h"
+#include "IPrim.h"
+#include "ray.h"
 #include "macroses.h"
 
 namespace rt {
