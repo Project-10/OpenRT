@@ -33,17 +33,19 @@ namespace rt {
 			: CBSPNode(std::nullopt, splitDim, splitVal, left, right)
 		{}
 		CBSPNode(const CBSPNode&) = delete;
-		virtual ~CBSPNode(void) = default;
+		~CBSPNode(void) = default;
 		const CBSPNode& operator=(const CBSPNode&) = delete;
 
 		/**
 		 * @brief Traverses the ray \b ray and checks for intersection with a primitive
 		 * @details If the intersection is found, \b ray.t is updated
 		 * @param[in,out] ray The ray
-		 * @param[in,out] t0 The distance from ray origin at which the ray enters the scene
-		 * @param[in,out] t1 The distance from ray origin at which the ray leaves the scene
+		 * @param[in] t0 The distance from ray origin at which the ray enters the scene
+		 * @param[in] t1 The distance from ray origin at which the ray leaves the scene
+		 * @retval true If ray \b ray intersects any object
+		 * @retval false otherwise
 		 */
-        virtual bool intersect(Ray& ray, double& t0, double& t1) const;
+        bool intersect(Ray& ray, double t0, double t1) const;
 		/**
 		 * @brief Returns the pointer to the \a left child
 		 * @returns The pointer to the root-node of the \a left sub-tree

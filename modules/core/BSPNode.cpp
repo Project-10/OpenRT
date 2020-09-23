@@ -2,14 +2,15 @@
 #include "ray.h"
 
 namespace rt {
-    bool CBSPNode::intersect(Ray& ray, double& t0, double& t1) const
+    bool CBSPNode::intersect(Ray& ray, double t0, double t1) const
     {
         if (isLeaf()) {
-            for (auto pPrim : m_vpPrims)
+            for (auto& pPrim : m_vpPrims)
                 pPrim->intersect(ray);
-            return (ray.hit && ray.t < t1);
+            return (ray.hit && ray.t < t1 + Epsilon);
         }
         else {
+            // distnace from ray origin to the split plane of the current volume (may be negative)
             double d = (m_splitVal - ray.org[m_splitDim]) / ray.dir[m_splitDim];
 
             auto frontNode = (ray.dir[m_splitDim] < 0) ? Right() : Left();
