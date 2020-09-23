@@ -51,12 +51,11 @@ int main()
 	scene.add(pLightGreen);
 	scene.add(pLightBlue);
 
-#ifdef ENABLE_BSP
-	scene.buildAccelStructure();
-#endif
+
+	scene.buildAccelStructure(30, 3);
 
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(1));
 	Timer::stop();
 
 	imshow("image", img);
