@@ -36,7 +36,7 @@ namespace rt {
 	private:
 		const bool					m_renewable;
 		bool						m_needGeneration = true;
-#ifdef ENABLE_PPL
+#ifdef ENABLE_PDP
 		thread_local static size_t	m_idx;
 #else
 		size_t 						m_idx = 0;

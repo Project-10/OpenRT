@@ -61,14 +61,13 @@ namespace rt {
 		std::cout << "Rays per Pixel: " << nSamples << std::endl;
 #endif
 		
-#ifdef ENABLE_PPL
-		concurrency::parallel_for(0, img.rows, [&](int y) {
-			Ray ray;
+#ifdef ENABLE_PDP
+		parallel_for_(Range(0, img.rows), [&](const Range& range) {
 #else
-		Ray ray;
-		for (int y = 0; y < img.rows; y++) {
-			//printf("%.2f%%\n", static_cast<float>(100 * y)/img.rows);
+		const Range range(0, img.rows);
 #endif
+		Ray ray;
+		for (int y = range.start; y < range.end; y++) {
 			Vec3f* pImg = img.ptr<Vec3f>(y);
 			for (int x = 0; x < img.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
@@ -76,11 +75,11 @@ namespace rt {
 					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
 					pImg[x] += rayTrace(ray);
 				}
-				pImg[x] = (1.0f / nSamples) * pImg[x] ;
+				pImg[x] = (1.0f / nSamples) * pImg[x];
 			}
 		}
-#ifdef ENABLE_PPL
-		);
+#ifdef ENABLE_PDP
+		});
 #endif
 		img.convertTo(img, CV_8UC3, 255);
 		return img;
@@ -92,13 +91,13 @@ namespace rt {
 		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
 		Mat depth(activeCamera->getResolution(), CV_64FC1, Scalar(0)); 	// depth-image array
 
-#ifdef ENABLE_PPL
-		concurrency::parallel_for(0, depth.rows, [&](int y) {
-			Ray ray;
+#ifdef ENABLE_PDP
+		parallel_for_(Range(0, depth.rows), [&](const Range& range) {
 #else
+		const Range range(0, depth.rows);
+#endif
 		Ray ray;
 		for (int y = 0; y < depth.rows; y++) {
-#endif
 			double* pDepth = depth.ptr<double>(y);
 			for (int x = 0; x < depth.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
@@ -109,8 +108,8 @@ namespace rt {
 				pDepth[x] = (1.0f / nSamples) * pDepth[x];
 			}
 		}
-#ifdef ENABLE_PPL
-		);
+#ifdef ENABLE_PDP
+			});
 #endif
 		return depth;
 	}

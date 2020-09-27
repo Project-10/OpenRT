@@ -24,9 +24,9 @@ int main()
 	RT_WARNING("BSP is not enabled");
 #endif // !ENABLE_BSP
 	// Stanford Dragon
-	CSolid dragon(pShaderGlass, dataPath + "Stanford Dragon.obj");
+	CSolid dragon(pShaderDragon, dataPath + "Stanford Dragon.obj");
 	CTransform t;
-	dragon.transform(t.scale(2.51f).rotate(Vec3f(0, 1, 0), 45).get());
+	dragon.transform(t.scale(2.01f).rotate(Vec3f(0, 1, 0), 45).get());
 	scene.add(dragon);
 	
 
@@ -34,18 +34,18 @@ int main()
 	float r = 35;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f::all(r), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pLight		= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 2 * r, 0));
-	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(2, true, true));
+	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(4, true, true));
 	
 	
 	scene.add(pCamera);
-	scene.add(pLight);
-//	scene.add(pLightSky);
+//	scene.add(pLight);
+	scene.add(pLightSky);
 
 	
 	scene.buildAccelStructure(20, 3);
 	
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
 	//Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4, true, true));
 	//depth.convertTo(img, CV_8UC1);
 	Timer::stop();

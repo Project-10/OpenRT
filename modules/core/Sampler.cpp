@@ -2,7 +2,7 @@
 #include "macroses.h"
 
 namespace rt {
-#ifdef ENABLE_PPL
+#ifdef ENABLE_PDP
 thread_local size_t CSampler::m_idx = 0;
 #endif
 
