@@ -70,7 +70,7 @@ option(ENABLE_BSP "Use Binary Space Partitioning (BSP) Tree for optimized ray tr
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(modules/core)
-#add_subdirectory(tests)
+add_subdirectory(tests)
 add_subdirectory(demos)
 
 # ===============================
