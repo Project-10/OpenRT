@@ -1,36 +1,56 @@
 #include "PrimSphere.h"
-#include "ray.h"
+#include "Ray.h"
 #include "Transform.h"
+#include "macroses.h"
 
 namespace rt {
 	bool CPrimSphere::intersect(Ray& ray) const
 	{
-		// mathematical derivation, numerically not very stable, but simple
+		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
+#if 1
+		// geometrical derivation
+		Vec3f L = m_origin - ray.org;
+
+		double tb = static_cast<double>(L.dot(ray.dir));
+		if (tb > -Epsilon && tb < Epsilon)	// if tb \in (-Epsilon; Epsilon)
+			return false;
+
+		double h2 = static_cast<double>(L.dot(L)) - tb * tb;
+		if (h2 > r2)					// no intersection
+			return false;
+
+		double delta = sqrt(r2 - h2);
+		double t0 = tb - delta;
+		double t1 = tb + delta;
+#else
+		// analytical derivation, numerically not very stable, but simple
 		// --> find roots of f(t) = ((R+tD)-C)^2 - r^2
 		// f(t) = (R-C)^2 + 2(R-C)(tD) + (tD)^2 -r^2
 		// --> f(t) = [D^2] t^2 + [2D(R-C)] t + [(R-C)^2 - r^2]
 		Vec3f diff = ray.org - m_origin;
-		float a = ray.dir.dot(ray.dir);
-		float b = 2 * ray.dir.dot(diff);
-		float c = diff.dot(diff) - m_radius * m_radius;
-		
+		double a = 1; // static_cast<double>(ray.dir.dot(ray.dir));	// must be equal to 1, since ray.dir must be normalized
+		double b = 2 * static_cast<double>(ray.dir.dot(diff));
+		double c = static_cast<double>(diff.dot(diff)) - r2;
+
 		// use 'abc'-formula for finding root t_1,2 = (-b +/- sqrt(b^2-4ac))/(2a)
-		float inRoot = b * b - 4 * a * c;
-		if (inRoot < 0) 
+		double inRoot = b * b - 4 * a * c;
+		if (inRoot < 0)
 			return false;
-		float root = sqrtf(inRoot);
-		
-		float dist = (-b - root) / (2 * a);
-		if (dist > ray.t)
-			return false;
-		
-		if (dist < Epsilon) {
-			dist = (-b + root) / (2 * a);
-			if (dist < Epsilon || dist > ray.t)
+		double root = sqrt(inRoot);
+		double t0 = (-b - root) / (2 * a);
+		double t1 = (-b + root) / (2 * a);
+#endif
+		RT_ASSERT(t0 <= t1);
+
+		if (t0 > ray.t) return false;
+
+		if (t0 < 0) {
+			t0 = 0;
+			if (t1 < Epsilon || t1 > ray.t) 
 				return false;
 		}
-		
-		ray.t = dist;
+
+		ray.t = t0 > Epsilon ? t0 : t1;
 		ray.hit = shared_from_this();
 		return true;
 	}
@@ -44,7 +64,9 @@ namespace rt {
 	void CPrimSphere::transform(const Mat& T)
 	{
 		// Transform origin
-		m_origin = CTransform::point(m_origin, T);
+		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+		o = CTransform::point(o, T);	// transltion of the point
+		m_origin += o;					// update the sphere's origin
 		
 		// Transform radius
 		Vec3f r = m_radius * normalize(Vec3f::all(1));

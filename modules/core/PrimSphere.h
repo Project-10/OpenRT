@@ -20,7 +20,7 @@ namespace rt {
 		 * @param origin Position of the center of the sphere
 		 * @param radius Radius of the sphere
 		 */
-		DllExport CPrimSphere(ptr_shader_t pShader, Vec3f origin, float radius)
+		DllExport CPrimSphere(ptr_shader_t pShader, const Vec3f& origin, float radius)
 			: IPrim(pShader)
 			, m_origin(origin)
 			, m_radius(radius)
@@ -33,10 +33,10 @@ namespace rt {
 		DllExport virtual Vec3f 		getNormal(const Ray& ray) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); }
-		
-		
+
+
 	private:
 		Vec3f m_origin;		///< Position of the center of the sphere
-		float m_radius;	///< Radius of the sphere
+		float m_radius;		///< Radius of the sphere
 	};
 }
