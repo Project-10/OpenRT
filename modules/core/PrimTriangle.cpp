@@ -52,7 +52,7 @@ namespace rt {
 	{
 		const Vec3f pvec = ray.dir.cross(m_edge2);
 		const float det = m_edge1.dot(pvec);
-		if (fabs(det) < Epsilon)
+		if (fabs(det) < std::numeric_limits<float>::epsilon())
 			return std::nullopt;
 
 		const float inv_det = 1.0f / det;
