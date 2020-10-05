@@ -1,5 +1,5 @@
 #include "LightOmni.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
 	std::optional<Vec3f> CLightOmni::illuminate(Ray& ray)

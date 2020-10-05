@@ -5,19 +5,29 @@
 #include "IPrim.h"
 
 namespace rt {
-	/// Basic ray structure
+	class CScene;
+	// ================================ Ray Structure ================================
+	/**
+	 * @brief Basic ray structure
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	struct Ray
 	{
-		Vec3f							org;												///< Origin
-		Vec3f							dir;												///< Direction
-		size_t 							counter = 0;										///< Nummer of re-traced rays
+		Vec3f							org;												///< %Ray origin
+		Vec3f							dir;												///< %Ray direction
+		size_t 							counter;											///< Number of re-traces
 		
 		double							t		= std::numeric_limits<double>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<const IPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
-		float							u = 0;												///< Barycentric u coordinate
-		float							v = 0;												///< Barycentric v coordinate
+		float							u		= 0;										///< Barycentric u coordinate
+		float							v		= 0;										///< Barycentric v coordinate
 		
-		// Constructor
+		/**
+		 * @brief Constructor
+		 * @param _org %Ray origin
+		 * @param _dir %Ray direction
+		 * @param _counter Number of re-traces
+		 */
 		explicit Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0), size_t _counter = 0)
 			: org(_org)
 			, dir(_dir)
@@ -25,25 +35,33 @@ namespace rt {
 		{}
 		
 		/**
+		 * @brief Returns the hitpoint of the ray
+		 * @details The hitpoint is calculated as \f$ \vec{o} + t\vec{d} \f$
+		 * @return The hitpoint
 		 */
-		inline Vec3f 				hitPoint(void) const { return org + dir * t; }
+		Vec3f 				hitPoint(void) const;
 		/**
+		 * @brief Creates and returns the reflected ray
+		 * @details This function calculates the reflected ray at the hitpoint of the surface with the normal \b normal
+		 * @param normal Normal vector at the ray's hitpoint
+		 * @return The reflected ray
 		 */
-		inline Ray					reflected(Vec3f normal) const {
-			return Ray(hitPoint(), normalize(dir - 2 * normal.dot(dir) * normal), counter + 1);
-		}
+		Ray					reflected(Vec3f normal) const;
 		/**
+		 * @brief Creates and returns the refracted ray
+		 * @details This function calculates the refracted ray at the hitpoint of the surface with the normal \b normal
+		 * @param normal Normal vector at the ray's hitpoint
+		 * @param k The refractive index
+		 * @return The refracted ray
 		 */
-		inline std::optional<Ray>	refracted(Vec3f normal, float k) const {
-			float cos_alpha = -dir.dot(normal);
-			float sin_2_alpha = 1.0f - cos_alpha * cos_alpha;
-			float k_2_sin_2_alpha = k * k * sin_2_alpha;
-			if (k_2_sin_2_alpha <= 1) {
-				float cos_beta = sqrtf(1.0f - k * k * sin_2_alpha);
-				return Ray(hitPoint(), normalize((k * cos_alpha - cos_beta) * normal + k * dir), counter + 1);
-			} else
-				return std::nullopt;
-		}
-		
+		std::optional<Ray>	refracted(Vec3f normal, float k) const;
+		/**
+		 * @brief Traces the given ray and shades it
+		 * @details This function implicetly creates a new ray with the increased by one counter and traces it within the scene \b scene
+		 * @note This is an auxiliary function to perform recursive ray-tracing
+		 * @param scene The reference to the scene
+		 * @return The color value of the shaded ray
+		 */
+		Vec3f				reTrace(const CScene& scene) const;
 	};
 }

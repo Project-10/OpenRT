@@ -1,32 +1,34 @@
 #pragma once
 
 #include "ShaderFlat.h"
-#include "Scene.h"
 
 namespace rt {
+	class CScene;
+	// ================================ Flat Shader Class ================================
 	/**
-		 * @brief Subsurface light transport shader
-		 */
+	 * @brief Sub-surface light transport shader class
+	 * @ingroup moduleShader
+	 * @author Ezana T. Geressu, E.Geressu@jacobs-university.de
+	 */
 	class CShaderSSLT : public CShaderFlat {
-	private:
-		CScene& m_scene;
-		const Vec3f m_exitColor = RGB(0.4f, 0.4f, 0.4f);
-		const Vec3f	m_color = Vec3f::all(0.5f);
-		float m_opacity;
-
 	public:
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 * @param color The color of the material
-		 * 
+		 * @param opacity The opacity of the material
 		 */
-		DllExport CShaderSSLT(CScene& scene, Vec3f color, float opacity = 0.5f) : m_scene(scene),
-			m_color(color),
-			m_opacity(opacity)
+		DllExport CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity) 
+			: CShaderFlat(color)
+			, m_scene(scene)
+			, m_opacity(opacity)
 		{}
 
 		DllExport Vec3f shade(const Ray& ray) const override;
-		Vec3f reTrace(const Ray& ray) const;
+
+
+	private:
+		const CScene& m_scene;
+		const float m_opacity;
 	};
 };

@@ -120,7 +120,7 @@ namespace rt {
 		 * @retval true If point \b ray.org is occluded
 		 * @retval false otherwise
 		 */
-		bool							if_intersect(const Ray& ray);
+		bool							if_intersect(const Ray& ray) const;
 		/**
 		 * @brief Traces the given ray and shades it
 		 * @note This method is to be used only in OpenRT shaders

@@ -1,12 +1,16 @@
+// Flat Shader class
+// Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
 #include "IShader.h"
-#include "ray.h"
 #include "Texture.h"
 
 namespace rt {
+	// ================================ Flat Shader Class ================================
 	/**
 	 * @brief Flat shader class
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CShaderFlat : public IShader
 	{
@@ -17,17 +21,19 @@ namespace rt {
 		 * @param color The color of the object
 		 */
 		DllExport CShaderFlat(const Vec3f& color) : m_color(color) {}
-		DllExport CShaderFlat(const ptr_texture_t pTexture = nullptr) : m_pTexture(pTexture) {}
+		/**
+		 * @brief Constructor
+		 * @details This is a light-source-free shader
+		 * @param pTexture Pointer to the texture
+		 */
+		DllExport CShaderFlat(const ptr_texture_t pTexture) : m_pTexture(pTexture) {}
 		DllExport virtual ~CShaderFlat(void) = default;
 
-		DllExport virtual Vec3f shade(const Ray& ray) const override
-		{
-			return m_pTexture ? m_pTexture->getTexel(ray.hit->getTextureCoords(ray)) : m_color;
-		}
+		DllExport virtual Vec3f shade(const Ray& ray) const override;
 
 
 	private:
-		const Vec3f 		m_color		= Vec3f::all(0.5f);
+		const Vec3f 		m_color;
 		const ptr_texture_t m_pTexture	= nullptr;
 	};
 }

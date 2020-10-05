@@ -1,10 +1,7 @@
 #include "Scene.h"
-#include "ray.h"
+#include "Ray.h"
 #include "Solid.h"
 #include "macroses.h"
-
-//#include "Sampler.h"
-//#include "macroses.h"
 
 namespace rt {
 	void CScene::add(const ptr_prim_t pPrim) 
@@ -127,7 +124,7 @@ namespace rt {
 #endif
 	}
 
-	bool CScene::if_intersect(const Ray& ray)
+	bool CScene::if_intersect(const Ray& ray) const 
 	{
 #ifdef ENABLE_BSP
 		return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));

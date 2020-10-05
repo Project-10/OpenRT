@@ -1,5 +1,5 @@
 #include "PrimTriangleSmooth.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
 	void CPrimTriangleSmooth::transform(const Mat& T)

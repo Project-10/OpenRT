@@ -1,9 +1,8 @@
 #include "Shader.h"
 #include "Scene.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
-	const static Vec3f exitColor	 = RGB(0.4f, 0.4f, 0.4f);	// errors area
 	const static Vec3f ambientColor	 = RGB(1, 1, 1);			// ambient radiance
 	const static Vec3f specularColor = RGB(1, 1, 1);			// white highlight;	
 	
@@ -72,22 +71,17 @@ namespace rt {
 
 			// ------ reflection ------
 			if (m_km > 0) 
-				res += m_km * reTrace(reflected);
+				res += m_km * reflected.reTrace(m_scene);
 
 			// ------ refraction ------
 			if (m_kt > 0) {
 				Ray refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
-				res += m_kt * reTrace(refracted);
+				res += m_kt * refracted.reTrace(m_scene);
 			}
 		} // ns
 		
 		res = (1.0f / nNormalSamples) * res;
 		return res;
-	}
-
-	Vec3f CShader::reTrace(const Ray& ray) const
-	{
-		return ray.counter >= maxRayCounter ? exitColor : m_scene.rayTrace(lvalue_cast(Ray(ray.org, ray.dir, ray.counter)));
 	}
 }
 

@@ -1,10 +1,15 @@
+// Eyelight class
+// Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
 #include "ShaderFlat.h"
 
 namespace rt {
+	// ================================ Flat Shader Class ================================
 	/**
 	 * @brief Eye-light shader class
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CShaderEyelight : public CShaderFlat
 	{
@@ -14,14 +19,11 @@ namespace rt {
 		 * @details This is a texture-free and light-source-free shader
 		 * @param color The color of the object
 		 */
-		DllExport CShaderEyelight(Vec3f color = RGB(0.5f, 0.5f, 0.5f))
+		DllExport CShaderEyelight(const Vec3f& color = RGB(0.5f, 0.5f, 0.5f))
 			: CShaderFlat(color)
 		{}
 		DllExport virtual ~CShaderEyelight(void) = default;
 
-		DllExport virtual Vec3f shade(const Ray& ray) const override
-		{
-			return CShaderFlat::shade(ray) * fabs(ray.dir.dot(ray.hit->getNormal(ray)));
-		}
+		DllExport virtual Vec3f shade(const Ray& ray) const override;
 	};
 }

@@ -1,5 +1,5 @@
 #include "LightSpot.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
 	std::optional<Vec3f> CLightSpot::illuminate(Ray& ray) {

@@ -7,7 +7,12 @@
 
 namespace rt {
 	class CScene;
-	
+	// ================================ General Shader Class ================================
+	/**
+	 * @brief Flat shader class
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CShader : public CShaderFlat
 	{
 	public:
@@ -24,7 +29,7 @@ namespace rt {
 		 * @param refractiveIndex The refractive index of the medium (\a e.g. for glass use 1.517)
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
-		DllExport CShader(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr )
+		DllExport CShader(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr )
 			: CShaderFlat(color)
 			, m_scene(scene)
 			, m_ka(ka)
@@ -36,7 +41,20 @@ namespace rt {
 			, m_refractiveIndex(refractiveIndex)
 			, m_pSampler(pSampler)
 		{}
-		DllExport CShader(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr)
+		/**
+		 * @brief Constructor
+		 * @param scene The reference to the scene
+		 * @param pTexture Pointer to the texture
+		 * @param ka The ambient coefficient
+		 * @param kd The diffuse reflection coefficient
+		 * @param ks The specular refelection coefficient
+		 * @param ke The shininess exponent
+		 * @param km The perfect reflection (mirror) coefficient
+		 * @param kt The perfect transmission coefficient
+		 * @param refractiveIndex The refractive index of the medium (\a e.g. for glass use 1.517)
+		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
+		 */
+		DllExport CShader(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr)
 			: CShaderFlat(pTexture)
 			, m_scene(scene)
 			, m_ka(ka)
@@ -54,10 +72,7 @@ namespace rt {
 	
 	
 	private:
-		Vec3f reTrace(const Ray& ray) const;
-		
-	private:
-		CScene& m_scene;
+		const CScene& m_scene;		///< Reference to the scene object
 		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
@@ -68,10 +83,16 @@ namespace rt {
 		
 		float m_refractiveIndex;	///< The refractive index for transmitted rays
 		
-		ptr_sampler_t	m_pSampler;
+		ptr_sampler_t	m_pSampler;	///< Pointer to the sampler to be used for perturbing the shape normal during shading
 	};
 
-
+	// ================================ Glass Shader Class ================================
+	/**
+	 * @brief Glass shader 
+	 * @details Fully transparent shader
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CShaderGlass : public CShader
 	{
 	public:
@@ -80,11 +101,16 @@ namespace rt {
 		 * @param scene The reference to the scene
 		 * @param refractiveIndex The refractive index of the medium (for glass use 1.517)
 		 */
-		DllExport CShaderGlass(CScene& scene, float refractiveIndex) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 0, 1, refractiveIndex) {}
+		DllExport CShaderGlass(const CScene& scene, float refractiveIndex) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 0, 1, refractiveIndex) {}
 		DllExport virtual ~CShaderGlass(void) = default;
 	};
 
-
+	// ================================ Mirror Shader Class ================================
+	/**
+	 * @brief Mirror shader
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CShaderMirror : public CShader
 	{
 	public:
@@ -92,17 +118,40 @@ namespace rt {
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 */
-		DllExport CShaderMirror(CScene& scene) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 1, 0, 0) {}
+		DllExport CShaderMirror(const CScene& scene) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 1, 0, 0) {}
 		DllExport virtual ~CShaderMirror(void) = default;
 	};
 
-	
+	// ================================ Phong Shader Class ================================
+	/**
+	 * @brief Phong shader
+	 * @ingroup moduleShader
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CShaderPhong : public CShader
 	{
 	public:
-		DllExport CShaderPhong(CScene& scene, Vec3f color, float ka, float kd, float ks, float ke)
+		/**
+		 * @brief Constructor
+		 * @param scene The reference to the scene
+		 * @param color The color of the object
+		 * @param ka The ambient coefficient
+		 * @param kd The diffuse reflection coefficient
+		 * @param ks The specular refelection coefficient
+		 * @param ke The shininess exponent
+		 */
+		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
 			: CShader(scene, color, ka, kd, ks, ke, 0, 0, 0) {}
-		DllExport CShaderPhong(CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
+		/**
+		 * @brief Constructor
+		 * @param scene The reference to the scene
+		 * @param pTexture Pointer to the texture
+		 * @param ka The ambient coefficient
+		 * @param kd The diffuse reflection coefficient
+		 * @param ks The specular refelection coefficient
+		 * @param ke The shininess exponent
+		 */
+		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
 			: CShader(scene, pTexture, ka, kd, ks, ke, 0, 0, 0) {}
 		DllExport virtual ~CShaderPhong(void) = default;
 	};

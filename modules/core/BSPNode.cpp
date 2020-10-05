@@ -1,5 +1,5 @@
 #include "BSPNode.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
     bool CBSPNode::intersect(Ray& ray, double t0, double t1) const

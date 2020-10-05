@@ -1,5 +1,5 @@
 #include "Solid.h"
-#include "ray.h"
+#include "Ray.h"
 #include "PrimTriangleSmooth.h"
 #include "Shader.h"
 #include "Transform.h"

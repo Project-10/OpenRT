@@ -67,6 +67,15 @@ The OpenRT framework consist of the following essential blocks:
 	- <b>Plane:</b> @ref rt::CPrimPlane
 	- <b>Sphere:</b> @ref rt::CPrimSphere
 	- <b>Triangle:</b> @ref rt::CPrimTriangle
+
+@subsubsection sec_main_shaders Shaders
+	- <b>Flat:</b> @ref rt::CShaderFlat
+	- <b>Eye Light:</b> @ref rt::CShaderEyelight
+	- <b>Chrome:</b> @ref rt::CShaderChrome
+	- <b>Glass:</b> @ref rt::CShaderGlass
+	- <b>Mirror:</b> @ref rt::CShaderMirror
+	- <b>Phong:</b> @ref rt::CShaderPhong
+	- <b>General Purpose Shader:</b> @ref rt::CShader
 */
 
 /**

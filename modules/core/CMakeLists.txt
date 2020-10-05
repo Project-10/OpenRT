@@ -19,13 +19,19 @@ source_group("Source Files\\Geometry\\Primitives\\plane" FILES "PrimPlane.h" "Pr
 source_group("Source Files\\Geometry\\Primitives\\sphere" FILES "PrimSphere.h" "PrimSphere.cpp")
 source_group("Source Files\\Geometry\\Primitives\\triangle" FILES "PrimTriangle.h" "PrimTriangle.cpp" "PrimTriangleSmooth.h" "PrimTriangleSmooth.cpp")
 source_group("Source Files\\Geometry\\Solids" FILES "Solid.h" "Solid.cpp" "SolidQuad.h" "SolidBox.h" "SolidCone.h" "SolidCylinder.h")
-source_group("Source Files\\Shaders" FILES "IShader.h" "Shader.h" "Shader.cpp" "ShaderFlat.h" "ShaderEyelight.h" "ShaderChrome.h" "ShaderSSLT.h" "ShaderSSLT.cpp")
+source_group("Source Files\\Shaders" FILES "IShader.h")
+source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp")
+source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
+source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrome.cpp")
+source_group("Source Files\\Shaders\\sslt" FILES "ShaderSSLT.h" "ShaderSSLT.cpp")
+source_group("Source Files\\Shaders\\phong" FILES "Shader.h" "Shader.cpp")
 source_group("Source Files\\Scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\Common\\BSP Tree" FILES "BSPNode.h" "BSPNode.cpp" "BSPTree.h" "BSPTree.cpp" "BoundingBox.h" "BoundingBox.cpp")
 source_group("Source Files\\Common\\Samplers" FILES "Sampler.h" "Sampler.cpp" "Sampler3f.h" "Sampler3f.cpp")
 source_group("Source Files\\Common\\Transform" FILES "Transform.h" "Transform.cpp")
 source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp")
-source_group("Source Files\\Common\\Utilities" FILES "ray.h" "random.h" "timer.h")
+source_group("Source Files\\Common\\Ray" FILES "Ray.h" "Ray.cpp")
+source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h")
 
 
 

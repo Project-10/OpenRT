@@ -1,5 +1,5 @@
 #include "LightSky.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt{
 	std::optional<Vec3f> CLightSky::illuminate(Ray& ray) 

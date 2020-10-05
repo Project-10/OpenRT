@@ -1,5 +1,5 @@
 #include "LightArea.h"
-#include "ray.h"
+#include "Ray.h"
 
 namespace rt {
 	std::optional<Vec3f> CLightArea::illuminate(Ray& ray)
