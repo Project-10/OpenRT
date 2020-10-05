@@ -5,7 +5,7 @@
 #include "types.h"
 
 namespace rt {
-
+	struct Ray;
     // ================================ AABB Class ================================
     /**
      * @brief Axis-Aligned Bounding Box (AABB) class
@@ -52,7 +52,15 @@ namespace rt {
 		 * @param box The secind bounding box to be checked with
 		 */
 		bool overlaps(const CBoundingBox& box) const;
-		
+        /**
+         * @brief Clips the ray with the bounding box
+         * @details If ray \b ray does not intersect the bounding box, resulting t1 will be smaller than t0
+		 * @note This is actually a ray - aabb intersection algorithm
+         * @param[in] ray The ray
+         * @param[in,out] t0 The distance from ray origin at which the ray enters the bounding box
+         * @param[in,out] t1 The distance from ray origin at which the ray leaves the bounding box
+         */
+		void clip(const Ray& ray, double& t0, double& t1) const;
         /**
          * @brief Returns the minimal point defying the size of the bounding box
          * @returns The minimal point defying the size of the bounding box

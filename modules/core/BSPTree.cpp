@@ -1,6 +1,6 @@
 #include "BSPTree.h"
 #include "IPrim.h"
-#include "ray.h"
+#include "Ray.h"
 #include "macroses.h"
 
 namespace rt {
@@ -18,50 +18,6 @@ namespace rt {
         int MaxDim(const Vec3f& v)
         {
             return (v.val[0] > v.val[1]) ? ((v.val[0] > v.val[2]) ? 0 : 2) : ((v.val[1] > v.val[2]) ? 1 : 2);
-        }
-    
-        /**
-         * @brief Clips the ray with the bounding box
-         * @details If ray \b ray does not intersect the bounding box, resulting t1 will be smaller than t0
-         * @param[in] ray The ray
-         * @param[in] box The bounding box
-         * @param[in,out] t0 The distance from ray origin at which the ray enters the bounding box
-         * @param[in,out] t1 The distance from ray origin at which the ray leaves the bounding box
-         */
-        void clip(const Ray& ray, const CBoundingBox& box, double& t0, double& t1)
-        {
-            float d, den;
-            den = 1.0f / ray.dir.val[0];
-            if (ray.dir.val[0] > 0) {
-                if ((d = (box.getMinPoint().val[0] - ray.org.val[0]) * den) > t0) t0 = d;
-                if ((d = (box.getMaxPoint().val[0] - ray.org.val[0]) * den) < t1) t1 = d;
-            }
-            else {
-                if ((d = (box.getMaxPoint().val[0] - ray.org.val[0]) * den) > t0) t0 = d;
-                if ((d = (box.getMinPoint().val[0] - ray.org.val[0]) * den) < t1) t1 = d;
-            }
-            if (t0 > t1) return;
-
-            den = 1.0f / ray.dir.val[1];
-            if (ray.dir.val[1] > 0) {
-                if ((d = (box.getMinPoint().val[1] - ray.org.val[1]) * den) > t0) t0 = d;
-                if ((d = (box.getMaxPoint().val[1] - ray.org.val[1]) * den) < t1) t1 = d;
-            }
-            else {
-                if ((d = (box.getMaxPoint().val[1] - ray.org.val[1]) * den) > t0) t0 = d;
-                if ((d = (box.getMinPoint().val[1] - ray.org.val[1]) * den) < t1) t1 = d;
-            }
-            if (t0 > t1) return;
-
-            den = 1.0f / ray.dir.val[2];
-            if (ray.dir.val[2] > 0) {
-                if ((d = (box.getMinPoint().val[2] - ray.org.val[2]) * den) > t0) t0 = d;
-                if ((d = (box.getMaxPoint().val[2] - ray.org.val[2]) * den) < t1) t1 = d;
-            }
-            else {
-                if ((d = (box.getMaxPoint().val[2] - ray.org.val[2]) * den) > t0) t0 = d;
-                if ((d = (box.getMinPoint().val[2] - ray.org.val[2]) * den) < t1) t1 = d;
-            }
         }
     }
 
@@ -82,15 +38,16 @@ namespace rt {
 
         double t0 = 0;
         double t1 = ray.t;
-        clip(ray, m_treeBoundingBox, t0, t1);
+        m_treeBoundingBox.clip(ray, t0, t1);
         if (t1 < t0) return false;  // no intersection with the bounding box
+
         return m_root->intersect(ray, t0, t1);
     }
 
     ptr_bspnode_t CBSPTree::build(const CBoundingBox& box, const std::vector<ptr_prim_t>& vpPrims, size_t depth)
     {
         // Check for stoppong criteria
-        if (depth > m_maxDepth || vpPrims.size() <= m_minPrimitives)
+        if (depth >= m_maxDepth || vpPrims.size() <= m_minPrimitives)
             return std::make_shared<CBSPNode>(vpPrims);                                     // => Create a leaf node and break recursion
 
         // else -> prepare for creating a branch node

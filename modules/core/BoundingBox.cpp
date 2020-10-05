@@ -1,4 +1,5 @@
 #include "BoundingBox.h"
+#include "Ray.h"
 #include "macroses.h"
 
 namespace rt {
@@ -47,5 +48,47 @@ namespace rt {
 		}
 		return true;
 	}
+
+    void CBoundingBox::clip(const Ray& ray, double& t0, double& t1) const
+    {
+        float d, den;
+        if (ray.dir.val[0] != 0) {
+            den = 1.0f / ray.dir.val[0];
+            if (ray.dir.val[0] > 0) {
+                if ((d = (m_minPoint.val[0] - ray.org.val[0]) * den) > t0) t0 = d;
+                if ((d = (m_maxPoint.val[0] - ray.org.val[0]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (m_maxPoint.val[0] - ray.org.val[0]) * den) > t0) t0 = d;
+                if ((d = (m_minPoint.val[0] - ray.org.val[0]) * den) < t1) t1 = d;
+            }
+            if (t0 > t1) return;
+        }
+
+        if (ray.dir.val[1] != 0) {
+            den = 1.0f / ray.dir.val[1];
+            if (ray.dir.val[1] > 0) {
+                if ((d = (m_minPoint.val[1] - ray.org.val[1]) * den) > t0) t0 = d;
+                if ((d = (m_maxPoint.val[1] - ray.org.val[1]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (m_maxPoint.val[1] - ray.org.val[1]) * den) > t0) t0 = d;
+                if ((d = (m_minPoint.val[1] - ray.org.val[1]) * den) < t1) t1 = d;
+            }
+            if (t0 > t1) return;
+        }
+
+        if (ray.dir.val[2] != 0) {
+            den = 1.0f / ray.dir.val[2];
+            if (ray.dir.val[2] > 0) {
+                if ((d = (m_minPoint.val[2] - ray.org.val[2]) * den) > t0) t0 = d;
+                if ((d = (m_maxPoint.val[2] - ray.org.val[2]) * den) < t1) t1 = d;
+            }
+            else {
+                if ((d = (m_maxPoint.val[2] - ray.org.val[2]) * den) > t0) t0 = d;
+                if ((d = (m_minPoint.val[2] - ray.org.val[2]) * den) < t1) t1 = d;
+            }
+        }
+    }
 }
 
