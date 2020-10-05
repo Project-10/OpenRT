@@ -39,7 +39,7 @@ using namespace cv;
 static const double	Pi	= 3.1415926;			///< Pi number
 static const float	Pif	= 3.1415926f;			///< Pi number
 static const float	Infty 	= std::numeric_limits<float>::infinity();
-static const float	Epsilon = 1E-3f;
+static const float	Epsilon = 1E-2f;
 
 template <class T>  T& lvalue_cast(T&& t) { return t; }
 #ifdef _WIN32
@@ -56,6 +56,7 @@ namespace rt {
     class CBSPNode;
     using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
 	
-	static const size_t maxRayCounter = @MAX_RAY_COUNTER@;
-#define RGB(r, g, b)  Vec3f((b), (g), (r))
+#define RGB(r, g, b)  Vec3f((b), (g), (r))	
+	static const size_t maxRayCounter	= @MAX_RAY_COUNTER@;
+	static const Vec3f	exitColor		= RGB(0.4f, 0.4f, 0.4f);
 }
