@@ -3,9 +3,9 @@
 #pragma once
 
 #include "types.h"
-#include "macroses.h"
 
 namespace rt {
+	// ================================ Texture Class ================================
 	/**
 	 * @brief Texture class
 	 * @author Dr. Sergey G. Kosov, sergey.kosov@project-10.de
@@ -15,37 +15,28 @@ namespace rt {
 		/**
 		 * @brief Default Constructor
 		 */
-		DllExport CTexture(void) : Mat()
-		{}
+		DllExport CTexture(void) : Mat() {}
 		/**
 		 * @brief Constructor
+		 * @param fileName The path to the texture file
 		 */
-		DllExport CTexture(const std::string& fileName) : CTexture(imread(fileName))
-		{
-			RT_ASSERT_MSG(!empty(), "Can't read file %s", fileName.c_str());
-		}
+		DllExport CTexture(const std::string& fileName);
 		/**
 		 * @brief Constructor
+		 * @param img The texture image
 		 */
-		DllExport CTexture(const Mat& img) : Mat(img)
-		{
-			if (!empty()) {
-				RT_ASSERT_MSG(img.channels() == 3, "Can't create texture from %d-channels images. A 3-channels image is needed.", img.channels());
-				if (img.type() != CV_32FC3)
-					(*this).convertTo(*this, CV_32FC3, 1.0 / 255);
-			}
-		}
+		DllExport CTexture(const Mat& img);
 		DllExport CTexture(const CTexture&) = delete;
 		DllExport ~CTexture(void) = default;
 		DllExport const CTexture& operator=(const CTexture&) = delete;
 		
 		/**
-		 * @brief Returns the texture element with coordinates \b uv
-		 * @param uv The element coordinates in the texture space
+		 * @brief Returns the texture element with coordinates \b (uv)
+		 * @param uv The textel coordinates in the texture space, \f$ u,v\in [-1; 1 ] \f$
 		 * @return The texture elment (color)
 		 */
 		DllExport Vec3f getTexel(const Vec2f& uv) const;
 	};
 
-using ptr_texture_t = std::shared_ptr<CTexture>;
+	using ptr_texture_t = std::shared_ptr<CTexture>;
 }
