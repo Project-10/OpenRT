@@ -20,9 +20,7 @@ int main()
 	// Floor
 	float s = 50;
 	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
-#ifndef ENABLE_BSP
-	RT_WARNING("BSP is not enabled");
-#endif // !ENABLE_BSP
+
 	// Stanford Dragon
 	CSolid dragon(pShaderDragon, dataPath + "Stanford Dragon.obj");
 	CTransform t;
