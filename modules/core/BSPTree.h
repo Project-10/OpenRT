@@ -48,9 +48,9 @@ namespace rt {
 
 		
 	private:
-		CBoundingBox 	m_treeBoundingBox;		///<
-		size_t			m_maxDepth;				///< The maximum allowed depth of the tree
-		size_t			m_minPrimitives;		///< The minimum number of primitives in a leaf-node
-		ptr_bspnode_t   m_root = nullptr;		///<
+		CBoundingBox 	m_treeBoundingBox;			///< The scene bounding box
+		size_t			m_maxDepth		= 0;		///< The maximum allowed depth of the tree
+		size_t			m_minPrimitives = 0;		///< The minimum number of primitives in a leaf-node
+		ptr_bspnode_t   m_root			= nullptr;	///< Pointer to the root node of the BSP tree
 	};
 }

@@ -15,7 +15,7 @@ int main()
 	// Shaders
 	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
 	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderGlass = std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// Floor
 	float s = 50;

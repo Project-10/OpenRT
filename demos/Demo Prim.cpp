@@ -6,7 +6,7 @@ using namespace rt;
 int main(int argc, char* argv[])
 {
 	const Vec3f	bgColor = RGB(0, 0, 0);
-	const Size resolution(640, 480);
+	const Size resolution(800, 800);
 
 	CScene scene(bgColor);
 
@@ -15,25 +15,25 @@ int main(int argc, char* argv[])
 	auto pTextureB13	= std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// matherials
-	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40);
-	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40);
-	auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40);
+	auto pShaderTop  	= std::make_shared<CShaderPhong>(scene, RGB(0.90f, 0.75f, 0.70f), 0.5f, 0.5f, 0.0f, 40.0f);
+	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.0f, 40.0f);
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.5f, 0.0f, 40.0f);
+	auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderChrome	= std::make_shared<CShaderChrome>(scene, std::make_shared<CSamplerStratified>(4, true, true));
-	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2, 80, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// primitives
 	auto floor = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0));
-	scene.add(floor);
+	//scene.add(floor);
 /*	float s = 100;
 	scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(s, 0, s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)))*/;
 
 
 	float s = 10;
-	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-s, 10.1f, -s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
-	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(s, 10.1f, s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
+	//scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-s, 10.1f, -s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
+	//scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(s, 10.1f, s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
 
 	// --- cube ---
 //	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 2, -1)));
@@ -55,19 +55,20 @@ int main(int argc, char* argv[])
 	CTransform t;
 
 	// --- B13 ---
-	auto b13 = std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 1.0f, 80), Vec3f(-3, 1, -1), 1);
-	scene.add(std::make_shared<CPrimSphere>(pShaderTop, Vec3f::all(0), 50));
-	scene.add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(0, 1.0f, 0), 1));
-	scene.add(b13);
-	auto earth		= std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4);
+//	auto b13 = std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 1.0f, 80.0f), Vec3f(-3, 1, -1), 1);
+//	scene.add(std::make_shared<CPrimSphere>(pShaderTop, Vec3f::all(0), 50));
+//	scene.add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(0, 1.0f, 0), 1));
+//	scene.add(b13);
+	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(Vec3f::all(1)), Vec3f::all(0), 3.0f));
+	auto earth		= std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4.0f);
 	auto cylinder	= CSolidCylinder(pShaderEarth, Vec3f(0, 0, 0), 4, 4, 5, 36, true);
 	auto cone		= CSolidCone(pShaderEarth, Vec3f(0, 0, 0), 4, 5, 5, 24, true);
 //	auto cube		= CSolidBox(pShaderFloorTxt, Vec3f(0, 1, 0), 1);
 	//cylinder.transform(CTransform().reflectY().reflectX().get());
 //	scene.add(earth);
-//	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40), Vec3f(2, 1.8f, -3), 2));
-//	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
-//	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
+//	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1),   0.2f, 0.5f, 0.5f, 40.0f), Vec3f(2, 1.8f, -3), 2));
+//	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(0, 1, 1), 0.2f, 0.5f, 0.5f, 40.0f), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
+//	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40.0f), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
 
 	// lights
 	scene.add(std::make_shared<CLightOmni>(Vec3f::all(30), Vec3f(-4, 6, 3), true));
@@ -76,12 +77,12 @@ int main(int argc, char* argv[])
 
 	// camera	
 	const float r = 10;
-	auto mainCam = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 0, r), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 60);
+	auto mainCam = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 0, r), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 60.0f);
 	scene.add(mainCam);
-	scene.add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-8, 3, 8), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45));
-	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45));
+	scene.add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-8, 3, 8), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f));
+	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45.0f));
 	
-	scene.setActiveCamera(1);
+	scene.setActiveCamera(0);
 
 	scene.buildAccelStructure(0, 3);
 
