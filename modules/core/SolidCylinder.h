@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Solid.h"
-#include "PrimTriangleSmooth.h"
+#include "PrimTriangle.h"
 
 namespace rt {
 	class CSolidCylinder : public CSolid {

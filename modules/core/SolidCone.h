@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Solid.h"
-#include "PrimTriangleSmooth.h"
+#include "PrimTriangle.h"
 
 namespace rt {
 	class CSolidCone : public CSolid {
@@ -63,12 +63,12 @@ namespace rt {
 				// Top Sides: triangles
 				if (height >= 0) {
 					if (smooth)
-						add(std::make_shared<CPrimTriangleSmooth>(pShader,
-																  org + top,
-																  p1 + h0 * (top - radius * dir1),
-																  p0 + h0 * (top - radius * dir0),
-																  Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0),
-																  normalize(n0 + n1), n1, n0));
+						add(std::make_shared<CPrimTriangle>(pShader,
+															org + top,
+															p1 + h0 * (top - radius * dir1),
+															p0 + h0 * (top - radius * dir0),
+															Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0),
+															normalize(n0 + n1), n1, n0));
 					else
 						add(std::make_shared<CPrimTriangle>(pShader,
 															org + top,
@@ -78,12 +78,12 @@ namespace rt {
 				}
 				else {
 					if (smooth)
-						add(std::make_shared<CPrimTriangleSmooth>(pShader,
-																  org + top,
-																  p0 + h0 * (top - radius * dir0),
-																  p1 + h0 * (top - radius * dir1),
-																  Vec2f(0.5f, 0), Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0),
-																  normalize(n0 + n1), n0, n1));
+						add(std::make_shared<CPrimTriangle>(pShader,
+															org + top,
+															p0 + h0 * (top - radius * dir0),
+															p1 + h0 * (top - radius * dir1),
+															Vec2f(0.5f, 0), Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0),
+															normalize(n0 + n1), n0, n1));
 					else
 						add(std::make_shared<CPrimTriangle>(pShader,
 															org + top,

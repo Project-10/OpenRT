@@ -27,12 +27,23 @@ namespace rt {
 		// Transform normals
 		Mat T1 = T.inv().t();
 		m_normal = normalize(CTransform::vector(m_normal, T1));
+		if (m_na) m_na = normalize(CTransform::vector(m_na.value(), T1));
+		if (m_nb) m_nb = normalize(CTransform::vector(m_nb.value(), T1));
+		if (m_nc) m_nc = normalize(CTransform::vector(m_nc.value(), T1));
 
 		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
 	}
 	
+	Vec3f CPrimTriangle::getNormal(const Ray& ray) const
+	{
+		if (m_na && m_nb && m_nc)
+			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
+		else
+			return m_normal;
+	}
+
 	Vec2f CPrimTriangle::getTextureCoords(const Ray& ray) const
 	{
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
