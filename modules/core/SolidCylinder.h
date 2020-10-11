@@ -18,7 +18,7 @@ namespace rt {
 		 * @param sides The number of sides
 		 * @param smooth Flag indicating whether the normals should be smoothed
 		 */
-		DllExport CSolidCylinder(ptr_shader_t pShader = std::make_shared<CShaderEyelight>(), const Vec3f& org = Vec3f::all(0), float radius = 1, float height = 1, size_t height_segments = 1, size_t sides = 24, bool smooth = true) : CSolid(org)
+		DllExport CSolidCylinder(const ptr_shader_t pShader = std::make_shared<CShaderEyelight>(), const Vec3f& org = Vec3f::all(0), float radius = 1, float height = 1, size_t height_segments = 1, size_t sides = 24, bool smooth = true) : CSolid(org)
 		{
 			const Vec3f top(0, height, 0);		// The top point
 			Vec3f dir(1, 0, 0);					// Initial direction

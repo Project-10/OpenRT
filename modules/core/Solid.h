@@ -14,7 +14,7 @@ namespace rt {
 		 * @param pShader Pointer to the shader to be use with the parsed object
 		 * @param fileName The full path to the .obj file
 		 */
-		DllExport CSolid(ptr_shader_t pShader, const std::string& fileName);
+		DllExport CSolid(const ptr_shader_t pShader, const std::string& fileName);
 		DllExport CSolid(const CSolid&) = delete;
 		DllExport virtual ~CSolid(void) = default;
 		DllExport CSolid& operator=(const CSolid&) = delete;

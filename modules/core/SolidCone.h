@@ -22,7 +22,7 @@ namespace rt {
 		 * @param sides The number of sides
 		 * @param smooth Flag indicating whether the normals should be smoothed
 		 */
-		DllExport CSolidCone(ptr_shader_t pShader, Vec3f org, float radius, float height, size_t height_segments = 1, size_t sides = 24, bool smooth = true ) : CSolid(org)
+		DllExport CSolidCone(const ptr_shader_t pShader, Vec3f org, float radius, float height, size_t height_segments = 1, size_t sides = 24, bool smooth = true ) : CSolid(org)
 		{
 			const Vec3f top(0, height, 0);				// The top point
 			const Vec3f slope(0, radius / height, 0);

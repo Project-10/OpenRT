@@ -6,7 +6,7 @@
 #include <fstream> 
 
 namespace rt {
-	CSolid::CSolid(ptr_shader_t pShader, const std::string& fileName)
+	CSolid::CSolid(const ptr_shader_t pShader, const std::string& fileName)
 	{
 		std::ifstream file(fileName);
 
