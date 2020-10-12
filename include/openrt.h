@@ -4,6 +4,8 @@
 
 #include "core/CameraPerspective.h"
 #include "core/CameraPerspectiveTarget.h"
+#include "core/CameraOrthographic.h"
+#include "core/CameraOrthographicTarget.h"
 
 #include "core/LightOmni.h"
 #include "core/LightSpot.h"
@@ -55,6 +57,7 @@ The OpenRT framework consist of the following essential blocks:
 
 @subsubsection sec_main_camera Camera models
 	- <b>Perspective Camera:</b> @ref rt::CCameraPerspective
+	- <b>Orthographic Camera:</b> @ref rt::CCameraOrthographic
 
 @subsubsection sec_main_light Light sources
 	- <b>Omnidirectional point light source:</b> @ref rt::CLightOmni
