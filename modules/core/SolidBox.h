@@ -3,27 +3,33 @@
 #pragma once
 
 #include "Solid.h"
-#include "SolidQuad.h"
-#include "ShaderEyelight.h"		
 
 namespace rt {
+	// ================================ Box Solid Class ================================
+	/**
+	 * @brief Box Solid class
+	 * @ingroup modulePrimitive
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CSolidBox : public CSolid {
 	public:
-		DllExport CSolidBox(void) : CSolidBox(std::make_shared<CShaderEyelight>(), Vec3f::all(0), 1) {}
-		DllExport CSolidBox(const ptr_shader_t pShader, Vec3f org, float r) : CSolidBox(pShader, org, 2*r, 2*r, 2*r) {}
-		DllExport CSolidBox(const ptr_shader_t pShader, Vec3f org, float width, float height, float depth) : CSolid(org)
-		{
-			width /= 2; height /= 2; depth /= 2;
-
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f( width, -height, -depth), org + Vec3f( width,  height, -depth), org + Vec3f( width, height, depth), org + Vec3f( width, -height,  depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width, -height,  depth), org + Vec3f(-width, height, depth), org + Vec3f(-width,  height, -depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
-
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width,  height, -depth), org + Vec3f(-width,  height,  depth), org + Vec3f(width,  height, depth), org + Vec3f( width,  height, -depth), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f( width, -height, -depth), org + Vec3f(width, -height, depth), org + Vec3f(-width, -height,  depth), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1)));
-
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height,  depth), org + Vec3f( width, -height,  depth), org + Vec3f(width, height,  depth), org + Vec3f(-width,  height,  depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
-			add(std::make_shared<CSolidQuad>(pShader, org + Vec3f(-width, -height, -depth), org + Vec3f(-width,  height, -depth), org + Vec3f(width, height, -depth), org + Vec3f( width, -height, -depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
-		}
+		/**
+		 * @brief Constructor of a cube
+		 * @param pShader Pointer to the shader to be applied for the solid
+		 * @param origin The center of the box
+		 * @param r The size of the cube
+		 */
+		DllExport CSolidBox(const ptr_shader_t pShader, const Vec3f& origin = Vec3f::all(0), float r = 1);
+		/**
+		 * @brief Constructor
+		 * @param pShader Pointer to the shader to be applied for the solid
+		 * @param origin The center of the box
+		 * @param width The width of the box
+		 * @param height The height of the box
+		 * @param depth The depth of the box
+		 */
+		DllExport CSolidBox(const ptr_shader_t pShader, const Vec3f& origin, float width, float height, float depth);
 		DllExport virtual ~CSolidBox(void) = default;
+		
 	};
 }

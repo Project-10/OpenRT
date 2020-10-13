@@ -20,7 +20,7 @@ namespace rt {
 		 * @param origin Point on the plane
 		 * @param normal Normal to the plane
 		 */
-		DllExport CPrimPlane(const ptr_shader_t pShader, Vec3f origin, Vec3f normal)
+		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
 			: IPrim(pShader)
 			, m_normal(normal)
 			, m_origin(origin)

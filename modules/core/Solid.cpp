@@ -1,12 +1,11 @@
 #include "Solid.h"
-#include "Ray.h"
-#include "Shader.h"
-#include "Transform.h"
 #include "PrimTriangle.h"
+#include "Transform.h"
 #include <fstream> 
 
 namespace rt {
-	CSolid::CSolid(const ptr_shader_t pShader, const std::string& fileName)
+	// Constructor
+	CSolid::CSolid(ptr_shader_t pShader, const std::string& fileName) : m_pivot(Vec3f::all(0))
 	{
 		std::ifstream file(fileName);
 
