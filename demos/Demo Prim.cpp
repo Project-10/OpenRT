@@ -25,27 +25,27 @@ int main(int argc, char* argv[])
 
 	// primitives
 	auto floor = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0));
-	//scene.add(floor);
+	scene.add(floor);
 /*	float s = 100;
 	scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)));
 	scene.add(std::make_shared<CPrimTriangle>(pShaderFloor, Vec3f(s, 0, s), Vec3f(-s, 0, s), Vec3f(s, 0, -s)))*/;
 
 
 	float s = 10;
-	//scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-s, 10.1f, -s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
-	//scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(s, 10.1f, s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-s, 10.1f, -s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(s, 10.1f, s), Vec3f(-s, 10.1f, s), Vec3f(s, 10.1f, -s)));
 
 	// --- cube ---
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 2, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(-1, 2, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(-1, 0, 1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(1, 0, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(1, 0, -1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
-//	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(-1, 0, 1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 2, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderTop,  Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(-1, 2, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(-1, 0, 1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(1, 2, 1), Vec3f(1, 0, 1), Vec3f(1, 0, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 0, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(1, 0, -1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 2, 1), Vec3f(-1, 0, 1)));
+	scene.add(std::make_shared<CPrimTriangle>(pShaderSide, Vec3f(-1, 2, -1), Vec3f(-1, 0, -1), Vec3f(-1, 0, 1)));
 	// --- ---- ---
 //	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(-10, 10.01f, -10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
 //	scene.add(std::make_shared<CPrimTriangle>(pShaderWhite, Vec3f(10, 10.01f, 10), Vec3f(-10, 10.01f, 10), Vec3f(10, 10.01f, -10)));
@@ -55,11 +55,11 @@ int main(int argc, char* argv[])
 	CTransform t;
 
 	// --- B13 ---
-//	auto b13 = std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 1.0f, 80.0f), Vec3f(-3, 1, -1), 1);
+	auto b13 = std::make_shared<CPrimSphere>(std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.5f, 1.0f, 80.0f), Vec3f(-3, 1, 0), 1);
 //	scene.add(std::make_shared<CPrimSphere>(pShaderTop, Vec3f::all(0), 50));
-//	scene.add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(0, 1.0f, 0), 1));
-//	scene.add(b13);
-	scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(Vec3f::all(1)), Vec3f::all(0), 3.0f));
+	scene.add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(3, 1.0f, 0), 1));
+	scene.add(b13);
+	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(Vec3f::all(1)), Vec3f::all(0), 3.0f));
 	auto earth		= std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4.0f);
 	auto cylinder	= CSolidCylinder(pShaderEarth, Vec3f(0, 0, 0), 4, 4, 5, 36, true);
 	auto cone		= CSolidCone(pShaderEarth, Vec3f(0, 0, 0), 4, 5, 5, 24, true);
@@ -71,27 +71,33 @@ int main(int argc, char* argv[])
 //	scene.add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.5f, 0.5f, 40.0f), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
 
 	// lights
-	scene.add(std::make_shared<CLightOmni>(Vec3f::all(30), Vec3f(-4, 6, 3), true));
-	scene.add(std::make_shared<CLightOmni>(Vec3f::all(30), Vec3f(0, 10, 0), true));
-//	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
+//	scene.add(std::make_shared<CLightOmni>(Vec3f::all(30), Vec3f(-4, 6, 3), true));
+//	scene.add(std::make_shared<CLightOmni>(Vec3f::all(30), Vec3f(0, 10, 0), true));
+	scene.add(std::make_shared<CLightArea>(Vec3f::all(6), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
 
 	// camera	
 	const float r = 10;
 	auto mainCam = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 0, r), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 60.0f);
 	scene.add(mainCam);
-	scene.add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-8, 3, 8), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f));
+	scene.add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-8, 8, 8), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f));
+	scene.add(std::make_shared<CCameraOrthographicTarget>(resolution, Vec3f(-5, 5, 5), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 5.0f));
 	scene.add(std::make_shared<CCameraPerspective>(resolution, Vec3f(-8, 3, 8), Vec3f(1, -0.1f, -1), Vec3f(0, 1, 0), 45.0f));
-	
-	scene.setActiveCamera(0);
 
 	scene.buildAccelStructure(0, 3);
 
+	scene.setActiveCamera(1);
+	
 	// One frame
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4));
+	Mat img_persp = scene.render(std::make_shared<CSamplerStratified>(4));
 	Timer::stop();
-	imshow("Image", img);
-	imwrite("D:\\renders\\tr.jpg", img);
+	imshow("Perspective", img_persp);
+	
+	scene.setActiveCamera(2);
+	Timer::start("Rendering... ");
+	Mat img_orth = scene.render(std::make_shared<CSamplerStratified>(4));
+	Timer::stop();
+	imshow("Orthographic", img_orth);
 	waitKey();
 
 	// Animation
