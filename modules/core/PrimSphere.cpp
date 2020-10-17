@@ -44,7 +44,7 @@ namespace rt {
 
 		if (t0 > ray.t) return false;
 
-		if (t0 < 0) {
+		if (t0 <= Epsilon) {
 			t0 = 0;
 			if (t1 < Epsilon || t1 > ray.t) 
 				return false;
