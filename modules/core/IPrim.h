@@ -77,9 +77,20 @@ namespace rt {
 		 * @return The pointer to the primitive's shader
 		 */
 		DllExport ptr_shader_t				getShader(void) const { return m_pShader; }
+		/**
+		 * @brief Sets a new name to the primitive
+		 * @param name The new name
+		 */
+		DllExport void						setName(const std::string& name) { m_name = name;}
+		/**
+		 * @brief Returns the name of the primitive
+		 * @return The name of the primitive
+		 */
+		DllExport std::string				getName(void) const { return m_name; }
 	
 	
 	private:
 		const ptr_shader_t	m_pShader;		///< Pointer to the sahder, see @ref  IShader
+		std::string			m_name;			///< Optional name of the primitive
 	};
 }
