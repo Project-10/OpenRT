@@ -33,7 +33,10 @@ namespace rt {
 			, dir(_dir)
 			, counter(_counter)
 		{}
-		
+		friend std::ostream& operator<<(std::ostream& os, const Ray& ray) {
+			os << "org: " << ray.org << std::endl << "dir: " << ray.dir << std::endl << "t: " << ray.t << std::endl;
+			return os;
+		}
 		/**
 		 * @brief Returns the hitpoint of the ray
 		 * @details The hitpoint is calculated as \f$ \vec{o} + t\vec{d} \f$
