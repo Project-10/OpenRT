@@ -32,6 +32,7 @@ namespace rt {
 				else if (line == "vt") {
 					Vec2f vt;
 					for (int i = 0; i < 2; i++) ss >> vt.val[i];
+					vt[1] = 1 - vt[1];
 					vTextures.push_back(vt);
 				}
 				else if (line == "vn") {
