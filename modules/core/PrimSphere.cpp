@@ -90,5 +90,10 @@ namespace rt {
 		if (isnan(phi)) phi = 0;
 		return Vec2f(-0.5f * (1 + phi / Pif), theta / Pif);
 	}
+
+	CBoundingBox CPrimSphere::getBoundingBox(void) const 
+	{ 
+		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
+	}
 }
 
