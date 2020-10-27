@@ -41,10 +41,12 @@ namespace rt {
 		DllExport void save(const std::string& fileName) const {}
 		/// @todo implement
 		DllExport void load(const std::string& fileName) {}
-		/// @todo implement
-		DllExport void clear(void) {}
 		// ------------ ------------ ------------
 
+		/**
+		* @brief Clears the scene from geometry, lights and cameras (if any)
+		*/
+		DllExport void					clear(void);
 		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param pPrim Pointer to the primitive
