@@ -1,9 +1,10 @@
 #include "Sampler.h"
+#include "random.h"
 #include "macroses.h"
 
 namespace rt {
 #ifdef ENABLE_PDP
-thread_local size_t CSampler::m_idx = 0;
+	thread_local size_t CSampler::m_idx = 0;
 #endif
 
 	// Constructor
@@ -20,20 +21,46 @@ thread_local size_t CSampler::m_idx = 0;
 	}
 
 	Vec2f CSampler::getNextSample(void) {
+		// if nSamples = 0 return the middle value (e.g. center of a pixel)
 		if (m_vSamples.empty())
 			return Vec2f::all(0.5f);
 
 		if (m_idx == 0 && m_needGeneration) {
 			m_needGeneration = m_renewable;
-			generate();
+			generateSeries(m_vSamples);
 		}
 
 		Vec2f res = m_vSamples[m_idx];
 		
+		// Update the index of next sample in the series
 		if (m_idx < m_vSamples.size() - 1) 	m_idx++;
 		else 								m_idx = 0;
 
 		return res;
+	}
+
+	// Random Sampler
+	void CSamplerRandom::generateSeries(std::vector<Vec2f>& samples) const
+	{
+		for (auto& sample : samples)
+			for (int i = 0; i < 2; i++)
+				sample.val[i] = random::U<float>();
+	}
+
+	// Stratified Sampler
+	void CSamplerStratified::generateSeries(std::vector<Vec2f>& samples) const
+	{
+		size_t nSamples = static_cast<size_t>(sqrt(samples.size()));
+		float delta = 1.0f / nSamples;
+
+		int s = 0;
+		for (size_t y = 0; y < nSamples; y++)
+			for (size_t x = 0; x < nSamples; x++) {
+				float fx = static_cast<float>(x) + (m_jitter ? random::U<float>() : 0.5f);
+				float fy = static_cast<float>(y) + (m_jitter ? random::U<float>() : 0.5f);
+				samples[s] = delta * Vec2f(fx, fy);
+				s++;
+			}
 	}
 
 	// ---------------- Static functions ----------------
