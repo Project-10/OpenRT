@@ -36,7 +36,7 @@ int main()
     scene.add(mainCam);
     scene.add(pLight);
     Timer::start("Rendering... ");
-    Mat img = scene.render(nullptr, true);
+    Mat img = scene.render();
     Timer::stop();
 
     imwrite("../../../csg_1.png", img);

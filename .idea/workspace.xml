@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:upstream" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="OpenRT" targetName="Demo_SkyLight" />
@@ -7,6 +35,7 @@
       <config projectName="OpenRT" targetName="Demo_CSG" />
       <config projectName="OpenRT" targetName="Demo_Prim" />
       <config projectName="OpenRT" targetName="Demo_AreaLight" />
+      <config projectName="OpenRT" targetName="Tests" />
       <config projectName="OpenRT" targetName="Demo_SpotLight" />
       <config projectName="OpenRT" targetName="Demo_SSLT" />
       <config projectName="OpenRT" targetName="core" />
@@ -18,7 +47,49 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6ab3a87-cd5a-4e93-b6d7-87562e099e51" name="Default Changelist" comment="" />
+    <list default="true" id="e6ab3a87-cd5a-4e93-b6d7-87562e099e51" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/bin/Demo AreaLight" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/bin/Demo AreaLight" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/demos/CMakeFiles/Demo_AreaLight.dir/Demo_AreaLight.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/demos/CMakeFiles/Demo_AreaLight.dir/Demo_AreaLight.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/demos/CMakeFiles/Demo_CSG.dir/Demo_CSG.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lib/libopenrt_core100d.1.0.0.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lib/libopenrt_core100d.1.0.0.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BSPNode.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BSPNode.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BSPTree.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BSPTree.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BoundingBox.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/BoundingBox.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CameraOrthographic.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CameraOrthographic.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CameraPerspective.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CameraPerspective.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CompositeGeometry.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/CompositeGeometry.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/IntersectionRange.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/IntersectionRange.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightArea.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightArea.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightOmni.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightOmni.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightSky.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightSky.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightSpot.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/LightSpot.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimPlane.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimPlane.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimSphere.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimSphere.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimTriangle.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/PrimTriangle.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Ray.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Ray.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Sampler.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Sampler.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Sampler3f.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Sampler3f.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Scene.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Scene.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Shader.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Shader.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderChrome.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderChrome.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderEyelight.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderEyelight.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderFlat.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderFlat.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderSSLT.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/ShaderSSLT.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Solid.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Solid.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidBox.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidBox.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidCone.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidCone.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidCylinder.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidCylinder.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidQuad.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/SolidQuad.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Texture.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Texture.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Transform.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/modules/core/CMakeFiles/core.dir/Transform.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demos/Demo CSG.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/demos/Demo CSG.cpp" afterDir="false" />
+    </list>
+    <list id="5b84067b-9b55-42b6-b163-988424d663c1" name="Revert &quot;splitView base logic&quot;" comment="Revert &quot;splitView base logic&quot;&#10;&#10;This reverts commit 5f610500">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +101,14 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/.gitignore">
+      <ranges>
+        <range start1="29" end1="29" start2="29" end2="33" changelist="e6ab3a87-cd5a-4e93-b6d7-87562e099e51" />
+        <range start1="30" end1="33" start2="34" end2="34" changelist="5b84067b-9b55-42b6-b163-988424d663c1" />
+      </ranges>
+    </file>
   </component>
   <component name="ProjectId" id="1j2wHoIrOK5lp1EujyioqegFoW5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -56,6 +135,12 @@
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Tests" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Demo_AreaLight" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_AreaLight" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_AreaLight">
@@ -112,6 +197,7 @@
       <item itemvalue="CMake Application.Demo_SpotLight" />
       <item itemvalue="CMake Application.Demo_SSLT" />
       <item itemvalue="CMake Application.core" />
+      <item itemvalue="Google Test.Tests" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -133,12 +219,35 @@
       <workItem from="1604413598482" duration="147000" />
       <workItem from="1604574950274" duration="7774000" />
       <workItem from="1604760779048" duration="430000" />
-      <workItem from="1604991349976" duration="21796000" />
+      <workItem from="1604991349976" duration="22041000" />
     </task>
+    <task id="LOCAL-00001" summary="Revert &quot;splitView base logic&quot;&#10;&#10;This reverts commit 5f610500">
+      <created>1605016932403</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1605016932403</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Revert &quot;splitView base logic&quot;&#10;&#10;This reverts commit 5f610500" />
+    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;splitView base logic&quot;&#10;&#10;This reverts commit 5f610500" />
   </component>
   <component name="WindowStateProjectService">
     <state x="424" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605008560285">
@@ -153,49 +262,53 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="773" y="263" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1604991882589" />
+    <state x="535" y="94" key="CommitChangelistDialog2" timestamp="1605016923484">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="535" y="94" key="CommitChangelistDialog2/0.0.1920.1080@0.0.1920.1080" timestamp="1605016923484" />
     <state width="799" height="466" key="DebuggerActiveHint" timestamp="1605012556839">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="799" height="466" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1605012556839" />
-    <state width="939" height="305" key="GridCell.Tab.0.bottom" timestamp="1605015783734">
+    <state width="939" height="305" key="GridCell.Tab.0.bottom" timestamp="1605017007885">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="939" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783734" />
+    <state width="939" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605017007885" />
     <state width="939" height="305" key="GridCell.Tab.0.bottom/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282079" />
-    <state width="939" height="305" key="GridCell.Tab.0.center" timestamp="1605015783732">
+    <state width="939" height="305" key="GridCell.Tab.0.center" timestamp="1605017007884">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="939" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783732" />
+    <state width="939" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605017007884" />
     <state width="939" height="305" key="GridCell.Tab.0.center/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282078" />
-    <state width="939" height="305" key="GridCell.Tab.0.left" timestamp="1605015783731">
+    <state width="939" height="305" key="GridCell.Tab.0.left" timestamp="1605017007877">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="939" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783731" />
+    <state width="939" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605017007877" />
     <state width="939" height="305" key="GridCell.Tab.0.left/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282078" />
-    <state width="939" height="305" key="GridCell.Tab.0.right" timestamp="1605015783733">
+    <state width="939" height="305" key="GridCell.Tab.0.right" timestamp="1605017007884">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="939" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783733" />
+    <state width="939" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605017007884" />
     <state width="939" height="305" key="GridCell.Tab.0.right/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282079" />
-    <state width="1365" height="376" key="GridCell.Tab.1.bottom" timestamp="1605012673501">
+    <state width="1363" height="376" key="GridCell.Tab.1.bottom" timestamp="1605017004661">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1365" height="376" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673501" />
+    <state width="1363" height="376" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605017004661" />
     <state width="1367" height="376" key="GridCell.Tab.1.bottom/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885181" />
-    <state width="1365" height="376" key="GridCell.Tab.1.center" timestamp="1605012673500">
+    <state width="1363" height="376" key="GridCell.Tab.1.center" timestamp="1605017004660">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1365" height="376" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1363" height="376" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605017004660" />
     <state width="1367" height="376" key="GridCell.Tab.1.center/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885145" />
-    <state width="1365" height="376" key="GridCell.Tab.1.left" timestamp="1605012673500">
+    <state width="1363" height="376" key="GridCell.Tab.1.left" timestamp="1605017004660">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1365" height="376" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1363" height="376" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605017004660" />
     <state width="1367" height="376" key="GridCell.Tab.1.left/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885143" />
-    <state width="1365" height="376" key="GridCell.Tab.1.right" timestamp="1605012673500">
+    <state width="1363" height="376" key="GridCell.Tab.1.right" timestamp="1605017004661">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1365" height="376" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1363" height="376" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605017004661" />
     <state width="1367" height="376" key="GridCell.Tab.1.right/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885146" />
     <state x="469" y="179" key="SettingsEditor" timestamp="1605008601083">
       <screen x="0" y="0" width="1920" height="1080" />
@@ -221,17 +334,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
-          <line>175</line>
+          <line>147</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
-          <line>209</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
-          <line>98</line>
+          <line>81</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
