@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="OpenRT"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\opencv4\;CMake Files\modules\;CMake Files\modules\core\;CMake Files\tests\;CMake Files\demos\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="core">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/lib/libopenrt_core100d.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 core"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="core/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/lib/libopenrt_core100d.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 core/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/modules/core/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Tests">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/3rdparty"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 Tests"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Tests/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/3rdparty"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 Tests/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_AreaLight">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo AreaLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_AreaLight"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_AreaLight/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo AreaLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_AreaLight/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SSLT">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SSLT" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SSLT"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SSLT/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SSLT" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SSLT/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_CSG">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo CSG" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_CSG"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_CSG/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo CSG" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_CSG/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SkyLight">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SkyLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SkyLight"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SkyLight/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SkyLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SkyLight/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_Prim">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo Prim" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_Prim"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_Prim/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo Prim" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_Prim/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SpotLight">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SpotLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SpotLight"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_SpotLight/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo SpotLight" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_SpotLight/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_CornellBox">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo CornellBox" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_CornellBox"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Demo_CornellBox/fast">
+				<Option output="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin/Demo CornellBox" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-D_SCL_SECURE_NO_WARNINGS"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include"/>
+					<Add directory="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules"/>
+					<Add directory="/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Volumes/ExtremeSSD/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 Demo_CornellBox/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake-build-debug/demos/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/3rdparty/gtest/gtest-all.cpp">
+			<Option target="Tests"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo AreaLight.cpp">
+			<Option target="Demo_AreaLight"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo CSG.cpp">
+			<Option target="Demo_CSG"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo CornellBox.cpp">
+			<Option target="Demo_CornellBox"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo Prim.cpp">
+			<Option target="Demo_Prim"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo SSLT.cpp">
+			<Option target="Demo_SSLT"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo SkyLight.cpp">
+			<Option target="Demo_SkyLight"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/Demo SpotLight.cpp">
+			<Option target="Demo_SpotLight"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include/macroses.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include/openrt.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/include/types.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BSPNode.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BSPNode.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BSPTree.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BSPTree.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BoundingBox.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/BoundingBox.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraOrthographic.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraOrthographic.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraOrthographicTarget.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraPerspective.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraPerspective.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CameraPerspectiveTarget.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CompositeGeometry.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CompositeGeometry.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ICamera.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ILight.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/IPrim.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/IShader.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/IntersectionRange.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/IntersectionRange.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightArea.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightArea.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightOmni.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightOmni.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightSky.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightSky.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightSpot.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightSpot.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/LightSpotTarget.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimPlane.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimPlane.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimSphere.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimSphere.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimTriangle.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/PrimTriangle.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Ray.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Ray.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Sampler.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Sampler.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Sampler3f.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Sampler3f.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Scene.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Scene.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Shader.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Shader.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderChrome.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderChrome.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderEyelight.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderEyelight.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderFlat.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderFlat.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderSSLT.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/ShaderSSLT.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Solid.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Solid.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidBox.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidBox.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidCone.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidCone.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidCylinder.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidCylinder.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidQuad.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/SolidQuad.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Texture.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Texture.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Transform.cpp">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/Transform.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/random.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/timer.h">
+			<Option target="core"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/tests/TestCamera.cpp">
+			<Option target="Tests"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/tests/TestCamera.h">
+			<Option target="Tests"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/tests/main.cpp">
+			<Option target="Tests"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake/OpenRTConfig.cmake.in">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake/OpenRTConfigVersion.cmake.in">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/cmake/types.h.in">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/../../../../../../usr/local/lib/cmake/opencv4/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/../../../../../../usr/local/lib/cmake/opencv4/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/../../../../../../usr/local/lib/cmake/opencv4/OpenCVModules-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/../../../../../../usr/local/lib/cmake/opencv4/OpenCVModules.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/modules/core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\modules\core\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+		<Unit filename="/Users/otmanesabir/Desktop/S5/Project&amp;Thesis/OpenRT/demos/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\demos\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

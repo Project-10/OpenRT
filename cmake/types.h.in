@@ -9,7 +9,6 @@
 #cmakedefine ENABLE_BSP	
 #cmakedefine ENABLE_PDP
 #cmakedefine ENABLE_AMP
-#cmakedefine ENABLE_CACHE
 
 
 #include <optional>

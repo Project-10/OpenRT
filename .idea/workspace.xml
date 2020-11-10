@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="OpenRT" targetName="Demo_SkyLight" />
+      <config projectName="OpenRT" targetName="Demo_CornellBox" />
+      <config projectName="OpenRT" targetName="Demo_CSG" />
+      <config projectName="OpenRT" targetName="Demo_Prim" />
+      <config projectName="OpenRT" targetName="Demo_AreaLight" />
+      <config projectName="OpenRT" targetName="Demo_SpotLight" />
+      <config projectName="OpenRT" targetName="Demo_SSLT" />
+      <config projectName="OpenRT" targetName="core" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e6ab3a87-cd5a-4e93-b6d7-87562e099e51" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1j2wHoIrOK5lp1EujyioqegFoW5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+  </component>
+  <component name="RunManager" selected="CMake Application.Demo_CSG">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_AreaLight" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_AreaLight" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_AreaLight">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_CSG" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_CSG" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_CSG">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_CornellBox" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_CornellBox" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_CornellBox">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_Prim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_Prim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_Prim">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_SSLT" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_SSLT" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_SSLT">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_SkyLight" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_SkyLight" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_SkyLight">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Demo_SpotLight" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="Demo_SpotLight" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="OpenRT" RUN_TARGET_NAME="Demo_SpotLight">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="core" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="OpenRT" TARGET_NAME="core" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Demo_AreaLight" />
+      <item itemvalue="CMake Application.Demo_CornellBox" />
+      <item itemvalue="CMake Application.Demo_CSG" />
+      <item itemvalue="CMake Application.Demo_Prim" />
+      <item itemvalue="CMake Application.Demo_SkyLight" />
+      <item itemvalue="CMake Application.Demo_SpotLight" />
+      <item itemvalue="CMake Application.Demo_SSLT" />
+      <item itemvalue="CMake Application.core" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e6ab3a87-cd5a-4e93-b6d7-87562e099e51" name="Default Changelist" comment="" />
+      <created>1603015408310</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1603015408310</updated>
+      <workItem from="1603015413527" duration="3901000" />
+      <workItem from="1603632270217" duration="639000" />
+      <workItem from="1603866689051" duration="30000" />
+      <workItem from="1604255985875" duration="5525000" />
+      <workItem from="1604334247211" duration="3786000" />
+      <workItem from="1604413598482" duration="147000" />
+      <workItem from="1604574950274" duration="7774000" />
+      <workItem from="1604760779048" duration="430000" />
+      <workItem from="1604991349976" duration="21796000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="424" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605008560285">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="424" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605008560285" />
+    <state x="682" y="349" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605012279461">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="682" y="349" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1605012279461" />
+    <state x="773" y="263" key="#com.intellij.ide.util.MemberChooser" timestamp="1604991882589">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="773" y="263" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1604991882589" />
+    <state width="799" height="466" key="DebuggerActiveHint" timestamp="1605012556839">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="799" height="466" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1605012556839" />
+    <state width="939" height="305" key="GridCell.Tab.0.bottom" timestamp="1605015783734">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="939" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783734" />
+    <state width="939" height="305" key="GridCell.Tab.0.bottom/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282079" />
+    <state width="939" height="305" key="GridCell.Tab.0.center" timestamp="1605015783732">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="939" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783732" />
+    <state width="939" height="305" key="GridCell.Tab.0.center/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282078" />
+    <state width="939" height="305" key="GridCell.Tab.0.left" timestamp="1605015783731">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="939" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783731" />
+    <state width="939" height="305" key="GridCell.Tab.0.left/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282078" />
+    <state width="939" height="305" key="GridCell.Tab.0.right" timestamp="1605015783733">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="939" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605015783733" />
+    <state width="939" height="305" key="GridCell.Tab.0.right/0.23.1871.1057@0.23.1871.1057" timestamp="1605014282079" />
+    <state width="1365" height="376" key="GridCell.Tab.1.bottom" timestamp="1605012673501">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1365" height="376" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673501" />
+    <state width="1367" height="376" key="GridCell.Tab.1.bottom/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885181" />
+    <state width="1365" height="376" key="GridCell.Tab.1.center" timestamp="1605012673500">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1365" height="376" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1367" height="376" key="GridCell.Tab.1.center/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885145" />
+    <state width="1365" height="376" key="GridCell.Tab.1.left" timestamp="1605012673500">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1365" height="376" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1367" height="376" key="GridCell.Tab.1.left/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885143" />
+    <state width="1365" height="376" key="GridCell.Tab.1.right" timestamp="1605012673500">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1365" height="376" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605012673500" />
+    <state width="1367" height="376" key="GridCell.Tab.1.right/0.23.1871.1057@0.23.1871.1057" timestamp="1605010885146" />
+    <state x="469" y="179" key="SettingsEditor" timestamp="1605008601083">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="469" y="179" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605008601083" />
+    <state x="765" y="461" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605011255675">
+      <screen x="0" y="23" width="1871" height="1057" />
+    </state>
+    <state x="765" y="461" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1604761759433" />
+    <state x="765" y="461" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1871.1057@0.23.1871.1057" timestamp="1605011255675" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1605008103722">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/-1440.697.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1604256651201" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1605008103722" />
+    <state x="690" y="459" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1605008500799">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="690" y="459" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605008500799" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
+          <line>175</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
+          <line>209</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/modules/core/Scene.cpp</url>
+          <line>98</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
