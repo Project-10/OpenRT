@@ -35,12 +35,12 @@ namespace rt {
 		DllExport CScene(const CScene&) = delete;
 		DllExport ~CScene(void) = default;
 		DllExport const CScene& operator=(const CScene&) = delete;
-	  
-		// ------------ TO IMPLEMENT ------------
+
 		/// @todo implement
-		DllExport void save(const std::string& fileName) const {}
+		DllExport bool save(const std::string& fileName, const Mat& image) const;
 		/// @todo implement
-		DllExport void load(const std::string& fileName) {}
+		DllExport Mat load(const std::string& fileName) const;
+        // ------------ TO IMPLEMENT ------------
 		/// @todo implement
 		DllExport void clear(void) {}
 		// ------------ ------------ ------------
@@ -49,7 +49,7 @@ namespace rt {
 		 * @brief Adds a new primitive to the scene
 		 * @param pPrim Pointer to the primitive
 		 */
-		DllExport void					add(const ptr_prim_t pPrim);
+		DllExport void					add(ptr_prim_t pPrim);
 		/**
 		 * @brief Add a new solid to the scene
 		 * @param solid The reference to the solid
@@ -85,7 +85,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
 		 * @returns The rendered image (type: CV_8UC3)
 		 */
-		DllExport Mat					render(ptr_sampler_t pSampler = nullptr) const;
+		DllExport Mat					render(ptr_sampler_t pSampler = nullptr, bool splitView = false) const;
 		/**
 		 * @brief Renders the depth-map from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
@@ -154,6 +154,13 @@ namespace rt {
 		size_t							m_activeCamera	= 0;		///< The index of the active camera
 #ifdef ENABLE_BSP		
 		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
+#endif
+#ifdef ENABLE_CACHE
+    #ifdef WIN32
+        const std::string cachePath = "../../cache/cache_image.dat";
+    #else
+        const std::string cachePath = "/Users/otmanesabir/Desktop/S5/Project&Thesis/OpenRT/cache/cache_image.dat";
+    #endif
 #endif
 	};
 }

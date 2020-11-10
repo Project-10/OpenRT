@@ -27,3 +27,7 @@ code/
 *.png
 time.bat
 .DS_Store
+
+#CLion Stuff
+.idea
+cmake-build-debug

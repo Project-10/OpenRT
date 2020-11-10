@@ -1,3 +1,4 @@
+#include <fstream>
 #include "Scene.h"
 #include "Ray.h"
 #include "Solid.h"
@@ -38,13 +39,23 @@ namespace rt {
 	{ 
 #ifdef ENABLE_BSP
 		m_pBSPTree->build(m_vpPrims, maxDepth, minPrimitives);
-#else 
+#else
 		RT_WARNING("BSP support is not enabled");
 #endif		
 	}
 
-	Mat CScene::render(ptr_sampler_t pSampler) const
+	Mat CScene::render(ptr_sampler_t pSampler, bool splitView) const
 	{
+	    Mat lastRender;
+	    if (splitView)
+	    {
+#ifdef ENABLE_CACHE
+	        lastRender = load(cachePath);
+#else
+            RT_WARNING("Caching support is not enabled");
+#endif
+	    }
+
 		ptr_camera_t activeCamera = getActiveCamera();
 		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
 		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
@@ -79,6 +90,20 @@ namespace rt {
 		});
 #endif
 		img.convertTo(img, CV_8UC3, 255);
+		if (splitView)
+		{
+#ifdef ENABLE_CACHE
+            Mat final_mat(cv::Size(img.size().width+lastRender.size().width, img.size().height > lastRender.size().height ? img.size().height : lastRender.size().height), CV_8UC3);
+            img.copyTo(final_mat(cv::Rect(  0, 0, img.size().width, img.size().height)));
+            if (lastRender.size().height > 0 || lastRender.size().width > 0)
+                lastRender.copyTo(final_mat(cv::Rect(img.size().width, 0, lastRender.size().width, lastRender.size().height)));
+		    if (!this->save(cachePath, img))
+		        RT_WARNING("OpenRT failed to cache the mat. This might affect your next render.");
+		    return final_mat;
+#else
+            RT_WARNING("Caching support is not enabled");
+#endif
+        }
 		return img;
 	}
 			
@@ -144,5 +169,46 @@ namespace rt {
 	{ 
 		return intersect(ray) ? ray.t : std::numeric_limits<double>::infinity();
 	}
-	
+
+    bool CScene::save(const std::string &fileName, const Mat& image) const {
+        std::ofstream ofs(fileName, std::ios::binary);
+        if(!ofs.is_open()){
+            return false;
+        }
+        if(image.empty()){
+            int s = 0;
+            ofs.write((const char*)(&s), sizeof(int));
+            return true;
+        }
+        int type = image.type();
+        ofs.write((const char*)(&image.rows), sizeof(int));
+        ofs.write((const char*)(&image.cols), sizeof(int));
+        ofs.write((const char*)(&type), sizeof(int));
+        ofs.write((const char*)(image.data), image.elemSize() * image.total());
+
+        return true;
+    }
+
+    Mat CScene::load(const std::string &fileName) const {
+        std::ifstream ifs(fileName, std::ios::binary);
+        Mat image;
+        if(!ifs.is_open()){
+            return image;
+        }
+
+        int rows, cols, type;
+        ifs.read((char*)(&rows), sizeof(int));
+        if(rows==0){
+            return image;
+        }
+        ifs.read((char*)(&cols), sizeof(int));
+        ifs.read((char*)(&type), sizeof(int));
+
+        image.release();
+        image.create(rows, cols, type);
+        ifs.read((char*)(image.data), image.elemSize() * image.total());
+        return image;
+    }
+
 }
+
