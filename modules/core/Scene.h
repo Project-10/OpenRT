@@ -156,11 +156,7 @@ namespace rt {
 		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
 #endif
 #ifdef ENABLE_CACHE
-    #ifdef WIN32
-        const std::string cachePath = "../../cache/cache_image.dat";
-    #else
-        const std::string cachePath = "/Users/otmanesabir/Desktop/S5/Project&Thesis/OpenRT/cache/cache_image.dat";
-    #endif
+        const std::string cachePath = "../../cache_image.dat";
 #endif
 	};
 }
