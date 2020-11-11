@@ -15,7 +15,7 @@ namespace rt {
 
 			Vec3f n = normal;
 			if (m_pSampler) {
-				n = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), n, 25);
+				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 25), n);
 			}
 
 			Ray reflected = ray.reflected(n);

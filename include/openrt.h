@@ -30,7 +30,8 @@
 #include "core/ShaderSSLT.h"
 
 #include "core/Sampler.h"
-#include "core/Sampler3f.h"
+#include "core/SamplerRandom.h"
+#include "core/SamplerStratified.h"
 
 #include "core/Transform.h"
 
