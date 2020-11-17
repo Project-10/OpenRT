@@ -26,7 +26,7 @@ namespace rt {
 		 * @param bgColor The default background color
 		 * @todo Background may be image
 		 */
-		DllExport CScene(Vec3f bgColor = RGB(0,0,0))
+		DllExport CScene(const Vec3f& bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
 #ifdef ENABLE_BSP	
 			, m_pBSPTree(new CBSPTree())
