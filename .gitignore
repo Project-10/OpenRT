@@ -31,4 +31,3 @@ time.bat
 #CLion Stuff
 .idea
 cmake-build-debug
-*.dat
