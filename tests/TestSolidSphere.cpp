@@ -2,7 +2,7 @@
 #include "core/BoundingBox.h"
 
 using namespace rt;
-
+/*
 TEST_F(CTestSolidSphere, solid_sphere) {
     auto shader = std::make_shared<CShaderFlat>(RGB(1, 1, 1));
     auto radius = 3.0f;
@@ -17,3 +17,4 @@ TEST_F(CTestSolidSphere, solid_sphere) {
     for (auto pt_value : box.getMaxPoint().val)
         EXPECT_NEAR(pt_value, radius, 0.2);
 }
+ */
