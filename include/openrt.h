@@ -22,6 +22,7 @@
 #include "core/SolidBox.h"
 #include "core/SolidCone.h"
 #include "core/SolidCylinder.h"
+#include "core/SolidSphere.h"
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"

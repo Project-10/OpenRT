@@ -24,6 +24,7 @@ source_group("Source Files\\Geometry\\Solids\\quad" FILES "SolidQuad.h" "SolidQu
 source_group("Source Files\\Geometry\\Solids\\box" FILES "SolidBox.h" "SolidBox.cpp")
 source_group("Source Files\\Geometry\\Solids\\cone" FILES "SolidCone.h" "SolidCone.cpp")
 source_group("Source Files\\Geometry\\Solids\\cylinder" FILES "SolidCylinder.h" "SolidCylinder.cpp")
+source_group("Source Files\\Geometry\\Solids\\sphere" FILES "SolidSphere.h" "SolidSphere.cpp")
 source_group("Source Files\\Shaders" FILES "IShader.h")
 source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp")
 source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
