@@ -22,10 +22,9 @@ namespace rt {
 		 * @param fileName The full path to the .obj file
 		 */
 		DllExport CSolid(const ptr_shader_t pShader, const std::string& fileName);
-		DllExport CSolid(const CSolid&);
-        DllExport CSolid();
+		DllExport CSolid(const CSolid&) = delete;
 		DllExport virtual ~CSolid(void) = default;
-		DllExport CSolid& operator=(const CSolid&);
+		DllExport CSolid& operator=(const CSolid&) = delete;
 		
 		/**
 		 * @brief Applies affine transformation matrix \b t to the solid.
@@ -47,7 +46,7 @@ namespace rt {
 		 * @return The solid's pivot point
 		 */
 		DllExport Vec3f 							getPivot(void) const { return m_pivot; }
-
+		
 		
 	protected:
 		/**

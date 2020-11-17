@@ -89,21 +89,5 @@ namespace rt {
 		for (int i = 0; i < 3; i++)
 			m_pivot.val[i] += t.at<float>(i, 3);
 	}
-
-    CSolid::CSolid(const CSolid &s1) {
-        std::copy(s1.m_vpPrims.begin(), s1.m_vpPrims.end(),
-                  std::back_inserter(m_vpPrims));
-	    m_pivot = s1.m_pivot;
-    }
-
-    CSolid::CSolid(){
-	    m_vpPrims = std::vector<ptr_prim_t>();
-	}
-
-    CSolid &CSolid::operator=(const CSolid &other) {
-	    m_pivot = other.m_pivot;
-        std::copy(other.m_vpPrims.cbegin(), other.m_vpPrims.cend(), std::back_inserter(m_vpPrims));
-        return *this;
-    }
 }
 
