@@ -1,4 +1,5 @@
 ﻿#include "TestSolidSphere.h"
+#include "core/BoundingBox.h"
 
 using namespace rt;
 
