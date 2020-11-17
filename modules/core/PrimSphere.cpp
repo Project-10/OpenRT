@@ -79,6 +79,7 @@ namespace rt {
 		return normalize(ray.hitPoint() - m_origin);
 	}
 
+	/// @todo Use atan2() here
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
 		Vec3f hitPoint = ray.hitPoint() - m_origin;
@@ -89,6 +90,11 @@ namespace rt {
 		if (hitPoint.val[2] < 0) phi = - phi;															// [-Pif; Pif]
 		if (isnan(phi)) phi = 0;
 		return Vec2f(-0.5f * (1 + phi / Pif), theta / Pif);
+	}
+
+	CBoundingBox CPrimSphere::getBoundingBox(void) const 
+	{ 
+		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
 	}
 }
 

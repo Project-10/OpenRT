@@ -5,6 +5,12 @@
 #include "ICamera.h"
 
 namespace rt {
+	// ================================ Orthographic Camera Class ================================
+	/**
+	 * @brief Orthographic Camera class
+	 * @ingroup moduleCamera
+	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 */
 	class CCameraOrthographic : public ICamera
 	{
 	public:
@@ -31,7 +37,7 @@ namespace rt {
 		{}
 		DllExport virtual ~CCameraOrthographic(void) = default;
 		
-		DllExport virtual void	InitRay(Ray& ray, int x, int y, Vec2f sample = Vec2f::all(0.5f)) override;
+		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
 		
 		/**
 		 * @brief Sets new camera position

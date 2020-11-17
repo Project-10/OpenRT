@@ -10,19 +10,20 @@ namespace rt {
 
 	CTransform CTransform::translate(const Vec3f& T) const {
 		Mat t = Mat::eye(4, 4, CV_32FC1);
-		for (int i = 0; i < 3; i++) t.at<float>(i, 3) = T.val[i];
+		for (int i = 0; i < 3; i++) 
+			t.at<float>(i, 3) = T.val[i];
 		return CTransform(t * m_t);
 	}
 
-	CTransform CTransform::rotate(const Vec3f& v, float theta) const
+	CTransform CTransform::rotate(const Vec3f& k, float theta) const
 	{
 		Mat t = Mat::eye(4, 4, CV_32FC1);
 		theta *= Pif/180;
 		float cos_theta = cosf(theta);
 		float sin_theta = sinf(theta);
-		float x = v.val[0];
-		float y = v.val[1];
-		float z = v.val[2];
+		float x = k.val[0];
+		float y = k.val[1];
+		float z = k.val[2];
 		
 		t.at<float>(0, 0) = cos_theta + (1 - cos_theta) * x * x;
 		t.at<float>(0, 1) = (1 - cos_theta) * x * y - sin_theta * z;

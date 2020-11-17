@@ -32,7 +32,7 @@ namespace rt {
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f 		getNormal(const Ray& ray) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
-		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); }
+		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
 
 	private:

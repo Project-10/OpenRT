@@ -1,4 +1,5 @@
 #include "LightSky.h"
+#include "Sampler.h"
 #include "Ray.h"
 
 namespace rt{
@@ -6,7 +7,10 @@ namespace rt{
 	{
 		ray.t = 0;
 		Vec3f normal = ray.hit->getNormal(ray);												// normal to the object from which the ray was casted
-		ray.dir = CSampler3f::getHemisphereSample(m_pSampler->getNextSample(), normal, 1);	// sample the hemisphere in respect to the object's normal
+		
+		Vec2f squareSample		= m_pSampler->getNextSample();
+		Vec3f hemisphereSample	= CSampler::cosineSampleHemisphere(squareSample);		
+		ray.dir					= CSampler::transformSampleToWCS(hemisphereSample, normal);	// sample the hemisphere in respect to the object's normal
 
 		// ray towards point light position
 		ray.t = m_maxDistance;
