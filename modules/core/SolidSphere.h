@@ -7,8 +7,8 @@ namespace rt
     class CSolidSphere : public CSolid
     {
     public:
-        explicit CSolidSphere(ptr_shader_t pShader, const Vec3f& origin = Vec3f::all(0), float radius = 1, size_t sides = 24);
-        ~CSolidSphere() override = default;
+        DllExport explicit CSolidSphere(ptr_shader_t pShader, const Vec3f& origin = Vec3f::all(0), float radius = 1, size_t sides = 24);
+        DllExport ~CSolidSphere() override = default;
 
     protected:
         // Helper method
