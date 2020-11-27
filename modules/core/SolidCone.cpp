@@ -15,8 +15,8 @@ namespace rt {
 		float t0 = 0;								// Initial texture coordinate
 		for (size_t s = 0; s < sides; s++) {
 			float t1 = static_cast<float>(s + 1) / sides; // Next texture coordinate: [1/sides; 1]
-			float alpha = -2 * Pif * t1;
-			dir1 = Vec3f(cosf(alpha), 0, sinf(alpha));
+			float phi = -2 * Pif * t1;
+			dir1 = Vec3f(cosf(phi), 0, sinf(phi));
 			p1 = org + radius * dir1;
 			n1 = normalize(dir1 + slope);
 
