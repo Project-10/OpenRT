@@ -1,73 +1,94 @@
-#include <macroses.h>
 #include "SolidSphere.h"
+#include "SolidQuad.h"
 #include "PrimTriangle.h"
+#include "macroses.h"
 
+namespace rt {
 
-rt::CSolidSphere::CSolidSphere(rt::ptr_shader_t pShader, const Vec3f &origin, float radius, size_t sides, bool smooth) : CSolid(origin)
-{
-    RT_ASSERT_MSG(sides > 3, "A solid sphere can only be modeled using 4 or more sides. Please adjust your input.");
-    m_origin = origin;
-    m_radius = radius;
-    m_sides = sides;
-    size_t height = (sides/2);
-
-    // This is quite straight forwards - The function creates 4 points and creates a quad from them
-    // It uses UV coordinates to so. Except at the cap where it creates triangles from the "north/south poles"
-    // to the points from a layer below.
-    for (int i = 0; i < (sides); i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            if (j == 0 || j == (height-1))
-            {
-                Vec3f a, b, c;
-                Vec2f t_a, t_b, t_c;
-                computeCoords(i, j == 0 ? j : j + 1, a, t_a);
-                computeCoords(i, j == 0 ? j + 1 : j, b, t_b);
-                computeCoords(i + 1, j == 0 ? j + 1 : j, c, t_c);
-                if (smooth)
-                {
-                    Vec3f n_a, n_b, n_c;
-                    n_a = normalize(a - m_origin);
-                    n_b = normalize(b - m_origin);
-                    n_c = normalize(b - m_origin);
-                    add(std::make_shared<CPrimTriangle>(pShader, a, b, c, t_a, t_b, t_c, n_a, n_b, n_c));
-                } else {
-                    add(std::make_shared<CPrimTriangle>(pShader, a, b, c, t_a, t_b, t_c));
-                }
-                continue;
-            }
-            Vec3f a, b, c, d;
-            Vec2f t_a, t_b, t_c, t_d;
-            computeCoords(i, j, a, t_a);
-            computeCoords(i+1, j, b, t_b);
-            computeCoords(i, j+1, c, t_c);
-            computeCoords(i + 1, j + 1, d, t_d);
-            if (smooth){
-                Vec3f n_a, n_b, n_c, n_d;
-                n_a = normalize(a - m_origin);
-                n_b = normalize(b - m_origin);
-                n_c = normalize(c - m_origin);
-                n_d = normalize(d - m_origin);
-                add(std::make_shared<CSolidQuad>(pShader, a, b, d, c, t_a, t_b, t_d, t_c, n_a, n_b, n_d, n_c));
-            } else {
-                add(std::make_shared<CSolidQuad>(pShader, a, b, d, c, t_a, t_b, t_d, t_c));
-            }
-
+    namespace {
+        // Returns normalized normal vector
+        Vec3f calcNormal(float phi, float theta) {
+            return Vec3f(cosf(theta) * cosf(phi), sinf(theta), cosf(theta) * sinf(phi));
         }
     }
+    
+    // Constructor
+    CSolidSphere::CSolidSphere(rt::ptr_shader_t pShader, const Vec3f& origin, float radius, size_t sides, bool smooth) : CSolid(origin)
+    {
+        RT_ASSERT_MSG(sides > 3, "A solid sphere can only be modeled using 4 or more sides. Please adjust your input.");
 
-}
+        size_t height_segments = (sides / 2);
+        float t0 = 0;								            // Initial texture coordinate
+        float phi0 = 0;
+        for (size_t s = 0; s < sides; s++) {
+            float t1 = static_cast<float>(s + 1) / sides;       // Next texture coordinate: [1/sides; 1]
+            float phi1 = -2 * Pif * t1;
+            
+            float h0 = 0.0f / height_segments;					// Initial height
+            float theta0 = Pif * (h0 - 0.5f);
+            Vec3f n00 = calcNormal(phi0, theta0);
+            Vec3f n10 = calcNormal(phi1, theta0);
+            for (size_t h = 0; h < height_segments; h++) {
+                float h1 = static_cast<float>(h + 1) / height_segments;		// Next height: [1/height_segments; 1]
+                float theta1 = Pif * (h1 - 0.5f);                         
+                Vec3f n01 = calcNormal(phi0, theta1);
+                Vec3f n11 = calcNormal(phi1, theta1);
 
-void rt::CSolidSphere::computeCoords(int i, int j, Vec3f &pt, Vec2f &tex)
-{
-    tex = Vec2f((float)i / ((float)(m_sides-1) + 1.0f),(1.0f - (float)(j + 1)) /(float)((m_sides/2)));
-    // Convert to spherical coordinates:
-    float theta = tex.val[0] * 2.0f * Pif;
-    float phi = (tex.val[1] - 0.5f) * Pif;
+                if (h == 0) { // ----- Bottom cap: triangles -----
+                    if (smooth)
+                        add(std::make_shared<CPrimTriangle>(pShader,
+                            origin + n00 * radius,
+                            origin + n11 * radius,
+                            origin + n01 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
+                            n00, n11, n01));
+                    else    
+                        add(std::make_shared<CPrimTriangle>(pShader,
+                            origin + n00 * radius,
+                            origin + n11 * radius,
+                            origin + n01 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1)));
+                }
+                else if (h == height_segments - 1) { // ----- Top cap: triangles -----
+                    if (smooth)
+                        add(std::make_shared<CPrimTriangle>(pShader,
+                            origin + n00 * radius,
+                            origin + n10 * radius,
+                            origin + n11 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1),
+                            n00, n10, n11));
+                    else
+                        add(std::make_shared<CPrimTriangle>(pShader,
+                            origin + n00 * radius,
+                            origin + n10 * radius,
+                            origin + n11 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1)));
+                }
+                else { // ----- Sides: quads -----
+                    if (smooth) 
+                        add(std::make_shared<CSolidQuad>(pShader,
+                            origin + n00 * radius,
+                            origin + n10 * radius,
+                            origin + n11 * radius,
+                            origin + n01 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
+                            n00, n10, n11, n01));
+                    else 
+                        add(std::make_shared<CSolidQuad>(pShader,
+                            origin + n00 * radius,
+                            origin + n10 * radius,
+                            origin + n11 * radius,
+                            origin + n01 * radius,
+                            Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1)));
+                }
+                h0 = h1;
+                theta0 = theta1;
+                n00 = n01;
+                n10 = n11;
+            } // h
+            t0 = t1;
+            phi0 = phi1;
+        } // s
 
-    float c = cos(phi);
-
-    // Usual formula for a vector in spherical coordinates.
-    pt = Vec3f(c * cos(theta), sin(phi), c * sin(theta)) * m_radius;
+    }
 }
