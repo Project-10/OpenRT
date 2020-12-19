@@ -15,6 +15,8 @@ namespace rt{
 			normal = -normal;													// turn normal to front
 			inside = true;
 		}
+		
+		Ray reflected = (m_ks > 0) ? ray.reflected(normal) : ray;				// reflection vector
 
 #ifdef DEBUG_MODE
 		color = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
@@ -44,7 +46,6 @@ namespace rt{
 						}
 						// ------ specular ------
 						if (m_ks > 0) {
-							Ray reflected = ray.reflected(normal);
 							float cosLightReflect = I.dir.dot(reflected.dir);
 							if (cosLightReflect > 0)
 								L += m_ks * powf(cosLightReflect, m_ke) * radiance.value();

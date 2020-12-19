@@ -67,7 +67,7 @@ namespace rt {
 		DllExport virtual void	setAngle(float angle) { m_focus = 1.0f / tanf(angle * Pif / 360); }
 		
 		/**
-		 * @rief Returns the camera position
+		 * @brief Returns the camera position
 		 * @return The camera position
 		 */
 		DllExport Vec3f			getPosition(void) const { return m_pos; }

@@ -62,7 +62,7 @@ namespace rt {
 		}
 		
 		/**
-		 * @rief Returns the camera position
+		 * @brief Returns the camera position
 		 * @return The camera position
 		 */
 		DllExport Vec3f			getPosition(void) const { return m_pos; }

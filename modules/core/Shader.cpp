@@ -29,7 +29,7 @@ namespace rt {
 				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 10), n);
 			}
 
-			// Needed by   ks, km, kt
+			// Needed by ks, km, kt
 			Ray reflected = (m_ks > 0 || m_km > 0 || m_kt > 0) ? ray.reflected(n) : ray;	// reflection vector
 
 			// ------ ambient ------

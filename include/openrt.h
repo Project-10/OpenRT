@@ -59,29 +59,37 @@ These tasks are optimized for speed, @a i.e. high-efficient calculations. The co
 
 The OpenRT framework consist of the following essential blocks:
 
-@subsubsection sec_main_camera Camera models
+@subsection sec_main_camera Camera models
 	- <b>Perspective Camera:</b> @ref rt::CCameraPerspective
 	- <b>Orthographic Camera:</b> @ref rt::CCameraOrthographic
 
-@subsubsection sec_main_light Light sources
+@subsection sec_main_light Light sources
 	- <b>Omnidirectional point light source:</b> @ref rt::CLightOmni
 	- <b>Directional spot light source:</b> @ref rt::CLightSpot
 	- <b>Area light source:</b> @ref rt::CLightArea
 	- <b>Skylight (ambient occlusion) light source:</b> @ref rt::CLightSky
 	@todo Implement class CLightDirect
 
+@subsection sec_main_geometry Geometry
 @subsubsection sec_main_primitives Primitives
 	- <b>Plane:</b> @ref rt::CPrimPlane
 	- <b>Sphere:</b> @ref rt::CPrimSphere
 	- <b>Triangle:</b> @ref rt::CPrimTriangle
-
-@subsubsection sec_main_shaders Shaders
+@subsubsection sec_main_solids Solids
+ - @b Quadrilateral: @ref rt::CSolidQuad
+ - @b Box: @ref rt::CSolidBox
+ - @b Sphere: @ref rt::CSolidSphere
+ - @b Cone: @ref rt::CSolidCone
+ - @b Cylinder: @ref rt::CSolidCylinder
+ 
+@subsection sec_main_shaders Shaders
 	- <b>Flat:</b> @ref rt::CShaderFlat
 	- <b>Eye Light:</b> @ref rt::CShaderEyelight
+	- <b>Phong:</b> @ref rt::CShaderPhong
+	- <b>Blinn:</b> @ref rt::CShaderBlinn
 	- <b>Chrome:</b> @ref rt::CShaderChrome
 	- <b>Glass:</b> @ref rt::CShaderGlass
 	- <b>Mirror:</b> @ref rt::CShaderMirror
-	- <b>Phong:</b> @ref rt::CShaderPhong
 	- <b>General Purpose Shader:</b> @ref rt::CShader
 */
 

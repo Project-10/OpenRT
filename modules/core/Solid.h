@@ -61,7 +61,7 @@ namespace rt {
 		void add(const ptr_prim_t pPrim) { m_vpPrims.push_back(pPrim); }
 		/**
 		 * @brief Add a new solid to the solid
-		 * @param solid The reference to the solid
+		 * @param pSolid The pointer to the solid
 		 */
 		void add(const ptr_solid_t pSolid) {
 			for (const auto& pPrim : pSolid->getPrims())

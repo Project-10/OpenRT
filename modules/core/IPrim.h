@@ -67,11 +67,11 @@ namespace rt {
 		 * @returns The bounding box, which contain the primitive
 		 */
 		DllExport virtual CBoundingBox		getBoundingBox(void) const = 0;
-		/**
-		 * @brief Sets the new shader to the prim
-		 * @param pShader Pointer to the shader to be applied for the prim
-		 */
-		//DllExport void						setShader(const ptr_shader_t pShader) { m_pShader = pShader; }
+//		/**
+//		 * @brief Sets the new shader to the prim
+//		 * @param pShader Pointer to the shader to be applied for the prim
+//		 */
+//		DllExport void						setShader(const ptr_shader_t pShader) { m_pShader = pShader; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
