@@ -26,6 +26,8 @@
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"
+#include "core/ShaderPhong.h"
+#include "core/ShaderBlinn.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderEyelight.h"
 #include "core/ShaderSSLT.h"

@@ -28,6 +28,8 @@ source_group("Source Files\\Geometry\\Solids\\sphere" FILES "SolidSphere.h" "Sol
 source_group("Source Files\\Shaders" FILES "IShader.h")
 source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp")
 source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
+source_group("Source Files\\Shaders\\phong" FILES "ShaderPhong.h" "ShaderPhong.cpp")
+source_group("Source Files\\Shaders\\blinn" FILES "ShaderBlinn.h" "ShaderBlinn.cpp")
 source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrome.cpp")
 source_group("Source Files\\Shaders\\sslt" FILES "ShaderSSLT.h" "ShaderSSLT.cpp")
 source_group("Source Files\\Shaders\\phong" FILES "Shader.h" "Shader.cpp")
