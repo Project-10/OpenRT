@@ -23,9 +23,11 @@ namespace rt {
 		 */
 		DllExport CSolid(const ptr_shader_t pShader, const std::string& fileName);
 		DllExport CSolid(const CSolid&);
+		DllExport CSolid(const ptr_prim_t&);
         DllExport CSolid();
 		DllExport virtual ~CSolid(void) = default;
 		DllExport CSolid& operator=(const CSolid&);
+        DllExport CSolid& operator=(ptr_prim_t);
 		
 		/**
 		 * @brief Applies affine transformation matrix \b t to the solid.
@@ -47,7 +49,6 @@ namespace rt {
 		 * @return The solid's pivot point
 		 */
 		DllExport Vec3f 							getPivot(void) const { return m_pivot; }
-
 		
 	protected:
 		/**

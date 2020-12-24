@@ -2,6 +2,7 @@
 #include "PrimTriangle.h"
 #include "Transform.h"
 #include <fstream> 
+#include <utility>
 
 namespace rt {
 	// Constructor
@@ -103,6 +104,15 @@ namespace rt {
 	    m_pivot = other.m_pivot;
         std::copy(other.m_vpPrims.cbegin(), other.m_vpPrims.cend(), std::back_inserter(m_vpPrims));
         return *this;
+    }
+
+    CSolid &CSolid::operator=(ptr_prim_t prim) {
+        this->add(std::move(prim));
+	    return *this;
+    }
+
+    CSolid::CSolid(const ptr_prim_t &prim) {
+	    this->add(prim);
     }
 }
 

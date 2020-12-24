@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IPrim.h"
-#include "IntersectionRange.h"
 #include "Solid.h"
 
 namespace rt {
@@ -9,6 +8,12 @@ namespace rt {
     class CCompositeGeometry : public IPrim {
     public:
         DllExport explicit CCompositeGeometry(ptr_shader_t pShader, const CSolid& s1, const CSolid& s2, OperationType operationType);
+
+        DllExport explicit CCompositeGeometry(const rt::ptr_shader_t& pShader,
+                                              const rt::CSolid &s1, const rt::ptr_prim_t &p2,
+                                              rt::OperationType operationType);
+
+        DllExport explicit CCompositeGeometry(const ptr_shader_t &pShader, const ptr_prim_t &p1, const ptr_prim_t &p2, OperationType operationType);
 
         DllExport bool 			intersect(Ray& ray) const override;
 
