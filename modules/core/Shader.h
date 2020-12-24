@@ -121,38 +121,4 @@ namespace rt {
 		DllExport CShaderMirror(const CScene& scene) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 1, 0, 0) {}
 		DllExport virtual ~CShaderMirror(void) = default;
 	};
-
-	// ================================ Phong Shader Class ================================
-	/**
-	 * @brief Phong shader
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderPhong : public CShader
-	{
-	public:
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param color The color of the object
-		 * @param ka The ambient coefficient
-		 * @param kd The diffuse reflection coefficient
-		 * @param ks The specular refelection coefficient
-		 * @param ke The shininess exponent
-		 */
-		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
-			: CShader(scene, color, ka, kd, ks, ke, 0, 0, 0) {}
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param pTexture Pointer to the texture
-		 * @param ka The ambient coefficient
-		 * @param kd The diffuse reflection coefficient
-		 * @param ks The specular refelection coefficient
-		 * @param ke The shininess exponent
-		 */
-		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
-			: CShader(scene, pTexture, ka, kd, ks, ke, 0, 0, 0) {}
-		DllExport virtual ~CShaderPhong(void) = default;
-	};
 }

@@ -28,6 +28,6 @@ code/
 time.bat
 .DS_Store
 
-#CLion
-.idea
+#CLION
+.idea/
 cmake-build-debug

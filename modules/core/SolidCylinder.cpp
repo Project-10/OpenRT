@@ -14,8 +14,8 @@ namespace rt {
 		float t0 = 0;						// Initial texture coordinate
 		for (int s = 0; s < sides; s++) {
 			float t1 = static_cast<float>(s + 1) / sides; // Next texture coordinate: [1/sides; 1]
-			float alpha = -2 * Pif * t1;
-			dir = Vec3f(cosf(alpha), 0, sinf(alpha));
+			float phi = -2 * Pif * t1;
+			dir = Vec3f(cosf(phi), 0, sinf(phi));
 			p1 = org + radius * dir;
 			n1 = dir;
 
@@ -30,12 +30,12 @@ namespace rt {
 
 			// Caps
 			if (height >= 0) {
-				add(std::make_shared<CPrimTriangle>(pShader, org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
-				add(std::make_shared<CPrimTriangle>(pShader, org + top, p1 + top, p0 + top, Vec2f(0.5f, 0), Vec2f(t1, 0), Vec2f(t0, 0)));
-			}
-			else {
 				add(std::make_shared<CPrimTriangle>(pShader, org, p1, p0, Vec2f(0.5f, 1), Vec2f(t1, 1), Vec2f(t0, 1)));
 				add(std::make_shared<CPrimTriangle>(pShader, org + top, p0 + top, p1 + top, Vec2f(0.5f, 0), Vec2f(t0, 0), Vec2f(t1, 0)));
+			}
+			else {
+				add(std::make_shared<CPrimTriangle>(pShader, org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
+				add(std::make_shared<CPrimTriangle>(pShader, org + top, p1 + top, p0 + top, Vec2f(0.5f, 0), Vec2f(t1, 0), Vec2f(t0, 0)));
 			}
 			p0 = p1;
 			n0 = n1;

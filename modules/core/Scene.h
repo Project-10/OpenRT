@@ -28,6 +28,7 @@ namespace rt {
 		 */
 		DllExport CScene(const Vec3f& bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
+			, m_ambientColor(1, 1, 1)
 #ifdef ENABLE_BSP	
 			, m_pBSPTree(new CBSPTree())
 #endif
@@ -44,8 +45,8 @@ namespace rt {
 		// ------------ ------------ ------------
 
 		/**
-		* @brief Clears the scene from geometry, lights and cameras (if any)
-		*/
+		 * @brief Clears the scene from geometry, lights and cameras (if any)
+		 */
 		DllExport void					clear(void);
 		/**
 		 * @brief Adds a new primitive to the scene
@@ -92,7 +93,7 @@ namespace rt {
 		 * @brief Renders the depth-map from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
 		 * @returns The rendered image (type: CV_64FC1)
-		*/
+		 */
 		DllExport Mat					renderDepth(ptr_sampler_t pSampler = nullptr) const;
 	
 
@@ -103,6 +104,10 @@ namespace rt {
 		 * @return The vector with pointers to the scene light sources
 		 */
 		const std::vector<ptr_light_t>	getLights(void) const { return m_vpLights; }
+		/**
+		 * @brief Returns the ambient
+		 */
+		Vec3f							getAmbientColor(void) const { return m_ambientColor; }
 		/**
 		 * @brief Checks intersection between ray \b ray and the geometry present in scene
 		 * @details This function calls \b IPrim::intersect() method for all scene's primitives. If valid intersecton(s) is(are) found, the argument \b ray is updated:
@@ -135,7 +140,7 @@ namespace rt {
 		 * @note This method is to be used only in OpenRT shaders
 		 * @param ray The ray (Ref. @ref Ray for details)
 		 * @return The distance bitween ray.org and the intersection to the nearest object
-		*/
+		 */
 		double							rayTraceDepth(Ray& ray) const;
 
 	
@@ -150,6 +155,7 @@ namespace rt {
 		
 	private:
 		const Vec3f						m_bgColor;    				///< background color
+		const Vec3f						m_ambientColor;				///< ambient color
 		std::vector<ptr_prim_t> 		m_vpPrims;					///< Primitives
 		std::vector<ptr_light_t>		m_vpLights;					///< Lights
 		std::vector<ptr_camera_t>		m_vpCameras;				///< Cameras

@@ -32,7 +32,7 @@ namespace rt {
 
 		/**
 		 * @brief Sets light target point
-		 * @praram target The target point
+		 * @param target The target point
 		 */
 		DllExport virtual void	setTarget(const Vec3f& target) {
 			m_target = target;
@@ -40,7 +40,7 @@ namespace rt {
 		}
 		/**
 		 * @brief Returns the camera target point
-		 * @eturn The camera target point
+		 * @return The camera target point
 		 */
 		DllExport Vec3f			getTarget(void) const { return m_target; }
 

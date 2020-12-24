@@ -2,10 +2,7 @@
 #include "Scene.h"
 #include "Ray.h"
 
-namespace rt {
-	const static Vec3f ambientColor	 = RGB(1, 1, 1);			// ambient radiance
-	const static Vec3f specularColor = RGB(1, 1, 1);			// white highlight;	
-	
+namespace rt {	
 	Vec3f CShader::shade(const Ray& ray) const
 	{
 		Vec3f res(0, 0, 0);
@@ -32,12 +29,12 @@ namespace rt {
 				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 10), n);
 			}
 
-			// Needed by   ks, km, kt
+			// Needed by ks, km, kt
 			Ray reflected = (m_ks > 0 || m_km > 0 || m_kt > 0) ? ray.reflected(n) : ray;	// reflection vector
 
 			// ------ ambient ------
 			if (m_ka > 0)
-				res += m_ka * ambientColor.mul(color);
+				res += m_ka * m_scene.getAmbientColor().mul(color);
 
 			// ------ diffuse and/or specular ------
 			if (m_kd > 0 || m_ke > 0) {
@@ -61,7 +58,7 @@ namespace rt {
 							if (m_ks > 0) {
 								float cosLightReflect = I.dir.dot(reflected.dir);
 								if (cosLightReflect > 0)
-									L += m_ks * powf(cosLightReflect, m_ke) * specularColor.mul(radiance.value());
+									L += m_ks * powf(cosLightReflect, m_ke) * radiance.value();
 							}
 						}
 					} // s
