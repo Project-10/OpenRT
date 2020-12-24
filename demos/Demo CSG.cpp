@@ -7,7 +7,7 @@ using namespace rt;
 
 int main()
 {
-    const Vec3f	bgColor = RGB(0, 0, 0);
+    const Vec3f	bgColor = RGB(0.3, 0.3,0.3);
     const Size	resolution = Size(1920, 1200);
     const float intensity = 5e4;
 
@@ -18,8 +18,8 @@ int main()
     auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 
     // Shaders
-   auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(91/255.0, 132/255.0, 177/255.0), 0.1f, 0.9f, 0, 40.0f);
-   auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(252/255.0, 118/255.0, 106/255.0), 0.1f, 0.9f, 0, 40.0f);
+   auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(47/255.0, 60/255.0, 126/255.0), 0.1f, 0.9f, 0, 40.0f);
+   auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(251/255.0, 234/255.0, 235/255.0), 0.1f, 0.9f, 0, 40.0f);
     auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
     // auto pShaderFloor = std::make_shared<CShaderEyelight>(RGB(1, 1, 1));
     // auto pShaderRed = std::make_shared<CShaderEyelight>(RGB(1, 0, 0));
@@ -28,7 +28,7 @@ int main()
     // Geometries
     auto solidSphere1 = CSolidSphere(pDarkBlue,  Vec3f(1, 0.1f, -13), 1.5, 24, true);
     auto solidSphere2 = CSolidSphere(pSunsetOrange,  Vec3f(0, 0.1f, -13), 1.5, 24, true);
-    scene.add(std::make_shared<CCompositeGeometry>(pDarkBlue, solidSphere1, solidSphere2, rt::Intersection));
+    scene.add(std::make_shared<CCompositeGeometry>(pDarkBlue, solidSphere1, solidSphere2, rt::Union));
 
     // Try it with Cylinders!
     //auto solidCylinder2 = CSolidCylinder(pDarkBlue, Vec3f(1, 0.1f, -13),1.5, 4.1f);
