@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ILight.h"
-#include "Sampler3f.h"
+#include "SamplerStratified.h"
 
 namespace rt {
 	// ================================ Skylight Class ================================

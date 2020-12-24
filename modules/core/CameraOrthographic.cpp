@@ -3,7 +3,7 @@
 #include "macroses.h"
 
 namespace rt {
-	void CCameraOrthographic::InitRay(Ray& ray, int x, int y, Vec2f sample) {
+	void CCameraOrthographic::InitRay(Ray& ray, int x, int y, const Vec2f& sample) {
 		Size resolution = getResolution();
 		int width = resolution.width;
 		int height = resolution.height;

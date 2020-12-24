@@ -4,6 +4,14 @@
 #include "macroses.h"
 
 namespace rt {
+	void CScene::clear(void) 
+	{
+		m_vpPrims.clear();
+		m_vpLights.clear();
+		m_vpCameras.clear();
+		m_activeCamera = 0;
+	}
+	
 	void CScene::add(const ptr_prim_t pPrim) 
 	{ 
 		m_vpPrims.push_back(pPrim);

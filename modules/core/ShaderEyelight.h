@@ -22,6 +22,14 @@ namespace rt {
 		DllExport CShaderEyelight(const Vec3f& color = RGB(0.5f, 0.5f, 0.5f))
 			: CShaderFlat(color)
 		{}
+		/**
+		 * @brief Constructor
+		 * @details This is a light-source-free shader
+		 * @param pTexture Pointer to the texture
+		 */
+		DllExport CShaderEyelight(const ptr_texture_t pTexture)
+			: CShaderFlat(pTexture)
+		{}
 		DllExport virtual ~CShaderEyelight(void) = default;
 
 		DllExport virtual Vec3f shade(const Ray& ray) const override;

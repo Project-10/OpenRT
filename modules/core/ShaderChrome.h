@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IShader.h"
-#include "Sampler3f.h"
+#include "Sampler.h"
 
 namespace rt {
 	class CScene;

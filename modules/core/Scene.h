@@ -26,7 +26,7 @@ namespace rt {
 		 * @param bgColor The default background color
 		 * @todo Background may be image
 		 */
-		DllExport CScene(Vec3f bgColor = RGB(0,0,0))
+		DllExport CScene(const Vec3f& bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
 #ifdef ENABLE_BSP	
 			, m_pBSPTree(new CBSPTree())
@@ -41,10 +41,12 @@ namespace rt {
 		DllExport void save(const std::string& fileName) const {}
 		/// @todo implement
 		DllExport void load(const std::string& fileName) {}
-		/// @todo implement
-		DllExport void clear(void) {}
 		// ------------ ------------ ------------
 
+		/**
+		* @brief Clears the scene from geometry, lights and cameras (if any)
+		*/
+		DllExport void					clear(void);
 		/**
 		 * @brief Adds a new primitive to the scene
 		 * @param pPrim Pointer to the primitive

@@ -37,7 +37,7 @@ namespace rt {
 		 * @param[in] y The y-coordinate of the pixel lying on the camera screen
 		 * @param[in] sample The x- and y-shifts to the center of the pixel (used for anti-aliasing).
 		 */
-		DllExport virtual void InitRay(Ray& ray, int x, int y, Vec2f sample = Vec2f::all(0.5f)) = 0;
+		DllExport virtual void InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) = 0;
 		
 		/**
 		 * @brief Retuns the camera resolution in pixels

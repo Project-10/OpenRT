@@ -3,7 +3,7 @@
 #pragma once
 
 #include "LightOmni.h"
-#include "Sampler.h"
+#include "SamplerStratified.h"
 
 namespace rt {
 	// ================================ Area Light Class ================================

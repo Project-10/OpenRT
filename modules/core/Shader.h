@@ -3,7 +3,7 @@
 #pragma once
 
 #include "ShaderFlat.h"
-#include "Sampler3f.h"
+#include "Sampler.h"
 
 namespace rt {
 	class CScene;

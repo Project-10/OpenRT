@@ -4,7 +4,7 @@
 
 namespace rt
 {
-	void CCameraPerspective::InitRay(Ray& ray, int x, int y, Vec2f sample)
+	void CCameraPerspective::InitRay(Ray& ray, int x, int y, const Vec2f& sample)
 	{
 		Size resolution = getResolution();
 		int width = resolution.width;
