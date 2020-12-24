@@ -14,25 +14,31 @@ int main()
     // Scene
     CScene scene(bgColor);
 
+    auto pTextureEarth  = std::make_shared<CTexture>("/Users/otmanesabir/Desktop/S5/Project&Thesis/OpenRT/data/1_earth_8k.jpg");
+    auto pShaderEarth 	= std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
+
     // Shaders
-   // auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.1f, 0.9f, 0, 40.0f);
-   // auto pShaderBlue	= std::make_shared<CShaderPhong>(scene, RGB(0, 0, 1), 0.1f, 0.9f, 0, 40.0f);
-   auto pShaderRed = std::make_shared<CShaderEyelight>(RGB(1, 0, 0));
-   auto pShaderBlue = std::make_shared<CShaderEyelight>(RGB(0, 0, 1));
-   //auto pShaderFloor = std::make_shared<CShaderEyelight>(RGB(1, 1, 1));
-   auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
+   auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(91/255.0, 132/255.0, 177/255.0), 0.1f, 0.9f, 0, 40.0f);
+   auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(252/255.0, 118/255.0, 106/255.0), 0.1f, 0.9f, 0, 40.0f);
+    auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
+    // auto pShaderFloor = std::make_shared<CShaderEyelight>(RGB(1, 1, 1));
+    // auto pShaderRed = std::make_shared<CShaderEyelight>(RGB(1, 0, 0));
+    // auto pShaderBlue = std::make_shared<CShaderEyelight>(RGB(0, 0, 1));
 
     // Geometries
-    //auto primSphere = std::make_shared<CPrimSphere>(pShaderRed, Vec3f(0, 0, -15), 3);
-    auto solidCylinder2 = CSolidCylinder(pShaderRed, Vec3f(1, 0.1f, -13),1.5, 4.1f);
-    auto solidCylinder = CSolidCylinder(pShaderBlue, Vec3f(0, 0.1f, -13),1.5, 4);
+    auto solidSphere1 = CSolidSphere(pDarkBlue,  Vec3f(1, 0.1f, -13), 1.5, 24, true);
+    auto solidSphere2 = CSolidSphere(pSunsetOrange,  Vec3f(0, 0.1f, -13), 1.5, 24, true);
+    scene.add(std::make_shared<CCompositeGeometry>(pDarkBlue, solidSphere1, solidSphere2, rt::Intersection));
+
+    // Try it with Cylinders!
+    //auto solidCylinder2 = CSolidCylinder(pDarkBlue, Vec3f(1, 0.1f, -13),1.5, 4.1f);
+    //auto solidCylinder = CSolidCylinder(pSunsetOrange, Vec3f(0, 0.1f, -13),1.5, 4);
+    //scene.add(std::make_shared<CCompositeGeometry>(pShaderRed, solidCylinder2, solidCylinder, rt::Union));
     float s = 100;
+
     //Floor
-    scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
-    //scene.add(primSphere);
-    //scene.add(solidCylinder);
-    //scene.add(solidCylinder2);
-    scene.add(std::make_shared<CCompositeGeometry>(pShaderRed, solidCylinder2, solidCylinder, rt::Union));
+    //scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
+
     // cameras
     const float r = 10;
     auto front = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 7, 8), Vec3f(0, -0.4, -1), Vec3f(0, 1, 0), 45.0f);
@@ -40,12 +46,12 @@ int main()
     auto top = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22,-5), Vec3f(0, -1, -0.5), Vec3f(0, 0, -1), 45.0f);
     auto cam45 = std::make_shared<CCameraPerspective>(resolution, Vec3f(35, 20, -30), Vec3f(-2, -1.1, 1), Vec3f(0, 1, 0), 45.0f);
     auto frontTilted = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22, 8), Vec3f(0, -1, -1), Vec3f(0, 1, 0), 45.0f);
-    scene.add(frontTilted);
+    scene.add(cam45);
 
     scene.buildAccelStructure(20, 2);
 
     // Light
-    auto pLight			= std::make_shared<CLightOmni>(intensity * RGB(1.0f, 0.839f, 0.494f), Vec3f(100, 100.0f, 100), false);
+    auto pLight = std::make_shared<CLightOmni>(intensity * RGB(1.0f, 0.839f, 0.494f), Vec3f(100, 150.0f, 100), false);
 
     // Add everything to scene
 
