@@ -13,7 +13,7 @@ int main() {
     // Scene
     CScene scene(bgColor);
 
-    auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+    auto pTextureEarth = std::make_shared<CTexture>("/Users/otmanesabir/Desktop/S5/Project&Thesis/OpenRT/data/1_earth_8k.jpg");
     auto pShaderEarth = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 
     // Shaders
@@ -27,8 +27,8 @@ int main() {
     // auto pShaderBlue = std::make_shared<CShaderEyelight>(RGB(0, 0, 1));
 
     // Geometries
-    auto solidSphere1 = CSolidSphere(pDarkBlue, Vec3f(1, 0.1f, -13), 1.5, 24, true);
-    auto solidSphere2 = CSolidSphere(pSunsetOrange, Vec3f(0, 0.1f, -13), 1.5, 24, true);
+    auto solidSphere1 = CSolidSphere(pShaderEarth, Vec3f(1, 0.1f, -13), 1.5, 24, true);
+    auto solidSphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5, 24, true);
     scene.add(std::make_shared<CCompositeGeometry>(pDarkBlue, solidSphere1, solidSphere2, rt::Union));
 
     // Try it with Cylinders!

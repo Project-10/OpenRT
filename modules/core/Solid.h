@@ -23,7 +23,7 @@ namespace rt {
 		 */
 		DllExport CSolid(const ptr_shader_t pShader, const std::string& fileName);
 		DllExport CSolid(const CSolid&);
-		DllExport CSolid(const ptr_prim_t&);
+		DllExport explicit CSolid(const ptr_prim_t&);
         DllExport CSolid();
 		DllExport virtual ~CSolid(void) = default;
 		DllExport CSolid& operator=(const CSolid&);

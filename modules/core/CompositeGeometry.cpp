@@ -65,15 +65,17 @@ bool rt::CCompositeGeometry::intersect(rt::Ray &ray) const {
 }
 
 Vec2f rt::CCompositeGeometry::getTextureCoords(const rt::Ray &ray) const {
+    RT_WARNING("Method is not implemented");
     return cv::Vec2f();
 }
 
 Vec3f rt::CCompositeGeometry::getNormal(const rt::Ray &ray) const {
+    RT_WARNING("Method is not implemented");
     return cv::Vec3f();
 }
 
 void rt::CCompositeGeometry::transform(const Mat &T) {
-
+    RT_WARNING("Method is not implemented");
 }
 
 bool rt::CCompositeGeometry::if_intersect(const rt::Ray &ray) const {

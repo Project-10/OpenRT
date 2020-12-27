@@ -99,20 +99,25 @@ namespace rt {
 
     CSolid::CSolid(){
 	    m_vpPrims = std::vector<ptr_prim_t>();
+	    m_pivot = Vec3f();
 	}
 
     CSolid &CSolid::operator=(const CSolid &other) {
 	    m_pivot = other.m_pivot;
+	    m_vpPrims.clear();
+	    m_vpPrims.reserve(other.m_vpPrims.size());
         std::copy(other.m_vpPrims.cbegin(), other.m_vpPrims.cend(), std::back_inserter(m_vpPrims));
         return *this;
     }
 
     CSolid &CSolid::operator=(ptr_prim_t prim) {
+	    this->m_vpPrims.clear();
         this->add(std::move(prim));
 	    return *this;
     }
 
     CSolid::CSolid(const ptr_prim_t &prim) {
+	    this->m_vpPrims.clear();
 	    this->add(prim);
     }
 }
