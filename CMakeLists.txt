@@ -66,7 +66,7 @@ option(DEBUG_PRINT_INFO "Output debug information" OFF)
 option(DEBUG_MODE "Debugging mode" OFF)
 option(ENABLE_PDP "Use parallel data processing" ON)
 cmake_dependent_option(ENABLE_AMP "Use AMP Algorithms Library for parallel GPU computing" OFF "MSVC" OFF)  
-option(ENABLE_BSP "Use Binary Space Partitioning (BSP) Tree for optimized ray traversal" ON) 
+option(ENABLE_BSP "Use Binary Space Partitioning (BSP) Tree for optimized ray traversal" ON)
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(modules/core)
