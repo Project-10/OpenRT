@@ -1,4 +1,3 @@
-#include <core/CompositeGeometry.h>
 #include <fstream>
 #include "openrt.h"
 #include "core/timer.h"
@@ -13,23 +12,23 @@ int main() {
     // Scene
     CScene scene(bgColor);
 
-    auto pTextureEarth = std::make_shared<CTexture>("/Users/otmanesabir/Desktop/S5/Project&Thesis/OpenRT/data/1_earth_8k.jpg");
+    auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
     auto pShaderEarth = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 
     // Shaders
-    auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(47 / 255.0, 60 / 255.0, 126 / 255.0), 0.1f, 0.9f, 0,
-                                                    40.0f);
-    auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(251 / 255.0, 234 / 255.0, 235 / 255.0), 0.1f, 0.9f,
-                                                        0, 40.0f);
+    auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(47 / 255.0, 60 / 255.0, 126 / 255.0), 0.1f, 0.9f, 0, 40.0f);
+    auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(251 / 255.0, 234 / 255.0, 235 / 255.0), 0.1f, 0.9f, 0, 40.0f);
     auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
     // auto pShaderFloor = std::make_shared<CShaderEyelight>(RGB(1, 1, 1));
     // auto pShaderRed = std::make_shared<CShaderEyelight>(RGB(1, 0, 0));
     // auto pShaderBlue = std::make_shared<CShaderEyelight>(RGB(0, 0, 1));
 
     // Geometries
-    auto solidSphere1 = CSolidSphere(pShaderEarth, Vec3f(1, 0.1f, -13), 1.5, 24, true);
-    auto solidSphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5, 24, true);
-    scene.add(std::make_shared<CCompositeGeometry>(pDarkBlue, solidSphere1, solidSphere2, rt::Union));
+    auto 		solidSphere1 = CSolidSphere(pShaderEarth, Vec3f(1, 0.1f, -13), 1.5f, 24, true);
+    auto 		solidSphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5f, 24, true);
+	ptr_prim_t 	pPrimSphere  = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5f);
+	ptr_prim_t 	pComposize	 = std::make_shared<CCompositeGeometry>(solidSphere1, solidSphere2, BoolOp::Union);
+	scene.add(pComposize);
 
     // Try it with Cylinders!
     //auto solidCylinder2 = CSolidCylinder(pDarkBlue, Vec3f(1, 0.1f, -13),1.5, 4.1f);
@@ -42,16 +41,11 @@ int main() {
 
     // cameras
     const float r = 10;
-    auto front = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 7, 8), Vec3f(0, -0.4, -1), Vec3f(0, 1, 0),
-                                                      45.0f);
-    auto back = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 20, -30), Vec3f(0, -1, 1), Vec3f(0, 1, 0),
-                                                     45.0f);
-    auto top = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22, -5), Vec3f(0, -1, -0.5), Vec3f(0, 0, -1),
-                                                    45.0f);
-    auto cam45 = std::make_shared<CCameraPerspective>(resolution, Vec3f(35, 20, -30), Vec3f(-2, -1.1, 1),
-                                                      Vec3f(0, 1, 0), 45.0f);
-    auto frontTilted = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22, 8), Vec3f(0, -1, -1),
-                                                            Vec3f(0, 1, 0), 45.0f);
+    auto front = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 7, 8), Vec3f(0, -0.4, -1), Vec3f(0, 1, 0), 45.0f);
+    auto back = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 20, -30), Vec3f(0, -1, 1), Vec3f(0, 1, 0), 45.0f);
+    auto top = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22, -5), Vec3f(0, -1, -0.5), Vec3f(0, 0, -1), 45.0f);
+    auto cam45 = std::make_shared<CCameraPerspective>(resolution, Vec3f(35, 20, -30), Vec3f(-2, -1.1, 1), Vec3f(0, 1, 0), 45.0f);
+    auto frontTilted = std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 22, 8), Vec3f(0, -1, -1), Vec3f(0, 1, 0), 45.0f);
     scene.add(cam45);
 
     scene.buildAccelStructure(20, 2);
@@ -66,16 +60,16 @@ int main() {
     Mat img = scene.render();
     Timer::stop();
 
-    std::string counterPath = "../../../num.txt";
+    //std::string counterPath = "../../../num.txt";
 
-    int renderCount = 0;
-    std::ifstream i(counterPath, std::ios::binary);
-    i.read((char *) &renderCount, sizeof(renderCount));
-    imwrite("../../../render_" + std::to_string(renderCount) + ".png", img);
-    renderCount++;
-    std::ofstream o(counterPath, std::ios::binary);
-    o.write((char *) &renderCount, sizeof(renderCount));
-    o.close();
+    //int renderCount = 0;
+	//std::ifstream i(counterPath, std::ios::binary);
+    //i.read((char *) &renderCount, sizeof(renderCount));
+    //imwrite("../../../render_" + std::to_string(renderCount) + ".png", img);
+    //renderCount++;
+    //std::ofstream o(counterPath, std::ios::binary);
+    //o.write((char *) &renderCount, sizeof(renderCount));
+    //o.close();
     imshow("image", img);
     waitKey();
     return 0;

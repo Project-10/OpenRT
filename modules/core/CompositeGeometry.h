@@ -4,39 +4,33 @@
 #include "Solid.h"
 
 namespace rt {
-    enum OperationType {
-        Intersection, Subtraction, Union
+    enum class BoolOp {
+        Intersection, Difference, Union
     };
 
     class CCompositeGeometry : public IPrim {
     public:
-        DllExport explicit CCompositeGeometry(ptr_shader_t pShader, const CSolid &s1, const CSolid &s2,
-                                              OperationType operationType);
+        /*
+		 * @brief Constructor
+		 * @details Class stores the copies of the solids in order to prevent changing the composite primitives after creation if the solids are chenged in user code
+		 * @todo what to do if the shader was already assigned to a solid?
+		 */
+		DllExport explicit CCompositeGeometry(const CSolid& s1, const CSolid& s2, BoolOp operationType);
+		DllExport virtual ~CCompositeGeometry(void) = default;
 
-        DllExport explicit CCompositeGeometry(const rt::ptr_shader_t &pShader,
-                                              const rt::CSolid &s1, const rt::ptr_prim_t &p2,
-                                              rt::OperationType operationType);
-
-        DllExport explicit CCompositeGeometry(const ptr_shader_t &pShader, const ptr_prim_t &p1, const ptr_prim_t &p2,
-                                              OperationType operationType);
-
-        DllExport bool intersect(Ray &ray) const override;
-
-        DllExport bool if_intersect(const Ray &ray) const override;
-
-        DllExport void transform(const Mat &T) override;
-
-        DllExport Vec3f getNormal(const Ray &ray) const override;
-
-        DllExport Vec2f getTextureCoords(const Ray &ray) const override;
-
-        DllExport CBoundingBox getBoundingBox() const override;
-
+		DllExport virtual bool 			intersect(Ray& ray) const override;
+		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
+		DllExport virtual void 			transform(const Mat& T) override;
+		DllExport virtual Vec3f 		getNormal(const Ray&) const override;
+		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
+		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
+		
+		
     private:
-        CSolid m_s1;
-        CSolid m_s2;
-        OperationType m_opType;
-        CBoundingBox m_boundingBox;
+        CSolid 			m_s1;				///<
+        CSolid 			m_s2;				///<
+		BoolOp			m_operationType;	///<
+        CBoundingBox 	m_boundingBox;		///<
     };
 
 }

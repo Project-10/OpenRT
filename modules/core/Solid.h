@@ -17,17 +17,22 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
+		 * @param pPrim Pointer to the primitive
+		 * @todo Init the pivot point
+		 */
+		DllExport CSolid(const ptr_prim_t pPrim) : m_pivot(0, 0, 0), m_vpPrims({pPrim}) {}
+		/**
+		 * @brief Constructor
 		 * @details Loads the primitives from an .obj file and adds them to the scene
 		 * @param pShader Pointer to the shader to be use with the parsed object
 		 * @param fileName The full path to the .obj file
 		 */
 		DllExport CSolid(const ptr_shader_t pShader, const std::string& fileName);
-		DllExport CSolid(const CSolid&);
-		DllExport explicit CSolid(const ptr_prim_t&);
-        DllExport CSolid();
+		DllExport CSolid(const CSolid&) = default;
 		DllExport virtual ~CSolid(void) = default;
-		DllExport CSolid& operator=(const CSolid&);
-        DllExport CSolid& operator=(ptr_prim_t);
+		
+		DllExport CSolid& operator=(const CSolid&) = delete;
+//      DllExport CSolid& operator=(ptr_prim_t);
 		
 		/**
 		 * @brief Applies affine transformation matrix \b t to the solid.
