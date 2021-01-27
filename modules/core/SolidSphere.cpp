@@ -66,7 +66,7 @@ namespace rt {
                 }
                 else { // ----- Sides: quads -----
                     if (smooth) 
-                        add(std::make_shared<CSolidQuad>(pShader,
+                        add(CSolidQuad(pShader,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,
@@ -74,7 +74,7 @@ namespace rt {
                             Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
                             n00, n10, n11, n01));
                     else 
-                        add(std::make_shared<CSolidQuad>(pShader,
+                        add(CSolidQuad(pShader,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,
