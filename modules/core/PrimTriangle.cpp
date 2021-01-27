@@ -36,6 +36,11 @@ namespace rt {
 		m_edge2 = m_c - m_a;
 	}
 	
+	Vec3f CPrimTriangle::getOrigin(void) const
+	{
+		return 0.33f * (m_a + m_b + m_c);
+	}
+
 	Vec3f CPrimTriangle::getNormal(const Ray& ray) const
 	{
 		if (m_na && m_nb && m_nc)

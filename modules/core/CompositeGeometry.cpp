@@ -11,6 +11,7 @@ namespace rt {
 		: IPrim(nullptr)
 		, m_s1(s1)
 		, m_s2(s2)
+		, m_origin(0.5f * (s1.getPivot() + s2.getPivot()))
 		, m_operationType(operationType)
 	{
 		// Initializing the bounding box

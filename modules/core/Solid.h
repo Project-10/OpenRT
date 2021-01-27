@@ -18,9 +18,8 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param pPrim Pointer to the primitive
-		 * @todo Init the pivot point
 		 */
-		DllExport CSolid(const ptr_prim_t pPrim) : m_pivot(0, 0, 0), m_vpPrims({pPrim}) {}
+		DllExport CSolid(const ptr_prim_t pPrim) : m_pivot(pPrim->getOrigin()), m_vpPrims({pPrim}) {}
 		/**
 		 * @brief Constructor
 		 * @details Loads the primitives from an .obj file and adds them to the scene

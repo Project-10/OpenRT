@@ -51,6 +51,11 @@ namespace rt {
 		 */
 		DllExport virtual void				transform(const Mat& T) = 0;
 		/**
+		 * @brief Returns the origin point of the primitive
+		 * @return The origin point
+		 */
+		DllExport virtual Vec3f				getOrigin(void) const = 0;
+		/**
 		 * @brief Returns the normalized normal vector of the primitive in the ray - primitive intercection point
 		 * @param ray Ray pointing at the surface
 		 * @return The normalized normal of the primitive

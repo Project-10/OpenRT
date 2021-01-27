@@ -79,7 +79,6 @@ namespace rt {
 		return normalize(ray.hitPoint() - m_origin);
 	}
 
-	/// @todo Use atan2() here
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
 		Vec3f hitPoint = ray.hitPoint() - m_origin;
