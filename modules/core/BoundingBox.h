@@ -71,6 +71,11 @@ namespace rt {
          * @returns The maximal point defying the size of the bounding box
          */
         DllExport Vec3f getMaxPoint(void) const { return m_maxPoint; }
+        /**
+         * @brief Computes the estimated centroid of the bounding box.
+         * @returns The point defining the centroid of the bounding box.
+         */
+        DllExport Vec3f getCenter(void) const { return Vec3f((m_minPoint[0] + m_maxPoint[0]) / 2, (m_minPoint[1] + m_maxPoint[1]) / 2, (m_minPoint[2] + m_maxPoint[2]) / 2); }
 		
         
 	private:

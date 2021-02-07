@@ -9,9 +9,8 @@ namespace rt {
 	// Constructor
 	CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType)
 		: IPrim(nullptr)
-		, m_vpPrims1(s1.getPrims())
-		, m_vpPrims2(s2.getPrims())
-		, m_origin(0.5f * (s1.getPivot() + s2.getPivot()))
+		, m_s1(s1)
+		, m_s2(s2)
 		, m_operationType(operationType)
 	{
 		// Initializing the bounding box
@@ -46,18 +45,20 @@ namespace rt {
 				break;
 		}
 		m_boundingBox = CBoundingBox(minPt, maxPt);
+		m_origin = m_boundingBox.getCenter();
 	}
 
 	bool CCompositeGeometry::intersect(Ray &ray) const {
-
+		
 		std::pair<Ray, Ray> range1(ray, ray);
 		std::pair<Ray, Ray> range2(ray, ray);
 		range1.second.t = -Infty;
 		range2.second.t = -Infty;
 		bool hasIntersection = false;
-		for (auto &prim : m_vpPrims1) {
+		for (const auto &prim : m_s1.getPrims()) {
 			Ray r = ray;
-            if (prim->intersect(r)) {
+			double t = ray.t;
+			if (prim->intersect(r)) {
 				if (r.t < range1.first.t)
 					range1.first = r;
 				if (r.t > range1.second.t)
@@ -65,7 +66,7 @@ namespace rt {
 				hasIntersection = true;
 			}
 		}
-		for (auto &prim : m_vpPrims2) {
+		for (const auto &prim : m_s2.getPrims()) {
 			Ray r = ray;
 			if (prim->intersect(r)) {
 				if (r.t < range2.first.t)
