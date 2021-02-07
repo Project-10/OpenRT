@@ -114,12 +114,10 @@ namespace rt {
 	}
 
 	Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
-		RT_WARNING("Method is not implemented");
-		return cv::Vec3f();
+        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
 	}
 
 	Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
-		RT_WARNING("Method is not implemented");
-		return cv::Vec2f();
+        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
 	}
 }
