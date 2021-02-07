@@ -28,8 +28,8 @@ namespace rt {
 		
 		
     private:
-        CSolid 			m_s1;				///<
-        CSolid 			m_s2;				///<
+        std::vector<ptr_prim_t>	m_vpPrims1;
+        std::vector<ptr_prim_t>	m_vpPrims2;
 		Vec3f			m_origin;
 		BoolOp			m_operationType;	///<
         CBoundingBox 	m_boundingBox;		///<
