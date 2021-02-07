@@ -11,7 +11,6 @@ namespace rt {
 		: IPrim(nullptr)
 		, m_vpPrims1(s1.getPrims())
 		, m_vpPrims2(s2.getPrims())
-		, m_origin(0.5f * (s1.getPivot() + s2.getPivot()))
 		, m_operationType(operationType)
 	{
 		// Initializing the bounding box
@@ -46,6 +45,7 @@ namespace rt {
 				break;
 		}
 		m_boundingBox = CBoundingBox(minPt, maxPt);
+		m_origin = m_boundingBox.getCenter();
 	}
 
 	bool CCompositeGeometry::intersect(Ray &ray) const {
