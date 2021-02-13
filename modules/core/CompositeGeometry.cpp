@@ -2,15 +2,15 @@
 
 #include <utility>
 #include <macroses.h>
-#include "Ray.h"
+#include "ray.h"
 
 namespace rt {
-	
+
 	// Constructor
 	CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType)
 		: IPrim(nullptr)
-		, m_s1(s1)
-		, m_s2(s2)
+		, m_vPrims1(s1.getPrims())
+		, m_vPrims2(s2.getPrims())
 		, m_operationType(operationType)
 	{
 		// Initializing the bounding box
@@ -35,7 +35,6 @@ namespace rt {
 				}
 				break;
 			case BoolOp::Difference:
-				RT_WARNING("This functionality is not implemented yet");
 				for (int i = 0; i < 3; i++) {
 					minPt[i] = boxA.getMinPoint()[i];
 					maxPt[i] = boxA.getMaxPoint()[i];
@@ -55,18 +54,17 @@ namespace rt {
 		range1.second.t = -Infty;
 		range2.second.t = -Infty;
 		bool hasIntersection = false;
-		for (const auto &prim : m_s1.getPrims()) {
+		for (const auto &prim : m_vPrims1) {
 			Ray r = ray;
-			double t = ray.t;
 			if (prim->intersect(r)) {
 				if (r.t < range1.first.t)
 					range1.first = r;
 				if (r.t > range1.second.t)
-					range2.second = r;
+					range1.second = r;
 				hasIntersection = true;
 			}
 		}
-		for (const auto &prim : m_s2.getPrims()) {
+		for (const auto &prim : m_vPrims2) {
 			Ray r = ray;
 			if (prim->intersect(r)) {
 				if (r.t < range2.first.t)
@@ -97,7 +95,21 @@ namespace rt {
 					ray = range2.first;
 				break;
 			case BoolOp::Difference:
-				RT_WARNING("This functionality is not implemented yet");
+			    if (range1.first.t >= Infty || range1.second.t <= -Infty) {
+			        return false;
+			    }
+			    if (range2.first.t < range1.first.t) {
+			        if (range1.first.t > range2.second.t) {
+			            ray = range1.first;
+			        }
+			        else {
+                        ray = range2.second;
+                    }
+			    } else if (range1.first.t < range2.first.t) {
+			        ray = range1.first;
+			    } else {
+			        return false;
+			    }
 				break;
 			default:
 				break;
