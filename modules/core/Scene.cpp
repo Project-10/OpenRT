@@ -167,6 +167,7 @@ namespace rt {
         return cachedImage;
 #else
         RT_WARNING("Caching support is not enabled");
+        return Mat();
 #endif
     }
 
