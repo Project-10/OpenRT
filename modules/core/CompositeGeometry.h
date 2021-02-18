@@ -28,11 +28,11 @@ namespace rt {
 		
 		
     private:
-        CSolid 			m_s1;				///<
-        CSolid 			m_s2;				///<
-		Vec3f			m_origin;
-		BoolOp			m_operationType;	///<
-        CBoundingBox 	m_boundingBox;		///<
+        std::vector<ptr_prim_t> 			m_vPrims1;				///< Vector of primitives of the first geometry.
+        std::vector<ptr_prim_t> 			m_vPrims2;				///< Vector of primitives of the second geometry.
+		Vec3f			m_origin;           ///< Origin/Pivot of the geometry.
+		BoolOp			m_operationType;	///< Type of operation.
+        CBoundingBox 	m_boundingBox;		///< Bounding box of this composite geometry.
     };
 
 }
