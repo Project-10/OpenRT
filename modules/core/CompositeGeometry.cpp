@@ -48,7 +48,6 @@ namespace rt {
 	}
 
 	bool CCompositeGeometry::intersect(Ray &ray) const {
-		
 		std::pair<Ray, Ray> range1(ray, ray);
 		std::pair<Ray, Ray> range2(ray, ray);
 		range1.second.t = -Infty;
@@ -76,7 +75,7 @@ namespace rt {
 		}
 		if (!hasIntersection)
 			return false;
-		double t = 0;
+		double t;
 		switch (m_operationType) {
 			case BoolOp::Union:
 				t = MIN(range1.first.t, range2.first.t);
@@ -98,6 +97,10 @@ namespace rt {
 			    if (range1.first.t >= Infty || range1.second.t <= -Infty) {
 			        return false;
 			    }
+                if (abs(range2.first.t - range1.first.t) < Epsilon) {
+                    ray = range2.second;
+                    break;
+                }
 			    if (range2.first.t < range1.first.t) {
 			        if (range1.first.t > range2.second.t) {
 			            ray = range1.first;
