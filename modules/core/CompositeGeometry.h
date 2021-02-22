@@ -2,6 +2,7 @@
 
 #include "IPrim.h"
 #include "Solid.h"
+#include "BSPTree.h"
 
 namespace rt {
     enum class BoolOp {
@@ -25,7 +26,8 @@ namespace rt {
 		DllExport virtual Vec3f 		getNormal(const Ray&) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
-		
+		DllExport void buildAccelStructure(int maxDepth = 20, int minPrimitives = 3);
+
 		
     private:
         std::vector<ptr_prim_t> 			m_vPrims1;				///< Vector of primitives of the first geometry.
@@ -33,6 +35,10 @@ namespace rt {
 		Vec3f			m_origin;           ///< Origin/Pivot of the geometry.
 		BoolOp			m_operationType;	///< Type of operation.
         CBoundingBox 	m_boundingBox;		///< Bounding box of this composite geometry.
+#ifdef ENABLE_BSP
+        std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the acceleration structure for left geometry
+        std::unique_ptr<CBSPTree>		m_pBSPTree2		= nullptr;	///< Pointer to the acceleration structure for right geometry
+#endif
     };
 
 }

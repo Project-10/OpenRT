@@ -12,8 +12,8 @@ int main() {
     // Scene
     CScene scene(bgColor);
 
-    auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
-    auto pShaderEarth = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
+    //auto pTextureEarth = std::make_shared<CTexture>("/Users/sabir/Desktop/OpenRT/data/1_earth_8k.jpg");
+    //auto pShaderEarth = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 
     // Shaders
     auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(47 / 255.0, 60 / 255.0, 126 / 255.0), 0.1f, 0.9f, 0, 40.0f);
@@ -24,10 +24,11 @@ int main() {
     // auto pShaderBlue = std::make_shared<CShaderEyelight>(RGB(0, 0, 1));
 
     // Geometries
-    auto 		solidSphere1 = CSolidSphere(pShaderEarth, Vec3f(1, 0.1f, -13), 1.5f, 24, true);
-    auto 		solidSphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5f, 24, true);
-	ptr_prim_t 	pPrimSphere  = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0.1f, -13), 1.5f);
-	ptr_prim_t 	pComposize	 = std::make_shared<CCompositeGeometry>(solidSphere1, solidSphere2, BoolOp::Union);
+    auto 		solidSphere1 = CSolidSphere(pDarkBlue, Vec3f(1, 0.1f, -13), 1.5f, 200, true);
+    auto 		solidSphere2 = CSolidSphere(pSunsetOrange, Vec3f(0, 0.1f, -13), 1.5f, 200, true);
+    std::cout << solidSphere1.getPrims().size() + solidSphere2.getPrims().size() << std::endl;
+	ptr_prim_t 	pPrimSphere  = std::make_shared<CPrimSphere>(pSunsetOrange, Vec3f(0, 0.1f, -13), 1.5f);
+	auto 	pComposize	 = std::make_shared<CCompositeGeometry>(solidSphere1, solidSphere2, BoolOp::Intersection);
 	scene.add(pComposize);
 
     // Try it with Cylinders!
@@ -49,6 +50,7 @@ int main() {
     scene.add(cam45);
 
     scene.buildAccelStructure(20, 2);
+    pComposize->buildAccelStructure();
 
     // Light
     auto pLight = std::make_shared<CLightOmni>(intensity * RGB(1.0f, 0.839f, 0.494f), Vec3f(100, 150.0f, 100), false);
