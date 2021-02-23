@@ -12,8 +12,8 @@ rt::CSolidTorus::CSolidTorus(const rt::ptr_shader_t &pShader, const Vec3f &origi
     for (int i = 0; i < nSides; i++) {
         for (int j = 0; j <= nSides + 1; j++) {
             auto data = torus_data();
-            auto phi = static_cast<float>(i * (2 * M_PI / nSides));
-            auto theta = static_cast<float>(j * (2 * M_PI / nSides));
+            auto phi = (float)i * (2 * Pif / (float)nSides);
+            auto theta = (float)j * (2 * Pif / (float)nSides);
             torus_vertices[(nSides * j) + i].t_vertex = origin + Vec3f(cos(phi) * (r1 + r2 * cos(theta)),
                                                                        sin(phi) * (r1 + r2 * cos(theta)),
                                                                        r2 * sin(theta));
