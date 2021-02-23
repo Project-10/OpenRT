@@ -27,7 +27,6 @@ namespace rt {
         DllExport virtual ~CSolidTorus(void) = default;
 
     private:
-
         /**
         * @struct torus_data
         * @brief A helper struct to store and access the torus topology when constructing.

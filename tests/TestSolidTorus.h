@@ -6,8 +6,6 @@
 
 class CTestSolidTorus : public ::testing::Test {
 public:
-
     CTestSolidTorus(void) = default;
-
     ~CTestSolidTorus(void) = default;
 };

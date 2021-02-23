@@ -4,7 +4,6 @@
 
 rt::CSolidTorus::CSolidTorus(const rt::ptr_shader_t &pShader, const Vec3f &origin, float r1, float r2, int nSides,
                              bool smooth) : CSolid(origin) {
-
     RT_ASSERT_MSG(nSides > 2, "A solid torus can only be modeled using 3 or more sides. Please adjust your input.");
     RT_ASSERT_MSG(r1 > r2,
                   "A solid torus can only be modeled when the cross-section radius is smaller than the outer radius. Please adjust your input.");
