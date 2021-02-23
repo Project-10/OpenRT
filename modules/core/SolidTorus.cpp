@@ -8,7 +8,8 @@ rt::CSolidTorus::CSolidTorus(const rt::ptr_shader_t &pShader, const Vec3f &origi
     RT_ASSERT_MSG(r1 > r2,
                   "A solid torus can only be modeled when the cross-section radius is smaller than the outer radius. Please adjust your input.");
 
-    torus_data torus_vertices[(nSides) * (nSides + 2)];
+    std::vector<torus_data> torus_vertices;
+    torus_vertices.reserve((nSides) * (nSides + 2));
     for (int i = 0; i < nSides; i++) {
         for (int j = 0; j <= nSides + 1; j++) {
             auto data = torus_data();
