@@ -19,6 +19,11 @@ doc/html
 !.vscode/launch.json
 !.vscode/extensions.json
 .vscode/
+*.vcxproj
+*.filters
+*.user
+*.dir
+
 
 CMakeSettings.json
 out/
