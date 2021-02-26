@@ -36,7 +36,7 @@ int main()
 
 	// camera
 	const float r = 4;
-	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-4, 4, -4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f);
+	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-4, 4, -4), Vec3f(0, 0.5f, 0), Vec3f(0, 0, 1), 45.0f);
 	auto pLight			= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 10, 0));
 	auto pLightRed		= std::make_shared<CLightOmni>(RGB(intensity, 0, 0), Vec3f(0, 5, 3),  true);
 	auto pLightGreen	= std::make_shared<CLightOmni>(RGB(0, intensity, 0), Vec3f(2.12f, 5, 2.12f), true);

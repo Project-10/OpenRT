@@ -29,5 +29,20 @@ namespace rt
 		ray.dir = normalize(getAspectRatio() * sscx * m_xAxis + sscy * m_yAxis + m_focus * m_zAxis);
 		ray.t	= std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
+
+		float lensr = getlensRadius();
+		if (lensr > 0) {
+			// Sample point on lens
+			Point2f pLens = lensr * CSampler::concentricSampleDisk(Vec2f(random::U<float>(), random::U<float>()));
+
+			// Compute point on plane of focus
+			float ft = getfocalDistance() / ray.dir.val[2];
+			Vec3f pFocus = ray.org + ray.dir * ft; 
+			
+			// Update ray for effect of lens
+			ray.org += Vec3f(pLens.x, pLens.y, 0);
+			//ray.dir = normalize(ft * ray.dir);
+			ray.dir = normalize(pFocus - ray.org);
+		}
 	} 
 }

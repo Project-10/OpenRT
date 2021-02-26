@@ -3,6 +3,8 @@
 #pragma once
 
 #include "types.h"
+#include "Sampler.h"
+#include "random.h"
 
 namespace rt {
 	struct Ray;
@@ -19,9 +21,11 @@ namespace rt {
 		 * @brief Constructor
 		 * @param resolution The resolution of the camera in pixels
 		 */
-		DllExport ICamera(Size resolution) 
+		DllExport ICamera(Size resolution, float lensRadius=0, float focalDistance=10) 
 			: m_resolution(resolution)
 			, m_aspectRatio(static_cast<float>(resolution.width) / resolution.height) 
+			, m_lensRadius(lensRadius)
+			, m_focalDistance(focalDistance)
 		{}
 		DllExport ICamera(const ICamera&) = delete;
 		DllExport virtual ~ICamera(void) = default;
@@ -49,11 +53,22 @@ namespace rt {
 		 * @return The camera aspect ratio
 		 */
 		DllExport float getAspectRatio(void) const { return m_aspectRatio; }
+
+		DllExport float getlensRadius(void) const { return m_lensRadius; }
+
+		DllExport float getfocalDistance(void) const { return m_focalDistance; }
+
+
+
+
 		
 
 	private:
 		const Size	m_resolution;	///< Camera image resolution in pixels
 		const float	m_aspectRatio;	///< Camera image aspect ratio
+		const float m_lensRadius;
+		const float m_focalDistance;
+
 	};
 
 	using ptr_camera_t = std::shared_ptr<ICamera>;
