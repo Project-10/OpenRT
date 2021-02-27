@@ -28,16 +28,24 @@ namespace rt {
 		 * @param up Normalized camera up-vector
 		 * @param angle (Vertical) full opening angle of the viewing frustum in degrees
 		 */
-		DllExport CCameraPerspective(Size resolution, const Vec3f& pos, const Vec3f& dir, 
-									const Vec3f& up, float angle, float lensRadius = 0, float focalDistance = 10)
-			: ICamera(resolution, lensRadius, focalDistance)
+
+		DllExport CCameraPerspective(Size resolution, const Vec3f& pos, const Vec3f& dir,
+			const Vec3f& up, float angle)
+			: ICamera(resolution)
 			, m_pos(pos)
 			, m_dir(dir)
 			, m_up(up)
 			, m_focus(1.0f / tanf(angle * Pif / 360))	// f = 1 / tg(angle / 2)
-		{
-			std::cout << m_dir << std::endl;
-		}
+		{}
+
+		DllExport CCameraPerspective(Size resolution, const Vec3f& pos, const Vec3f& dir, 
+									const Vec3f& up, float angle, float lensRadius, float focalDistance, int nBlades = 0)
+			: ICamera(resolution, lensRadius, focalDistance, nBlades)
+			, m_pos(pos)
+			, m_dir(dir)
+			, m_up(up)
+			, m_focus(1.0f / tanf(angle * Pif / 360))	// f = 1 / tg(angle / 2)
+		{}
 		DllExport virtual ~CCameraPerspective(void) = default;
 
 		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;

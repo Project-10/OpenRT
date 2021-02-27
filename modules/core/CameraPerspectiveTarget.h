@@ -22,9 +22,16 @@ namespace rt {
 		 * @param up Camera up-vector
 		 * @param angle (Vertical) full opening angle of the viewing frustum (in degrees)
 		 */
+
 		DllExport CCameraPerspectiveTarget(Size resolution, const Vec3f& pos, const Vec3f& target, const Vec3f& up,
-										float angle, float lensRadius = 0, float focalDistance = 10)
-			: CCameraPerspective(resolution, pos, normalize(target - pos), up, angle, lensRadius, focalDistance)
+			float angle)
+			: CCameraPerspective(resolution, pos, normalize(target - pos), up, angle)
+			, m_target(target)
+		{}
+
+		DllExport CCameraPerspectiveTarget(Size resolution, const Vec3f& pos, const Vec3f& target, const Vec3f& up,
+										float angle, float lensRadius, float focalDistance, int nBlades = 0)
+			: CCameraPerspective(resolution, pos, normalize(target - pos), up, angle, lensRadius, focalDistance, nBlades)
 			, m_target(target)
 		{}
 		DllExport virtual ~CCameraPerspectiveTarget(void) = default;

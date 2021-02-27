@@ -31,18 +31,29 @@ namespace rt
 		ray.hit = nullptr;
 
 		float lensr = getlensRadius();
+		float nBlades = getnBlades(); 
 		if (lensr > 0) {
+			Vec2f pLens;
 			// Sample point on lens
-			Point2f pLens = lensr * CSampler::concentricSampleDisk(Vec2f(random::U<float>(), random::U<float>()));
+			if (nBlades == 0) {
+				pLens = lensr * CSampler::concentricSampleDisk(Vec2f(random::U<float>(), random::U<float>()));
+			}
+			else {
+				//sample from uniformly distributed points in a regular polygon
+				//nBlades 3 to 16 
+				//for now
+				RT_ASSERT(nBlades >= 3 && nBlades <= 16);
+				pLens = Vec2f::all(0.0f);
+			}
 
 			// Compute point on plane of focus
 			float ft = getfocalDistance() / ray.dir.val[2];
 			Vec3f pFocus = ray.org + ray.dir * ft; 
 			
 			// Update ray for effect of lens
-			ray.org += Vec3f(pLens.x, pLens.y, 0);
-			//ray.dir = normalize(ft * ray.dir);
+			ray.org += Vec3f(pLens.val[0], pLens.val[1], 0);
 			ray.dir = normalize(pFocus - ray.org);
+
 		}
 	} 
 }

@@ -21,11 +21,18 @@ namespace rt {
 		 * @brief Constructor
 		 * @param resolution The resolution of the camera in pixels
 		 */
-		DllExport ICamera(Size resolution, float lensRadius=0, float focalDistance=10) 
+
+		DllExport ICamera(Size resolution)
+			: m_resolution(resolution)
+			, m_aspectRatio(static_cast<float>(resolution.width) / resolution.height)
+		{}
+
+		DllExport ICamera(Size resolution, float lensRadius, float focalDistance, int nBlades=0) 
 			: m_resolution(resolution)
 			, m_aspectRatio(static_cast<float>(resolution.width) / resolution.height) 
 			, m_lensRadius(lensRadius)
 			, m_focalDistance(focalDistance)
+			, m_nBlades(nBlades)
 		{}
 		DllExport ICamera(const ICamera&) = delete;
 		DllExport virtual ~ICamera(void) = default;
@@ -58,6 +65,8 @@ namespace rt {
 
 		DllExport float getfocalDistance(void) const { return m_focalDistance; }
 
+		DllExport int getnBlades(void) const { return m_nBlades; }
+
 
 
 
@@ -66,8 +75,11 @@ namespace rt {
 	private:
 		const Size	m_resolution;	///< Camera image resolution in pixels
 		const float	m_aspectRatio;	///< Camera image aspect ratio
-		const float m_lensRadius;
-		const float m_focalDistance;
+
+		const float m_lensRadius = 0;
+		const float m_focalDistance = 10;
+		const int m_nBlades = 0;
+
 
 	};
 
