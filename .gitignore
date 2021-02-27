@@ -23,6 +23,8 @@ doc/html
 *.filters
 *.user
 *.dir
+*.stamp
+*.depend
 
 
 CMakeSettings.json
