@@ -53,7 +53,6 @@ namespace rt
 			// Update ray for effect of lens
 			ray.org += Vec3f(pLens.val[0], pLens.val[1], 0);
 			ray.dir = normalize(pFocus - ray.org);
-
 		}
 	} 
 }

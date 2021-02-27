@@ -70,8 +70,6 @@ namespace rt {
 
 
 
-		
-
 	private:
 		const Size	m_resolution;	///< Camera image resolution in pixels
 		const float	m_aspectRatio;	///< Camera image aspect ratio
@@ -79,8 +77,6 @@ namespace rt {
 		const float m_lensRadius = 0;
 		const float m_focalDistance = 10;
 		const int m_nBlades = 0;
-
-
 	};
 
 	using ptr_camera_t = std::shared_ptr<ICamera>;
