@@ -63,6 +63,16 @@ namespace rt {
 		*/
 		DllExport static Vec3f	uniformSampleHemisphere(const Vec2f& sample, float m = 0);
 		/**
+		* @brief Transforms a uniform sampled square into a uniform sampled n-sided regular polygon
+		* @details This function samples from a triangle using the formula \f$P = (1 - sqrt(r1)) * A + (sqrt(r1) * (1 - r2)) * B + (sqrt(r1) * r2) * C \f$ 
+		* (<a href="http://www.cs.princeton.edu/~funk/tog02.pdf">link</a>)
+		* @param sample The pair of random variables \f$(\xi_1, \xi_2)\f$ in square \f$[0; 1)^2\f$
+		* @param n Number of sides of the polygon 
+		* @param m A random integer between 1 and n used to pick the triangle that the point will be sampled from 
+		* @return A new pair of random variables \f$(x, y)\f$ 
+		*/
+		DllExport static Vec2f	uniformSampleRegularNgon(const Vec2f& sample, int n, int m);
+		/**
 		* @todo Implement this function
 		*/
 		DllExport static Vec3f	uniformSampleSphere(const Vec2f& sample);

@@ -33,17 +33,16 @@ namespace rt
 		float lensr = getlensRadius();
 		float nBlades = getnBlades(); 
 		if (lensr > 0) {
-			Vec2f pLens;
 			// Sample point on lens
+			Vec2f pLens;
+			Vec2f sample(random::U<float>(), random::U<float>());
 			if (nBlades == 0) {
-				pLens = lensr * CSampler::concentricSampleDisk(Vec2f(random::U<float>(), random::U<float>()));
+				pLens = lensr * CSampler::concentricSampleDisk(sample);
 			}
 			else {
 				//sample from uniformly distributed points in a regular polygon
-				//nBlades 3 to 16 
-				//for now
 				RT_ASSERT(nBlades >= 3 && nBlades <= 16);
-				pLens = Vec2f::all(0.0f);
+				pLens = lensr * CSampler::uniformSampleRegularNgon(Vec2f(sample), nBlades, random::u<int>(1, nBlades));
 			}
 
 			// Compute point on plane of focus

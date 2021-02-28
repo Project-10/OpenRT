@@ -107,6 +107,16 @@ namespace rt {
 		return Vec3f(s[0], s[1], z);
 	}
 
+	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& sample, int n, int m) {
+		float theta = 2 * Pif / n;
+		Vec2f a(0, 0);
+		Vec2f b(cosf(theta * m), sinf(theta * m));
+		Vec2f c(cosf(theta * (m + 1)), sinf(theta * (m + 1)));
+		float s = sample[0];
+		float t = sample[1];
+		return Vec2f(s * a[0] + (t - s) * b[0] + (1 - t) * c[0], s * a[1] + (t - s) * b[1] + (1 - t) * c[1]);
+	}
+
 	namespace {
 		/**
 		* @brief General Rodrigues' rotation formula
