@@ -42,7 +42,7 @@ namespace rt
 			else {
 				//sample from uniformly distributed points in a regular polygon
 				RT_ASSERT(nBlades >= 3 && nBlades <= 16);
-				pLens = lensr * CSampler::uniformSampleRegularNgon(Vec2f(sample), nBlades, random::u<int>(1, nBlades));
+				pLens = lensr * CSampler::uniformSampleRegularNgon(sample, nBlades, random::u<int>(1, nBlades));
 			}
 
 			// Compute point on plane of focus
