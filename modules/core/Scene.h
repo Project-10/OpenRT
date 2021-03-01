@@ -142,6 +142,12 @@ namespace rt {
 		 * @return The distance bitween ray.org and the intersection to the nearest object
 		 */
 		double							rayTraceDepth(Ray& ray) const;
+        /**
+         * @brief Loads the last rendered image from cache.
+         * @note This method can only be used if ENABLE_CACHE is on. It also uses the m_cachePath as a default location.
+         * @return The last cached render.
+         */
+        Mat                             getLastRenderedFrame() const;
 
 	
 	private:
@@ -162,6 +168,9 @@ namespace rt {
 		size_t							m_activeCamera	= 0;		///< The index of the active camera
 #ifdef ENABLE_BSP		
 		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
+#endif
+#ifdef ENABLE_CACHE
+            std::string m_cachePath = "last_render.png";
 #endif
 	};
 }
