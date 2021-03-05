@@ -60,7 +60,7 @@ namespace rt {
 #ifdef ENABLE_BSP
 		hasIntersection = m_pBSPTree1->intersect(range1.first);
         hasIntersection |= m_pBSPTree2->intersect(range2.first);
-#elif
+#else
 		for (const auto &prim : m_vPrims1) {
 			Ray r = ray;
 			if (prim->intersect(r)) {
@@ -150,12 +150,12 @@ namespace rt {
 	}
 
     void CCompositeGeometry::buildAccelStructure(int maxDepth, int minPrimitives) {
-#ifndef ENABLE_BSP
-        RT_WARNING("BSP support is not enabled");
-        return;
-#endif
+#ifdef ENABLE_BSP
         m_pBSPTree1->build(m_vPrims1, maxDepth, minPrimitives);
         m_pBSPTree2->build(m_vPrims2, maxDepth, minPrimitives);
+#else
+        RT_WARNING("BSP support is not enabled");
+#endif
     }
 
 
