@@ -26,8 +26,6 @@ namespace rt {
 		DllExport virtual Vec3f 		getNormal(const Ray&) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
-		DllExport void buildAccelStructure(int maxDepth = 20, int minPrimitives = 3);
-
 		
     private:
         std::vector<ptr_prim_t> 			m_vPrims1;				///< Vector of primitives of the first geometry.

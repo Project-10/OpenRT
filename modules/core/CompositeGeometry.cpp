@@ -50,6 +50,10 @@ namespace rt {
 		}
 		m_boundingBox = CBoundingBox(minPt, maxPt);
 		m_origin = m_boundingBox.getCenter();
+#ifdef ENABLE_BSP
+        m_pBSPTree1->build(m_vPrims1, 20, 3);
+        m_pBSPTree2->build(m_vPrims2, 20, 3);
+#endif
 	}
 
 	bool CCompositeGeometry::intersect(Ray &ray) const {
@@ -61,6 +65,10 @@ namespace rt {
 #ifdef ENABLE_BSP
 		hasIntersection = m_pBSPTree1->intersect(range1.first);
         hasIntersection |= m_pBSPTree2->intersect(range2.first);
+        if (m_operationType == BoolOp::Difference) {
+            hasIntersection |= m_pBSPTree1->intersect_furthest(range1.second);
+            hasIntersection |= m_pBSPTree2->intersect_furthest(range2.second);
+        }
 #else
 		for (const auto &prim : m_vPrims1) {
 			Ray r = ray;
@@ -104,10 +112,6 @@ namespace rt {
 					ray = range2.first;
 				break;
 			case BoolOp::Difference:
-#ifdef ENABLE_BSP
-    RT_WARNING("BSP Support is not supported for intersection operation");
-    return false;
-#endif
 			    if (range1.first.t >= Infty || range1.second.t <= -Infty) {
 			        return false;
 			    }
@@ -163,15 +167,4 @@ namespace rt {
 	Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
 	}
-
-    void CCompositeGeometry::buildAccelStructure(int maxDepth, int minPrimitives) {
-#ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxDepth, minPrimitives);
-        m_pBSPTree2->build(m_vPrims2, maxDepth, minPrimitives);
-#else
-        RT_WARNING("BSP support is not enabled");
-#endif
-    }
-
-
 }
