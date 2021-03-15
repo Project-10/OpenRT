@@ -95,7 +95,12 @@ namespace rt {
 		 * @returns The rendered image (type: CV_64FC1)
 		 */
 		DllExport Mat					renderDepth(ptr_sampler_t pSampler = nullptr) const;
-	
+		/**
+		 * @brief Loads the last rendered image from cache.
+		 * @note This method can only be used if ENABLE_CACHE is on. It also uses the m_cachePath as a default location.
+		 * @return The last cached render.
+		 */
+		DllExport Mat					getLastRenderedImage(void) const;
 
 	public:
 		/**
@@ -162,6 +167,9 @@ namespace rt {
 		size_t							m_activeCamera	= 0;		///< The index of the active camera
 #ifdef ENABLE_BSP		
 		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
+#endif
+#ifdef ENABLE_CACHE
+		const std::string m_lriFileName = "last_render.png";		///< Last rendered image filename
 #endif
 	};
 }
