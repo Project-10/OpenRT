@@ -25,17 +25,5 @@ namespace rt {
                               bool smooth = true);
 
         DllExport virtual ~CSolidTorus(void) = default;
-
-    private:
-        /**
-        * @struct torus_data
-        * @brief A helper struct to store and access the torus topology when constructing.
-        * @var torus_data:t_vertex
-        */
-        struct torus_data {
-            Vec3f t_vertex; // the point
-            Vec3f t_normal; // the surface normal
-            Vec2f t_uv_coord; // the uv coordinate
-        };
     };
 }
