@@ -66,8 +66,16 @@ namespace rt {
 		hasIntersection = m_pBSPTree1->intersect(range1.first);
         hasIntersection |= m_pBSPTree2->intersect(range2.first);
         if (m_operationType == BoolOp::Difference) {
-            hasIntersection |= m_pBSPTree1->intersect_furthest(range1.second);
-            hasIntersection |= m_pBSPTree2->intersect_furthest(range2.second);
+            Ray r1 = ray;
+            Ray r2 = ray;
+            if (m_pBSPTree1->intersect_furthest(r1)) {
+                range1.second = r1;
+                hasIntersection = true;
+            }
+            if (m_pBSPTree2->intersect_furthest(r2)) {
+                range2.second = r2;
+                hasIntersection = true;
+            }
         }
 #else
 		for (const auto &prim : m_vPrims1) {
