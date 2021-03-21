@@ -31,8 +31,8 @@ namespace rt {
 		{}
 
 		DllExport virtual ~CCameraThinLens(void) = default;
-
-		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+			
+		DllExport void			InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
 		/**
 		 * @brief Returns the lens radius
 		 * @return The lens radius
@@ -51,7 +51,6 @@ namespace rt {
 
 
 	private:
-
 		const float m_lensRadius = 0;
 		const float m_focalDistance = 10;
 		const int m_nBlades = 0;
