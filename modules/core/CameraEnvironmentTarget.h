@@ -26,7 +26,7 @@ namespace rt {
         {}
         DllExport virtual ~CCameraEnvironmentTarget(void) = default;
 
-        DllExport virtual void    setPosition(const Vec3f& pos) override {
+        DllExport void    setPosition(const Vec3f& pos) override {
             CCameraEnvironment::setPosition(pos);
             CCameraEnvironment::setDirection(normalize(m_target - pos));
         }
