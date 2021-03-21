@@ -29,29 +29,5 @@ namespace rt
 		ray.dir = normalize(getAspectRatio() * sscx * m_xAxis + sscy * m_yAxis + m_focus * m_zAxis);
 		ray.t	= std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
-
-		float lensr = getlensRadius();
-		float nBlades = getnBlades(); 
-		if (lensr > 0) {
-			// Sample point on lens
-			Vec2f pLens;
-			Vec2f sample(random::U<float>(), random::U<float>());
-			if (nBlades == 0) {
-				pLens = lensr * CSampler::concentricSampleDisk(sample);
-			}
-			else {
-				//sample from uniformly distributed points in a regular polygon
-				RT_ASSERT(nBlades >= 3 && nBlades <= 16);
-				pLens = lensr * CSampler::uniformSampleRegularNgon(sample, nBlades, random::u<int>(1, nBlades));
-			}
-
-			// Compute point on plane of focus
-			float ft = getfocalDistance() / ray.dir.val[2];
-			Vec3f pFocus = ray.org + ray.dir * ft; 
-			
-			// Update ray for effect of lens
-			ray.org += Vec3f(pLens.val[0], pLens.val[1], 0);
-			ray.dir = normalize(pFocus - ray.org);
-		}
 	} 
 }

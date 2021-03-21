@@ -108,6 +108,7 @@ namespace rt {
 	}
 
 	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& sample, int n, int m) {
+		if (n == 0) return CSampler::concentricSampleDisk(sample);
 		float theta = 2 * Pif / n;
 		Vec2f a(0, 0);
 		Vec2f b(cosf(theta * m), sinf(theta * m));
