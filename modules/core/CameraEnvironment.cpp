@@ -28,6 +28,5 @@ namespace rt
         ray.dir = normalize(sinf(theta) * cosf(phi) * m_xAxis + sinf(theta) * sinf(phi) * m_zAxis + cosf(theta) * m_yAxis);
         ray.t = std::numeric_limits<double>::infinity();
         ray.hit = nullptr;
-        
     }
 }
