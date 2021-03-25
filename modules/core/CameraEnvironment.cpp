@@ -15,7 +15,7 @@ namespace rt
         RT_IF_WARNING(y >= height, "Argument y = %d exceeds the camera resolution height (%d)", y, height);
         
         float theta = Pif * ((y + sample.val[1]) / height);
-        float phi = 2 * Pif * ((x + sample.val[0]) / width);
+        float phi   = Pif * (((x + sample.val[0]) / width) * 2 - 0.5f);
         
         if (m_needUpdateAxes) {
             m_zAxis = m_dir;
@@ -25,7 +25,7 @@ namespace rt
         }
         
         ray.org = m_pos;
-        ray.dir = normalize(sinf(theta) * cosf(phi) * m_xAxis + sinf(theta) * sinf(phi) * m_zAxis + cosf(theta) * m_yAxis);
+        ray.dir = normalize(sinf(theta) * cosf(phi) * m_xAxis + sinf(theta) * sinf(phi) * m_zAxis - cosf(theta) * m_yAxis);
         ray.t = std::numeric_limits<double>::infinity();
         ray.hit = nullptr;
     }
