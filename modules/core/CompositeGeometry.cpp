@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <macroses.h>
-#include "ray.h"
+#include "Ray.h"
 #include "Transform.h"
 
 namespace rt {
