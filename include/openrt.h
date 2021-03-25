@@ -6,6 +6,8 @@
 #include "core/CameraPerspectiveTarget.h"
 #include "core/CameraOrthographic.h"
 #include "core/CameraOrthographicTarget.h"
+#include "core/CameraEnvironment.h"
+#include "core/CameraEnvironmentTarget.h"
 
 #include "core/LightOmni.h"
 #include "core/LightSpot.h"
