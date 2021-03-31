@@ -31,3 +31,4 @@ time.bat
 #CLION
 .idea/
 cmake-build-debug
+cmake-build-release
