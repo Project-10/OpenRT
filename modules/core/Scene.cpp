@@ -72,10 +72,10 @@ namespace rt {
 		const Range range(0, img.rows);
 #endif
 		Ray ray;
+		size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
 		for (int y = range.start; y < range.end; y++) {
 			Vec3f* pImg = img.ptr<Vec3f>(y);
 			for (int x = 0; x < img.cols; x++) {
-				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
 				for (size_t s = 0; s < nSamples; s++) {
 					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
 					pImg[x] += rayTrace(ray);
@@ -89,7 +89,100 @@ namespace rt {
 		img.convertTo(img, CV_8UC3, 255);
 		return img;
 	}
+		
+	Mat CScene::render(ptr_sampler_t pSampler, double noiseThreshold, int maxSamples) const
+	{
+		ptr_camera_t activeCamera = getActiveCamera();
+		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
+		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
+
+#ifdef DEBUG_PRINT_INFO
+		std::cout << "\nNumber of Primitives: " << m_vpPrims.size() << std::endl;
+		std::cout << "Number of light sources: " << m_vpLights.size() << std::endl;
+		size_t nSamples = 0;
+		for (const auto& pLight : m_vpLights) nSamples += pLight->getNumSamples();
+		if (pSampler) nSamples *= pSampler->getNumSamples();
+		std::cout << "Rays per Pixel: " << nSamples << std::endl;
+#endif
+		const Range range(0, img.rows);
+		Ray ray;
+		size_t nSamples = pSampler ? pSampler->getNumSamples() : 0;
+		for (int y = range.start; y < range.end; y++) {
+			Vec3f* pImg = img.ptr<Vec3f>(y);
+			for (int x = 0; x < img.cols; x++) {
+				if (nSamples > 0) {
+					for (size_t s = 0; s < nSamples; s++) {
+						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+						pImg[x] += rayTrace(ray);
+					}
+					pImg[x] = (1.0f / nSamples) * pImg[x];
+					pImg[x] += rayTraceAdaptive(ray, x, y, noiseThreshold, maxSamples);
+					pImg[x] /= 2;
+				}
+				else {
+					pImg[x] = rayTraceAdaptive(ray, x, y, noiseThreshold, maxSamples);
+				}
+			}
+		}
+		img.convertTo(img, CV_8UC3, 255);
+		return img;
+	};
+
+	Vec3f CScene::rayTraceAdaptive(Ray ray, int x, int y, double noiseThreshold, int maxSamples) const {
+
+		ptr_camera_t activeCamera = getActiveCamera();
+		std::function<Vec3f(double, double, double, double, std::vector<Vec3f>, int, int)> sample =
+			[&, this](double x0, double y0, double xmax, double ymax, std::vector<Vec3f> grid, 
+				int quadrant, int depth) -> Vec3f {
+
+			if (quadrant == 0) {
+				grid.reserve(4);
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
+				grid[0] = rayTrace(ray);
+				activeCamera->InitRay(ray, x, y, Vec2f(xmax, ymax));
+				grid[1] = rayTrace(ray);
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, y0));
+				grid[2] = rayTrace(ray);
+				activeCamera->InitRay(ray, x, y, Vec2f(xmax, y0));
+				grid[3] = rayTrace(ray);
+			}
+			else if (quadrant == 1 || quadrant == 4) {
+				activeCamera->InitRay(ray, x, y, Vec2f(xmax, ymax));
+				grid[1] = rayTrace(ray);
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, y0));
+				grid[2] = rayTrace(ray);
+			}
+			else if (quadrant == 2 || quadrant == 3) {
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
+				grid[0] = rayTrace(ray);
+				activeCamera->InitRay(ray, x, y, Vec2f(xmax, y0));
+				grid[3] = rayTrace(ray);
+			}
+
+			Vec3f P = (grid[0] + grid[1] + grid[2] + grid[3]) / 4.f;
+			double rx = (x0 + xmax) / 2;
+			double ry = (y0 + ymax) / 2;
+			activeCamera->InitRay(ray, x, y, Vec2f(rx, ry));
+			Vec3f Center = rayTrace(ray);
+			double error = norm(Center, P);
 			
+			if (error <= noiseThreshold || depth < 1) return P;
+			depth--;
+			
+			P = Vec3f::all(0.f);
+			P += sample(x0, ry, rx, ymax, { grid[0], Vec3f::all(-1),  Vec3f::all(-1),  Center }, 1, depth);
+			P += sample(rx, ry, xmax, ymax, { Vec3f::all(-1), grid[1],  Center, Vec3f::all(-1) }, 2, depth);
+			P += sample(x0, y0, rx, ry, { Vec3f::all(-1), Center,  grid[2],  Vec3f::all(-1) }, 3, depth);
+			P += sample(rx, y0, xmax, ry, { Center, Vec3f::all(-1),  Vec3f::all(-1),  grid[3] }, 4, depth);
+			P /= 4.f;
+			//if ((maxdepth - depth) > (int)(log(nSamples) / log(4))) P /= 4.f;
+			return P;
+		};
+		int maxdepth = log(maxSamples) / log(4);
+		return sample(0.f, 0.f, 1.f, 1.f, { Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) }, 0, maxdepth);
+	}
+
+
 	Mat CScene::renderDepth(ptr_sampler_t pSampler) const 
 	{
 		ptr_camera_t activeCamera = getActiveCamera();

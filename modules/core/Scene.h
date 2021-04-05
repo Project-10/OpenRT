@@ -90,12 +90,18 @@ namespace rt {
 		 */
 		DllExport Mat					render(ptr_sampler_t pSampler = nullptr) const;
 		/**
+		*/
+		DllExport Mat					render(ptr_sampler_t pSampler, double noiseThreshold, int maxSamples) const;
+		/**
+		*/
+		DllExport Vec3f					rayTraceAdaptive(Ray ray, int x, int y, double noiseThreshold, int maxSamples) const;
+		/**
 		 * @brief Renders the depth-map from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
 		 * @returns The rendered image (type: CV_64FC1)
 		 */
 		DllExport Mat					renderDepth(ptr_sampler_t pSampler = nullptr) const;
-	
+
 
 	public:
 		/**

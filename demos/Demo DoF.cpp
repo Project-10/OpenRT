@@ -55,7 +55,7 @@ int main()
 	scene.buildAccelStructure(30, 3);
 
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4));
+	Mat img = scene.render(nullptr, 1.f, 256);
 	Timer::stop();
 
 	imshow("image", img);
