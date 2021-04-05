@@ -133,12 +133,10 @@ namespace rt {
 	};
 
 	Vec3f CScene::rayTraceAdaptive(Ray ray, int x, int y, double noiseThreshold, int maxSamples) const {
-
 		ptr_camera_t activeCamera = getActiveCamera();
 		std::function<Vec3f(double, double, double, double, std::vector<Vec3f>, int, int)> sample =
 			[&, this](double x0, double y0, double xmax, double ymax, std::vector<Vec3f> grid, 
 				int quadrant, int depth) -> Vec3f {
-
 			if (quadrant == 0) {
 				grid.reserve(4);
 				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
