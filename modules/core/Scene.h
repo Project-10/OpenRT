@@ -101,16 +101,12 @@ namespace rt {
 		 * @returns The rendered image (type: CV_64FC1)
 		 */
 		DllExport Mat					renderDepth(ptr_sampler_t pSampler = nullptr) const;
-<<<<<<< HEAD
-
-=======
 		/**
 		 * @brief Loads the last rendered image from cache.
 		 * @note This method can only be used if ENABLE_CACHE is on. It also uses the m_cachePath as a default location.
 		 * @return The last cached render.
 		 */
 		DllExport Mat					getLastRenderedImage(void) const;
->>>>>>> upstream/master
 
 	public:
 		/**
