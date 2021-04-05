@@ -4,6 +4,7 @@
 #include "macroses.h"
 
 namespace rt {
+
 	void CScene::clear(void) 
 	{
 		m_vpPrims.clear();
@@ -87,6 +88,9 @@ namespace rt {
 		});
 #endif
 		img.convertTo(img, CV_8UC3, 255);
+#ifdef ENABLE_CACHE
+		imwrite(m_lriFileName, img);
+#endif
 		return img;
 	}
 		
@@ -212,6 +216,19 @@ namespace rt {
 		return depth;
 	}
 
+	Mat CScene::getLastRenderedImage(void) const
+	{
+#ifdef ENABLE_CACHE
+		Mat res = imread(m_lriFileName, IMREAD_COLOR);   // Read the file
+		RT_IF_WARNING(res.empty(), "Failed to read last saved image: image not found.");
+		return res;
+#else
+		RT_WARNING("Caching support is not enabled");
+		return Mat();
+#endif
+	}
+
+
 	// -------------------------------------- Service Methods --------------------------------------
 	bool CScene::intersect(Ray& ray) const
 	{
@@ -245,5 +262,5 @@ namespace rt {
 	{ 
 		return intersect(ray) ? ray.t : std::numeric_limits<double>::infinity();
 	}
-	
+
 }
