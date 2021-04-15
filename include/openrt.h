@@ -26,6 +26,7 @@
 #include "core/SolidCone.h"
 #include "core/SolidCylinder.h"
 #include "core/SolidSphere.h"
+#include "core/SolidTorus.h"
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"
