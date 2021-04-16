@@ -6,7 +6,8 @@ file(GLOB TESTS_HEADERS	"*.h")
 # Empty name lists them directly under the .vcproj
 source_group("" FILES  ${TESTS_SOURCES} ${TESTS_HEADERS}) 
 source_group("Source Files" FILES "main.cpp" ${GTEST_SOURCES})
-source_group("Source Files\\Tests" FILES "TestCamera.h" "TestCamera.cpp" "TestSolid.h" "TestSolid.cpp" "TestBoundingBox.h" "TestBoundingBox.cpp")
+source_group("Source Files\\Tests" FILES "TestCamera.h" "TestCamera.cpp" "TestSolid.h" "TestSolid.cpp" "TestBoundingBox.h" "TestBoundingBox.cpp"
+		"TestSolidTorus.h" "TestSolidTorus.cpp")
 #source_group("Source Files\\Tests" FILES "Tests.h" "Tests.cpp" 
 
 #			)

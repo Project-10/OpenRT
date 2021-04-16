@@ -7,6 +7,8 @@
 #include "core/CameraOrthographic.h"
 #include "core/CameraOrthographicTarget.h"
 #include "core/CameraThinLens.h"
+#include "core/CameraEnvironment.h"
+#include "core/CameraEnvironmentTarget.h"
 
 #include "core/LightOmni.h"
 #include "core/LightSpot.h"
@@ -25,6 +27,7 @@
 #include "core/SolidCone.h"
 #include "core/SolidCylinder.h"
 #include "core/SolidSphere.h"
+#include "core/SolidTorus.h"
 
 #include "core/Shader.h"
 #include "core/ShaderFlat.h"
