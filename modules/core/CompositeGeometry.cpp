@@ -16,36 +16,7 @@ namespace rt {
 #endif
     {
         // Initializing the bounding box
-        CBoundingBox boxA, boxB;
-        for (const auto &prim : s1.getPrims())
-            boxA.extend(prim->getBoundingBox());
-        for (const auto &prim : s2.getPrims())
-            boxB.extend(prim->getBoundingBox());
-        Vec3f minPt = Vec3f::all(0);
-        Vec3f maxPt = Vec3f::all(0);
-        switch (m_operationType) {
-            case BoolOp::Union:
-                for (int i = 0; i < 3; i++) {
-                    minPt[i] = MIN(boxA.getMinPoint()[i], boxB.getMinPoint()[i]);
-                    maxPt[i] = MAX(boxA.getMaxPoint()[i], boxB.getMaxPoint()[i]);
-                }
-                break;
-            case BoolOp::Intersection:
-                for (int i = 0; i < 3; i++) {
-                    minPt[i] = MAX(boxA.getMinPoint()[i], boxB.getMinPoint()[i]);
-                    maxPt[i] = MIN(boxA.getMaxPoint()[i], boxB.getMaxPoint()[i]);
-                }
-                break;
-            case BoolOp::Difference:
-                for (int i = 0; i < 3; i++) {
-                    minPt[i] = boxA.getMinPoint()[i];
-                    maxPt[i] = boxA.getMaxPoint()[i];
-                }
-                break;
-            default:
-                break;
-        }
-        m_boundingBox = CBoundingBox(minPt, maxPt);
+        computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
         m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
@@ -160,7 +131,6 @@ namespace rt {
         // transform first geometry
         for (auto &pPrim : m_vPrims1) pPrim->transform(T * T1);
         for (auto &pPrim : m_vPrims1) pPrim->transform(T2);
-
         // transform second geometry
         for (auto &pPrim : m_vPrims2) pPrim->transform(T * T1);
         for (auto &pPrim : m_vPrims2) pPrim->transform(T2);
@@ -168,6 +138,9 @@ namespace rt {
         // update pivots point
         for (int i = 0; i < 3; i++)
             m_origin.val[i] += T.at<float>(i, 3);
+
+        // recompute the bounding box
+        computeBoundingBox();
     }
 
     Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
@@ -176,5 +149,39 @@ namespace rt {
 
     Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+    }
+
+    void CCompositeGeometry::computeBoundingBox() {
+        CBoundingBox boxA, boxB;
+        for (const auto &prim : m_vPrims1)
+            boxA.extend(prim->getBoundingBox());
+        for (const auto &prim : m_vPrims2)
+            boxB.extend(prim->getBoundingBox());
+
+        Vec3f minPt = Vec3f::all(0);
+        Vec3f maxPt = Vec3f::all(0);
+        switch (m_operationType) {
+            case BoolOp::Union:
+                for (int i = 0; i < 3; i++) {
+                    minPt[i] = MIN(boxA.getMinPoint()[i], boxB.getMinPoint()[i]);
+                    maxPt[i] = MAX(boxA.getMaxPoint()[i], boxB.getMaxPoint()[i]);
+                }
+                break;
+            case BoolOp::Intersection:
+                for (int i = 0; i < 3; i++) {
+                    minPt[i] = MAX(boxA.getMinPoint()[i], boxB.getMinPoint()[i]);
+                    maxPt[i] = MIN(boxA.getMaxPoint()[i], boxB.getMaxPoint()[i]);
+                }
+                break;
+            case BoolOp::Difference:
+                for (int i = 0; i < 3; i++) {
+                    minPt[i] = boxA.getMinPoint()[i];
+                    maxPt[i] = boxA.getMaxPoint()[i];
+                }
+                break;
+            default:
+                break;
+        }
+        m_boundingBox = CBoundingBox(minPt, maxPt);
     }
 }
