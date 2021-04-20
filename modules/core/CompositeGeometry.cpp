@@ -48,8 +48,8 @@ namespace rt {
         m_boundingBox = CBoundingBox(minPt, maxPt);
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxPrimitives, maxDepth);
-        m_pBSPTree2->build(m_vPrims2, maxPrimitives, maxDepth);
+        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
+        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
 #endif
     }
 
@@ -75,6 +75,12 @@ namespace rt {
             }
         }
 #else
+        // check if the ray intersects the bounding box
+        double t0 = 0;
+        double t1 = ray.t;
+        m_boundingBox.clip(ray, t0, t1);
+        if (t1 < t0)
+            return false;
         for (const auto &prim : m_vPrims1) {
             Ray r = ray;
             if (prim->intersect(r)) {

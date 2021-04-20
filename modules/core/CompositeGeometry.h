@@ -23,7 +23,7 @@ namespace rt {
          * @todo does it makes sense to construct the trees on object construction?
 		 */
         DllExport explicit CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType,
-                                              int maxDepth = 3, int maxPrimitives = 20);
+                                              int maxDepth = 20, int maxPrimitives = 3);
 
         DllExport virtual ~CCompositeGeometry(void) = default;
 
