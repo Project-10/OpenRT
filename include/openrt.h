@@ -9,6 +9,7 @@
 #include "core/CameraThinLens.h"
 #include "core/CameraEnvironment.h"
 #include "core/CameraEnvironmentTarget.h"
+#include "core/CameraStereoscopic.h"
 
 #include "core/LightOmni.h"
 #include "core/LightSpot.h"
