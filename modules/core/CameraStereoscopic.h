@@ -38,7 +38,7 @@ namespace rt {
         {}
         DllExport virtual ~CCameraStereoscopic(void) = default;
 
-        DllExport virtual void    InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+        DllExport void    InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
 
         /**
          * @brief Sets new camera position
