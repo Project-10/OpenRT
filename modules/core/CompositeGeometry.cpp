@@ -117,25 +117,56 @@ namespace rt {
                     ray = range2.first;
                 break;
             case BoolOp::Difference:
-                if (range1.first.t >= Infty || range1.second.t <= -Infty) {
-                    return false;
-                }
-                if (abs(range2.first.t - range1.first.t) < Epsilon) {
-                    ray = range2.second;
-                    break;
-                }
-                if (range2.first.t < range1.first.t) {
-                    if (range1.first.t > range2.second.t) {
-                        ray = range1.first;
-                    } else {
-                        ray = range2.second;
+                if (!range2.first.hit && !range2.second.hit) {
+                    if (range1.first.hit && range1.second.hit) {
+                        ray = range1.first.t < range1.second.t ? range1.first : range1.second;
+                        return true;
                     }
-                } else if (range1.first.t < range2.first.t) {
-                    ray = range1.first;
-                } else {
-                    return false;
+                    else {
+                        ray = range1.first.hit ? range1.first : range1.second;
+                        return true;
+                    }
                 }
-                break;
+                if (range1.second.hit && range2.second.hit) {
+                    if (range1.first.hit) {
+                        if (range2.first.hit) {
+                            if (range1.first.t < range2.first.t) {
+                                ray = range1.first;
+                                return true;
+                            } else {
+                                if (range2.second.t < range1.second.t) {
+                                    if (range2.second.t < range1.first.t) {
+                                        ray = range1.first;
+                                        return true;
+                                    } else {
+                                        ray = range2.second;
+                                        return true;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            if (range1.first.t < range2.second.t && range2.second.t < range1.second.t) {
+                                ray = range2.second;
+                                return true;
+                            }
+                        }
+                    } else {
+                        if (range2.first.hit) {
+                            if (range2.first.t < range1.second.t) {
+                                ray = range2.first;
+                                return true;
+                            }
+                        } else {
+                            if (range2.second.t < range1.second.t) {
+                                ray = range2.second;
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
             default:
                 break;
         }
