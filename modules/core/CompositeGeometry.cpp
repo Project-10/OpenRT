@@ -124,10 +124,12 @@ namespace rt {
                 if (!range2.first.hit && !range2.second.hit) {
                     if (range1.first.hit && range1.second.hit) {
                         ray = range1.first.t < range1.second.t ? range1.first : range1.second;
+                        checkNormals(ray);
                         return true;
                     }
                     else {
                         ray = range1.first.hit ? range1.first : range1.second;
+                        checkNormals(ray);
                         return true;
                     }
                 }
@@ -136,14 +138,17 @@ namespace rt {
                         if (range2.first.hit) {
                             if (range1.first.t < range2.first.t) {
                                 ray = range1.first;
+                                checkNormals(ray);
                                 return true;
                             } else {
                                 if (range2.second.t < range1.second.t) {
                                     if (range2.second.t < range1.first.t) {
                                         ray = range1.first;
+                                        checkNormals(ray);
                                         return true;
                                     } else {
                                         ray = range2.second;
+                                        checkNormals(ray);
                                         return true;
                                     }
                                 } else {
@@ -153,6 +158,7 @@ namespace rt {
                         } else {
                             if (range1.first.t < range2.second.t && range2.second.t < range1.second.t) {
                                 ray = range2.second;
+                                checkNormals(ray);
                                 return true;
                             }
                         }
@@ -160,11 +166,13 @@ namespace rt {
                         if (range2.first.hit) {
                             if (range2.first.t < range1.second.t) {
                                 ray = range2.first;
+                                checkNormals(ray);
                                 return true;
                             }
                         } else {
                             if (range2.second.t < range1.second.t) {
                                 ray = range2.second;
+                                checkNormals(ray);
                                 return true;
                             }
                         }
