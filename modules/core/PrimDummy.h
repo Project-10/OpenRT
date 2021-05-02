@@ -15,15 +15,15 @@ namespace rt {
                 : IPrim(std::move(shader)), m_normal(normal), m_texture_coords(texture)
         {
         }
-        DllExport virtual ~CPrimDummy(void) = default;
+        DllExport ~CPrimDummy() override = default;
 
-        DllExport virtual bool 			intersect(Ray& ray) const override;
-        DllExport virtual bool 			if_intersect(const Ray& ray) const override;
-        DllExport virtual void 			transform(const Mat& T) override;
-        DllExport Vec3f			getOrigin(void) const override;
+        DllExport bool 			intersect(Ray& ray) const override;
+        DllExport bool 			if_intersect(const Ray& ray) const override;
+        DllExport void 			transform(const Mat& T) override;
+        DllExport Vec3f			getOrigin() const override;
         DllExport Vec3f 		getNormal(const Ray&) const override { return m_normal; }
-        DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override { return m_texture_coords; };
-        DllExport virtual CBoundingBox	getBoundingBox(void) const override;
+        DllExport Vec2f			getTextureCoords(const Ray& ray) const override { return m_texture_coords; };
+        DllExport CBoundingBox	getBoundingBox() const override;
 
     private:
         Vec3f m_normal;
