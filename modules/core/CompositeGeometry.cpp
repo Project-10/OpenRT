@@ -4,6 +4,7 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
+#include "PrimDummy.h"
 
 namespace rt {
 
@@ -48,8 +49,8 @@ namespace rt {
         m_boundingBox = CBoundingBox(minPt, maxPt);
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxPrimitives, maxDepth);
-        m_pBSPTree2->build(m_vPrims2, maxPrimitives, maxDepth);
+        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
+        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
 #endif
     }
 
@@ -117,6 +118,9 @@ namespace rt {
                     ray = range2.first;
                 break;
             case BoolOp::Difference:
+                if (!range1.first.hit && !range1.second.hit) {
+                    return false;
+                }
                 if (!range2.first.hit && !range2.second.hit) {
                     if (range1.first.hit && range1.second.hit) {
                         ray = range1.first.t < range1.second.t ? range1.first : range1.second;
@@ -201,5 +205,14 @@ namespace rt {
 
     Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+    }
+
+    void CCompositeGeometry::checkNormals(Ray& ray) {
+        auto hitSurface = ray.hit.get();
+        auto surfaceNormal = hitSurface->getNormal(ray);
+        if (ray.dir.dot(surfaceNormal) > 0) {
+            auto dummyPrim = std::make_shared<CPrimDummy>(hitSurface->getShader(), -surfaceNormal, hitSurface->getTextureCoords(ray));
+            ray.hit = dummyPrim;
+        }
     }
 }

@@ -42,6 +42,8 @@ namespace rt {
         DllExport virtual CBoundingBox getBoundingBox(void) const override { return m_boundingBox; }
 
     private:
+        static void checkNormals(Ray& ray);
+
         std::vector<ptr_prim_t> m_vPrims1;                ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t> m_vPrims2;                ///< Vector of primitives of the second geometry.
         Vec3f m_origin;           ///< Origin/Pivot of the geometry.
