@@ -24,7 +24,7 @@ namespace rt {
         }
         else {
             // distance from ray origin to the split plane of the current volume (may be negative)
-            doub = (m_splitVal - ray.org[m_splitDim]) / ray.dir[m_splitDim];
+            double d = (m_splitVal - ray.org[m_splitDim]) / ray.dir[m_splitDim];
 
             auto frontNode = (ray.dir[m_splitDim] < 0) ? Right() : Left();
             auto backNode  = (ray.dir[m_splitDim] < 0) ? Left() : Right();

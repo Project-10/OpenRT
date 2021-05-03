@@ -11,6 +11,9 @@ namespace rt {
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth,
                                            int maxPrimitives)
             : IPrim(nullptr), m_vPrims1(s1.getPrims()), m_vPrims2(s2.getPrims()), m_operationType(operationType)
+#ifdef ENABLE_BSP
+    , m_pBSPTree1(new CBSPTree()), m_pBSPTree2(new CBSPTree())
+#endif
     {
         // Initializing the bounding box
         CBoundingBox boxA, boxB;
@@ -44,6 +47,10 @@ namespace rt {
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
         m_origin = m_boundingBox.getCenter();
+#ifdef ENABLE_BSP
+        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
+        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
+#endif
     }
 
     bool CCompositeGeometry::intersect(Ray &ray) const {
@@ -100,12 +107,17 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
             for (const auto &prim : m_vPrims1) {
                 prim->intersect(minA);
             }
             for (const auto &prim : m_vPrims2) {
                 prim->intersect(minB);
             }
+#endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) {
@@ -116,45 +128,45 @@ namespace rt {
                 auto t = computeTrueDistance(res, closestRay);
                 res = closestRay;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Out) {
                 auto closestRay = minA.t > minB.t ? minA : minB;
                 auto t = computeTrueDistance(res, closestRay);
                 res = closestRay;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Miss) {
                 auto t = computeTrueDistance(res, minA);
                 res = minA;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Miss) {
                 auto t = computeTrueDistance(res, minA);
                 res = minA;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::In) {
                 auto t = computeTrueDistance(res, minB);
                 res = minB;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::Out) {
                 auto t = computeTrueDistance(res, minB);
                 res = minB;
                 res.t = t;
-                return true;
+                break;
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Out) {
                 if (minB.t < minA.t) {
                     auto t = computeTrueDistance(res, minB);
                     res = minB;
                     res.t = t;
-                    return true;
+                    break;
                 }
                 minRay.org = minA.hitPoint();
                 continue;
@@ -164,7 +176,7 @@ namespace rt {
                     auto t = computeTrueDistance(res, minA);
                     res = minA;
                     res.t = t;
-                    return true;
+                    break;
                 }
                 minRay.org = minB.hitPoint();
                 continue;
@@ -193,12 +205,17 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
             for (const auto &prim : m_vPrims1) {
                 prim->intersect(minA);
             }
             for (const auto &prim : m_vPrims2) {
                 prim->intersect(minB);
             }
+#endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) {
@@ -283,12 +300,17 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
             for (const auto &prim : m_vPrims1) {
                 prim->intersect(minA);
             }
             for (const auto &prim : m_vPrims2) {
                 prim->intersect(minB);
             }
+#endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) {
