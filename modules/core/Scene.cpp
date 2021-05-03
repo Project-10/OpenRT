@@ -143,8 +143,19 @@ namespace rt {
 		return m_pBSPTree->intersect(ray);
 #else
 		bool hit = false;
-		for (auto& pPrim : m_vpPrims)
-			hit |= pPrim->intersect(ray);
+	    Ray lastIntersection;
+		for (auto& pPrim : m_vpPrims) {
+		    Ray r = ray;
+            if (pPrim->intersect(r)) {
+                if (r.t < lastIntersection.t) {
+                    lastIntersection = r;
+                }
+                hit = true;
+            }
+        }
+        if (hit) {
+            ray = lastIntersection;
+        }
 		return hit;
 #endif
 	}
@@ -155,7 +166,7 @@ namespace rt {
 		return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));
 #else
 		for (auto& pPrim : m_vpPrims)
-			if (pPrim->if_intersect(ray)) return true;
+            if (pPrim->if_intersect(ray)) return true;
 		return false;
 #endif
 	}
