@@ -11,9 +11,6 @@ namespace rt {
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth,
                                            int maxPrimitives)
             : IPrim(nullptr), m_vPrims1(s1.getPrims()), m_vPrims2(s2.getPrims()), m_operationType(operationType)
-#ifdef ENABLE_BSP
-    , m_pBSPTree1(new CBSPTree()), m_pBSPTree2(new CBSPTree())
-#endif
     {
         // Initializing the bounding box
         CBoundingBox boxA, boxB;
@@ -47,10 +44,6 @@ namespace rt {
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
         m_origin = m_boundingBox.getCenter();
-#ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
-        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
-#endif
     }
 
     bool CCompositeGeometry::intersect(Ray &ray) const {
@@ -61,10 +54,7 @@ namespace rt {
                 return computeIntersection(ray);
             case BoolOp::Difference:
                 return computeDifference(ray);
-            default:
-                break;
         }
-        return true;
     }
 
     bool CCompositeGeometry::if_intersect(const Ray &ray) const {
@@ -98,8 +88,15 @@ namespace rt {
     }
 
     bool CCompositeGeometry::computeUnion(Ray& ray) const {
-        Ray minRay = ray;
+        Ray minRay, res;
+        minRay.org = ray.org;
+        minRay.dir = ray.dir;
+        minRay.counter = ray.counter;
+        res = minRay;
+        int iterations = 0;
         while (true) {
+            RT_ASSERT(iterations++ <= 100);
+            RT_ASSERT(!minRay.hit);
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
@@ -116,47 +113,47 @@ namespace rt {
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::In) {
                 auto closestRay = minA.t < minB.t ? minA : minB;
-                auto t = computeTrueDistance(ray, closestRay);
-                ray = closestRay;
-                ray.t = t;
+                auto t = computeTrueDistance(res, closestRay);
+                res = closestRay;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Out) {
                 auto closestRay = minA.t > minB.t ? minA : minB;
-                auto t = computeTrueDistance(ray, closestRay);
-                ray = closestRay;
-                ray.t = t;
+                auto t = computeTrueDistance(res, closestRay);
+                res = closestRay;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Miss) {
-                auto t = computeTrueDistance(ray, minA);
-                ray = minA;
-                ray.t = t;
+                auto t = computeTrueDistance(res, minA);
+                res = minA;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Miss) {
-                auto t = computeTrueDistance(ray, minA);
-                ray = minA;
-                ray.t = t;
+                auto t = computeTrueDistance(res, minA);
+                res = minA;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::In) {
-                auto t = computeTrueDistance(ray, minB);
-                ray = minB;
-                ray.t = t;
+                auto t = computeTrueDistance(res, minB);
+                res = minB;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::Out) {
-                auto t = computeTrueDistance(ray, minB);
-                ray = minB;
-                ray.t = t;
+                auto t = computeTrueDistance(res, minB);
+                res = minB;
+                res.t = t;
                 return true;
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Out) {
                 if (minB.t < minA.t) {
-                    auto t = computeTrueDistance(ray, minB);
-                    ray = minB;
-                    ray.t = t;
+                    auto t = computeTrueDistance(res, minB);
+                    res = minB;
+                    res.t = t;
                     return true;
                 }
                 minRay.org = minA.hitPoint();
@@ -164,40 +161,38 @@ namespace rt {
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::In) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
-                    ray = minA;
-                    ray.t = t;
+                    auto t = computeTrueDistance(res, minA);
+                    res = minA;
+                    res.t = t;
                     return true;
                 }
                 minRay.org = minB.hitPoint();
                 continue;
             }
         }
-    }
-
-    IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) {
-        if (!ray.hit)
-            return IntersectionState::Miss;
-        if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-            return IntersectionState::In;
-        return IntersectionState::Out;
-    }
-
-    double CCompositeGeometry::computeTrueDistance(const Ray& ray, const Ray& modifiedRay) {
-        return ray.org != modifiedRay.org ? modifiedRay.t + cv::norm(ray.org - modifiedRay.org) : modifiedRay.t;
+        if (res.hit) {
+            if (ray.hit && ray.t < res.t) {
+                return false;
+            }
+            ray = res;
+            return true;
+        }
+        return false;
     }
 
     bool CCompositeGeometry::computeIntersection(Ray &ray) const {
-        Ray minRay = ray;
+        Ray minRay, res;
+        minRay.org = ray.org;
+        minRay.dir = ray.dir;
+        minRay.counter = ray.counter;
+        res = minRay;
         int iterations = 0;
         while (true) {
-            RT_ASSERT(iterations <= 100);
-            iterations++;
+            RT_ASSERT(iterations++ <= 100);
+            RT_ASSERT(!minRay.hit);
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
-            minA.hit = nullptr;
-            minB.hit = nullptr;
             for (const auto &prim : m_vPrims1) {
                 prim->intersect(minA);
             }
@@ -221,15 +216,15 @@ namespace rt {
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Out) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
-                    ray = minA;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
                 } else {
-                    auto t = computeTrueDistance(ray, minB);
-                    ray = minB;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minB);
+                    res = minB;
+                    res.t = t;
+                    break;
                 }
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Miss) {
@@ -246,38 +241,48 @@ namespace rt {
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Out) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
-                    ray = minA;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
                 }
                 minRay.org = minB.hitPoint();
                 continue;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::In) {
                 if (minB.t < minA.t) {
-                    auto t = computeTrueDistance(ray, minB);
-                    ray = minB;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minB);
+                    res = minB;
+                    res.t = t;
+                    break;
                 }
                 minRay.org = minA.hitPoint();
                 continue;
             }
         }
+        if (res.hit) {
+            if (ray.hit && ray.t < res.t) {
+                return false;
+            }
+            ray = res;
+            return true;
+        }
+        return false;
     }
 
     bool CCompositeGeometry::computeDifference(Ray &ray) const {
-        Ray minRay = ray;
+        Ray minRay, res;
+        minRay.org = ray.org;
+        minRay.dir = ray.dir;
+        minRay.counter = ray.counter;
+        res = minRay;
         int iterations = 0;
         while (true) {
-            RT_ASSERT(iterations <= 10);
-            iterations++;
+            RT_ASSERT(iterations++ <= 100);
+            RT_ASSERT(!minRay.hit);
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
-            minA.hit = nullptr;
-            minB.hit = nullptr;
             for (const auto &prim : m_vPrims1) {
                 prim->intersect(minA);
             }
@@ -291,35 +296,35 @@ namespace rt {
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::In) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
-                    ray = minA;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
                 }
                 minRay.org = minB.hitPoint();
                 continue;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Out) {
                 if (minB.t < minA.t) {
-                    auto t = computeTrueDistance(ray, minB);
-                    ray = minB;
-                    ray.t = t;
-                    return true;
+                    auto t = computeTrueDistance(res, minB);
+                    res = minB;
+                    res.t = t;
+                    break;
                 }
                 minRay.org = minA.hitPoint();
                 continue;
             }
             if (stateA == IntersectionState::In && stateB == IntersectionState::Miss) {
-                auto t = computeTrueDistance(ray, minA);
-                ray = minA;
-                ray.t = t;
-                return true;
+                auto t = computeTrueDistance(res, minA);
+                res = minA;
+                res.t = t;
+                break;
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::Miss) {
-                auto t = computeTrueDistance(ray, minA);
-                ray = minA;
-                ray.t = t;
-                return true;
+                auto t = computeTrueDistance(res, minA);
+                res = minA;
+                res.t = t;
+                break;
             }
             if (stateA == IntersectionState::Miss && stateB == IntersectionState::In) {
                 return false;
@@ -337,16 +342,36 @@ namespace rt {
             }
             if (stateA == IntersectionState::Out && stateB == IntersectionState::In) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
-                    ray = minA;
-                    ray.t = t;
+                    auto t = computeTrueDistance(res, minA);
+                    res = minA;
+                    res.t = t;
                 } else {
-                    auto t = computeTrueDistance(ray, minB);
-                    ray = minB;
-                    ray.t = t;
+                    auto t = computeTrueDistance(res, minB);
+                    res = minB;
+                    res.t = t;
                 }
-                return true;
+                break;
             }
         }
+        if (res.hit) {
+            if (ray.hit && ray.t < res.t) {
+                return false;
+            }
+            ray = res;
+            return true;
+        }
+        return false;
+    }
+
+    IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) {
+        if (!ray.hit)
+            return IntersectionState::Miss;
+        if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
+            return IntersectionState::In;
+        return IntersectionState::Out;
+    }
+
+    double CCompositeGeometry::computeTrueDistance(const Ray& ray, const Ray& modifiedRay) {
+        return ray.org != modifiedRay.org ? modifiedRay.t + cv::norm(ray.org - modifiedRay.org) : modifiedRay.t;
     }
 };
