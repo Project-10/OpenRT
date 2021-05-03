@@ -9,6 +9,10 @@ namespace rt {
         Intersection, Difference, Union
     };
 
+    enum class IntersectionState {
+        In, Out, Miss
+    };
+
     class CCompositeGeometry : public IPrim {
     public:
         /*
@@ -42,6 +46,17 @@ namespace rt {
         DllExport virtual CBoundingBox getBoundingBox(void) const override { return m_boundingBox; }
 
     private:
+        bool computeUnion(Ray& ray) const;
+
+        bool computeDifference(Ray& ray) const;
+
+        bool computeIntersection(Ray& ray) const;
+
+        static IntersectionState classifyRay(const Ray& ray);
+
+        static double computeTrueDistance(const Ray& ray, const Ray& modifiedRay);
+
+
         std::vector<ptr_prim_t> m_vPrims1;                ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t> m_vPrims2;                ///< Vector of primitives of the second geometry.
         Vec3f m_origin;           ///< Origin/Pivot of the geometry.
