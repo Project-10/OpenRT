@@ -11,13 +11,13 @@ namespace rt {
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth,
                                            int maxPrimitives)
             : IPrim(nullptr), m_vPrims1(s1.getPrims()), m_vPrims2(s2.getPrims()), m_operationType(operationType)
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
     , m_pBSPTree1(new CBSPTree()), m_pBSPTree2(new CBSPTree())
 #endif
     {
         computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
         m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
         m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
 #endif
@@ -80,7 +80,7 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
@@ -156,7 +156,7 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
@@ -236,7 +236,7 @@ namespace rt {
             Ray minA, minB;
             minA = minRay;
             minB = minRay;
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else

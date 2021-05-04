@@ -64,7 +64,7 @@ namespace rt {
         Vec3f m_origin;           ///< Origin/Pivot of the geometry.
         BoolOp m_operationType;    ///< Type of operation.
         CBoundingBox m_boundingBox;        ///< Bounding box of this composite geometry.
-#ifdef CSG_OPTIM
+#ifdef ENABLE_BSP
         std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
         std::unique_ptr<CBSPTree>		m_pBSPTree2		= nullptr;	///< Pointer to the spatial index structure for right geometry
 #endif
