@@ -140,7 +140,7 @@ namespace rt {
 	bool CScene::intersect(Ray& ray) const
 	{
 #ifdef ENABLE_BSP
-		return m_pBSPTree->intersect(ray);
+	    return m_pBSPTree->intersect(ray);
 #else
         bool hit = false;
 		for (auto& pPrim : m_vpPrims)

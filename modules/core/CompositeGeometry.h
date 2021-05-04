@@ -54,6 +54,8 @@ namespace rt {
 
         static IntersectionState classifyRay(const Ray& ray);
 
+        void computeBoundingBox();
+
         static double computeTrueDistance(const Ray& ray, const Ray& modifiedRay);
 
         size_t MAX_INTERSECTIONS = 150;
