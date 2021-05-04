@@ -6,21 +6,9 @@ namespace rt {
     bool CBSPNode::intersect(Ray& ray, double t0, double t1) const
     {
         if (isLeaf()) {
-            bool hit = false;
-            Ray lastIntersection;
-            for (auto& pPrim : m_vpPrims) {
-                Ray r = ray;
-                if (pPrim->intersect(r)) {
-                    if (r.t < lastIntersection.t) {
-                        lastIntersection = r;
-                    }
-                    hit = true;
-                }
-            }
-            if (hit) {
-                ray = lastIntersection;
-            }
-            return hit;
+            for (auto& pPrim : m_vpPrims)
+                pPrim->intersect(ray);
+            return (ray.hit && ray.t < t1 + Epsilon);
         }
         else {
             // distance from ray origin to the split plane of the current volume (may be negative)
