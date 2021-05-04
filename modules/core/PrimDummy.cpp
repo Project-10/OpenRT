@@ -20,7 +20,6 @@ namespace rt {
 
     void CPrimDummy::transform(const Mat &T) {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-
     }
 
     Vec3f CPrimDummy::getOrigin() const {

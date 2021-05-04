@@ -48,7 +48,7 @@ int main() {
     solidCylinder3.transform(CTransform().rotate(Vec3f(1, 0, 0), 90).get());
     ptr_prim_t pComposite1 = std::make_shared<CCompositeGeometry>(solidCylinder, solidCylinder2, BoolOp::Union);
     ptr_prim_t pComposite2 = std::make_shared<CCompositeGeometry>(pComposite1, solidCylinder3, BoolOp::Union);
-    ptr_prim_t finalComposite = std::make_shared<CCompositeGeometry>(primSphere, pComposite2, BoolOp::Intersection);
+    ptr_prim_t finalComposite = std::make_shared<CCompositeGeometry>(primSphere, pComposite2, BoolOp::Difference);
     //scene.add(finalComposite);
 
     auto pDiceShader = std::make_shared<CShaderPhong>(scene, RGB(6 / 255.0, 214 / 255.0, 160 / 255.0), 0.3f, 0.9f, 0.0f, 40.0f);
@@ -87,7 +87,7 @@ int main() {
     // Add everything to scene
     scene.add(pLight);
     Timer::start("Rendering... ");
-    Mat img = scene.render(pGlossinessSampler);
+    Mat img = scene.render();
     Timer::stop();
 
     imshow("image", img);
