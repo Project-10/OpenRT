@@ -142,20 +142,9 @@ namespace rt {
 #ifdef ENABLE_BSP
 		return m_pBSPTree->intersect(ray);
 #else
-		bool hit = false;
-	    Ray lastIntersection;
-		for (auto& pPrim : m_vpPrims) {
-		    Ray r = ray;
-            if (pPrim->intersect(r)) {
-                if (r.t < lastIntersection.t) {
-                    lastIntersection = r;
-                }
-                hit = true;
-            }
-        }
-        if (hit) {
-            ray = lastIntersection;
-        }
+        bool hit = false;
+		for (auto& pPrim : m_vpPrims)
+			hit |= pPrim->intersect(ray);
 		return hit;
 #endif
 	}
