@@ -10,7 +10,7 @@ namespace rt {
     };
 
     enum class IntersectionState {
-        In, Out, Miss
+        Enter, Exit, Miss
     };
 
     class CCompositeGeometry : public IPrim {
@@ -56,13 +56,13 @@ namespace rt {
 
         static double computeTrueDistance(const Ray& ray, const Ray& modifiedRay);
 
-
+        size_t MAX_INTERSECTIONS = 150;
         std::vector<ptr_prim_t> m_vPrims1;                ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t> m_vPrims2;                ///< Vector of primitives of the second geometry.
         Vec3f m_origin;           ///< Origin/Pivot of the geometry.
         BoolOp m_operationType;    ///< Type of operation.
         CBoundingBox m_boundingBox;        ///< Bounding box of this composite geometry.
-#ifdef ENABLE_BSP
+#ifdef CSG_OPTIM
         std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
         std::unique_ptr<CBSPTree>		m_pBSPTree2		= nullptr;	///< Pointer to the spatial index structure for right geometry
 #endif
