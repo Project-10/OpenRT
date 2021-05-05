@@ -104,9 +104,14 @@ namespace rt {
                 break;
             }
             if (stateA == stateB) {
-                auto closestRay = minA.t < minB.t ? minA : minB;
-                auto t = computeTrueDistance(ray, closestRay);
-                res = closestRay;
+                Ray chosenRay;
+                if (stateA == IntersectionState::Enter) {
+                    chosenRay = minA.t < minB.t ? minA : minB;
+                } else {
+                    chosenRay = minA.t > minB.t ? minA : minB;
+                }
+                auto t = computeTrueDistance(ray, chosenRay);
+                res = chosenRay;
                 res.t = t;
                 break;
             }
