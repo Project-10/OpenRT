@@ -55,12 +55,12 @@ namespace rt {
 					}
 					//std::cout << "Face: " << V << std::endl;
 					//std::cout << "Normal: " << N << std::endl;
-					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
 					//add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 					//													vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
-					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-																 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
-																 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+                    //add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+					//											 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
+					//											 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
 	
 				}
 				else if (line == "#") {}
