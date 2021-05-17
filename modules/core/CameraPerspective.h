@@ -87,6 +87,10 @@ namespace rt {
 		 */
 		DllExport float			getAngle(void) const { return 360 * atanf(1.0f / m_focus) / Pif; }
 
+		DllExport Vec3f			getxAxis(void) const { return m_xAxis; }
+
+		DllExport Vec3f			getyAxis(void) const { return m_yAxis; }
+
 
 	private:
 		// input values

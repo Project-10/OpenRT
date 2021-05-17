@@ -22,11 +22,11 @@ namespace rt
 			pLens = lensr * CSampler::uniformSampleRegularNgon(sample, nBlades, random::u<int>(1, nBlades));
 			
 			// Compute point on plane of focus
-			float ft = getfocalDistance() / ray.dir.val[2];
+			float ft = abs(getfocalDistance() / ray.dir.val[2]);
 			Vec3f pFocus = ray.org + ray.dir * ft;
-
+			//std::cout << "a " << pFocus.val[2] << std::endl;
 			// Update ray for effect of lens
-			ray.org += Vec3f(pLens.val[0], pLens.val[1], 0);
+			ray.org += (pLens.val[0] * getxAxis() + pLens.val[1] * getyAxis());
 			ray.dir = normalize(pFocus - ray.org);
 		}
 	}

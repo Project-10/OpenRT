@@ -23,7 +23,7 @@ namespace rt {
 		 * @param nBlades number of aperture blades of the camera
 		 */
 		DllExport CCameraThinLens(Size resolution, const Vec3f& pos, const Vec3f& dir,
-								  const Vec3f& up, float angle, float lensRadius = 0, float focalDistance =0, int nBlades = 0)
+								  const Vec3f& up, float angle, float lensRadius = 0, float focalDistance = 10, int nBlades = 0)
 			: CCameraPerspective(resolution, pos, dir, up, angle)
 			, m_lensRadius(lensRadius)
 			, m_focalDistance(focalDistance)

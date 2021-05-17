@@ -2,7 +2,7 @@
 #include "Ray.h"
 #include "Solid.h"
 #include "macroses.h"
-
+#include "random.h"
 namespace rt {
 
 	void CScene::clear(void) 
@@ -72,18 +72,18 @@ namespace rt {
 #else
 		const Range range(0, img.rows);
 #endif
-		Ray ray;
-		size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
-		for (int y = range.start; y < range.end; y++) {
-			Vec3f* pImg = img.ptr<Vec3f>(y);
-			for (int x = 0; x < img.cols; x++) {
-				for (size_t s = 0; s < nSamples; s++) {
-					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
-					pImg[x] += rayTrace(ray);
+			Ray ray;
+			size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
+			for (int y = range.start; y < range.end; y++) {
+				Vec3f* pImg = img.ptr<Vec3f>(y);
+				for (int x = 0; x < img.cols; x++) {
+					for (size_t s = 0; s < nSamples; s++) {
+						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+						pImg[x] += rayTrace(ray);
+					}
+					pImg[x] = (1.0f / nSamples) * pImg[x];
 				}
-				pImg[x] = (1.0f / nSamples) * pImg[x];
 			}
-		}
 #ifdef ENABLE_PDP
 		});
 #endif
@@ -108,37 +108,45 @@ namespace rt {
 		if (pSampler) nSamples *= pSampler->getNumSamples();
 		std::cout << "Rays per Pixel: " << nSamples << std::endl;
 #endif
+
+
+#ifdef ENABLE_PDP
+		parallel_for_(Range(0, img.rows), [&](const Range& range) {
+#else
 		const Range range(0, img.rows);
+#endif
 		Ray ray;
 		size_t nSamples = pSampler ? pSampler->getNumSamples() : 0;
 		for (int y = range.start; y < range.end; y++) {
 			Vec3f* pImg = img.ptr<Vec3f>(y);
 			for (int x = 0; x < img.cols; x++) {
-				if (nSamples > 0) {
-					for (size_t s = 0; s < nSamples; s++) {
-						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
-						pImg[x] += rayTrace(ray);
-					}
-					pImg[x] = (1.0f / nSamples) * pImg[x];
-					pImg[x] += rayTraceAdaptive(ray, x, y, noiseThreshold, maxSamples);
-					pImg[x] /= 2;
+				//std::cout << "pixel: " << y << " " << x << std::endl;
+				int totalSamples = 0;
+				for (size_t s = 0; s < nSamples; s++) {
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					pImg[x] += rayTrace(ray);
 				}
-				else {
-					pImg[x] = rayTraceAdaptive(ray, x, y, noiseThreshold, maxSamples);
-				}
+				if (nSamples > 0) pImg[x] = (1.0f / nSamples) * pImg[x];
+				Vec3f adaptiveColor = rayTraceAdaptive(ray, x, y, noiseThreshold, maxSamples, totalSamples);
+				pImg[x] = pImg[x] * (double)nSamples + adaptiveColor * totalSamples;
+				pImg[x] *= 1.0 / (nSamples + totalSamples);
+				//pImg[x] = totalSamples / maxSamples * RGB(1, 1, 1);
 			}
 		}
+#ifdef ENABLE_PDP
+	});
+#endif
+
 		img.convertTo(img, CV_8UC3, 255);
 		return img;
 	};
 
-	Vec3f CScene::rayTraceAdaptive(Ray ray, int x, int y, double noiseThreshold, int maxSamples) const {
+	Vec3f CScene::rayTraceAdaptive(Ray ray, int x, int y, double noiseThreshold, int maxSamples, int& totalsamples) const {
 		ptr_camera_t activeCamera = getActiveCamera();
-		std::function<Vec3f(double, double, double, double, std::vector<Vec3f>, int, int)> sample =
-			[&, this](double x0, double y0, double xmax, double ymax, std::vector<Vec3f> grid, 
-				int quadrant, int depth) -> Vec3f {
+		std::function<Vec3f(double, double, double, double, std::vector<Vec3f>&, int, int, int&)> sample =
+			[&, this](double x0, double y0, double xmax, double ymax, std::vector<Vec3f>& grid, 
+				int quadrant, int depth, int& totalsamples) -> Vec3f {
 			if (quadrant == 0) {
-				grid.reserve(4);
 				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
 				grid[0] = rayTrace(ray);
 				activeCamera->InitRay(ray, x, y, Vec2f(xmax, ymax));
@@ -148,40 +156,57 @@ namespace rt {
 				activeCamera->InitRay(ray, x, y, Vec2f(xmax, y0));
 				grid[3] = rayTrace(ray);
 			}
-			else if (quadrant == 1 || quadrant == 4) {
+			else if (quadrant == 1) {
 				activeCamera->InitRay(ray, x, y, Vec2f(xmax, ymax));
 				grid[1] = rayTrace(ray);
 				activeCamera->InitRay(ray, x, y, Vec2f(x0, y0));
 				grid[2] = rayTrace(ray);
 			}
-			else if (quadrant == 2 || quadrant == 3) {
-				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
-				grid[0] = rayTrace(ray);
+			else if (quadrant == 2) {
 				activeCamera->InitRay(ray, x, y, Vec2f(xmax, y0));
 				grid[3] = rayTrace(ray);
 			}
-
+			else if (quadrant == 3) {
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, y0));
+				grid[2] = rayTrace(ray);
+			}
+			else if (quadrant == 4) {
+				activeCamera->InitRay(ray, x, y, Vec2f(x0, ymax));
+				grid[0] = rayTrace(ray);
+			}
 			Vec3f P = (grid[0] + grid[1] + grid[2] + grid[3]) / 4.f;
+			if (depth < 1) {
+				totalsamples++;
+				return P;
+			}
 			double rx = (x0 + xmax) / 2;
 			double ry = (y0 + ymax) / 2;
 			activeCamera->InitRay(ray, x, y, Vec2f(rx, ry));
 			Vec3f Center = rayTrace(ray);
 			double error = norm(Center, P);
-			
-			if (error <= noiseThreshold || depth < 1) return P;
+
+			if (error <= noiseThreshold) {
+				totalsamples++;
+				return P;
+			}
 			depth--;
 			
 			P = Vec3f::all(0.f);
-			P += sample(x0, ry, rx, ymax, { grid[0], Vec3f::all(-1),  Vec3f::all(-1),  Center }, 1, depth);
-			P += sample(rx, ry, xmax, ymax, { Vec3f::all(-1), grid[1],  Center, Vec3f::all(-1) }, 2, depth);
-			P += sample(x0, y0, rx, ry, { Vec3f::all(-1), Center,  grid[2],  Vec3f::all(-1) }, 3, depth);
-			P += sample(rx, y0, xmax, ry, { Center, Vec3f::all(-1),  Vec3f::all(-1),  grid[3] }, 4, depth);
+			std::vector<Vec3f> c { grid[0], Vec3f::all(-1),  Vec3f::all(-1),  Center };
+			P += sample(x0, ry, rx, ymax, c, 1, depth, totalsamples);
+			c = { c[1], grid[1],  Center, Vec3f::all(-1) };
+			P += sample(rx, ry, xmax, ymax, c, 2, depth, totalsamples);
+			c = { Center, c[3],  Vec3f::all(-1),  grid[3] };
+			P += sample(rx, y0, xmax, ry, c, 3, depth, totalsamples);
+			c = { Vec3f::all(-1), Center,  grid[2],  c[2] };
+			P += sample(x0, y0, rx, ry, c, 4, depth, totalsamples);
 			P /= 4.f;
-			//if ((maxdepth - depth) > (int)(log(nSamples) / log(4))) P /= 4.f;
+			totalsamples++;
 			return P;
 		};
 		int maxdepth = log(maxSamples) / log(4);
-		return sample(0.f, 0.f, 1.f, 1.f, { Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) }, 0, maxdepth);
+		std::vector<Vec3f> grid{ Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) ,  Vec3f::all(-1) };
+		return sample(0.f, 0.f, 1.f, 1.f, grid, 0, maxdepth, totalsamples);
 	}
 
 
