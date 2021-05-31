@@ -4,10 +4,10 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
+#include "PrimDummy.h"
 
 namespace rt {
 
-    // Constructor
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth,
                                            int maxPrimitives)
             : IPrim(nullptr), m_vPrims1(s1.getPrims()), m_vPrims2(s2.getPrims()), m_operationType(operationType)
@@ -15,12 +15,322 @@ namespace rt {
     , m_pBSPTree1(new CBSPTree()), m_pBSPTree2(new CBSPTree())
 #endif
     {
-        // Initializing the bounding box
+        computeBoundingBox();
+        m_origin = m_boundingBox.getCenter();
+#ifdef ENABLE_BSP
+        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
+        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
+#endif
+    }
+
+    bool CCompositeGeometry::intersect(Ray &ray) const {
+        switch (m_operationType) {
+            case BoolOp::Union:
+                return computeUnion(ray);
+            case BoolOp::Intersection:
+                return computeIntersection(ray);
+            case BoolOp::Difference:
+                return computeDifference(ray);
+        }
+    }
+
+    bool CCompositeGeometry::if_intersect(const Ray &ray) const {
+        return intersect(lvalue_cast(Ray(ray)));
+    }
+
+    void CCompositeGeometry::transform(const Mat &T) {
+        CTransform tr;
+        Mat T1 = tr.translate(-m_origin).get();
+        Mat T2 = tr.translate(m_origin).get();
+
+        // transform first geometry
+        for (auto &pPrim : m_vPrims1) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vPrims1) pPrim->transform(T2);
+
+        // transform second geometry
+        for (auto &pPrim : m_vPrims2) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vPrims2) pPrim->transform(T2);
+
+        // update pivots point
+        for (int i = 0; i < 3; i++)
+            m_origin.val[i] += T.at<float>(i, 3);
+
+        // recompute the bounding box
+        computeBoundingBox();
+    }
+
+    Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
+        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+    }
+
+    Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
+        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+    }
+
+    bool CCompositeGeometry::computeUnion(Ray &ray) const {
+        Ray minRay, res;
+        minRay = ray;
+        minRay.hit = nullptr;
+        minRay.t = Infty;
+        int iterations = 0;
+        while (true) {
+            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+            RT_ASSERT(!minRay.hit);
+            RT_ASSERT(minRay.t >= Infty);
+            Ray minA, minB;
+            minA = minRay;
+            minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
+            for (const auto &prim : m_vPrims1) {
+                prim->intersect(minA);
+            }
+            for (const auto &prim : m_vPrims2) {
+                prim->intersect(minB);
+            }
+#endif
+            auto stateA = classifyRay(minA);
+            auto stateB = classifyRay(minB);
+            if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) {
+                return false;
+            }
+            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) {
+                Ray closestRay = stateA == IntersectionState::Miss ? minB : minA;
+                auto t = computeTrueDistance(ray, closestRay);
+                res = closestRay;
+                res.t = t;
+                break;
+            }
+            if (stateA == stateB) {
+                Ray chosenRay;
+                if (stateA == IntersectionState::Enter) {
+                    chosenRay = minA.t < minB.t ? minA : minB;
+                } else {
+                    chosenRay = minA.t > minB.t ? minA : minB;
+                }
+                auto t = computeTrueDistance(ray, chosenRay);
+                res = chosenRay;
+                res.t = t;
+                break;
+            }
+            if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
+                if (minB.t < minA.t) {
+                    auto t = computeTrueDistance(ray, minB);
+                    res = minB;
+                    res.t = t;
+                    break;
+                }
+                minRay.org = minA.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
+                if (minA.t < minB.t) {
+                    auto t = computeTrueDistance(ray, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
+                }
+                minRay.org = minB.hitPoint();
+                continue;
+            }
+        }
+        if (res.hit) {
+            if (ray.t < res.t) {
+                return false;
+            }
+            auto initialOrigin = ray.org;
+            ray = res;
+            ray.org = initialOrigin;
+            return true;
+        }
+        return false;
+    }
+
+    bool CCompositeGeometry::computeIntersection(Ray &ray) const {
+        Ray minRay, res;
+        minRay = ray;
+        minRay.hit = nullptr;
+        minRay.t = Infty;
+        int iterations = 0;
+        while (true) {
+            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+            RT_ASSERT(!minRay.hit);
+            RT_ASSERT(minRay.t >= Infty);
+            Ray minA, minB;
+            minA = minRay;
+            minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
+            for (const auto &prim : m_vPrims1) {
+                prim->intersect(minA);
+            }
+            for (const auto &prim : m_vPrims2) {
+                prim->intersect(minB);
+            }
+#endif
+            auto stateA = classifyRay(minA);
+            auto stateB = classifyRay(minB);
+            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) {
+                return false;
+            }
+            if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
+                minRay.org = minA.t < minB.t ? minA.hitPoint() : minB.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
+                auto closestRay = minA.t < minB.t ? minA : minB;
+                auto t = computeTrueDistance(ray, closestRay);
+                res = closestRay;
+                res.t = t;
+                break;
+            }
+            if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
+                if (minA.t < minB.t) {
+                    auto t = computeTrueDistance(ray, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
+                }
+                minRay.org = minB.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
+                if (minB.t < minA.t) {
+                    auto t = computeTrueDistance(ray, minB);
+                    res = minB;
+                    res.t = t;
+                    break;
+                }
+                minRay.org = minA.hitPoint();
+                continue;
+            }
+        }
+        if (res.hit) {
+            if (ray.t < res.t) {
+                return false;
+            }
+            auto initialOrigin = ray.org;
+            ray = res;
+            ray.org = initialOrigin;
+            return true;
+        }
+        return false;
+    }
+
+    bool CCompositeGeometry::computeDifference(Ray &ray) const {
+        Ray minRay, res;
+        minRay = ray;
+        minRay.hit = nullptr;
+        minRay.t = Infty;
+        int iterations = 0;
+        while (true) {
+            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+            RT_ASSERT(!minRay.hit);
+            RT_ASSERT(minRay.t >= Infty);
+            Ray minA, minB;
+            minA = minRay;
+            minB = minRay;
+#ifdef ENABLE_BSP
+            m_pBSPTree1->intersect(minA);
+            m_pBSPTree2->intersect(minB);
+#else
+            for (const auto &prim : m_vPrims1) {
+                prim->intersect(minA);
+            }
+            for (const auto &prim : m_vPrims2) {
+                prim->intersect(minB);
+            }
+#endif
+            auto stateA = classifyRay(minA);
+            auto stateB = classifyRay(minB);
+            if (stateA == IntersectionState::Miss) {
+                return false;
+            }
+            if (stateB == IntersectionState::Miss) {
+                auto t = computeTrueDistance(ray, minA);
+                res = minA;
+                res.t = t;
+                break;
+            }
+            if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
+                if (minA.t < minB.t) {
+                    auto t = computeTrueDistance(ray, minA);
+                    res = minA;
+                    res.t = t;
+                    break;
+                }
+                minRay.org = minB.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
+                if (minB.t < minA.t) {
+                    auto t = computeTrueDistance(ray, minB);
+                    res = minB;
+                    res.t = t;
+                    auto dummyPrim = std::make_shared<CPrimDummy>(res.hit->getShader(), -res.hit->getNormal(res),
+                                                                  res.hit->getTextureCoords(res));
+                    res.hit = dummyPrim;
+                    break;
+                }
+                minRay.org = minA.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
+                minRay.org = minA.t < minB.t ? minA.hitPoint() : minB.hitPoint();
+                continue;
+            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
+                if (minA.t < minB.t) {
+                    auto t = computeTrueDistance(ray, minA);
+                    res = minA;
+                    res.t = t;
+                    auto currentNormal = res.hit->getNormal(res);
+                    auto dummyPrim = std::make_shared<CPrimDummy>(res.hit->getShader(), -currentNormal,
+                                                                  res.hit->getTextureCoords(res));
+                    res.hit = dummyPrim;
+                } else {
+                    auto t = computeTrueDistance(ray, minB);
+                    res = minB;
+                    res.t = t;
+                }
+                break;
+            }
+        }
+        if (res.hit) {
+            if (ray.t < res.t) {
+                return false;
+            }
+            auto initialOrigin = ray.org;
+            ray = res;
+            ray.org = initialOrigin;
+            return true;
+        }
+        return false;
+    }
+
+    IntersectionState CCompositeGeometry::classifyRay(const Ray &ray) {
+        if (!ray.hit)
+            return IntersectionState::Miss;
+        if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
+            return IntersectionState::Enter;
+        return IntersectionState::Exit;
+    }
+
+    double CCompositeGeometry::computeTrueDistance(const Ray &ray, const Ray &modifiedRay) {
+        return ray.org != modifiedRay.org ? modifiedRay.t + cv::norm(ray.org - modifiedRay.org) : modifiedRay.t;
+    }
+
+    void CCompositeGeometry::computeBoundingBox() {
         CBoundingBox boxA, boxB;
-        for (const auto &prim : s1.getPrims())
+        for (const auto &prim : m_vPrims1)
             boxA.extend(prim->getBoundingBox());
-        for (const auto &prim : s2.getPrims())
+        for (const auto &prim : m_vPrims2)
             boxB.extend(prim->getBoundingBox());
+
         Vec3f minPt = Vec3f::all(0);
         Vec3f maxPt = Vec3f::all(0);
         switch (m_operationType) {
@@ -46,160 +356,5 @@ namespace rt {
                 break;
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
-        m_origin = m_boundingBox.getCenter();
-#ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxPrimitives, maxDepth);
-        m_pBSPTree2->build(m_vPrims2, maxPrimitives, maxDepth);
-#endif
     }
-
-    bool CCompositeGeometry::intersect(Ray &ray) const {
-        std::pair<Ray, Ray> range1(ray, ray);
-        std::pair<Ray, Ray> range2(ray, ray);
-        range1.second.t = -Infty;
-        range2.second.t = -Infty;
-        bool hasIntersection = false;
-#ifdef ENABLE_BSP
-        hasIntersection = m_pBSPTree1->intersect(range1.first);
-        hasIntersection |= m_pBSPTree2->intersect(range2.first);
-        if (m_operationType == BoolOp::Difference) {
-            Ray r1 = ray;
-            Ray r2 = ray;
-            if (m_pBSPTree1->intersect_furthest(r1)) {
-                range1.second = r1;
-                hasIntersection = true;
-            }
-            if (m_pBSPTree2->intersect_furthest(r2)) {
-                range2.second = r2;
-                hasIntersection = true;
-            }
-        }
-#else
-        for (const auto &prim : m_vPrims1) {
-            Ray r = ray;
-            if (prim->intersect(r)) {
-                if (r.t < range1.first.t)
-                    range1.first = r;
-                if (r.t > range1.second.t)
-                    range1.second = r;
-                hasIntersection = true;
-            }
-        }
-        for (const auto &prim : m_vPrims2) {
-            Ray r = ray;
-            if (prim->intersect(r)) {
-                if (r.t < range2.first.t)
-                    range2.first = r;
-                if (r.t > range2.second.t)
-                    range2.second = r;
-                hasIntersection = true;
-            }
-        }
-#endif
-        if (!hasIntersection)
-            return false;
-        double t;
-        switch (m_operationType) {
-            case BoolOp::Union:
-                t = MIN(range1.first.t, range2.first.t);
-                if (abs(t - range1.first.t) < Epsilon)
-                    ray = range1.first;
-                else if (abs(t - range2.first.t) < Epsilon)
-                    ray = range2.first;
-                break;
-            case BoolOp::Intersection:
-                t = MAX(range1.first.t, range2.first.t);
-                if (abs(t) >= Infty)
-                    return false;
-                if (abs(t - range1.first.t) < Epsilon)
-                    ray = range1.first;
-                else if (abs(t - range2.first.t) < Epsilon)
-                    ray = range2.first;
-                break;
-            case BoolOp::Difference:
-                if (!range2.first.hit && !range2.second.hit) {
-                    if (range1.first.hit && range1.second.hit) {
-                        ray = range1.first.t < range1.second.t ? range1.first : range1.second;
-                        return true;
-                    }
-                    else {
-                        ray = range1.first.hit ? range1.first : range1.second;
-                        return true;
-                    }
-                }
-                if (range1.second.hit && range2.second.hit) {
-                    if (range1.first.hit) {
-                        if (range2.first.hit) {
-                            if (range1.first.t < range2.first.t) {
-                                ray = range1.first;
-                                return true;
-                            } else {
-                                if (range2.second.t < range1.second.t) {
-                                    if (range2.second.t < range1.first.t) {
-                                        ray = range1.first;
-                                        return true;
-                                    } else {
-                                        ray = range2.second;
-                                        return true;
-                                    }
-                                } else {
-                                    return false;
-                                }
-                            }
-                        } else {
-                            if (range1.first.t < range2.second.t && range2.second.t < range1.second.t) {
-                                ray = range2.second;
-                                return true;
-                            }
-                        }
-                    } else {
-                        if (range2.first.hit) {
-                            if (range2.first.t < range1.second.t) {
-                                ray = range2.first;
-                                return true;
-                            }
-                        } else {
-                            if (range2.second.t < range1.second.t) {
-                                ray = range2.second;
-                                return true;
-                            }
-                        }
-                    }
-                }
-                return false;
-            default:
-                break;
-        }
-        return true;
-    }
-
-    bool CCompositeGeometry::if_intersect(const Ray &ray) const {
-        return intersect(lvalue_cast(Ray(ray)));
-    }
-
-    void CCompositeGeometry::transform(const Mat &T) {
-        CTransform tr;
-        Mat T1 = tr.translate(-m_origin).get();
-        Mat T2 = tr.translate(m_origin).get();
-
-        // transform first geometry
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T2);
-
-        // transform second geometry
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T2);
-
-        // update pivots point
-        for (int i = 0; i < 3; i++)
-            m_origin.val[i] += T.at<float>(i, 3);
-    }
-
-    Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
-        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-    }
-
-    Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
-        RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-    }
-}
+};

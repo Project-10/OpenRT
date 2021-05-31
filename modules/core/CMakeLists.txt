@@ -51,7 +51,7 @@ source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h")
 # Properties -> C/C++ -> General -> Additional Include Directories
 include_directories(${PROJECT_SOURCE_DIR}/include ${OpenCV_INCLUDE_DIRS})
 
-add_library(core SHARED ${CORE_INCLUDE} ${CORE_SOURCES} ${CORE_HEADERS})
+add_library(core SHARED ${CORE_INCLUDE} ${CORE_SOURCES} ${CORE_HEADERS} PrimDummy.cpp PrimDummy.h)
 
 # Properties -> Linker -> Input -> Additional Dependencies
 target_link_libraries(core ${OpenCV_LIBS})
