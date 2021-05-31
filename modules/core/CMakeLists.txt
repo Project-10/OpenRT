@@ -20,7 +20,7 @@ source_group("Source Files\\Geometry\\Primitives" FILES "IPrim.h")
 source_group("Source Files\\Geometry\\Primitives\\plane" FILES "PrimPlane.h" "PrimPlane.cpp")
 source_group("Source Files\\Geometry\\Primitives\\sphere" FILES "PrimSphere.h" "PrimSphere.cpp")
 source_group("Source Files\\Geometry\\Primitives\\triangle" FILES "PrimTriangle.h" "PrimTriangle.cpp")
-source_group("Source Files\\Geometry\\Primitives\\composites" FILES "CompositeGeometry.h" "CompositeGeometry.cpp")
+source_group("Source Files\\Geometry\\Primitives\\composites" FILES "CompositeGeometry.h" "CompositeGeometry.cpp" "PrimDummy.cpp" "PrimDummy.h")
 source_group("Source Files\\Geometry\\Solids" FILES "Solid.h" "Solid.cpp")
 source_group("Source Files\\Geometry\\Solids\\quad" FILES "SolidQuad.h" "SolidQuad.cpp")
 source_group("Source Files\\Geometry\\Solids\\box" FILES "SolidBox.h" "SolidBox.cpp")
@@ -51,7 +51,7 @@ source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h")
 # Properties -> C/C++ -> General -> Additional Include Directories
 include_directories(${PROJECT_SOURCE_DIR}/include ${OpenCV_INCLUDE_DIRS})
 
-add_library(core SHARED ${CORE_INCLUDE} ${CORE_SOURCES} ${CORE_HEADERS} PrimDummy.cpp PrimDummy.h)
+add_library(core SHARED ${CORE_INCLUDE} ${CORE_SOURCES} ${CORE_HEADERS})
 
 # Properties -> Linker -> Input -> Additional Dependencies
 target_link_libraries(core ${OpenCV_LIBS})

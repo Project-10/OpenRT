@@ -1,15 +1,7 @@
-
-
-#include <macroses.h>
 #include "PrimDummy.h"
-
+#include <macroses.h>
 
 namespace rt {
-
-    Vec2f CPrimDummy::getTextureCoords(const Ray &) const {
-        return m_textureCoord;
-    }
-
     bool CPrimDummy::intersect(Ray &) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
@@ -24,10 +16,6 @@ namespace rt {
 
     Vec3f CPrimDummy::getOrigin() const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-    }
-
-    Vec3f CPrimDummy::getNormal(const Ray &) const {
-        return m_normal;
     }
 
     CBoundingBox CPrimDummy::getBoundingBox() const {

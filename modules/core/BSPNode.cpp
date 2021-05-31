@@ -1,4 +1,3 @@
-#include <macroses.h>
 #include "BSPNode.h"
 #include "Ray.h"
 
