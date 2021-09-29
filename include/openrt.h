@@ -19,6 +19,7 @@
 
 #include "core/PrimSphere.h"
 #include "core/PrimPlane.h"
+#include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
 #include "core/CompositeGeometry.h"
 
