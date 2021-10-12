@@ -49,7 +49,7 @@ namespace rt {
 		
 		Vec3f hit = ray.hitPoint();
 		Vec3f h = (hit - m_origin) * (0.5f / m_radius);
-		Vec2f res = norm(h) > Epsilon ? Vec2f(0.5 + h.dot(mu), 0.5 + h.dot(mv)) : Vec2f(0.5f, 0.5f);
+		Vec2f res = norm(h) > Epsilon ? Vec2f(0.5f + h.dot(mu), 0.5f + h.dot(mv)) : Vec2f(0.5f, 0.5f);
 	
 		return res;
 	}

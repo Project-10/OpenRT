@@ -95,19 +95,22 @@ namespace rt {
 	}
 
 	// --------- from PBR book ---------
-	Vec3f CSampler::uniformSampleSphere(const Vec2f& sample) {
+	Vec3f CSampler::uniformSampleSphere(const Vec2f& sample) 
+	{
 		RT_WARNING("This function is not implemented");
 		return Vec3f();
 	}
 
 	// --------- from PBR book ---------
-	Vec3f CSampler::cosineSampleHemisphere(const Vec2f& sample) {
+	Vec3f CSampler::cosineSampleHemisphere(const Vec2f& sample) 
+	{
 		Vec2f s = concentricSampleDisk(sample);
 		float z = sqrtf(max(0.0f, 1.0f - s[0] * s[0] - s[1] * s[1]));
 		return Vec3f(s[0], s[1], z);
 	}
 
-	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& sample, int n, int m) {
+	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& sample, int n, int m) 
+	{
 		if (n == 0) return CSampler::concentricSampleDisk(sample);
 		float theta = 2 * Pif / n;
 		Vec2f a(0, 0);
