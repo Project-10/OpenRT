@@ -106,7 +106,7 @@ namespace rt {
 		const Range range(0, depth.rows);
 #endif
 		Ray ray;
-		for (int y = 0; y < depth.rows; y++) {
+		for (int y = range.start; y < range.end; y++) {
 			double* pDepth = depth.ptr<double>(y);
 			for (int x = 0; x < depth.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
@@ -145,6 +145,9 @@ namespace rt {
         bool hit = false;
 		for (auto& pPrim : m_vpPrims)
 			hit |= pPrim->intersect(ray);
+		
+		
+
 		return hit;
 #endif
 	}
