@@ -43,6 +43,11 @@ namespace rt {
 
 	Vec3f CPrimTriangle::getNormal(const Ray& ray) const
 	{
+			return m_normal;
+	}
+
+	Vec3f CPrimTriangle::getShadingNormal(const Ray& ray) const
+	{
 		if (m_na && m_nb && m_nc)
 			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
 		else

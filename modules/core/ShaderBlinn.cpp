@@ -9,10 +9,11 @@ namespace rt {
 
 		Vec3f color = CShaderFlat::shade(ray);
 
-		Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+		Vec3f faceNormal = ray.hit->getNormal(ray);								// face normal
+		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
 		bool inside = false;
-		if (normal.dot(ray.dir) > 0) {
-			normal = -normal;													// turn normal to front
+		if (faceNormal.dot(ray.dir) > 0) {
+			shadingNormal = -shadingNormal;										// turn shading normal to front
 			inside = true;
 		}
 
@@ -38,14 +39,14 @@ namespace rt {
 					if (radiance && (!pLight->shadow() || !m_scene.if_intersect(I))) {
 						// ------ diffuse ------
 						if (m_kd > 0) {
-							float cosLightNormal = I.dir.dot(normal);
+							float cosLightNormal = I.dir.dot(shadingNormal);
 							if (cosLightNormal > 0)
 								L += m_kd * cosLightNormal * color.mul(radiance.value());
 						}
 						// ------ specular ------
 						if (m_ks > 0) {
 							Vec3f H = normalize(I.dir - ray.dir);
-							float cosHalfwayNormal = H.dot(normal);
+							float cosHalfwayNormal = H.dot(shadingNormal);
 							if (cosHalfwayNormal > 0)
 								L += m_ks * powf(cosHalfwayNormal, m_ke) * radiance.value();
 						}

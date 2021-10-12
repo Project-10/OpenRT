@@ -9,10 +9,11 @@ namespace rt {
 
 		Vec3f color = CShaderFlat::shade(ray);
 
-		Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
+		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
 		bool inside = false;
-		if (normal.dot(ray.dir) > 0) {
-			normal = -normal;													// turn normal to front
+		if (faceNormal.dot(ray.dir) > 0) {
+			shadingNormal = -shadingNormal;										// turn normal to front
 			inside = true;
 		}
 
@@ -24,7 +25,7 @@ namespace rt {
 		for (size_t ns = 0; ns < nNormalSamples; ns++) {
 
 			// Distort the normal vector
-			Vec3f n = normal;
+			Vec3f n = shadingNormal;
 			if (m_pSampler) {
 				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 10), n);
 			}

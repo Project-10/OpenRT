@@ -56,11 +56,18 @@ namespace rt {
 		 */
 		DllExport virtual Vec3f				getOrigin(void) const = 0;
 		/**
-		 * @brief Returns the normalized normal vector of the primitive in the ray - primitive intercection point
-		 * @param ray Ray pointing at the surface
-		 * @return The normalized normal of the primitive
+		 * @brief Returns the normal vector of the primitive in the ray - primitive intercection point
+		 * @param ray Ray intersecting the primitive
+		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
 		DllExport virtual Vec3f				getNormal(const Ray& ray) const = 0;
+		/**
+		* @brief Returns the  normal vector of the primitive in the ray - primitive intercection point
+		* @note In contrast to the @ref getNormal() method, this methods takes into account the possible normal interpolation along the primitive
+		* @param ray Ray intersecting the primitive
+		* @retunr The normalized normal of the primitive at the ray - primitive intersection point
+		*/
+		DllExport virtual Vec3f				getShadingNormal(const Ray& ray) const { return getNormal(ray); }
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intercection point
 		 * @param ray Point at the surface
@@ -95,7 +102,7 @@ namespace rt {
 	
 	
 	private:
-		const ptr_shader_t	m_pShader;		///< Pointer to the sahder, see @ref  IShader
-		std::string			m_name;			///< Optional name of the primitive
+		const ptr_shader_t	m_pShader;			///< Pointer to the sahder, see @ref  IShader
+		std::string			m_name;				///< Optional name of the primitive
 	};
 }
