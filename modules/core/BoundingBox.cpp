@@ -24,8 +24,13 @@ namespace rt {
 
 	void CBoundingBox::extend(const CBoundingBox& box)
 	{
-		extend(box.m_minPoint);
-		extend(box.m_maxPoint);
+		// We make the extended box a little bit larger than needed (plus-minus Epsilon)
+        // That helps to eliminate acne at plane surfaceses parallel to the axises of WCS
+        // This acne is not related to self-occlusion, but to the seconst condition in line
+        // return (ray.hit && ray.t < t1 + Epsilon);
+        // when t1 corresponds to the scene most distant boundary
+        extend(box.m_minPoint - Vec3f::all(Epsilon));
+		extend(box.m_maxPoint + Vec3f::all(Epsilon));
 	}
 
     std::pair<CBoundingBox, CBoundingBox> CBoundingBox::split(int dim, float val) const
