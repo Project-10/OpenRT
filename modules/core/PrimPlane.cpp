@@ -23,7 +23,9 @@ namespace rt {
 	void CPrimPlane::transform(const Mat& T)
 	{
 		// Transform origin
-		m_origin = CTransform::point(m_origin, T);
+		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+		o = CTransform::point(o, T);	// transltion of the point
+		m_origin += o;					// update the sphere's origin
 
 		// Transform normals
 		Mat T1 = T.inv().t();
@@ -32,25 +34,10 @@ namespace rt {
 
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const
 	{
-		Vec3f mu;
-		for (int i = 0; i < 3; i++)
-			if (fabs(m_normal.val[i]) >= 1.0f / sqrtf(3)) {
-				mu.val[i] = 0;
-				int mind, maxd;
-				if (fabs(m_normal.val[(i + 1) % 3]) > fabs(m_normal.val[(i + 2) % 3])) {
-					maxd = (i + 1) % 3;
-					mind = (i + 2) % 3;
-				}
-				else {
-					maxd = (i + 2) % 3;
-					mind = (i + 1) % 3;
-				}
-				mu.val[mind] = 1;
-				mu.val[maxd] = fabs(m_normal.val[maxd]) > Epsilon ? -m_normal.val[mind] / m_normal.val[maxd] : 0;
-				break;
-			}
-		mu = normalize(mu);
-		Vec3f mv = normalize(m_normal.cross(mu));
+		Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
+		if (m_normal[1] < 1.0f) mu = normalize(m_normal.cross(Vec3f(0, 1, 0)));	// assuming up-vector to be Y-direction in WCS
+		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
+		mv = m_normal.cross(mu);
 		
 		Vec3f hit = ray.hitPoint();
 		Vec3f h = hit - m_origin;
@@ -64,9 +51,9 @@ namespace rt {
 		Vec3f minPoint = Vec3f::all(-Infty);
 		Vec3f maxPoint = Vec3f::all(Infty);
 		for (int i = 0; i < 3; i++)
-			if (m_normal.val[i] == 1) {
-				minPoint.val[i] = m_origin.val[i];
-				maxPoint.val[i] = m_origin.val[i];
+			if (m_normal[i] == 1) {
+				minPoint[i] = m_origin[i];
+				maxPoint[i] = m_origin[i];
 				break;
 			}
 		return CBoundingBox(minPoint, maxPoint);
