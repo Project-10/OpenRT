@@ -83,7 +83,7 @@ namespace rt {
 	{
 		Vec3f hitPoint = ray.hitPoint() - m_origin;
 		float phi = atan2f(hitPoint[2], hitPoint[0]);
-		float theta = acosf(hitPoint[1] / m_radius);
+		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 

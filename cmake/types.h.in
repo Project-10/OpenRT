@@ -40,7 +40,7 @@ using namespace cv;
 static const double	Pi	= 3.1415926;			///< Pi number
 static const float	Pif	= 3.1415926f;			///< Pi number
 static const float	Infty 	= std::numeric_limits<float>::infinity();
-static const float	Epsilon = 1E-2f;
+static const float	Epsilon = 1E-5f;
 
 template <class T>  T& lvalue_cast(T&& t) { return t; }
 #ifdef _WIN32

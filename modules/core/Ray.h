@@ -44,12 +44,21 @@ namespace rt {
 		 */
 		Vec3f 				hitPoint(void) const;
 		/**
+		* @brief Returns the hitpoint of the ray, elevated over the surface
+		* @details This method in contrast to @ref hitPoint() method, elevates the hitpoint along the normal direction.
+		* This intends to solve the selve-occlusion problem which can produce acne in renders.
+		* The itpoint is calculated as \f$ \vec{o} + t\vec{d} + \epsilon\vec{n} \f$
+		* @param normal Normal vector at the ray's hitpoint
+		* @return The hitpoint
+		*/
+		Vec3f				hitPoint(const Vec3f& normal) const;
+		/**
 		 * @brief Creates and returns the reflected ray
 		 * @details This function calculates the reflected ray at the hitpoint of the surface with the normal \b normal
 		 * @param normal Normal vector at the ray's hitpoint
 		 * @return The reflected ray
 		 */
-		Ray					reflected(Vec3f normal) const;
+		Ray					reflected(const Vec3f& normal) const;
 		/**
 		 * @brief Creates and returns the refracted ray
 		 * @details This function calculates the refracted ray at the hitpoint of the surface with the normal \b normal
@@ -57,7 +66,7 @@ namespace rt {
 		 * @param k The refractive index
 		 * @return The refracted ray
 		 */
-		std::optional<Ray>	refracted(Vec3f normal, float k) const;
+		std::optional<Ray>	refracted(const Vec3f& normal, float k) const;
 		/**
 		 * @brief Traces the given ray and shades it
 		 * @details This function implicetly creates a new ray with the increased by one counter and traces it within the scene \b scene

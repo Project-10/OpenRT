@@ -29,7 +29,7 @@ namespace rt{
 
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
-			Ray I(ray.hitPoint());
+			Ray I(ray.hitPoint(shadingNormal));												// shadow ray
 
 			for (auto& pLight : m_scene.getLights()) {
 				Vec3f L = Vec3f::all(0);

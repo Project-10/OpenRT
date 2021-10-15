@@ -7,21 +7,28 @@ namespace rt {
 		return org + dir * t; 
 	}
 
-	Ray Ray::reflected(Vec3f normal) const
+	Vec3f Ray::hitPoint(const Vec3f& normal) const
 	{
-		return Ray(hitPoint(), normalize(dir - 2 * normal.dot(dir) * normal), counter);
+		return hitPoint() + normal * 1e-2;
 	}
 
-	std::optional<Ray>	Ray::refracted(Vec3f normal, float k) const 
+	Ray Ray::reflected(const Vec3f& normal) const
 	{
-		if (k == 1) return Ray(hitPoint(), dir, counter);
+		float cos_alpha = -dir.dot(normal);
+		if (cos_alpha > 0)	return Ray(hitPoint(normal), normalize(dir + 2 * cos_alpha * normal), counter);
+		else				return Ray(hitPoint(normal), dir, counter);
+	}
+
+	std::optional<Ray> Ray::refracted(const Vec3f& normal, float k) const 
+	{
+		if (k == 1) return Ray(hitPoint(-normal), dir, counter);
 		
 		float cos_alpha = -dir.dot(normal);
 		float sin_2_alpha = 1.0f - cos_alpha * cos_alpha;
 		float k_2_sin_2_alpha = k * k * sin_2_alpha;
 		if (k_2_sin_2_alpha <= 1) {
 			float cos_beta = sqrtf(1.0f - k * k * sin_2_alpha);
-			return Ray(hitPoint(), normalize((k * cos_alpha - cos_beta) * normal + k * dir), counter);
+			return Ray(hitPoint(-normal), normalize((k * cos_alpha - cos_beta) * normal + k * dir), counter);
 		}
 		else
 			return std::nullopt;
