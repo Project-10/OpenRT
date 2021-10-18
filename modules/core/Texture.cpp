@@ -34,7 +34,7 @@ namespace rt{
 			bool ay = v > 0.5f ? true : false;
 		
 			bool c = ax ^ ay;
-			return c ? Vec3f::all(1) : Vec3f::all(0);
+			return c ? Vec3f::all(1) : Vec3f::all(0.5f);
 		} else {
 			// find texel indices
 			int x = static_cast<int>(cols * u);
