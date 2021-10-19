@@ -8,18 +8,23 @@
 
 namespace rt {
 
-    CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth,
-                                           int maxPrimitives)
-            : IPrim(nullptr), m_vPrims1(s1.getPrims()), m_vPrims2(s2.getPrims()), m_operationType(operationType)
+    CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth, int maxPrimitives)
+		: IPrim(nullptr)
+		, m_vPrims1(s1.getPrims())
+		, m_vPrims2(s2.getPrims())
+		, m_operationType(operationType)
 #ifdef ENABLE_BSP
-    , m_pBSPTree1(new CBSPTree()), m_pBSPTree2(new CBSPTree())
+		, m_maxDepth(maxDepth)
+		, m_maxPrimitives(maxPrimitives)
+		, m_pBSPTree1(new CBSPTree())
+		, m_pBSPTree2(new CBSPTree())
 #endif
     {
         computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, maxDepth, maxPrimitives);
-        m_pBSPTree2->build(m_vPrims2, maxDepth, maxPrimitives);
+        m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
+        m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
 #endif
     }
 
@@ -31,6 +36,9 @@ namespace rt {
                 return computeIntersection(ray);
             case BoolOp::Difference:
                 return computeDifference(ray);
+			default:
+				RT_ASSERT_MSG(false, "Unknown boolean operation");
+				return false;
         }
     }
 
@@ -57,6 +65,10 @@ namespace rt {
 
         // recompute the bounding box
         computeBoundingBox();
+#ifdef ENABLE_BSP
+		m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
+#endif
     }
 
     Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
@@ -84,12 +96,10 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) {
+            for (const auto &prim : m_vPrims1) 
                 prim->intersect(minA);
-            }
-            for (const auto &prim : m_vPrims2) {
+            for (const auto &prim : m_vPrims2) 
                 prim->intersect(minB);
-            }
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -165,12 +175,10 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) {
+            for (const auto &prim : m_vPrims1) 
                 prim->intersect(minA);
-            }
-            for (const auto &prim : m_vPrims2) {
+            for (const auto &prim : m_vPrims2)
                 prim->intersect(minB);
-            }
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -238,12 +246,10 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) {
+            for (const auto &prim : m_vPrims1)
                 prim->intersect(minA);
-            }
-            for (const auto &prim : m_vPrims2) {
+            for (const auto &prim : m_vPrims2)
                 prim->intersect(minB);
-            }
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -320,7 +326,8 @@ namespace rt {
         return IntersectionState::Exit;
     }
 
-    double CCompositeGeometry::computeTrueDistance(const Ray &ray, const Ray &modifiedRay) {
+    double CCompositeGeometry::computeTrueDistance(const Ray &ray, const Ray &modifiedRay) 
+	{
         return ray.org != modifiedRay.org ? modifiedRay.t + cv::norm(ray.org - modifiedRay.org) : modifiedRay.t;
     }
 

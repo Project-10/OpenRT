@@ -13,7 +13,10 @@ namespace rt {
         Enter, Exit, Miss
     };
 
-    class CCompositeGeometry : public IPrim {
+    /**
+	
+	*/
+	class CCompositeGeometry : public IPrim {
     public:
         /*
 		 * @brief Constructor
@@ -24,24 +27,17 @@ namespace rt {
          * @param maxDepth The max depth of the BSP tree of the solids. Only used if BSP support is enabled.
          * @param maxDepth The max number of primitives in the leaf nodes of the BSP tree of the solids. Only used if BSP support is enabled.
 		 */
-        DllExport explicit CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType,
-                                              int maxDepth = 3, int maxPrimitives = 20);
+        DllExport explicit CCompositeGeometry(const CSolid& s1, const CSolid& s2, BoolOp operationType, int maxDepth = 3, int maxPrimitives = 20);
+        DllExport virtual ~CCompositeGeometry(void) override = default;
+        
+		DllExport virtual bool			intersect(Ray &ray) const override;
+        DllExport virtual bool			if_intersect(const Ray &ray) const override;
+        DllExport virtual void			transform(const Mat &T) override;
+        DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
+        DllExport virtual Vec3f			getNormal(const Ray &) const override;
+		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
+        DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
 
-        DllExport ~CCompositeGeometry() override = default;
-
-        DllExport bool intersect(Ray &ray) const override;
-
-        DllExport bool if_intersect(const Ray &ray) const override;
-
-        DllExport void transform(const Mat &T) override;
-
-        DllExport Vec3f getOrigin() const override { return m_origin; }
-
-        DllExport Vec3f getNormal(const Ray &) const override;
-
-        DllExport Vec2f getTextureCoords(const Ray &ray) const override;
-
-        DllExport CBoundingBox getBoundingBox() const override { return m_boundingBox; }
 
     private:
         bool computeUnion(Ray &ray) const;                         ///< Helper method to perform union logic.
@@ -49,16 +45,18 @@ namespace rt {
         bool computeIntersection(Ray &ray) const;                  ///< Helper method to perform intersection logic.
         static IntersectionState classifyRay(const Ray &ray);      ///< Helper method to classify if a ray is entering, exiting, or missing a solid.
         static double computeTrueDistance(const Ray &ray, const Ray &modifiedRay);  ///< Helper method to compute the true distance of a ray and an intersection point.
-        void computeBoundingBox();                                 ///< Helper method to recompute the composite.
+        void computeBoundingBox(void);                             ///< Helper method to recompute the composite.
 
-        std::vector<ptr_prim_t> m_vPrims1;                ///< Vector of primitives of the first geometry.
-        std::vector<ptr_prim_t> m_vPrims2;                ///< Vector of primitives of the second geometry.
-        Vec3f m_origin;                                   ///< Origin/Pivot of the geometry.
-        BoolOp m_operationType;                           ///< Type of operation.
-        CBoundingBox m_boundingBox;                       ///< Bounding box of this composite geometry.
-        size_t MAX_INTERSECTIONS = 150;                   ///< Limit of intersection checks performed with a single ray.
+        std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
+        std::vector<ptr_prim_t>			m_vPrims2;					///< Vector of primitives of the second geometry.
+		Vec3f							m_origin;                   ///< Origin/Pivot of the geometry.
+        BoolOp							m_operationType;            ///< Type of operation.
+        CBoundingBox                    m_boundingBox;              ///< Bounding box of this composite geometry.
+        size_t							MAX_INTERSECTIONS = 150;    ///< Limit of intersection checks performed with a single ray.
 #ifdef ENABLE_BSP
-        std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
+		int								m_maxDepth;					///< The maximum allowed depth of the trees
+		int								m_maxPrimitives;			///< The minimum number of primitives in a leaf-node
+		std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
         std::unique_ptr<CBSPTree>		m_pBSPTree2		= nullptr;	///< Pointer to the spatial index structure for right geometry
 #endif
     };

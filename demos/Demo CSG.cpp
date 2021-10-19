@@ -1,19 +1,18 @@
-#include <fstream>
 #include "openrt.h"
 #include "core/timer.h"
 
 using namespace rt;
 
 ptr_prim_t createCompositeDice(const ptr_shader_t& shader) {
-    auto solidSphere2 = CSolidSphere(shader, Vec3f(0, -3.0f, -7), 0.2, 24, true);
-    auto solidSphere3 = CSolidSphere(shader, Vec3f(0.5, -3.0f, -7), 0.2, 24, true);
-    auto solidSphere4 = CSolidSphere(shader, Vec3f(-0.5, -3.0f, -7), 0.2, 24, true);
-    auto solidSphere5 = CSolidSphere(shader, Vec3f(0, -2.5f, -7), 0.2, 24, true);
-    auto solidSphere6 = CSolidSphere(shader, Vec3f(0.5, -2.5f, -7), 0.2, 24, true);
-    auto solidSphere7 = CSolidSphere(shader, Vec3f(-0.5, -2.5f, -7), 0.2, 24, true);
-    auto solidSphere8 = CSolidSphere(shader, Vec3f(0, -3.5f, -7), 0.2, 24, true);
-    auto solidSphere9 = CSolidSphere(shader, Vec3f(0.5, -3.5f, -7), 0.2, 24, true);
-    auto solidSphere10 = CSolidSphere(shader, Vec3f(-0.5, -3.5f, -7), 0.2, 24, true);
+    auto solidSphere2 = CSolidSphere(shader, Vec3f(0, -3.0f, -7), 0.2f, 24, true);
+    auto solidSphere3 = CSolidSphere(shader, Vec3f(0.5f, -3.0f, -7), 0.2f, 24, true);
+    auto solidSphere4 = CSolidSphere(shader, Vec3f(-0.5f, -3.0f, -7), 0.2f, 24, true);
+    auto solidSphere5 = CSolidSphere(shader, Vec3f(0, -2.5f, -7), 0.2f, 24, true);
+    auto solidSphere6 = CSolidSphere(shader, Vec3f(0.5f, -2.5f, -7), 0.2f, 24, true);
+    auto solidSphere7 = CSolidSphere(shader, Vec3f(-0.5f, -2.5f, -7), 0.2f, 24, true);
+    auto solidSphere8 = CSolidSphere(shader, Vec3f(0, -3.5f, -7), 0.2f, 24, true);
+    auto solidSphere9 = CSolidSphere(shader, Vec3f(0.5f, -3.5f, -7), 0.2f, 24, true);
+    auto solidSphere10 = CSolidSphere(shader, Vec3f(-0.5f, -3.5f, -7), 0.2f, 24, true);
     ptr_prim_t temp = std::make_shared<CCompositeGeometry>(solidSphere2, solidSphere3, BoolOp::Union);
     ptr_prim_t row1 = std::make_shared<CCompositeGeometry>(temp, solidSphere4, BoolOp::Union);
     ptr_prim_t temp2 = std::make_shared<CCompositeGeometry>(solidSphere5, solidSphere6, BoolOp::Union);
@@ -25,69 +24,50 @@ ptr_prim_t createCompositeDice(const ptr_shader_t& shader) {
 }
 
 int main() {
-    const Vec3f bgColor = RGB(1, 1, 1);
-    const Size resolution = Size(1920, 1200);
-    const float intensity = 5e4;
+    const Vec3f bgColor     = RGB(0, 0, 0);
+    const Size  resolution  = Size(1000, 1000);
+    const float intensity   = 1e9;
 
     // Scene
     CScene scene(bgColor);
 
-    // Shaders
-    auto pDarkBlue = std::make_shared<CShaderPhong>(scene, RGB(47 / 255.0, 60 / 255.0, 126 / 255.0), 0.3f, 0.9f, 0.0f, 40.0f);
-    auto pSunsetOrange = std::make_shared<CShaderPhong>(scene, RGB(251 / 255.0, 234 / 255.0, 235 / 255.0), 0.1f, 0.8f, 0.0f, 40.0f);
-    auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.5f, 0.9f, 0.0f, 40.0f);
+    // textures
+    auto pTextureEarth  = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
 
-    auto eyelight = std::make_shared<CShaderEyelight>(RGB(251 / 255.0, 234 / 255.0, 235 / 255.0));
+    // Shaders
+    auto pShaderEarth   = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.1f, 0.9f, 0.1f, 5.0f);
+    auto pShaderCore    = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 0), 0.8f, 0.2f, 0.0f, 40.0f);
+    auto pShaderCut     = std::make_shared<CShaderPhong>(scene, RGB(0.8f, 0.2f, 0), 0.3f, 0.7f, 0, 40);
 
     // Geometries
-    ptr_prim_t primSphere = std::make_shared<CPrimSphere>(pDarkBlue, Vec3f(0, 0.0f, -10), 1.4f);
-    auto solidCylinder = CSolidCylinder(pSunsetOrange, Vec3f(0, -2, -10), 0.8f, 4.0f, 10, 24, true);
-    auto solidCylinder2 = CSolidCylinder(pSunsetOrange, Vec3f(2, 0, -10), 0.8f, 4.0f, 10, 24, true);
-    auto solidCylinder3 = CSolidCylinder(pSunsetOrange, Vec3f(0, 0, -12), 0.8f, 4.0f, 10, 24, true);
-    solidCylinder2.transform(CTransform().rotate(Vec3f(0, 0, 1), 90).get());
-    solidCylinder3.transform(CTransform().rotate(Vec3f(1, 0, 0), 90).get());
-    ptr_prim_t pComposite1 = std::make_shared<CCompositeGeometry>(solidCylinder, solidCylinder2, BoolOp::Union);
-    ptr_prim_t pComposite2 = std::make_shared<CCompositeGeometry>(pComposite1, solidCylinder3, BoolOp::Union);
-    ptr_prim_t finalComposite = std::make_shared<CCompositeGeometry>(primSphere, pComposite2, BoolOp::Difference);
-    //scene.add(finalComposite);
+    auto earth              = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 24);
+    auto core               = CSolidSphere(pShaderCore, Vec3f(0, 0, 0), 0.55f, 24);
+    //ptr_prim_t earth        = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 1);
+    //ptr_prim_t core         = std::make_shared<CPrimSphere>(pShaderCore, Vec3f(0, 0, 0), 0.55f);
 
-    auto pDiceShader = std::make_shared<CShaderPhong>(scene, RGB(6 / 255.0, 214 / 255.0, 160 / 255.0), 0.3f, 0.9f, 0.0f, 40.0f);
-    auto pDiceShader2 = std::make_shared<CShaderPhong>(scene, RGB(239 / 255.0, 71 / 255.0, 111 / 255.0), 0.1f, 0.8f, 0.0f, 40.0f);
-    auto solidBox = CSolidBox(pDiceShader, Vec3f(0, -3, -8), 2, 2, 2);
-    ptr_prim_t dice = std::make_shared<CCompositeGeometry>(solidBox, createCompositeDice(pDiceShader2), BoolOp::Difference);
-    scene.add(dice);
+    auto box                = CSolidBox(pShaderCut, Vec3f(0.5f, 0.5f, 0.5f), 0.5f);
+    ptr_prim_t composite1   = std::make_shared<CCompositeGeometry>(earth, box, BoolOp::Difference);
+    ptr_prim_t composite2   = std::make_shared<CCompositeGeometry>(composite1, core, BoolOp::Union);
 
-    auto torusShader = std::make_shared<CShaderPhong>(scene, RGB(255 / 255.0, 209 / 255.0, 102 / 255.0), 0.3f, 0.9f, 0.3f, 40.0f);
-    auto solidBox2 = CSolidBox(pDiceShader, Vec3f(3, -3, -8), 2, 2, 2);
-    auto solidTorus = CSolidTorus(torusShader,Vec3f(3, -3, -8), 2, 1, 24, true);
-    auto solidTorus2 = CSolidTorus(torusShader,Vec3f(3, -3, -8), 2, 1, 24, true);
-    auto solidTorus3 = CSolidTorus(torusShader,Vec3f(3, -3, -8), 2, 1, 24, true);
-    solidTorus2.transform(CTransform().rotate(Vec3f(1, 0, 0), 90).get());
-    solidTorus3.transform(CTransform().rotate(Vec3f(0, 1, 0), 90).get());
-    ptr_prim_t tempComposite = std::make_shared<CCompositeGeometry>(solidTorus, solidTorus2, BoolOp::Union);
-    ptr_prim_t tempComposite2 = std::make_shared<CCompositeGeometry>(tempComposite, solidTorus3, BoolOp::Union);
-    ptr_prim_t finalTorusComposite = std::make_shared<CCompositeGeometry>(solidBox2, tempComposite2, BoolOp::Union);
-    //scene.add(finalTorusComposite);
+    CTransform t;
+    composite2->transform(t.rotate(Vec3f(0, 1, 0), -15).scale(2, 1, 1).get());
 
+    scene.add(composite2);
+    //scene.add(core);
 
-    float s = 30;
-    float elevation = -5.0f;
-    auto pGlossinessSampler = std::make_shared<CSamplerRandom>(3);
-    scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, elevation, -s), Vec3f(-s, elevation, s), Vec3f(s, elevation, s), Vec3f(s, elevation, -s)));
+    // Light
+    auto sun            = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(23500, 0, 0), true);
+    scene.add(sun);
 
     // cameras
-    auto targetCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-3, 4, 3), dice->getBoundingBox().getCenter(), Vec3f(0, 1, 0), 45.0f);
-    scene.add(targetCamera);
+    auto camera         = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(3, 2, 3), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f);
+    scene.add(camera);
 
     scene.buildAccelStructure(20, 3);
 
-    // Light
-    auto pLight = std::make_shared<CLightOmni>(intensity * RGB(1.0f, 0.839f, 0.494f), Vec3f(150.0f, 150.0f, 150.0f), true);
-
     // Add everything to scene
-    scene.add(pLight);
     Timer::start("Rendering... ");
-    Mat img = scene.render();
+    Mat img = scene.render(std::make_shared<CSamplerStratified>(3, true, true));
     Timer::stop();
 
     imshow("image", img);
