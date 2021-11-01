@@ -12,8 +12,6 @@ namespace rt {
 		Vec3f L = m_origin - ray.org;
 
 		double tb = static_cast<double>(L.dot(ray.dir));
-		if (tb > -Epsilon && tb < Epsilon)	// if tb \in (-Epsilon; Epsilon)
-			return false;
 
 		double h2 = static_cast<double>(L.dot(L)) - tb * tb;
 		if (h2 > r2)					// no intersection
