@@ -1,6 +1,6 @@
 // Blinn shader class
 // Written by Dr. Sergey G. Kosov in 2019 for Project X
-#include "ShaderFlat.h"
+#include "Shader.h"
 
 #pragma once
 
@@ -13,7 +13,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderBlinn : public CShaderFlat
+	class CShaderBlinn : public CShader
 	{
 	public:
 		/**
@@ -26,7 +26,7 @@ namespace rt {
 		 * @param ke The shininess exponent (should be 4 times larger than for Phong to have the same highlight)
 		 */
 		DllExport CShaderBlinn(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
-			: CShaderFlat(color)
+			: CShader(color)
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
@@ -43,7 +43,7 @@ namespace rt {
 		 * @param ke The shininess exponent (should be 4 times larger than for Phong to have the same highlight)
 		 */
 		DllExport CShaderBlinn(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
-			: CShaderFlat(pTexture)
+			: CShader(pTexture)
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)

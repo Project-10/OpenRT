@@ -27,6 +27,10 @@ namespace rt {
 		}
 		if (k != 0)
 			res = (1.0f / k) * res;
+		
+		const float q = 0.8f;
+		res = q * res + (1 - q) * getColor(ray);
+		
 		return res;
 	}
 }

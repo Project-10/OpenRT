@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ShaderFlat.h"
+#include "Shader.h"
 
 namespace rt {
 	class CScene;
@@ -10,7 +10,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Ezana T. Geressu, E.Geressu@jacobs-university.de
 	 */
-	class CShaderSSLT : public CShaderFlat {
+	class CShaderSSLT : public CShader {
 	public:
 		/**
 		 * @brief Constructor
@@ -19,7 +19,7 @@ namespace rt {
 		 * @param opacity The opacity of the material
 		 */
 		DllExport CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity) 
-			: CShaderFlat(color)
+			: CShader(color)
 			, m_scene(scene)
 			, m_opacity(opacity)
 		{}

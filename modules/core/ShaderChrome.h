@@ -2,7 +2,7 @@
 // Written by Sergey G. Kosov in 2020 for Project X
 #pragma once
 
-#include "IShader.h"
+#include "Shader.h"
 #include "Sampler.h"
 
 namespace rt {
@@ -14,7 +14,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderChrome : public IShader
+	class CShaderChrome : public CShader
 	{
 	public:
 		/**

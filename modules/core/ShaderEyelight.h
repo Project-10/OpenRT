@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
-#include "ShaderFlat.h"
+#include "Shader.h"
 
 namespace rt {
 	// ================================ Flat Shader Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderEyelight : public CShaderFlat
+	class CShaderEyelight : public CShader
 	{
 	public:
 		/**
@@ -20,7 +20,7 @@ namespace rt {
 		 * @param color The color of the object
 		 */
 		DllExport CShaderEyelight(const Vec3f& color = RGB(0.5f, 0.5f, 0.5f))
-			: CShaderFlat(color)
+			: CShader(color)
 		{}
 		/**
 		 * @brief Constructor
@@ -28,7 +28,7 @@ namespace rt {
 		 * @param pTexture Pointer to the texture
 		 */
 		DllExport CShaderEyelight(const ptr_texture_t pTexture)
-			: CShaderFlat(pTexture)
+			: CShader(pTexture)
 		{}
 		DllExport virtual ~CShaderEyelight(void) = default;
 

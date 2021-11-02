@@ -7,7 +7,7 @@ namespace rt{
 	{
 		Vec3f res(0, 0, 0);
 
-		Vec3f color = CShaderFlat::shade(ray);
+		Vec3f color = getColor(ray);
 
 		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal

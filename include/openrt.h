@@ -30,7 +30,7 @@
 #include "core/SolidSphere.h"
 #include "core/SolidTorus.h"
 
-#include "core/Shader.h"
+#include "core/ShaderGeneral.h"
 #include "core/ShaderFlat.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
