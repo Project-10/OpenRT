@@ -36,24 +36,34 @@ namespace rt {
 		 * @brief Sets the diffuse color
 		 * @param diffuse The diffuse color
 		 */
-		DllExport void setColor(const Vec3f& color);
+		DllExport void	setColor(const Vec3f& color);
 		/**
 		 * @brief Sets the diffuse map
 		 * @param pDiffuseMap The pointer to the diffuse texture (type: CV_8UC3)
 		 */
-		DllExport void setColor(const ptr_texture_t pColorMap);
+		DllExport void	setColor(const ptr_texture_t pColorMap);
+		/**
+		 * @brief Sets the opacity
+		 * @param opacity The opacity. Number between 0 and 1
+		 */
+		DllExport void	setOpacity(float opacity) { m_opacity = MAX(0, MIN(1, opacity)); }
 		
 		/**
 		 * @brief Returns the color value at the intersection point
 		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
 		 * @return The color of the hit objesct
 		 */
-		DllExport Vec3f getColor(const Ray& ray) const;
-		
+		DllExport Vec3f	getColor(const Ray& ray) const;
+		/**
+		 * @brief Returns the opacity
+		 * @return The opacity value
+		 */
+		DllExport float	getOpacity(void) const { return m_opacity; }
 		
 		
 	private:
 		Vec3f			m_color			= Vec3f::all(0);	///< The diffuse color
+		float			m_opacity		= 1;				///< The opacity
 		
 		ptr_texture_t	m_pColorMap 	= nullptr;			//< The main texture (type: CV_8UC3)
 		

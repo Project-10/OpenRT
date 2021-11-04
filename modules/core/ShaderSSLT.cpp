@@ -4,9 +4,16 @@
 
 namespace rt
 {
+	// Constructor
+	CShaderSSLT::CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity) : CShader(color), m_scene(scene)
+	{
+		setOpacity(opacity);
+	}
+
 	Vec3f CShaderSSLT::shade(const Ray& ray) const
 	{
 		Ray I(ray.hitPoint(), ray.dir, ray.counter);
-		return m_opacity * getColor(ray) + (1.0f - m_opacity) * I.reTrace(m_scene);
+		float opacity = getOpacity();
+		return opacity * getColor(ray) + (1.0f - opacity) * I.reTrace(m_scene);
 	}
 }

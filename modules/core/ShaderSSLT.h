@@ -18,17 +18,12 @@ namespace rt {
 		 * @param color The color of the material
 		 * @param opacity The opacity of the material
 		 */
-		DllExport CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity) 
-			: CShader(color)
-			, m_scene(scene)
-			, m_opacity(opacity)
-		{}
+		DllExport CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity);
 
 		DllExport Vec3f shade(const Ray& ray) const override;
 
 
 	private:
 		const CScene& m_scene;
-		const float m_opacity;
 	};
 };
