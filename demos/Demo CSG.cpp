@@ -26,7 +26,7 @@ ptr_prim_t createCompositeDice(const ptr_shader_t& shader) {
 int main() {
     const Vec3f bgColor     = RGB(0, 0, 0);
     const Size  resolution  = Size(1000, 1000);
-    const float intensity   = 1e9;
+    const float intensity   = 1e9f;
 
     // Scene
     CScene scene(bgColor);
@@ -37,7 +37,7 @@ int main() {
     // Shaders
     auto pShaderEarth   = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.1f, 0.9f, 0.1f, 5.0f);
     auto pShaderCore    = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 0), 0.8f, 0.2f, 0.0f, 40.0f);
-    auto pShaderCut     = std::make_shared<CShaderPhong>(scene, RGB(0.8f, 0.2f, 0), 0.3f, 0.7f, 0, 40);
+    auto pShaderCut     = std::make_shared<CShaderPhong>(scene, RGB(0.8f, 0.2f, 0), 0.3f, 0.7f, 0.0f, 40.0f);
 
     // Geometries
     auto earth              = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 24);

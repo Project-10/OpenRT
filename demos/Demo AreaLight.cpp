@@ -15,7 +15,7 @@ int main()
 	// Shaders
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
 	auto pShaderBall	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.9f, 40.0f);
-	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShaderGeneral>(scene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderRed		= std::make_shared<CShaderFlat>(RGB(1, 0, 0));
 	auto pShaderGreen	= std::make_shared<CShaderFlat>(RGB(0, 1, 0));
 	auto pShaderBlue	= std::make_shared<CShaderFlat>(RGB(0, 0, 1));
@@ -75,7 +75,7 @@ void foo() {
 	auto pShaderSide 	= std::make_shared<CShaderPhong>(scene, RGB(0.55f, 0.65f, 0.70f), 0.7f, 0.5f, 0.5f, 40.0f);
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderFloos	= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.5f, 0.5f, 0.0f, 40.0f);
-	auto pShaderGlass	= std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShaderGeneral>(scene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderTxt		= std::make_shared<CShaderFlat>(txt_cb);
 	
 	//CSolid torus(pShaderFloor, "../../data/Torus Knot.obj"); // "D:\\Projects\\OpenRT\\data\\Torus Knot.obj");
@@ -117,8 +117,8 @@ void foo() {
 	
 	//scene.add(std::make_shared<CPrimSphere>(pShaderTop, Vec3f(-2, 1, 2), 1));
 	//scene.add(CSolidBox(pShaderTop, Vec3f(-2, 0.9f, 2), 0.9f));
-	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShader>(scene, RGB(0, 0.5f, 1), 0.0f, 0.0f, 1.0f, 80.0f, 0.2f, 0.8f, 2.4f, std::make_shared<CSamplerRandom>(3, true, 0.1f)), Vec3f(-2, 1, 2), 1));
-	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShader>(scene, 0.35f, 0.65f, 1.517), Vec3f(2, 1, -2), 1));
+	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderGeneral>(scene, RGB(0, 0.5f, 1), 0.0f, 0.0f, 1.0f, 80.0f, 0.2f, 0.8f, 2.4f, std::make_shared<CSamplerRandom>(3, true, 0.1f)), Vec3f(-2, 1, 2), 1));
+	//scene.add(std::make_shared<CPrimSphere>(std::make_shared<CShaderGeneral>(scene, 0.35f, 0.65f, 1.517), Vec3f(2, 1, -2), 1));
 	
 	//scene.add(std::make_shared<CPrimSphere>(pShaderSide, Vec3f(2, 1, -2), 1));
 
