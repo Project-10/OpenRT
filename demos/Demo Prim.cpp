@@ -40,7 +40,7 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 	// auto pShaderRoom	= std::make_shared<CShaderFlat>(pTextureRoom);
 
 	// geometry
-	auto pFloor			= std::make_shared<CPrimDisc>(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), 100.0f);
+	auto pFloor			= std::make_shared<CPrimDisc>(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), 5.0f);
 	auto pSphere1		= std::make_shared<CPrimSphere>(pShaderMirror, Vec3f(-2, 1, 0), 1.0f);
 	auto pSphere2		= std::make_shared<CPrimSphere>(pShaderTop, Vec3f(0, 1, 0), 1.0f);
 	auto pSphere3		= std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(2, 1, 0), 1.0f);
@@ -53,7 +53,7 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 	pScene->add(pSphere1);
 	pScene->add(pSphere2);
 	pScene->add(pSphere3);
-//	pScene->add(pSphereRoom);
+	pScene->add(pSphereRoom);
 	pScene->add(pLight);
 	pScene->add(pCamera);
 
