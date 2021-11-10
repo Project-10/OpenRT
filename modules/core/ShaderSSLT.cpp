@@ -14,6 +14,6 @@ namespace rt
 	{
 		Ray I(ray.hitPoint(), ray.dir, ray.counter);
 		float opacity = getOpacity();
-		return opacity * getColor(ray) + (1.0f - opacity) * I.reTrace(m_scene);
+		return opacity * getDiffuseColor(ray) + (1.0f - opacity) * I.reTrace(m_scene);
 	}
 }

@@ -4,6 +4,6 @@
 namespace rt {
 	Vec3f CShaderFlat::shade(const Ray& ray) const 
 	{
-		return getColor(ray);
+		return getDiffuseColor(ray);
 	}
 }

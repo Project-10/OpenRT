@@ -29,9 +29,10 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
-		{}
+		{
+			setSpecularLevel(ks);
+		}
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
@@ -46,9 +47,10 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
-		{}
+		{
+			setSpecularLevel(ks);
+		}
 		DllExport virtual ~CShaderPhong(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
@@ -59,7 +61,6 @@ namespace rt {
 		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
-		float m_ks;    				///< The specular refelection coefficients
 		float m_ke;    				///< The shininess exponent
 	};
 }

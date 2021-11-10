@@ -4,7 +4,7 @@
 
 namespace rt{
 	// Constructor
-	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName))
+	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName, 1))
 	{
 		RT_ASSERT_MSG(!empty(), "Can't read file %s", fileName.c_str());
 	}

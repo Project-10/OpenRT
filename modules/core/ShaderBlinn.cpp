@@ -7,7 +7,9 @@ namespace rt {
 	{
 		Vec3f res(0, 0, 0);
 
-		Vec3f color = getColor(ray);
+		Vec3f ambientColor	= getAmbientColor(ray);
+		Vec3f diffuseColor	= getDiffuseColor(ray);
+		float ks			= getSpecularLevel(ray);
 
 		Vec3f faceNormal = ray.hit->getNormal(ray);								// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
@@ -17,13 +19,10 @@ namespace rt {
 			inside = true;
 		}
 
-#ifdef DEBUG_MODE
-		color = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
-#endif
 
 		// ------ ambient ------
 		if (m_ka > 0)
-			res += m_ka * m_scene.getAmbientColor().mul(color);
+			res += m_ka * m_scene.getAmbientColor().mul(ambientColor);
 
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
@@ -41,14 +40,14 @@ namespace rt {
 						if (m_kd > 0) {
 							float cosLightNormal = I.dir.dot(shadingNormal);
 							if (cosLightNormal > 0)
-								L += m_kd * cosLightNormal * color.mul(radiance.value());
+								L += m_kd * cosLightNormal * diffuseColor.mul(radiance.value());
 						}
 						// ------ specular ------
-						if (m_ks > 0) {
+						if (ks > 0) {
 							Vec3f H = normalize(I.dir - ray.dir);
 							float cosHalfwayNormal = H.dot(shadingNormal);
 							if (cosHalfwayNormal > 0)
-								L += m_ks * powf(cosHalfwayNormal, m_ke) * radiance.value();
+								L += ks * powf(cosHalfwayNormal, m_ke) * radiance.value();
 						}
 					}
 				} // s

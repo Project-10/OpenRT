@@ -29,7 +29,7 @@ namespace rt {
 			res = (1.0f / k) * res;
 		
 		const float q = 0.8f;
-		res = q * res + (1 - q) * getColor(ray);
+		res = q * res + (1 - q) * getDiffuseColor(ray);
 		
 		return res;
 	}

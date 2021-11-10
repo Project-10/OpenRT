@@ -23,51 +23,88 @@ ptr_prim_t createCompositeDice(const ptr_shader_t& shader) {
     return std::make_shared<CCompositeGeometry>(row3, temp4, BoolOp::Union);
 }
 
+std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolution)
+{
+	auto pScene = std::make_shared<CScene>(bgColor);
+	
+	// textures
+	auto pTextureEarthDiffuse  = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+	auto pTextureEarthSpecular = std::make_shared<CTexture>(dataPath + "1_earth_specular_map_8k.tif");
+	auto pTextureEarthAmbient  = std::make_shared<CTexture>(dataPath + "1_earth_night_map_8k.jpg");
+	
+	// Shaders
+	auto pShaderEarth   = std::make_shared<CShaderPhong>(*pScene, Vec3f::all(1), 0.5f, 1.0f, 0.5f, 5.0f);
+	pShaderEarth->setAmbientColor(pTextureEarthAmbient);
+	pShaderEarth->setDiffuseColor(pTextureEarthDiffuse);
+	pShaderEarth->setSpecularLevel(pTextureEarthSpecular);
+	auto pShaderCore    = std::make_shared<CShaderPhong>(*pScene, RGB(1, 1, 0), 0.8f, 0.2f, 0.0f, 40.0f);
+	auto pShaderCut     = std::make_shared<CShaderPhong>(*pScene, RGB(0.8f, 0.2f, 0), 0.3f, 0.7f, 0, 40);
+
+	// Geometries
+	auto earth          = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 64);
+	auto core           = CSolidSphere(pShaderCore, Vec3f(0, 0, 0), 0.55f, 24);
+	//ptr_prim_t earth        = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 1);
+	//ptr_prim_t core         = std::make_shared<CPrimSphere>(pShaderCore, Vec3f(0, 0, 0), 0.55f);
+
+	// Transform
+	CTransform T;
+	earth.transform(T.rotate(Vec3f(0, 1, 0), 45).get());
+	
+	auto box                = CSolidBox(pShaderCut, Vec3f(0.5f, 0.5f, 0.5f), 0.5f);
+	ptr_prim_t composite1   = std::make_shared<CCompositeGeometry>(earth, box, BoolOp::Difference);
+	ptr_prim_t composite2   = std::make_shared<CCompositeGeometry>(composite1, core, BoolOp::Union);
+
+	pScene->add(earth);
+	//pScene->add(core);
+
+	// Light
+	auto sun            = std::make_shared<CLightOmni>(Vec3f::all(1e9), Vec3f(23500, 0, 0), true);
+	pScene->add(sun);
+
+	// cameras
+	auto camera         = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(1, 2, 3), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f);
+	pScene->add(camera);
+	
+	return pScene;
+}
+
+std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resolution)
+{
+	auto pScene = std::make_shared<CScene>(bgColor);
+	
+	// shaders
+	auto pShader = std::make_shared<CShaderFlat>(Vec3f(1, 1, 1));
+	
+	// geometry
+	ptr_prim_t largeSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 5.0f);
+	ptr_prim_t smallSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, -5), 1.0f);
+	ptr_prim_t composite 	 = std::make_shared<CCompositeGeometry>(largeSphere, smallSphere, BoolOp::Difference);
+	
+	//pScene->add(largeSphere);
+	//pScene->add(smallSphere);
+	pScene->add(composite);
+	
+	// Light
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e3), Vec3f(0, 0, 0), true));
+	
+	// camera
+	pScene->add(std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 0, 0), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 45.0f));
+	
+	return pScene;
+}
+
 int main() {
     const Vec3f bgColor     = RGB(0, 0, 0);
-    const Size  resolution  = Size(1000, 1000);
-    const float intensity   = 1e9;
+    const Size  resolution  = Size(800, 600);
 
-    // Scene
-    CScene scene(bgColor);
+	auto pScene = buildSceneEarth(bgColor, resolution);
+	//auto pScene = buildSceneTest(bgColor, resolution);
 
-    // textures
-    auto pTextureEarth  = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
-
-    // Shaders
-    auto pShaderEarth   = std::make_shared<CShaderPhong>(scene, pTextureEarth, 0.1f, 0.9f, 0.1f, 5.0f);
-    auto pShaderCore    = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 0), 0.8f, 0.2f, 0.0f, 40.0f);
-    auto pShaderCut     = std::make_shared<CShaderPhong>(scene, RGB(0.8f, 0.2f, 0), 0.3f, 0.7f, 0, 40);
-
-    // Geometries
-    auto earth              = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 24);
-    auto core               = CSolidSphere(pShaderCore, Vec3f(0, 0, 0), 0.55f, 24);
-    //ptr_prim_t earth        = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 1);
-    //ptr_prim_t core         = std::make_shared<CPrimSphere>(pShaderCore, Vec3f(0, 0, 0), 0.55f);
-
-    auto box                = CSolidBox(pShaderCut, Vec3f(0.5f, 0.5f, 0.5f), 0.5f);
-    ptr_prim_t composite1   = std::make_shared<CCompositeGeometry>(earth, box, BoolOp::Difference);
-    ptr_prim_t composite2   = std::make_shared<CCompositeGeometry>(composite1, core, BoolOp::Union);
-
-    CTransform t;
-    composite2->transform(t.rotate(Vec3f(0, 1, 0), -15).scale(2, 1, 1).get());
-
-    scene.add(composite2);
-    //scene.add(core);
-
-    // Light
-    auto sun            = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(23500, 0, 0), true);
-    scene.add(sun);
-
-    // cameras
-    auto camera         = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(3, 2, 3), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f);
-    scene.add(camera);
-
-    scene.buildAccelStructure(20, 3);
+	pScene->buildAccelStructure(20, 3);
 
     // Add everything to scene
     Timer::start("Rendering... ");
-    Mat img = scene.render(std::make_shared<CSamplerStratified>(3, true, true));
+    Mat img = pScene->render(std::make_shared<CSamplerStratified>(3, true, true));
     Timer::stop();
 
     imshow("image", img);

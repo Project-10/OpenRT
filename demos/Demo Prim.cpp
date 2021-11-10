@@ -29,21 +29,22 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 	auto pScene			= std::make_shared<CScene>(bgColor);
 	
 	// texture
-	auto pTextureRoom	= std::make_shared<CTexture>(dataPath + "room.jpg");
+	//auto pTextureRoom	= std::make_shared<CTexture>(dataPath + "room.jpg");
 
 	// shaders
 	auto pShaderFloor	= std::make_shared<CShaderBlinn>(*pScene, RGB(0.522f, 0.6f, 0.706f), 0.1f, 0.9f, 0.0f, 0.0f);
-	auto pShaderMirror	= std::make_shared<CShader>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderMirror	= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 	auto pShaderTop		= std::make_shared<CShaderBlinn>(*pScene, RGB(0.90f, 0.75f, 0.70f), 0.2f, 0.8f, 0.0f, 40.0f);
 	auto pShaderChrome	= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
-	auto pShaderRoom	= std::make_shared<CShaderFlat>(pTextureRoom);
+	pShaderChrome->setColor(RGB(1, 0.5f, 0));
+	// auto pShaderRoom	= std::make_shared<CShaderFlat>(pTextureRoom);
 
 	// geometry
 	auto pFloor			= std::make_shared<CPrimDisc>(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), 100.0f);
 	auto pSphere1		= std::make_shared<CPrimSphere>(pShaderMirror, Vec3f(-2, 1, 0), 1.0f);
 	auto pSphere2		= std::make_shared<CPrimSphere>(pShaderTop, Vec3f(0, 1, 0), 1.0f);
 	auto pSphere3		= std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(2, 1, 0), 1.0f);
-	auto pSphereRoom	= std::make_shared<CPrimSphere>(pShaderRoom, Vec3f(2, 1, 0), 100.0f);
+	// auto pSphereRoom	= std::make_shared<CPrimSphere>(pShaderRoom, Vec3f(2, 1, 0), 100.0f);
 
 	auto pLight			= std::make_shared<CLightSky>(Vec3f::all(1));
 	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f);
@@ -127,8 +128,8 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 	auto pShaderEarth = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 	auto pShaderWhite = std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
-	auto pShaderGlass = std::make_shared<CShader>(*pScene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
-	auto pShaderMirror = std::make_shared<CShader>(*pScene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderMirror = std::make_shared<CShaderGeneral>(*pScene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
 
 	// primitives
 	
@@ -187,18 +188,18 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 int main(int argc, char* argv[])
 {
 	const Vec3f	bgColor = RGB(0.77f, 0.82f, 0.89f);
-	const Size resolution(2 * 960, 2 * 600);
-	// const Size resolution(3072, 1920);
+	// const Size resolution(960, 600);
+	const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
-	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
+	auto pScene = buildSceneMirrorSphere(bgColor, resolution);
 	//auto pScene = buildScenePlanets(bgColor, resolution);
-	auto pScene = buildSceneBox(bgColor, resolution);
+	//auto pScene = buildSceneBox(bgColor, resolution);
 
 	pScene->buildAccelStructure(0, 3);
 
 	Timer::start("Rendering...");
-	Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat render = pScene->render(std::make_shared<CSamplerStratified>(1, true, true));
 	Timer::stop();
 	imshow("pScene", render);
 	imwrite("D:\\renders\\Boxes.png", render);

@@ -34,7 +34,6 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
 			, m_km(km)
 			, m_kt(kt)
@@ -59,7 +58,6 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
 			, m_km(km)
 			, m_kt(kt)
@@ -76,7 +74,6 @@ namespace rt {
 		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
-		float m_ks;    				///< The specular refelection coefficients
 		float m_ke;    				///< The shininess exponent
 		float m_km;					///< The perfect reflection (mirror) coefficient
 		float m_kt;					///< The perfect transmission coefficient

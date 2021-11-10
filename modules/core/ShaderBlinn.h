@@ -30,7 +30,6 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(4 * ke)
 		{}
 		/**
@@ -47,7 +46,6 @@ namespace rt {
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(4 * ke)
 		{}
 		DllExport virtual ~CShaderBlinn(void) = default;
@@ -59,8 +57,7 @@ namespace rt {
 		const CScene& m_scene;		///< Reference to the scene object
 		
 		float m_ka;    				///< The ambient coefficient
-		float m_kd;    				///< The diffuse reflection coefficients
-		float m_ks;    				///< The specular refelection coefficients
+		float m_kd;    				///< The diffuse reflection coefficient
 		float m_ke;    				///< The shininess exponent
 	};
 }
