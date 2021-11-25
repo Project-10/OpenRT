@@ -65,7 +65,7 @@ namespace rt {
 		* @brief Returns the  normal vector of the primitive in the ray - primitive intercection point
 		* @note In contrast to the @ref getNormal() method, this methods takes into account the possible normal interpolation along the primitive
 		* @param ray Ray intersecting the primitive
-		* @retunr The normalized normal of the primitive at the ray - primitive intersection point
+		* @retunrn The normalized normal of the primitive at the ray - primitive intersection point
 		*/
 		DllExport virtual Vec3f				getShadingNormal(const Ray& ray) const { return getNormal(ray); }
 		/**
