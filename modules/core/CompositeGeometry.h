@@ -43,8 +43,6 @@ namespace rt {
         bool computeUnion(Ray &ray) const;                         ///< Helper method to perform union logic.
         bool computeDifference(Ray &ray) const;                    ///< Helper method to perform difference logic.
         bool computeIntersection(Ray &ray) const;                  ///< Helper method to perform intersection logic.
-        static IntersectionState classifyRay(const Ray &ray);      ///< Helper method to classify if a ray is entering, exiting, or missing a solid.
-        static double computeTrueDistance(const Ray &ray, const Ray &modifiedRay);  ///< Helper method to compute the true distance of a ray and an intersection point.
         void computeBoundingBox(void);                             ///< Helper method to recompute the composite.
 
         std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
