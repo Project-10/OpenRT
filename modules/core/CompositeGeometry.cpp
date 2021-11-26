@@ -89,14 +89,6 @@ namespace rt {
 				return IntersectionState::Enter;
 			return IntersectionState::Exit;
 		}
-	
-		// Helper method to compute the true distance of a ray and an intersection point.
-		// If both rays have the same origin -> return modified ray t
-		// Otherwise, add the distance between rays origins to the modified ray t
-		double computeTrueDistance(const Ray &originalRay, const Ray &modifiedRay)
-		{
-			return originalRay.org != modifiedRay.org ? modifiedRay.t + cv::norm(originalRay.org - modifiedRay.org) : modifiedRay.t;
-		}
 	}
 
 
@@ -125,29 +117,17 @@ namespace rt {
                 return false;
             }
             if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) {
-                Ray closestRay = stateA == IntersectionState::Miss ? minB : minA;
-                auto t = computeTrueDistance(ray, closestRay);
-                res = closestRay;
-                res.t = t;
+                res = stateA == IntersectionState::Miss ? minB : minA;
                 break;
             }
             if (stateA == stateB) {
-                Ray chosenRay;
-                if (stateA == IntersectionState::Enter) {
-                    chosenRay = minA.t < minB.t ? minA : minB;
-                } else {
-                    chosenRay = minA.t > minB.t ? minA : minB;
-                }
-                auto t = computeTrueDistance(ray, chosenRay);
-                res = chosenRay;
-                res.t = t;
+                if (stateA == IntersectionState::Enter)	res = minA.t < minB.t ? minA : minB;
+				else									res = minA.t > minB.t ? minA : minB;
                 break;
             }
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
                 if (minB.t < minA.t) {
-                    auto t = computeTrueDistance(ray, minB);
                     res = minB;
-                    res.t = t;
                     break;
                 }
                 minRay.org = minA.hitPoint();
@@ -155,25 +135,25 @@ namespace rt {
             }
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
                     res = minA;
-                    res.t = t;
                     break;
                 }
                 minRay.org = minB.hitPoint();
                 continue;
             }
         }
-        if (res.hit) {
-            if (ray.t < res.t) {
-                return false;
-            }
-            auto initialOrigin = ray.org;
-            ray = res;
-            ray.org = initialOrigin;
-            return true;
-        }
-        return false;
+		
+		RT_ASSERT(res.hit);
+
+		double t = norm(ray.org - res.hitPoint());
+		if (t > ray.t) return false;
+
+		ray.t = t;
+		ray.hit = res.hit;
+		ray.u = res.u;
+		ray.v = res.v;
+		
+		return true;
     }
 
     bool CCompositeGeometry::computeIntersection(Ray &ray) const {
@@ -205,17 +185,12 @@ namespace rt {
                 continue;
             }
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
-                auto closestRay = minA.t < minB.t ? minA : minB;
-                auto t = computeTrueDistance(ray, closestRay);
-                res = closestRay;
-                res.t = t;
+				res = minA.t < minB.t ? minA : minB;
                 break;
             }
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
                 if (minA.t < minB.t) {
-                    auto t = computeTrueDistance(ray, minA);
                     res = minA;
-                    res.t = t;
                     break;
                 }
                 minRay.org = minB.hitPoint();
@@ -223,25 +198,24 @@ namespace rt {
             }
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
                 if (minB.t < minA.t) {
-                    auto t = computeTrueDistance(ray, minB);
                     res = minB;
-                    res.t = t;
                     break;
                 }
                 minRay.org = minA.hitPoint();
                 continue;
             }
         }
-        if (res.hit) {
-            if (ray.t < res.t) {
-                return false;
-            }
-            auto initialOrigin = ray.org;
-            ray = res;
-            ray.org = initialOrigin;
-            return true;
-        }
-        return false;
+		RT_ASSERT(res.hit);
+
+		double t = norm(ray.org - res.hitPoint());
+		if (t > ray.t) return false;
+
+		ray.t = t;
+		ray.hit = res.hit;
+		ray.u = res.u;
+		ray.v = res.v;
+		
+		return true;
     }
 
     bool CCompositeGeometry::computeDifference(Ray &ray) const {
@@ -320,15 +294,17 @@ namespace rt {
                 break;
             }
         } // while (true)
-        if (res.hit) {
-			res.t = computeTrueDistance(ray, res);
-			if (res.t > ray.t) return false;
-			res.org = ray.org;
-            ray = res;
-            return true;
-        }
-        // TODO: if execution theoreticaly can come here?
-		return false;
+		RT_ASSERT(res.hit);
+
+		double t = norm(ray.org - res.hitPoint());
+		if (t > ray.t) return false;
+
+		ray.t = t;
+		ray.hit = res.hit;
+		ray.u = res.u;
+		ray.v = res.v;
+		
+		return true;
     }
 
     void CCompositeGeometry::computeBoundingBox() {
