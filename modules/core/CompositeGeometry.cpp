@@ -29,17 +29,26 @@ namespace rt {
     }
 
     bool CCompositeGeometry::intersect(Ray &ray) const {
-        switch (m_operationType) {
-            case BoolOp::Union:
-                return computeUnion(ray);
-            case BoolOp::Intersection:
-                return computeIntersection(ray);
-            case BoolOp::Difference:
-                return computeDifference(ray);
-			default:
-				RT_ASSERT_MSG(false, "Unknown boolean operation");
-				return false;
+		std::optional<Ray> res;
+		switch (m_operationType) {
+			case BoolOp::Union: 		res = computeUnion(ray); 		break;
+			case BoolOp::Intersection: 	res = computeIntersection(ray); break;
+			case BoolOp::Difference:	res = computeDifference(ray);	break;
+			default: RT_ASSERT_MSG(false, "Unknown boolean operation");
         }
+		if (!res) return false;
+		
+		RT_ASSERT(res.value().hit);
+
+		double t = norm(ray.org - res.value().hitPoint());
+		if (t > ray.t) return false;
+
+		ray.t = t;
+		ray.hit = res.value().hit;
+		ray.u = res.value().u;
+		ray.v = res.value().v;
+		
+		return true;
     }
 
     bool CCompositeGeometry::if_intersect(const Ray &ray) const {
@@ -92,16 +101,14 @@ namespace rt {
 	}
 
 
-    bool CCompositeGeometry::computeUnion(Ray &ray) const {
+	std::optional<Ray> CCompositeGeometry::computeUnion(const Ray &ray) const {
 		Ray minRay(ray.org, ray.dir);
-		Ray res;
         int iterations = 0;
         while (true) {
             RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
             RT_ASSERT(!minRay.hit);
-            Ray minA, minB;
-            minA = minRay;
-            minB = minRay;
+            Ray minA = minRay;
+            Ray minB = minRay;
 #ifdef ENABLE_BSP
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
@@ -113,59 +120,35 @@ namespace rt {
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
-            if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) {
-                return false;
-            }
-            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) {
-                res = stateA == IntersectionState::Miss ? minB : minA;
-                break;
-            }
+            
+			if (stateA == IntersectionState::Miss && stateB == IntersectionState::Miss) return std::nullopt;
+            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) return stateA == IntersectionState::Miss ? minB : minA;
             if (stateA == stateB) {
-                if (stateA == IntersectionState::Enter)	res = minA.t < minB.t ? minA : minB;
-				else									res = minA.t > minB.t ? minA : minB;
-                break;
+                if (stateA == IntersectionState::Enter)	return minA.t < minB.t ? minA : minB;
+				else									return minA.t > minB.t ? minA : minB;
             }
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
-                if (minB.t < minA.t) {
-                    res = minB;
-                    break;
-                }
+                if (minB.t < minA.t) return minB;
                 minRay.org = minA.hitPoint();
                 continue;
             }
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
-                if (minA.t < minB.t) {
-                    res = minA;
-                    break;
-                }
+                if (minA.t < minB.t) return minA;
                 minRay.org = minB.hitPoint();
                 continue;
             }
         }
-		
-		RT_ASSERT(res.hit);
 
-		double t = norm(ray.org - res.hitPoint());
-		if (t > ray.t) return false;
-
-		ray.t = t;
-		ray.hit = res.hit;
-		ray.u = res.u;
-		ray.v = res.v;
-		
-		return true;
     }
 
-    bool CCompositeGeometry::computeIntersection(Ray &ray) const {
+	std::optional<Ray> CCompositeGeometry::computeIntersection(const Ray &ray) const {
 		Ray minRay(ray.org, ray.dir);
-		Ray res;
         int iterations = 0;
         while (true) {
             RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
             RT_ASSERT(!minRay.hit);
-            Ray minA, minB;
-            minA = minRay;
-            minB = minRay;
+            Ray minA = minRay;
+            Ray minB = minRay;
 #ifdef ENABLE_BSP
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
@@ -177,50 +160,28 @@ namespace rt {
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
-            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) {
-                return false;
-            }
+            if (stateA == IntersectionState::Miss || stateB == IntersectionState::Miss) return std::nullopt;
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
                 minRay.org = minA.t < minB.t ? minA.hitPoint() : minB.hitPoint();
                 continue;
             }
-            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
-				res = minA.t < minB.t ? minA : minB;
-                break;
-            }
+            if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) return minA.t < minB.t ? minA : minB;
+
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Exit) {
-                if (minA.t < minB.t) {
-                    res = minA;
-                    break;
-                }
+                if (minA.t < minB.t) return minA;
                 minRay.org = minB.hitPoint();
                 continue;
             }
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
-                if (minB.t < minA.t) {
-                    res = minB;
-                    break;
-                }
+                if (minB.t < minA.t) return minB;
                 minRay.org = minA.hitPoint();
                 continue;
             }
         }
-		RT_ASSERT(res.hit);
-
-		double t = norm(ray.org - res.hitPoint());
-		if (t > ray.t) return false;
-
-		ray.t = t;
-		ray.hit = res.hit;
-		ray.u = res.u;
-		ray.v = res.v;
-		
-		return true;
     }
 
-    bool CCompositeGeometry::computeDifference(Ray &ray) const {
+	std::optional<Ray> CCompositeGeometry::computeDifference(const Ray &ray) const {
 		Ray minRay(ray.org, ray.dir);
-		Ray res;
         
 		int iterations = 0;
         while (true) {
@@ -237,7 +198,7 @@ namespace rt {
 			auto stateA = classifyRay(minA);
 
 			// Miss A
-			if (stateA == IntersectionState::Miss) return false;
+			if (stateA == IntersectionState::Miss) return std::nullopt;
 			
 			// --------- RAY B ---------
 			Ray minB = minRay;
@@ -250,17 +211,12 @@ namespace rt {
             auto stateB = classifyRay(minB);
 		
 			// hit A, but miss B
-            if (stateB == IntersectionState::Miss) {
-                res = minA;
-				break;
-            }
+            if (stateB == IntersectionState::Miss) return minA;
+
 			
 			// ray enters A and B
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
-                if (minA.t < minB.t) {
-                    res = minA;
-                    break;
-                }
+                if (minA.t < minB.t) return minA;
                 minRay.org = minB.hitPoint();
                 continue;
             }
@@ -274,10 +230,9 @@ namespace rt {
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
                 if (minB.t < minA.t) {
-                    res = minB;
-                    auto dummyPrim = std::make_shared<CPrimDummy>(res.hit->getShader(), -res.hit->getNormal(res), res.hit->getTextureCoords(res));
-                    res.hit = dummyPrim;
-                    break;
+                    auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
+                    minB.hit = dummyPrim;
+					return minB;
                 }
                 minRay.org = minA.hitPoint();
                 continue;
@@ -285,26 +240,14 @@ namespace rt {
 			
 			// ray leaves A but enters B
 			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
-                if (minA.t < minB.t) res = minA;
+                if (minA.t < minB.t) return minA;
                 else {
-                    res = minB;
-					auto dummyPrim = std::make_shared<CPrimDummy>(res.hit->getShader(), -res.hit->getNormal(res), res.hit->getTextureCoords(res));
-					res.hit = dummyPrim;
+					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
+					minB.hit = dummyPrim;
+					return minB;
 				}
-                break;
             }
         } // while (true)
-		RT_ASSERT(res.hit);
-
-		double t = norm(ray.org - res.hitPoint());
-		if (t > ray.t) return false;
-
-		ray.t = t;
-		ray.hit = res.hit;
-		ray.u = res.u;
-		ray.v = res.v;
-		
-		return true;
     }
 
     void CCompositeGeometry::computeBoundingBox() {
@@ -335,8 +278,7 @@ namespace rt {
                     maxPt[i] = boxA.getMaxPoint()[i];
                 }
                 break;
-            default:
-                break;
+            default: RT_ASSERT_MSG(false, "Unknown boolean operation");
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
     }

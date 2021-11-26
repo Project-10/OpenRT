@@ -40,9 +40,9 @@ namespace rt {
 
 
     private:
-        bool computeUnion(Ray &ray) const;                         ///< Helper method to perform union logic.
-        bool computeDifference(Ray &ray) const;                    ///< Helper method to perform difference logic.
-        bool computeIntersection(Ray &ray) const;                  ///< Helper method to perform intersection logic.
+        std::optional<Ray> computeUnion(const Ray &ray) const;                         ///< Helper method to perform union logic.
+		std::optional<Ray> computeDifference(const Ray &ray) const;                    ///< Helper method to perform difference logic.
+		std::optional<Ray> computeIntersection(const Ray &ray) const;                  ///< Helper method to perform intersection logic.
         void computeBoundingBox(void);                             ///< Helper method to recompute the composite.
 
         std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
