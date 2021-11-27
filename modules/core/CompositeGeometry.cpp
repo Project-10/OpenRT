@@ -80,7 +80,7 @@ namespace rt {
 #endif
     }
 
-    Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
+    Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 

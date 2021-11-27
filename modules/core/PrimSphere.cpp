@@ -72,7 +72,7 @@ namespace rt {
 		m_radius = static_cast<float>(norm(r));
 	}
 
-	Vec3f CPrimSphere::getNormal(const Ray& ray) const
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
 		return normalize(ray.hitPoint() - m_origin);
 	}
