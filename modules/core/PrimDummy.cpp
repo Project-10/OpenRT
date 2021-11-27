@@ -2,7 +2,7 @@
 #include <macroses.h>
 
 namespace rt {
-    bool CPrimDummy::intersect(Ray &) const {
+    bool CPrimDummy::intersect(Ray &) {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 

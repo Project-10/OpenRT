@@ -3,7 +3,7 @@
 #include "Transform.h"
 
 namespace rt {
-	bool CPrimDisc::intersect(Ray& ray) const
+	bool CPrimDisc::intersect(Ray& ray)
 	{
 		float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 		if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;

@@ -3,7 +3,7 @@
 #include "Transform.h"
 
 namespace rt {
-	bool CPrimTriangle::intersect(Ray& ray) const
+	bool CPrimTriangle::intersect(Ray& ray)
 	{
 		auto t = MoellerTrumbore(ray);
 		if (t) {
@@ -41,7 +41,7 @@ namespace rt {
 		return 0.33f * (m_a + m_b + m_c);
 	}
 
-	Vec3f CPrimTriangle::getNormal(const Ray& ray) const
+	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
 	{
 			return m_normal;
 	}

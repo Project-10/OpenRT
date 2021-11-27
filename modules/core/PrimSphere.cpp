@@ -4,7 +4,7 @@
 #include "macroses.h"
 
 namespace rt {
-	bool CPrimSphere::intersect(Ray& ray) const
+	bool CPrimSphere::intersect(Ray& ray)
 	{
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1
@@ -56,7 +56,7 @@ namespace rt {
 	/// @todo Optimize it
 	bool CPrimSphere::if_intersect(const Ray& ray) const
 	{
-		return intersect(lvalue_cast(Ray(ray)));
+        return const_cast<CPrimSphere*>(this)->intersect(lvalue_cast(Ray(ray)));
 	}
 
 	void CPrimSphere::transform(const Mat& T)
@@ -72,7 +72,7 @@ namespace rt {
 		m_radius = static_cast<float>(norm(r));
 	}
 
-	Vec3f CPrimSphere::getNormal(const Ray& ray) const
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
 		return normalize(ray.hitPoint() - m_origin);
 	}

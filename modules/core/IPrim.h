@@ -35,7 +35,7 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				intersect(Ray& ray) const = 0;
+		DllExport virtual bool				intersect(Ray& ray) = 0;
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
 		 * @details This function does not modify argeument \b ray and is used just to check if there is an intersection.
@@ -56,19 +56,6 @@ namespace rt {
 		 */
 		DllExport virtual Vec3f				getOrigin(void) const = 0;
 		/**
-		 * @brief Returns the normal vector of the primitive in the ray - primitive intercection point
-		 * @param ray Ray intersecting the primitive
-		 * @return The normalized normal of the primitive at the ray - primitive intersection point
-		 */
-		DllExport virtual Vec3f				getNormal(const Ray& ray) const = 0;
-		/**
-		* @brief Returns the  normal vector of the primitive in the ray - primitive intercection point
-		* @note In contrast to the @ref getNormal() method, this methods takes into account the possible normal interpolation along the primitive
-		* @param ray Ray intersecting the primitive
-		* @retunrn The normalized normal of the primitive at the ray - primitive intersection point
-		*/
-		DllExport virtual Vec3f				getShadingNormal(const Ray& ray) const { return getNormal(ray); }
-		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intercection point
 		 * @param ray Point at the surface
 		 * @return The texture coordinates
@@ -79,11 +66,6 @@ namespace rt {
 		 * @returns The bounding box, which contain the primitive
 		 */
 		DllExport virtual CBoundingBox		getBoundingBox(void) const = 0;
-//		/**
-//		 * @brief Sets the new shader to the prim
-//		 * @param pShader Pointer to the shader to be applied for the prim
-//		 */
-//		DllExport void						setShader(const ptr_shader_t pShader) { m_pShader = pShader; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
@@ -99,10 +81,35 @@ namespace rt {
 		 * @return The name of the primitive
 		 */
 		DllExport std::string				getName(void) const { return m_name; }
+		/**
+		 * @brief Returns the normal vector of the primitive in the ray - primitive intercection point
+		 * @param ray Ray intersecting the primitive
+		 * @return The normalized normal of the primitive at the ray - primitive intersection point
+		 */
+		DllExport Vec3f 					getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray) : doGetNormal(ray); };
+		/**
+		 * @brief Toggles the normal direction by modifying @ref m_flipped.
+		 */
+		DllExport void 						flipNormal() { m_flipped = !m_flipped; }
+		/**
+		* @brief Returns the  normal vector of the primitive in the ray - primitive intercection point
+		* @note In contrast to the @ref getNormal() method, this methods takes into account the possible normal interpolation along the primitive
+		* @param ray Ray intersecting the primitive
+		* @retunrn The normalized normal of the primitive at the ray - primitive intersection point
+		*/
+		DllExport virtual Vec3f				getShadingNormal(const Ray& ray) const { return getNormal(ray); }
 	
-	
+	protected:
+		/**
+		 * @brief Returns the normal vector of the primitive in the ray - primitive intercection point
+		 * @param ray Ray intersecting the primitive
+		 * @return The normalized normal of the primitive at the ray - primitive intersection point
+		 */
+		DllExport virtual Vec3f				doGetNormal(const Ray& ray) const = 0;
+
 	private:
 		const ptr_shader_t	m_pShader;			///< Pointer to the sahder, see @ref  IShader
 		std::string			m_name;				///< Optional name of the primitive
+		bool				m_flipped;	///< Validates if the normal should be flipped
 	};
 }

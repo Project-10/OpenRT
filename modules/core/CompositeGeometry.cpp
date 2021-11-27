@@ -4,7 +4,6 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
-#include "PrimDummy.h"
 
 namespace rt {
 
@@ -28,7 +27,7 @@ namespace rt {
 #endif
     }
 
-    bool CCompositeGeometry::intersect(Ray &ray) const {
+    bool CCompositeGeometry::intersect(Ray &ray) {
 		std::optional<Ray> res;
 		switch (m_operationType) {
 			case BoolOp::Union: 		res = computeUnion(ray); 		break;
@@ -52,7 +51,7 @@ namespace rt {
     }
 
     bool CCompositeGeometry::if_intersect(const Ray &ray) const {
-        return intersect(lvalue_cast(Ray(ray)));
+        return const_cast<CCompositeGeometry*>(this)->intersect(lvalue_cast(Ray(ray)));
     }
 
     void CCompositeGeometry::transform(const Mat &T) {
@@ -80,14 +79,13 @@ namespace rt {
 #endif
     }
 
-    Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
+    Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
     Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
-
 
 	namespace {
 		// Helper method to classify if a ray is entering, exiting, or missing a solid.
@@ -230,8 +228,7 @@ namespace rt {
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
                 if (minB.t < minA.t) {
-                    auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-                    minB.hit = dummyPrim;
+                    minB.hit->flipNormal();
 					return minB;
                 }
                 minRay.org = minA.hitPoint();
@@ -242,8 +239,7 @@ namespace rt {
 			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
                 if (minA.t < minB.t) return minA;
                 else {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
+					minB.hit->flipNormal();
 					return minB;
 				}
             }

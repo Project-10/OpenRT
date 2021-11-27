@@ -54,8 +54,9 @@ std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolut
 	ptr_prim_t composite1   = std::make_shared<CCompositeGeometry>(earth, box, BoolOp::Difference);
 	ptr_prim_t composite2   = std::make_shared<CCompositeGeometry>(composite1, core, BoolOp::Union);
 
-	pScene->add(earth);
+	//pScene->add(earth);
 	//pScene->add(core);
+    pScene->add(composite1);
 
 	// Light
 	auto sun            = std::make_shared<CLightOmni>(Vec3f::all(1e9), Vec3f(23500, 0, 0), true);

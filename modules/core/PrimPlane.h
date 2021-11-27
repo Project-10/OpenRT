@@ -29,11 +29,11 @@ namespace rt {
 		}
 		DllExport virtual ~CPrimPlane(void) = default;
 
-		DllExport virtual bool 			intersect(Ray& ray) const override;
+		DllExport virtual bool 			intersect(Ray& ray) override;
 		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
-		DllExport virtual Vec3f 		getNormal(const Ray&) const override { return m_normal; }
+		DllExport virtual Vec3f 		doGetNormal(const Ray&) const override { return m_normal; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
