@@ -80,6 +80,11 @@ namespace rt {
 #endif
     }
 
+	void CCompositeGeometry::flipNormal(void) {
+		for (auto pPrim : m_vPrims1) pPrim->flipNormal();
+		for (auto pPrim : m_vPrims2) pPrim->flipNormal();
+	}
+
     Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }

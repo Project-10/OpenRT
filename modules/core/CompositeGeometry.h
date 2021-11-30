@@ -34,16 +34,20 @@ namespace rt {
         DllExport virtual bool			if_intersect(const Ray &ray) const override;
         DllExport virtual void			transform(const Mat &T) override;
         DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
-        DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
         DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
+		DllExport virtual void			flipNormal(void) override;
 
 
     private:
-        std::optional<Ray> computeUnion(const Ray &ray) const;                         ///< Helper method to perform union logic.
-		std::optional<Ray> computeDifference(const Ray &ray) const;                    ///< Helper method to perform difference logic.
-		std::optional<Ray> computeIntersection(const Ray &ray) const;                  ///< Helper method to perform intersection logic.
-        void computeBoundingBox(void);                             ///< Helper method to recompute the composite.
+		virtual Vec3f					doGetNormal(const Ray &) const override;
+		
+		
+	private:
+		std::optional<Ray>				computeUnion(const Ray &ray) const;             ///< Helper method to perform union logic.
+		std::optional<Ray>				computeDifference(const Ray &ray) const;        ///< Helper method to perform difference logic.
+		std::optional<Ray>				computeIntersection(const Ray &ray) const;      ///< Helper method to perform intersection logic.
+        void 							computeBoundingBox(void);						///< Helper method to recompute the composite.
 
         std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t>			m_vPrims2;					///< Vector of primitives of the second geometry.
