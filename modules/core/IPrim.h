@@ -67,6 +67,10 @@ namespace rt {
 		 */
 		DllExport virtual CBoundingBox		getBoundingBox(void) const = 0;
 		/**
+		 * @brief Flips the normal of the primitive.
+		 */
+		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
+		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		 */
@@ -94,12 +98,9 @@ namespace rt {
         * @retunrn The normalized normal of the primitive at the ray - primitive intersection point
         */
         DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
-        /**
-		 * @brief Flips the normal of the primitive.
-		 */
-        DllExport void				flipNormal() { m_flipped = !m_flipped; }
 
-    protected:
+		
+    private:
         /**
         * @brief Returns the normal vector of the primitive in the ray - primitive intersection point
         * @param ray Ray intersecting the primitive
@@ -113,9 +114,11 @@ namespace rt {
         * @retunrn The normalized normal of the primitive at the ray - primitive intersection point
         */
         DllExport virtual Vec3f				doGetShadingNormal(const Ray& ray) const { return doGetNormal(ray); }
+	
+	
 	private:
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
 		std::string			m_name;				///< Optional name of the primitive.
-		bool			    m_flipped;			///< Flag which helps decide whether to flip the normal or not.
+		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
 	};
 }
