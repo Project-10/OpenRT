@@ -39,6 +39,10 @@ namespace rt {
 		 */
 		DllExport void 								transform(const Mat& t);
 		/**
+		 * @brief Flips the normal of the solid
+		 */
+		DllExport void								flipNormal(void);
+		/**
 		 * @brief Returns the primitives which build the solid
 		 * @return The vector with pointers to the primitives which build the solid
 		 */
@@ -53,6 +57,7 @@ namespace rt {
 		 * @return The solid's pivot point
 		 */
 		DllExport Vec3f 							getPivot(void) const { return m_pivot; }
+		
 		
 	protected:
 		/**
