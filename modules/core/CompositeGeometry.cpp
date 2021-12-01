@@ -83,6 +83,7 @@ namespace rt {
 	void CCompositeGeometry::flipNormal(void) {
 		for (auto pPrim : m_vPrims1) pPrim->flipNormal();
 		for (auto pPrim : m_vPrims2) pPrim->flipNormal();
+		m_flippedNormal = !m_flippedNormal;
 	}
 
     Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
@@ -94,16 +95,16 @@ namespace rt {
     }
 
 
-	namespace {
+	//namespace {
 		// Helper method to classify if a ray is entering, exiting, or missing a solid.
-		IntersectionState classifyRay(const Ray &ray) {
+		IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
 			if (!ray.hit)
 				return IntersectionState::Miss;
 			if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-				return IntersectionState::Enter;
-			return IntersectionState::Exit;
+				return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
+			return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
 		}
-	}
+	//}
 
 
 	std::optional<Ray> CCompositeGeometry::computeUnion(const Ray &ray) const {
