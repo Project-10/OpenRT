@@ -3,7 +3,7 @@
 #include "Transform.h"
 
 namespace rt {
-	bool CPrimTriangle::intersect(Ray& ray) const
+	bool CPrimTriangle::intersect(Ray& ray)
 	{
 		auto t = MoellerTrumbore(ray);
 		if (t) {

@@ -27,7 +27,7 @@ namespace rt {
 		{}
 		DllExport virtual ~CPrimSphere(void) = default;
 
-		DllExport virtual bool 			intersect(Ray& ray) const override;
+		DllExport virtual bool 			intersect(Ray& ray) override;
 		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }

@@ -35,7 +35,7 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				intersect(Ray& ray) const = 0;
+		DllExport virtual bool				intersect(Ray& ray) = 0;
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
 		 * @details This function does not modify argument \b ray and is used just to check if there is an intersection.
@@ -70,6 +70,10 @@ namespace rt {
 		 * @brief Flips the normal of the primitive.
 		 */
 		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
+        /**
+		 * @brief Checks if the normal of this primitive is flipped.
+		 */
+        DllExport virtual bool				isFlipped() const { return m_flipped; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader

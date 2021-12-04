@@ -4,7 +4,7 @@
 #include "macroses.h"
 
 namespace rt {
-	bool CPrimSphere::intersect(Ray& ray) const
+	bool CPrimSphere::intersect(Ray& ray)
 	{
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1
@@ -56,14 +56,14 @@ namespace rt {
 	/// @todo Optimize it
 	bool CPrimSphere::if_intersect(const Ray& ray) const
 	{
-		return intersect(lvalue_cast(Ray(ray)));
-	}
+        return const_cast<CPrimSphere*>(this)->intersect(lvalue_cast(Ray(ray)));
+    }
 
 	void CPrimSphere::transform(const Mat& T)
 	{
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
+		o = CTransform::point(o, T);	// translation of the point
 		m_origin += o;					// update the sphere's origin
 		
 		// Transform radius

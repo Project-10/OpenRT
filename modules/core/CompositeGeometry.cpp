@@ -4,7 +4,6 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
-#include "PrimDummy.h"
 
 namespace rt {
 
@@ -28,7 +27,7 @@ namespace rt {
 #endif
     }
 
-    bool CCompositeGeometry::intersect(Ray &ray) const {
+    bool CCompositeGeometry::intersect(Ray &ray) {
 		std::optional<Ray> res;
 		switch (m_operationType) {
 			case BoolOp::Union: 		res = computeUnion(ray); 		break;
@@ -51,8 +50,9 @@ namespace rt {
 		return true;
     }
 
+    // This can be greatly improved. To be optimized further.
     bool CCompositeGeometry::if_intersect(const Ray &ray) const {
-        return intersect(lvalue_cast(Ray(ray)));
+        return const_cast<CCompositeGeometry*>(this)->intersect(lvalue_cast(Ray(ray)));
     }
 
     void CCompositeGeometry::transform(const Mat &T) {
@@ -80,12 +80,6 @@ namespace rt {
 #endif
     }
 
-	void CCompositeGeometry::flipNormal(void) {
-		for (auto pPrim : m_vPrims1) pPrim->flipNormal();
-		for (auto pPrim : m_vPrims2) pPrim->flipNormal();
-		m_flippedNormal = !m_flippedNormal;
-	}
-
     Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
@@ -95,16 +89,16 @@ namespace rt {
     }
 
 
-	//namespace {
+	namespace {
 		// Helper method to classify if a ray is entering, exiting, or missing a solid.
-		IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
+		IntersectionState classifyRay(const Ray& ray) {
 			if (!ray.hit)
 				return IntersectionState::Miss;
 			if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-				return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
-			return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
+				return ray.hit->isFlipped() ? IntersectionState::Exit : IntersectionState::Enter;
+			return ray.hit->isFlipped() ? IntersectionState::Enter : IntersectionState::Exit;
 		}
-	//}
+	}
 
 
 	std::optional<Ray> CCompositeGeometry::computeUnion(const Ray &ray) const {
@@ -236,8 +230,7 @@ namespace rt {
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
                 if (minB.t < minA.t) {
-                    auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-                    minB.hit = dummyPrim;
+                    minB.hit->flipNormal();
 					return minB;
                 }
                 minRay.org = minA.hitPoint();
@@ -248,8 +241,7 @@ namespace rt {
 			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
                 if (minA.t < minB.t) return minA;
                 else {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
+					minB.hit->flipNormal();
 					return minB;
 				}
             }
@@ -288,4 +280,4 @@ namespace rt {
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
     }
-};
+}
