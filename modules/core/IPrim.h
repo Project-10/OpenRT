@@ -70,10 +70,12 @@ namespace rt {
 		 * @brief Flips the normal of the primitive.
 		 */
 		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
-        /**
+		/**
 		 * @brief Checks if the normal of this primitive is flipped.
+		 * @retval true If the normal was flipped
+		 * @retval false otherwise
 		 */
-        DllExport virtual bool				isFlipped() const { return m_flipped; }
+        DllExport bool						isNormalFlipped(void) const { return m_flipped; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader

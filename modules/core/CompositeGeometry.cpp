@@ -89,16 +89,19 @@ namespace rt {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
+	void CCompositeGeometry::flipNormal(void) {
+		for (auto &pPrim : m_vPrims1) pPrim->flipNormal();
+		for (auto &pPrim : m_vPrims2) pPrim->flipNormal();
+		m_flippedNormal = !m_flippedNormal;
+	}
 
-	namespace {
-		// Helper method to classify if a ray is entering, exiting, or missing a solid.
-		IntersectionState classifyRay(const Ray& ray) {
-			if (!ray.hit)
-				return IntersectionState::Miss;
-			if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-				return ray.hit->isFlipped() ? IntersectionState::Exit : IntersectionState::Enter;
-			return ray.hit->isFlipped() ? IntersectionState::Enter : IntersectionState::Exit;
-		}
+
+	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
+		if (!ray.hit)
+			return IntersectionState::Miss;
+		if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
+			return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
+		return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
 	}
 
 
