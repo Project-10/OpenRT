@@ -19,7 +19,9 @@ namespace rt {
 		, m_pBSPTree2(new CBSPTree())
 #endif
     {
-        computeBoundingBox();
+        if (operationType == BoolOp::Difference)
+			for (auto pPrim: m_vPrims2) pPrim->flipNormal();
+		computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
         m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
@@ -95,12 +97,14 @@ namespace rt {
 	}
 
 
-	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
-		if (!ray.hit)
-			return IntersectionState::Miss;
-		if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-			return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
-		return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
+	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const 
+	{
+		if (!ray.hit) return IntersectionState::Miss;
+		
+		Vec3f realNormal = m_flippedNormal ? -ray.hit->getNormal(ray) : ray.hit->getNormal(ray);
+
+		if (realNormal.dot(ray.dir) < 0)	return IntersectionState::Enter;
+		else								return IntersectionState::Exit;
 	}
 
 
@@ -212,11 +216,12 @@ namespace rt {
                 prim->intersect(minB);
 #endif
             auto stateB = classifyRay(minB);
+			// Since the normal of object B is inverted in constructor			
+			stateB = stateB == IntersectionState::Enter ? IntersectionState::Exit : IntersectionState::Enter;
 		
 			// hit A, but miss B
             if (stateB == IntersectionState::Miss) return minA;
 
-			
 			// ray enters A and B
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
                 if (minA.t < minB.t) return minA;
@@ -232,23 +237,14 @@ namespace rt {
 			
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
-                if (minB.t < minA.t) {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
-					return minB;
-                }
+                if (minB.t < minA.t) return minB;
                 minRay.org = minA.hitPoint();
                 continue;
             }
 			
 			// ray leaves A but enters B
 			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
-                if (minA.t < minB.t) return minA;
-                else {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
-					return minB;
-				}
+                return minA.t < minB.t ? minA : minB;
             }
         } // while (true)
     }
