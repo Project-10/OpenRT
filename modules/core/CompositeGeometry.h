@@ -40,7 +40,7 @@ namespace rt {
 
 		
     private:
-		virtual Vec3f					doGetNormal(const Ray &) const override;
+		DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
 		
 		std::optional<Ray>				computeUnion(const Ray &ray) const;             ///< Helper method to perform union logic.
 		std::optional<Ray>				computeDifference(const Ray &ray) const;        ///< Helper method to perform difference logic.

@@ -53,8 +53,8 @@ namespace rt {
 		
 		
 	private:
-		virtual Vec3f 			doGetNormal(const Ray& ray) const override;
-		virtual Vec3f 			doGetShadingNormal(const Ray& ray) const override;
+		DllExport virtual Vec3f doGetNormal(const Ray& ray) const override;
+		DllExport virtual Vec3f doGetShadingNormal(const Ray& ray) const override;
 		
 		
 	private:

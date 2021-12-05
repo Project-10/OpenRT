@@ -21,9 +21,13 @@ namespace rt {
         DllExport bool 			if_intersect(const Ray& ray) const override;
         DllExport void 			transform(const Mat& T) override;
         DllExport Vec3f			getOrigin(void) const override;
-		DllExport Vec3f 		doGetNormal(const Ray&) const override { return m_normal;  }
 		DllExport Vec2f			getTextureCoords(const Ray& ray) const override { return m_textureCoord; }
         DllExport CBoundingBox	getBoundingBox(void) const override;
+
+
+	private:
+		DllExport Vec3f 		doGetNormal(const Ray&) const override { return m_normal; }
+
 
     private:
         Vec3f m_normal;

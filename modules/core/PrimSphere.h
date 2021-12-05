@@ -36,7 +36,7 @@ namespace rt {
 
 	
 	private:
-		virtual Vec3f 					doGetNormal(const Ray& ray) const override;
+		DllExport virtual Vec3f 		doGetNormal(const Ray& ray) const override;
 
 		
 	private:
