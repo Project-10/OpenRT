@@ -48,10 +48,13 @@ namespace rt {
 		DllExport virtual bool	if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
 		DllExport virtual void	transform(const Mat& t) override;
 		DllExport virtual Vec3f	getOrigin(void) const override;
-		DllExport virtual Vec3f doGetNormal(const Ray& ray) const override;
-		DllExport virtual Vec3f doGetShadingNormal(const Ray& ray) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
+		
+		
+	private:
+		virtual Vec3f 			doGetNormal(const Ray& ray) const override;
+		virtual Vec3f 			doGetShadingNormal(const Ray& ray) const override;
 		
 		
 	private:
