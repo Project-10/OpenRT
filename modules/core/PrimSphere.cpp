@@ -56,7 +56,7 @@ namespace rt {
 	/// @todo Optimize it
 	bool CPrimSphere::if_intersect(const Ray& ray) const
 	{
-        return const_cast<CPrimSphere*>(this)->intersect(lvalue_cast(Ray(ray)));
+        return intersect(lvalue_cast(Ray(ray)));
     }
 
 	void CPrimSphere::transform(const Mat& T)

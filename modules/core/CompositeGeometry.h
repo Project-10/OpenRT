@@ -50,7 +50,6 @@ namespace rt {
         std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t>			m_vPrims2;					///< Vector of primitives of the second geometry.
 		Vec3f							m_origin;                   ///< Origin/Pivot of the geometry.
-		bool							m_flippedNormal = false;	///< Flag indicating whether the normals were flipped
         BoolOp							m_operationType;            ///< Type of operation.
         CBoundingBox                    m_boundingBox;              ///< Bounding box of this composite geometry.
         size_t							MAX_INTERSECTIONS = 150;    ///< Limit of intersection checks performed with a single ray.
