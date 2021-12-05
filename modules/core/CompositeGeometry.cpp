@@ -4,7 +4,6 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
-#include "PrimDummy.h"
 
 namespace rt {
 
