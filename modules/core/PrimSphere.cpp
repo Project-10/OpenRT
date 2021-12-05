@@ -4,7 +4,7 @@
 #include "macroses.h"
 
 namespace rt {
-	bool CPrimSphere::intersect(Ray& ray)
+	bool CPrimSphere::intersect(Ray& ray) const
 	{
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1

@@ -35,7 +35,7 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				intersect(Ray& ray) = 0;
+		DllExport virtual bool				intersect(Ray& ray) const = 0;
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
 		 * @details This function does not modify argument \b ray and is used just to check if there is an intersection.
