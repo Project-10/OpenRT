@@ -51,6 +51,7 @@ namespace rt {
 		return true;
     }
 
+    // This can be greatly improved. To be optimized further.
     bool CCompositeGeometry::if_intersect(const Ray &ray) const {
         return intersect(lvalue_cast(Ray(ray)));
     }
@@ -80,7 +81,7 @@ namespace rt {
 #endif
     }
 
-    Vec3f CCompositeGeometry::getNormal(const Ray &ray) const {
+    Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
@@ -88,16 +89,19 @@ namespace rt {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
+	void CCompositeGeometry::flipNormal(void) {
+		for (auto &pPrim : m_vPrims1) pPrim->flipNormal();
+		for (auto &pPrim : m_vPrims2) pPrim->flipNormal();
+		m_flippedNormal = !m_flippedNormal;
+	}
 
-	namespace {
-		// Helper method to classify if a ray is entering, exiting, or missing a solid.
-		IntersectionState classifyRay(const Ray &ray) {
-			if (!ray.hit)
-				return IntersectionState::Miss;
-			if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-				return IntersectionState::Enter;
-			return IntersectionState::Exit;
-		}
+
+	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
+		if (!ray.hit)
+			return IntersectionState::Miss;
+		if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
+			return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
+		return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
 	}
 
 
@@ -230,8 +234,8 @@ namespace rt {
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
                 if (minB.t < minA.t) {
-                    auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-                    minB.hit = dummyPrim;
+					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
+					minB.hit = dummyPrim;
 					return minB;
                 }
                 minRay.org = minA.hitPoint();
@@ -282,4 +286,4 @@ namespace rt {
         }
         m_boundingBox = CBoundingBox(minPt, maxPt);
     }
-};
+}

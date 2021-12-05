@@ -63,7 +63,7 @@ namespace rt {
 	{
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
+		o = CTransform::point(o, T);	// translation of the point
 		m_origin += o;					// update the sphere's origin
 		
 		// Transform radius
@@ -72,7 +72,7 @@ namespace rt {
 		m_radius = static_cast<float>(norm(r));
 	}
 
-	Vec3f CPrimSphere::getNormal(const Ray& ray) const
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
 		return normalize(ray.hitPoint() - m_origin);
 	}

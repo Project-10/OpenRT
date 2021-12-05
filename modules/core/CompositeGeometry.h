@@ -34,21 +34,27 @@ namespace rt {
         DllExport virtual bool			if_intersect(const Ray &ray) const override;
         DllExport virtual void			transform(const Mat &T) override;
         DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
-        DllExport virtual Vec3f			getNormal(const Ray &) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
         DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
+		DllExport virtual void			flipNormal(void) override;
 
-
+		
     private:
-        std::optional<Ray> computeUnion(const Ray &ray) const;                         ///< Helper method to perform union logic.
-		std::optional<Ray> computeDifference(const Ray &ray) const;                    ///< Helper method to perform difference logic.
-		std::optional<Ray> computeIntersection(const Ray &ray) const;                  ///< Helper method to perform intersection logic.
-        void computeBoundingBox(void);                             ///< Helper method to recompute the composite.
+		DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
+		
+		std::optional<Ray>				computeUnion(const Ray &ray) const;             ///< Helper method to perform union logic.
+		std::optional<Ray>				computeDifference(const Ray &ray) const;        ///< Helper method to perform difference logic.
+		std::optional<Ray>				computeIntersection(const Ray &ray) const;      ///< Helper method to perform intersection logic.
+        void 							computeBoundingBox(void);						///< Helper method to recompute the composite.
+		IntersectionState 				classifyRay(const Ray& ray) const;				///< Helper method to classify if a ray is entering, exiting, or missing a solid.
 
+		
+	private:
         std::vector<ptr_prim_t>			m_vPrims1;			        ///< Vector of primitives of the first geometry.
         std::vector<ptr_prim_t>			m_vPrims2;					///< Vector of primitives of the second geometry.
 		Vec3f							m_origin;                   ///< Origin/Pivot of the geometry.
-        BoolOp							m_operationType;            ///< Type of operation.
+		bool							m_flippedNormal = false; 	///< Flag indicating whether the normals were flipped
+		BoolOp							m_operationType;            ///< Type of operation.
         CBoundingBox                    m_boundingBox;              ///< Bounding box of this composite geometry.
         size_t							MAX_INTERSECTIONS = 150;    ///< Limit of intersection checks performed with a single ray.
 #ifdef ENABLE_BSP

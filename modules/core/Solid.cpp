@@ -90,5 +90,10 @@ namespace rt {
 		for (int i = 0; i < 3; i++)
 			m_pivot.val[i] += t.at<float>(i, 3);
 	}
+
+	void CSolid::flipNormal(void)
+	{
+		for(auto pPrim : m_vpPrims) pPrim->flipNormal();
+	}
 }
 
