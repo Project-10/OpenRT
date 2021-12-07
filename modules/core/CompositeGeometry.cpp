@@ -9,8 +9,8 @@ namespace rt {
 
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth, int maxPrimitives)
 		: IPrim(nullptr)
-		, m_vPrims1(s1.getPrims())
-		, m_vPrims2(s2.getPrims())
+		, m_vpPrims1(s1.getPrims())
+		, m_vpPrims2(s2.getPrims())
 		, m_operationType(operationType)
 #ifdef ENABLE_BSP
 		, m_maxDepth(maxDepth)
@@ -20,12 +20,12 @@ namespace rt {
 #endif
     {
         if (operationType == BoolOp::Difference)
-			for (auto pPrim: m_vPrims2) pPrim->flipNormal();
+			for (auto& pPrim : m_vpPrims2) pPrim->flipNormal();
 		computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
-        m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
+        m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
+        m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
 #endif
     }
 
@@ -63,12 +63,12 @@ namespace rt {
         Mat T2 = tr.translate(m_origin).get();
 
         // transform first geometry
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T2);
+        for (auto &pPrim : m_vpPrims1) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vpPrims1) pPrim->transform(T2);
 
         // transform second geometry
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T2);
+        for (auto &pPrim : m_vpPrims2) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vpPrims2) pPrim->transform(T2);
 
         // update pivots point
         for (int i = 0; i < 3; i++)
@@ -77,8 +77,8 @@ namespace rt {
         // recompute the bounding box
         computeBoundingBox();
 #ifdef ENABLE_BSP
-		m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
-		m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
 #endif
     }
 
@@ -91,8 +91,8 @@ namespace rt {
     }
 
 	void CCompositeGeometry::flipNormal(void) {
-		for (auto &pPrim : m_vPrims1) pPrim->flipNormal();
-		for (auto &pPrim : m_vPrims2) pPrim->flipNormal();
+		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();
+		for (auto &pPrim : m_vpPrims2) pPrim->flipNormal();
 		m_flippedNormal = !m_flippedNormal;
 	}
 
@@ -251,9 +251,9 @@ namespace rt {
 
     void CCompositeGeometry::computeBoundingBox() {
         CBoundingBox boxA, boxB;
-        for (const auto &prim : m_vPrims1)
+        for (const auto &prim : m_vpPrims1)
             boxA.extend(prim->getBoundingBox());
-        for (const auto &prim : m_vPrims2)
+        for (const auto &prim : m_vpPrims2)
             boxB.extend(prim->getBoundingBox());
 
         Vec3f minPt = Vec3f::all(0);
