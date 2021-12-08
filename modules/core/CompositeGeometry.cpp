@@ -120,10 +120,8 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) 
-                prim->intersect(minA);
-            for (const auto &prim : m_vPrims2) 
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vpPrims1) pPrim->intersect(minA);
+            for (const auto &pPrim : m_vpPrims2) pPrim->intersect(minB);
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -160,10 +158,8 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) 
-                prim->intersect(minA);
-            for (const auto &prim : m_vPrims2)
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vPrims1) pPrim->intersect(minA);
+            for (const auto &pPrim : m_vPrims2) pPrim->intersect(minB);
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -199,8 +195,7 @@ namespace rt {
 #ifdef ENABLE_BSP
 			m_pBSPTree1->intersect(minA);
 #else
-			for (const auto &prim : m_vPrims1)
-				prim->intersect(minA);
+			for (const auto &pPrim : m_vpPrims1) pPrim->intersect(minA);
 #endif
 			auto stateA = classifyRay(minA);
 
@@ -212,8 +207,7 @@ namespace rt {
 #ifdef ENABLE_BSP
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims2)
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vpPrims2) pPrim->intersect(minB);
 #endif
             auto stateB = classifyRay(minB);
 			// Since the normal of object B is inverted in constructor			
