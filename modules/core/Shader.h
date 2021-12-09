@@ -23,7 +23,7 @@ namespace rt {
 		 * @brief Consructor
 		 * @param diffuse The diffuse color
 		 */
-		DllExport CShader(const Vec3f& color) : m_diffuseColor(color) {}
+		DllExport CShader(const Vec3f& color) : m_diffuseColor(color), m_ambientColor(color) {}
 		/**
 		 * @brief Constructor
 		 * @param pDiffuseMap The pointer to the diffuse color texture (type: CV_8UC3)
