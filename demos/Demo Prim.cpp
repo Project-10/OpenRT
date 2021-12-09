@@ -179,7 +179,34 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 	return pScene;
 }
 
+std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const Size resolution)
+{
+	auto pScene = std::make_shared<CScene>(bgColor);
+	
+	// shaders
+	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(0.522f, 0.6f, 0.706f), 0.2f, 0.8f, 0.0f, 40.0f);
+	auto pShaderGlass	= std::make_shared<CShaderGeneral>(*pScene, RGB(0.55f, 0.65f, 0.70f), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	
+	// geometry
+	CSolidQuad floor(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 100);
+	CSolidQuad lightPanel(pShaderWhite, Vec3f(0, 2.1f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 1);
+	CSolid torusKnot(pShaderGlass, dataPath + "Torus Knot.obj");
 
+	// light
+	auto pLight				= std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 2, 1), Vec3f(-1, 2, 1));
+
+	// camera
+	auto pCamera			= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 5, 0), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 10.0f);
+	
+	pScene->add(floor);
+	pScene->add(lightPanel);
+	pScene->add(torusKnot);
+	pScene->add(pLight);
+	pScene->add(pCamera);
+		
+	return pScene;
+}
 
 
 
@@ -188,21 +215,22 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 int main(int argc, char* argv[])
 {
 	const Vec3f	bgColor = RGB(0.77f, 0.82f, 0.89f);
-	// const Size resolution(960, 600);
+	//const Size resolution(960, 600);
 	const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
-	auto pScene = buildSceneMirrorSphere(bgColor, resolution);
+	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
 	//auto pScene = buildScenePlanets(bgColor, resolution);
 	//auto pScene = buildSceneBox(bgColor, resolution);
-
-	pScene->buildAccelStructure(0, 3);
+	auto pScene = buildSceneTorusKnot(bgColor, resolution);
+	
+	pScene->buildAccelStructure(30, 3);
 
 	Timer::start("Rendering...");
-	Mat render = pScene->render(std::make_shared<CSamplerStratified>(1, true, true));
+	Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
 	Timer::stop();
 	imshow("pScene", render);
-	imwrite("D:\\renders\\Boxes.png", render);
+	imwrite("D:\\renders\\Box.png", render);
 	waitKey();
 	return 0;
 }

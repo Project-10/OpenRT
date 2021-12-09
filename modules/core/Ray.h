@@ -74,6 +74,6 @@ namespace rt {
 		 * @param scene The reference to the scene
 		 * @return The color value of the shaded ray
 		 */
-		Vec3f				reTrace(const CScene& scene) const;
+		Vec3f				reTrace(const CScene& scene);
 	};
 }

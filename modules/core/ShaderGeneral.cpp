@@ -67,13 +67,18 @@ namespace rt {
 			}
 
 			// ------ reflection ------
-			if (m_km > 0) 
-				res += m_km * reflected.reTrace(m_scene);
+			std::optional<Vec3f> reflection = std::nullopt;		// reflected color
+			if (m_km > 0) {
+				reflection = reflected.reTrace(m_scene);
+				res += m_km * reflection.value();
+			}
 
 			// ------ refraction ------
 			if (m_kt > 0) {
-				Ray refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex).value_or(reflected);
-				res += m_kt * refracted.reTrace(m_scene);
+				auto refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex);
+				if (refracted) 			res += m_kt * refracted.value().reTrace(m_scene);
+				else if (reflection)	res += m_kt * reflection.value();
+				else 					res += m_kt * reflected.reTrace(m_scene);	
 			}
 		} // ns
 		

@@ -34,9 +34,13 @@ namespace rt {
 			return std::nullopt;
 	}
 
-	Vec3f Ray::reTrace(const CScene& scene) const
+	Vec3f Ray::reTrace(const CScene& scene)
 	{
-		return counter >= maxRayCounter ? exitColor : scene.rayTrace(lvalue_cast(Ray(org, dir, counter + 1)));
+		if (hit) hit = nullptr;
+		t = std::numeric_limits<double>::infinity();
+
+		if (counter++ >= maxRayCounter)	return exitColor;
+		else 							return scene.rayTrace(*this);
 	}
 }
 
