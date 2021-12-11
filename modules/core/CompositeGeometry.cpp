@@ -4,14 +4,13 @@
 #include <macroses.h>
 #include "Ray.h"
 #include "Transform.h"
-#include "PrimDummy.h"
 
 namespace rt {
 
     CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth, int maxPrimitives)
 		: IPrim(nullptr)
-		, m_vPrims1(s1.getPrims())
-		, m_vPrims2(s2.getPrims())
+		, m_vpPrims1(s1.getPrims())
+		, m_vpPrims2(s2.getPrims())
 		, m_operationType(operationType)
 #ifdef ENABLE_BSP
 		, m_maxDepth(maxDepth)
@@ -20,11 +19,13 @@ namespace rt {
 		, m_pBSPTree2(new CBSPTree())
 #endif
     {
-        computeBoundingBox();
+        if (operationType == BoolOp::Difference)
+			for (auto& pPrim : m_vpPrims2) pPrim->flipNormal();
+		computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
 #ifdef ENABLE_BSP
-        m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
-        m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
+        m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
+        m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
 #endif
     }
 
@@ -62,12 +63,12 @@ namespace rt {
         Mat T2 = tr.translate(m_origin).get();
 
         // transform first geometry
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims1) pPrim->transform(T2);
+        for (auto &pPrim : m_vpPrims1) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vpPrims1) pPrim->transform(T2);
 
         // transform second geometry
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vPrims2) pPrim->transform(T2);
+        for (auto &pPrim : m_vpPrims2) pPrim->transform(T * T1);
+        for (auto &pPrim : m_vpPrims2) pPrim->transform(T2);
 
         // update pivots point
         for (int i = 0; i < 3; i++)
@@ -76,8 +77,8 @@ namespace rt {
         // recompute the bounding box
         computeBoundingBox();
 #ifdef ENABLE_BSP
-		m_pBSPTree1->build(m_vPrims1, m_maxDepth, m_maxPrimitives);
-		m_pBSPTree2->build(m_vPrims2, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
 #endif
     }
 
@@ -90,18 +91,20 @@ namespace rt {
     }
 
 	void CCompositeGeometry::flipNormal(void) {
-		for (auto &pPrim : m_vPrims1) pPrim->flipNormal();
-		for (auto &pPrim : m_vPrims2) pPrim->flipNormal();
+		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();
+		for (auto &pPrim : m_vpPrims2) pPrim->flipNormal();
 		m_flippedNormal = !m_flippedNormal;
 	}
 
 
-	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const {
-		if (!ray.hit)
-			return IntersectionState::Miss;
-		if (ray.hit->getNormal(ray).dot(ray.dir) < 0)
-			return m_flippedNormal ? IntersectionState::Exit : IntersectionState::Enter;
-		return m_flippedNormal ? IntersectionState::Enter : IntersectionState::Exit;
+	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const 
+	{
+		if (!ray.hit) return IntersectionState::Miss;
+		
+		Vec3f realNormal = m_flippedNormal ? -ray.hit->getNormal(ray) : ray.hit->getNormal(ray);
+
+		if (realNormal.dot(ray.dir) < 0)	return IntersectionState::Enter;
+		else								return IntersectionState::Exit;
 	}
 
 
@@ -117,10 +120,8 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) 
-                prim->intersect(minA);
-            for (const auto &prim : m_vPrims2) 
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vpPrims1) pPrim->intersect(minA);
+            for (const auto &pPrim : m_vpPrims2) pPrim->intersect(minB);
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -157,10 +158,8 @@ namespace rt {
             m_pBSPTree1->intersect(minA);
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims1) 
-                prim->intersect(minA);
-            for (const auto &prim : m_vPrims2)
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vpPrims1) pPrim->intersect(minA);
+            for (const auto &pPrim : m_vpPrims2) pPrim->intersect(minB);
 #endif
             auto stateA = classifyRay(minA);
             auto stateB = classifyRay(minB);
@@ -196,8 +195,7 @@ namespace rt {
 #ifdef ENABLE_BSP
 			m_pBSPTree1->intersect(minA);
 #else
-			for (const auto &prim : m_vPrims1)
-				prim->intersect(minA);
+			for (const auto &pPrim : m_vpPrims1) pPrim->intersect(minA);
 #endif
 			auto stateA = classifyRay(minA);
 
@@ -209,15 +207,15 @@ namespace rt {
 #ifdef ENABLE_BSP
             m_pBSPTree2->intersect(minB);
 #else
-            for (const auto &prim : m_vPrims2)
-                prim->intersect(minB);
+            for (const auto &pPrim : m_vpPrims2) pPrim->intersect(minB);
 #endif
             auto stateB = classifyRay(minB);
+			// Since the normal of object B is inverted in constructor			
+			stateB = stateB == IntersectionState::Enter ? IntersectionState::Exit : IntersectionState::Enter;
 		
 			// hit A, but miss B
             if (stateB == IntersectionState::Miss) return minA;
 
-			
 			// ray enters A and B
             if (stateA == IntersectionState::Enter && stateB == IntersectionState::Enter) {
                 if (minA.t < minB.t) return minA;
@@ -233,32 +231,23 @@ namespace rt {
 			
 			// ray leaves A and B
             if (stateA == IntersectionState::Exit && stateB == IntersectionState::Exit) {
-                if (minB.t < minA.t) {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
-					return minB;
-                }
+                if (minB.t < minA.t) return minB;
                 minRay.org = minA.hitPoint();
                 continue;
             }
 			
 			// ray leaves A but enters B
 			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
-                if (minA.t < minB.t) return minA;
-                else {
-					auto dummyPrim = std::make_shared<CPrimDummy>(minB.hit->getShader(), -minB.hit->getNormal(minB), minB.hit->getTextureCoords(minB));
-					minB.hit = dummyPrim;
-					return minB;
-				}
+                return minA.t < minB.t ? minA : minB;
             }
         } // while (true)
     }
 
     void CCompositeGeometry::computeBoundingBox() {
         CBoundingBox boxA, boxB;
-        for (const auto &prim : m_vPrims1)
+        for (const auto &prim : m_vpPrims1)
             boxA.extend(prim->getBoundingBox());
-        for (const auto &prim : m_vPrims2)
+        for (const auto &prim : m_vpPrims2)
             boxB.extend(prim->getBoundingBox());
 
         Vec3f minPt = Vec3f::all(0);
