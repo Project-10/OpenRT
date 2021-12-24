@@ -27,7 +27,7 @@ namespace rt {
          * @param maxDepth The max depth of the BSP tree of the solids. Only used if BSP support is enabled.
          * @param maxDepth The max number of primitives in the leaf nodes of the BSP tree of the solids. Only used if BSP support is enabled.
 		 */
-        DllExport explicit CCompositeGeometry(const CSolid& s1, const CSolid& s2, BoolOp operationType, int maxDepth = 3, int maxPrimitives = 20);
+        DllExport explicit CCompositeGeometry(const CSolid& s1, const CSolid& s2, BoolOp operationType, int maxDepth = 20, int maxPrimitives = 3);
         DllExport virtual ~CCompositeGeometry(void) override = default;
         
 		DllExport virtual bool			intersect(Ray &ray) const override;
