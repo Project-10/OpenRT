@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "Ray.h"
 
-namespace rt{
+namespace rt {
 	Vec3f CShaderPhong::shade(const Ray& ray) const
 	{
 		Vec3f res(0, 0, 0);

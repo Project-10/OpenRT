@@ -31,7 +31,9 @@ namespace rt {
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(4 * ke)
-		{}
+		{
+			setSpecularLevel(ks);
+		}
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene

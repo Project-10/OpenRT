@@ -11,7 +11,7 @@ namespace rt {
 		Vec3f diffuseColor	= getDiffuseColor(ray);
 		float ks			= getSpecularLevel(ray);
 
-		Vec3f faceNormal = ray.hit->getNormal(ray);								// face normal
+		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
 		bool inside = false;
 		if (faceNormal.dot(ray.dir) > 0) {
