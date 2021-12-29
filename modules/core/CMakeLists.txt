@@ -21,7 +21,7 @@ source_group("Source Files\\Geometry\\Primitives\\plane" FILES "PrimPlane.h" "Pr
 source_group("Source Files\\Geometry\\Primitives\\disc" FILES "PrimDisc.h" "PrimDisc.cpp")
 source_group("Source Files\\Geometry\\Primitives\\sphere" FILES "PrimSphere.h" "PrimSphere.cpp")
 source_group("Source Files\\Geometry\\Primitives\\triangle" FILES "PrimTriangle.h" "PrimTriangle.cpp")
-source_group("Source Files\\Geometry\\Primitives\\composites" FILES "CompositeGeometry.h" "CompositeGeometry.cpp")
+source_group("Source Files\\Geometry\\Primitives\\boolean" FILES "PrimBoolean.h" "PrimBoolean.cpp")
 source_group("Source Files\\Geometry\\Solids" FILES "Solid.h" "Solid.cpp")
 source_group("Source Files\\Geometry\\Solids\\quad" FILES "SolidQuad.h" "SolidQuad.cpp")
 source_group("Source Files\\Geometry\\Solids\\box" FILES "SolidBox.h" "SolidBox.cpp")

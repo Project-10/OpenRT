@@ -21,7 +21,7 @@
 #include "core/PrimPlane.h"
 #include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
-#include "core/CompositeGeometry.h"
+#include "core/PrimBoolean.h"
 
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"

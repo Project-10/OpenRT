@@ -1,17 +1,16 @@
-#include "CompositeGeometry.h"
-
-#include <utility>
-#include <macroses.h>
-#include "Ray.h"
+#include "PrimBoolean.h"
 #include "Transform.h"
+#include "Ray.h"
+#include "macroses.h"
 
 namespace rt {
+	enum class IntersectionState { Enter, Exit, Miss };
 
-    CCompositeGeometry::CCompositeGeometry(const CSolid &s1, const CSolid &s2, BoolOp operationType, int maxDepth, int maxPrimitives)
+	CPrimBoolean::CPrimBoolean(const CSolid &A, const CSolid &B, BoolOp operation, int maxDepth, int maxPrimitives)
 		: IPrim(nullptr)
-		, m_vpPrims1(s1.getPrims())
-		, m_vpPrims2(s2.getPrims())
-		, m_operationType(operationType)
+		, m_vpPrims1(A.getPrims())
+		, m_vpPrims2(B.getPrims())
+		, m_operation(operation)
 #ifdef ENABLE_BSP
 		, m_maxDepth(maxDepth)
 		, m_maxPrimitives(maxPrimitives)
@@ -19,7 +18,7 @@ namespace rt {
 		, m_pBSPTree2(new CBSPTree())
 #endif
     {
-        if (operationType == BoolOp::Difference)
+        if (operation == BoolOp::Substraction)
 			for (auto& pPrim : m_vpPrims2) pPrim->flipNormal();
 		computeBoundingBox();
         m_origin = m_boundingBox.getCenter();
@@ -29,12 +28,13 @@ namespace rt {
 #endif
     }
 
-    bool CCompositeGeometry::intersect(Ray &ray) const {
+    bool CPrimBoolean::intersect(Ray &ray) const 
+	{
 		std::optional<Ray> res;
-		switch (m_operationType) {
+		switch (m_operation) {
 			case BoolOp::Union: 		res = computeUnion(ray); 		break;
 			case BoolOp::Intersection: 	res = computeIntersection(ray); break;
-			case BoolOp::Difference:	res = computeDifference(ray);	break;
+			case BoolOp::Substraction:	res = computeSubstraction(ray);	break;
 			default: RT_ASSERT_MSG(false, "Unknown boolean operation");
         }
 		if (!res) return false;
@@ -52,12 +52,14 @@ namespace rt {
 		return true;
     }
 
-    // This can be greatly improved. To be optimized further.
-    bool CCompositeGeometry::if_intersect(const Ray &ray) const {
+    // TODO: This can be greatly improved. To be optimized further.
+    bool CPrimBoolean::if_intersect(const Ray &ray) const 
+	{
         return intersect(lvalue_cast(Ray(ray)));
     }
 
-    void CCompositeGeometry::transform(const Mat &T) {
+    void CPrimBoolean::transform(const Mat &T) 
+	{
         CTransform tr;
         Mat T1 = tr.translate(-m_origin).get();
         Mat T2 = tr.translate(m_origin).get();
@@ -82,22 +84,23 @@ namespace rt {
 #endif
     }
 
-    Vec3f CCompositeGeometry::doGetNormal(const Ray &ray) const {
+    Vec3f CPrimBoolean::doGetNormal(const Ray &ray) const 
+	{
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
-    Vec2f CCompositeGeometry::getTextureCoords(const Ray &ray) const {
+    Vec2f CPrimBoolean::getTextureCoords(const Ray &ray) const 
+	{
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
-	void CCompositeGeometry::flipNormal(void) {
+	void CPrimBoolean::flipNormal(void) {
 		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();
 		for (auto &pPrim : m_vpPrims2) pPrim->flipNormal();
 		m_flippedNormal = !m_flippedNormal;
 	}
 
-
-	IntersectionState CCompositeGeometry::classifyRay(const Ray& ray) const 
+	IntersectionState CPrimBoolean::classifyRay(const Ray& ray) const
 	{
 		if (!ray.hit) return IntersectionState::Miss;
 		
@@ -107,12 +110,10 @@ namespace rt {
 		else								return IntersectionState::Exit;
 	}
 
-
-	std::optional<Ray> CCompositeGeometry::computeUnion(const Ray &ray) const {
+	std::optional<Ray> CPrimBoolean::computeUnion(const Ray &ray) const 
+	{
 		Ray minRay(ray.org, ray.dir);
-        int iterations = 0;
-        while (true) {
-            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+        for (int iteration = 0; iteration < 100; iteration++) {
             RT_ASSERT(!minRay.hit);
             Ray minA = minRay;
             Ray minB = minRay;
@@ -142,15 +143,15 @@ namespace rt {
                 minRay.org = minB.hitPoint();
                 continue;
             }
-        }
-
+        } // iteration
+		RT_WARNING("The maximum depth of calculations is reached.");
+		return std::nullopt;
     }
 
-	std::optional<Ray> CCompositeGeometry::computeIntersection(const Ray &ray) const {
+	std::optional<Ray> CPrimBoolean::computeIntersection(const Ray &ray) const 
+	{
 		Ray minRay(ray.org, ray.dir);
-        int iterations = 0;
-        while (true) {
-            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+		for (int iteration = 0; iteration < 100; iteration++) {
             RT_ASSERT(!minRay.hit);
             Ray minA = minRay;
             Ray minB = minRay;
@@ -180,15 +181,15 @@ namespace rt {
                 minRay.org = minA.hitPoint();
                 continue;
             }
-        }
+        } // iteration
+		RT_WARNING("The maximum depth of calculations is reached.");
+		return std::nullopt;
     }
 
-	std::optional<Ray> CCompositeGeometry::computeDifference(const Ray &ray) const {
+	std::optional<Ray> CPrimBoolean::computeSubstraction(const Ray &ray) const 
+	{
 		Ray minRay(ray.org, ray.dir);
-        
-		int iterations = 0;
-        while (true) {
-            RT_ASSERT(iterations++ <= MAX_INTERSECTIONS);
+		for (int iteration = 0; iteration < 100; iteration++) {
             RT_ASSERT(!minRay.hit);
 			// --------- RAY A ---------
 			Ray minA = minRay;
@@ -237,13 +238,15 @@ namespace rt {
             }
 			
 			// ray leaves A but enters B
-			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) {
+			if (stateA == IntersectionState::Exit && stateB == IntersectionState::Enter) 
                 return minA.t < minB.t ? minA : minB;
-            }
-        } // while (true)
+        } // iteration
+		RT_WARNING("The maximum depth of calculations is reached.");
+		return std::nullopt;
     }
 
-    void CCompositeGeometry::computeBoundingBox() {
+    void CPrimBoolean::computeBoundingBox() 
+	{
         CBoundingBox boxA, boxB;
         for (const auto &prim : m_vpPrims1)
             boxA.extend(prim->getBoundingBox());
@@ -252,7 +255,7 @@ namespace rt {
 
         Vec3f minPt = Vec3f::all(0);
         Vec3f maxPt = Vec3f::all(0);
-        switch (m_operationType) {
+        switch (m_operation) {
             case BoolOp::Union:
                 for (int i = 0; i < 3; i++) {
                     minPt[i] = MIN(boxA.getMinPoint()[i], boxB.getMinPoint()[i]);
@@ -265,7 +268,7 @@ namespace rt {
                     maxPt[i] = MIN(boxA.getMaxPoint()[i], boxB.getMaxPoint()[i]);
                 }
                 break;
-            case BoolOp::Difference:
+            case BoolOp::Substraction:
                 for (int i = 0; i < 3; i++) {
                     minPt[i] = boxA.getMinPoint()[i];
                     maxPt[i] = boxA.getMaxPoint()[i];
