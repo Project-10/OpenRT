@@ -11,9 +11,16 @@ namespace rt
 	}
 
 	Vec3f CShaderSSLT::shade(const Ray& ray) const
-	{
-		Ray I(ray.hitPoint(), ray.dir, ray.counter);
-		float opacity = getOpacity();
-		return opacity * getDiffuseColor(ray) + (1.0f - opacity) * I.reTrace(m_scene);
-	}
+        {
+            Vec3f n = ray.hit->getNormal(ray);
+            
+            Ray I(ray.hitPoint(), ray.dir, ray.counter);
+            Vec3f res = I.reTrace(m_scene);
+            
+            if (ray.dir.dot(n) < 0) { // entering the surface
+                const double k = 0.1;
+                const double alpha = MIN(1, sqrt(k * I.t));
+                return alpha * getDiffuseColor(ray) + (1 - alpha) * res;
+            } else return res;
+        }
 }
