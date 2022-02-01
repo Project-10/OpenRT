@@ -75,5 +75,8 @@ namespace rt {
 		 * @return The color value of the shaded ray
 		 */
 		Vec3f				reTrace(const CScene& scene);
+		
+		double              	attenuation(void) const;
+
 	};
 }
