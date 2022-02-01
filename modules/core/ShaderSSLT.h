@@ -20,7 +20,7 @@ namespace rt {
 		 */
 		DllExport CShaderSSLT(const CScene& scene, const Vec3f& color, float opacity);
 
-		DllExport Vec3f shade(const Ray& ray) const override;
+		DllExport virtual Vec3f shade(const Ray& ray) const override;
 
 
 	private:
