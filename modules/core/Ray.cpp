@@ -42,5 +42,11 @@ namespace rt {
 		if (counter++ >= maxRayCounter)	return exitColor;
 		else 							return scene.rayTrace(*this);
 	}
+	
+	double Ray::attenuation(void) const
+    	{
+       		double attenuation = 1 / (t * t);
+        	return attenuation;
+    	}
 }
 
