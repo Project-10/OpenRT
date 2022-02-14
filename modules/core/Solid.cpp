@@ -18,54 +18,64 @@ namespace rt {
 			std::vector<Vec2f> vTextures;
 
 			std::string line;
+			std::string key;
 
 			int nFaces = 0;
 			for (;;) {
 				if (!getline(file, line)) break;
 				std::stringstream ss(line);
-				getline(ss, line, ' ');
-				if (line == "v") {
+				getline(ss, key, ' ');	// get key;
+				if (key == "v") {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
 					vVertexes.push_back(v);
 				}
-				else if (line == "vt") {
+				else if (key == "vt") {
 					Vec2f vt;
 					for (int i = 0; i < 2; i++) ss >> vt.val[i];
 					vt[1] = 1 - vt[1];
 					vTextures.push_back(vt);
 				}
-				else if (line == "vn") {
+				else if (key == "vn") {
 					Vec3f vn;
 					for (int i = 0; i < 3; i++) ss >> vn.val[i];
 					vNormals.push_back(vn);
 				}
-				else if (line == "f") {
+				else if (key == "f") {
 					nFaces++;
 					//if (nFaces > 10000) continue;
 					int v, n, t;
-					Vec3i V, N, T;
-					for (int i = 0; i < 3; i++) {
-						getline(ss, line, ' ');
+					Vec4i V, N, T;
+					int i = 0;
+					auto tmp = line;
+					while (getline(ss, line, ' ')) {
 						sscanf(line.c_str(), "%d/%d/%d", &v, &t, &n);
 						V.val[i] = v - 1;
 						T.val[i] = t - 1;
 						N.val[i] = n - 1;
+						if (++i == 4) break;
 					}
 					//std::cout << "Face: " << V << std::endl;
 					//std::cout << "Normal: " << N << std::endl;
 					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
 					//add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 					//													vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					
+
 					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 																 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
-																 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+																 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));			
+
+					if (i == 4)
+						add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]],
+																	 vTextures[T.val[0]], vTextures[T.val[2]], vTextures[T.val[3]],
+																	 vNormals[N.val[0]], vNormals[N.val[2]], vNormals[N.val[3]]));
 	
 				}
 				else if (line == "#") {}
 				else {
-					std::cout << "Unknown key [" << line << "] met in the OBJ file" << std::endl;
+					std::cout << "Unknown key [" << key << "] met in the OBJ file" << std::endl;
 				}
 			}
 
