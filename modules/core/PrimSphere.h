@@ -31,11 +31,14 @@ namespace rt {
 		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
-		DllExport virtual Vec3f 		getNormal(const Ray& ray) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
+	
+	private:
+		DllExport virtual Vec3f 		doGetNormal(const Ray& ray) const override;
 
+		
 	private:
 		Vec3f m_origin;		///< Position of the center of the sphere
 		float m_radius;		///< Radius of the sphere

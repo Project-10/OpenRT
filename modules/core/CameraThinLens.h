@@ -53,6 +53,6 @@ namespace rt {
 	private:
 		const float m_lensRadius = 0;
 		const float m_focalDistance = 10;
-		const int m_nBlades = 0;
+		const int	m_nBlades = 0;
 	};
 }

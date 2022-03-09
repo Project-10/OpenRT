@@ -19,7 +19,7 @@ int main() {
 	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
 	
 	// Stanford Dragon
-	CSolid dragon(pShaderFloor, dataPath + "Stanford Dragon.obj");
+	CSolid dragon(pShaderSSLT, dataPath + "Stanford Dragon.obj");
 	CTransform t;
 	dragon.transform(t.scale(2.01f).get());
 	scene.add(dragon);

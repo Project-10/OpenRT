@@ -4,7 +4,7 @@
 
 namespace rt{
 	// Constructor
-	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName))
+	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName, 1))
 	{
 		RT_ASSERT_MSG(!empty(), "Can't read file %s", fileName.c_str());
 	}
@@ -34,7 +34,7 @@ namespace rt{
 			bool ay = v > 0.5f ? true : false;
 		
 			bool c = ax ^ ay;
-			return c ? Vec3f::all(1) : Vec3f::all(0);
+			return c ? Vec3f::all(1) : Vec3f::all(0.5f);
 		} else {
 			// find texel indices
 			int x = static_cast<int>(cols * u);

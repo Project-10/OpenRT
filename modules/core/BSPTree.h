@@ -35,13 +35,6 @@ namespace rt {
 		 */
 		bool intersect(Ray& ray) const;
 
-		/**
-		 * @brief Checks whether the ray \b ray intersects a primitive.
-		 * @details If ray \b ray intersects a primitive, the \b ray.t value will be updated
-		 * @param[in,out] ray The ray
-		 */
-		bool intersect_furthest(Ray& ray) const;
-
 	private:
         /**
 		 * @brief Recursively builds the BSP tree

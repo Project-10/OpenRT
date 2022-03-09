@@ -20,8 +20,9 @@
 
 #include "core/PrimSphere.h"
 #include "core/PrimPlane.h"
+#include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
-#include "core/CompositeGeometry.h"
+#include "core/PrimBoolean.h"
 
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"
@@ -30,7 +31,7 @@
 #include "core/SolidSphere.h"
 #include "core/SolidTorus.h"
 
-#include "core/Shader.h"
+#include "core/ShaderGeneral.h"
 #include "core/ShaderFlat.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
