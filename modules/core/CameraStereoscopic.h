@@ -96,7 +96,7 @@ namespace rt {
          * @brief Returns the camera eye
          * @return The camera eye
          */
-        DllExport int           getEye(void) const { return m_eye; }
+        DllExport int				getEye(void) const { return m_eye; }
         /**
          * @brief Returns the camera IPD
          * @return The camera IPD
