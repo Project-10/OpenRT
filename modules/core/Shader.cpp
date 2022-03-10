@@ -38,7 +38,7 @@ namespace rt {
 #ifdef DEBUG_MODE
 		Vec3f normal = ray.hit->getNormal(ray);			// normal
 		bool inside = normal.dot(ray.dir) > 0;			// true if normal points outward the ray origin
-		res = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
+		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
 #endif
 		return m_pDiffuseColorMap ? m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray)) : res;
 	}

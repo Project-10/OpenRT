@@ -4,19 +4,17 @@
 using namespace rt;
 
 int main() {
-	const Vec3f	bgColor = RGB(0.1f, 0.1f, 0.1f);
+	const Vec3f	bgColor = RGB(26, 26, 26);
 	const Size	resolution = Size(800, 600);
 	const float intensity = 5000;
 
 	CScene scene(bgColor);
 	
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(0.153f, 0.682f, 0.376f), 0.3f);
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(39, 174, 96), 0.02f);
 	
-	float s = 500;
-	//Floor
-	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
+	scene.add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	
 	// Stanford Dragon
 	CSolid dragon(pShaderSSLT, dataPath + "Stanford Dragon.obj");

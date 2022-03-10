@@ -22,7 +22,7 @@ namespace rt {
 		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;		// reflection vector
 
 #ifdef DEBUG_MODE
-		res = inside ? RGB(1, 0, 0) : RGB(0, 0, 1);
+		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
 #endif
 
 		// ------ ambient ------

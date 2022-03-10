@@ -4,7 +4,7 @@
 using namespace rt;
 
 TEST_F(CTestSolidTorus, solid_torus) {
-    auto shader = std::make_shared<CShaderFlat>(RGB(1, 1, 1));
+    auto shader = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
     auto innerRadius = 3.0f;
     auto outerRadius = 1.0f;
     auto sides = 30;

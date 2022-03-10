@@ -8,8 +8,8 @@ int main() {
 	
 	CScene scene(bgColor);
 																			
-	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderBall  = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.9f, 40.0f);
+	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderBall  = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.9f, 40.0f);
 	
 	//Floor
 	float s = 50;
@@ -20,14 +20,14 @@ int main() {
 	const float r = 4;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(Size(640, 480), Vec3f(4, 4, 4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pLightRed	= false ? 
-		std::make_shared<CLightOmni>(RGB(20, 0, 0), Vec3f(r, 3, 0)) : 
-		std::make_shared<CLightSpotTarget>(RGB(20, 0, 0), Vec3f(r, 3, 0), Vec3f(0, 0, 0), 20.0f, 10.0f);
+		std::make_shared<CLightOmni>(20 * RGB(255, 0, 0), Vec3f(r, 3, 0)) : 
+		std::make_shared<CLightSpotTarget>(20 * RGB(255, 0, 0), Vec3f(r, 3, 0), Vec3f(0, 0, 0), 20.0f, 10.0f);
 	auto pLightGreen = false ?
-		std::make_shared<CLightOmni>(RGB(0, 20, 0), Vec3f(r, 3, 0)) :
-		std::make_shared<CLightSpotTarget>(RGB(0, 20, 0), Vec3f(r, 3, 0), Vec3f(0, 0, 0), 20.0f, 10.0f);
+		std::make_shared<CLightOmni>(20 * RGB(0, 255, 0), Vec3f(r, 3, 0)) :
+		std::make_shared<CLightSpotTarget>(20 * RGB(0, 255, 0), Vec3f(r, 3, 0), Vec3f(0, 0, 0), 20.0f, 10.0f);
 	auto pLightBlue = false ?
-		std::make_shared<CLightOmni>(RGB(0, 0, 20), Vec3f(0, 3, r)) :
-		std::make_shared<CLightSpotTarget>(RGB(0, 0, 20), Vec3f(0, 3, r), Vec3f(0, 0, 0), 20.0f, 10.0f);
+		std::make_shared<CLightOmni>(20 * RGB(0, 0, 255), Vec3f(0, 3, r)) :
+		std::make_shared<CLightSpotTarget>(20 * RGB(0, 0, 255), Vec3f(0, 3, r), Vec3f(0, 0, 0), 20.0f, 10.0f);
 
 
 	scene.add(pCamera);

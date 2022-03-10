@@ -37,9 +37,9 @@ std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolut
 	pShaderEarth->setAmbientColor(pTextureEarthAmbient);
 	pShaderEarth->setDiffuseColor(pTextureEarthDiffuse);
 	pShaderEarth->setSpecularLevel(pTextureEarthSpecular);
-	auto pShaderCore = std::make_shared<CShaderPhong>(*pScene, RGB(1, 1, 0), 0.8f, 0.2f, 0.0f, 40.0f);
-	auto pShaderCut = std::make_shared<CShaderPhong>(*pScene, RGB(0.8f, 0.2f, 0.0f), 0.3f, 0.7f, 0.0f, 40.0f);
-	auto pShaderAtmosphere = std::make_shared<CShaderSSLT>(*pScene, RGB(0, 0.5f, 1), 0.0f);
+	auto pShaderCore = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 0), 0.8f, 0.2f, 0.0f, 40.0f);
+	auto pShaderCut = std::make_shared<CShaderPhong>(*pScene, RGB(204, 51, 0), 0.3f, 0.7f, 0.0f, 40.0f);
+	auto pShaderAtmosphere = std::make_shared<CShaderSSLT>(*pScene, RGB(0, 127, 255), 0.0f);
 
 	// Geometries
 	auto earth          = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 64);
@@ -113,7 +113,7 @@ std::shared_ptr<CScene> buildSceneLens(const Vec3f& bgColor, const Size resoluti
 
 	// shaders
 	auto pShaderPage = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.0f, 1.0f, 0.0f, 0.0f);
-	auto pShaderTest = std::make_shared<CShaderFlat>(RGB(0.5f, 0.5f, 0.5f));
+	auto pShaderTest = std::make_shared<CShaderFlat>(RGB(127, 127, 127));
 	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// geometry
@@ -152,39 +152,40 @@ std::shared_ptr<CScene> buildClassicExample(const Vec3f& bgColor, const Size res
 	auto pScene = std::make_shared<CScene>(bgColor);
 
 	// shaders
-	auto pShaderRed		= std::make_shared<CShaderBlinn>(*pScene, RGB(1, 0, 0), 0.4f, 0.6f, 1.0f, 2.0f);
-	auto pShaderGreen	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 1, 0), 0.4f, 0.6f, 1.0f, 2.0f);
-	auto pShaderBlue	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 0, 1), 0.4f, 0.6f, 1.0f, 2.0f);
+	auto pShaderRed		= std::make_shared<CShaderBlinn>(*pScene, RGB(255, 0, 0), 0.4f, 0.6f, 1.0f, 2.0f);
+	auto pShaderGreen	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 255, 0), 0.4f, 0.6f, 1.0f, 2.0f);
+	auto pShaderBlue	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 0, 255), 0.4f, 0.6f, 1.0f, 2.0f);
 
 	CTransform T;
 
 	// geometry
-	CSolidCylinder c1(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 4, 1, 64);
-	CSolidCylinder c2(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 4, 1, 64);
-	CSolidCylinder c3(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 4, 1, 64);
-	CSolidBox	   b1(pShaderRed, Vec3f(0, 2, 0), 1.99f);
-	CSolidSphere   s1(pShaderBlue, Vec3f(0, 2, 0), 2.6f, 64);
+	CSolidCylinder c1(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 6, 1, 64);
+	CSolidCylinder c2(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 6, 1, 64);
+	CSolidCylinder c3(pShaderGreen, Vec3f(0, 0, 0), 1.3f, 6, 1, 64);
+	CSolidBox	   b1(pShaderRed, Vec3f(0, 0, 0), 2);
+	CSolidSphere   s1(pShaderBlue, Vec3f(0, 0, 0), 2.6f, 64);
 
-	c2.transform(T.rotate(Vec3f(1, 0, 0), 90.0f).translate(0, 2, -2).get());
-	c3.transform(T.rotate(Vec3f(0, 0, 1), 90.0f).translate(2, 2, 0).get());
+	c1.transform(T.translate(0, -3, 0).get());
+	c2.transform(T.rotate(Vec3f(1, 0, 0), 90.0f).translate(0, 0, -3).get());
+	c3.transform(T.rotate(Vec3f(0, 0, 1), 90.0f).translate(3, 0, 0).get());
 
 	ptr_prim_t	u1 = std::make_shared<CPrimBoolean>(c1, c2, BoolOp::Union);
 	ptr_prim_t	u2 = std::make_shared<CPrimBoolean>(u1, c3, BoolOp::Union);
 	ptr_prim_t	i1 = std::make_shared<CPrimBoolean>(b1, s1, BoolOp::Intersection);
 	ptr_prim_t	d1 = std::make_shared<CPrimBoolean>(i1, u2, BoolOp::Substraction);
 
-	//pScene->add(c1);
-	//pScene->add(c2);
-	//pScene->add(c3);
-	//pScene->add(b1);
-	//pScene->add(s1);
-	pScene->add(d1);
+	pScene->add(c1);
+	pScene->add(c2);
+	pScene->add(c3);
+	pScene->add(b1);
+	pScene->add(s1);
+	//pScene->add(d1);
 
 	// light
-	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e2), Vec3f(-10, 12, 10)));
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e2), Vec3f(-10, 10, 10)));
 
 	// camera
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(8, 10, 10), Vec3f(0, 2, 0), Vec3f(0, 1, 0), 30.0f));
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(8, 8, 10), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 30.0f));
 
 	return pScene;
 }
@@ -215,14 +216,45 @@ std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resoluti
 }
 
 int main() {
+	
+	
+	Mat mat, mat32;
+	Mat res, res32;
+	int k  = 0;
+	for (int i = 6822; i < 7304; i++) {
+		std::string fileName = "C:\\Users\\Creator\\Desktop\\LITE\\_MG_" + std::to_string(i) + ".tif";
+		std::cout << fileName << std::endl;
+		mat = imread(fileName, 1);
+		mat.convertTo(mat32, CV_32FC3);
+		if (res32.empty()) res32 = mat32.clone();
+		else res32 += mat32;
+		k++;
+		//if (k >= 9) break;
+	}	
+	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res.tif", res32);
+	
+	res32.convertTo(res, CV_8UC3, 1.0 / k);
+	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res1.png", res);
+	res32.convertTo(res, CV_8UC3, 2.0 / k);
+	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res2.png", res);
+	res32.convertTo(res, CV_8UC3, 4.0 / k);
+	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res4.png", res);
+	res32.convertTo(res, CV_8UC3, 8.0 / k);
+	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res8.png", res);
+
+
+	
+	
+	
+	
 	const Vec3f bgColor = RGB(0, 0, 0);
 	const Size  resolution = Size(800, 600);
 
 	//for (float t = 29; t > -29; t=t-0.5f) {
 
-	//auto pScene = buildSceneEarth(bgColor, resolution);
+	auto pScene = buildSceneEarth(bgColor, resolution);
 	//auto pScene = buildSceneLens(bgColor, resolution, 0);
-	auto pScene	= buildClassicExample(RGB(1, 1, 1), resolution);
+	//auto pScene	= buildClassicExample(RGB(255, 255, 255), resolution);
 	//auto pScene = buildSceneTest(bgColor, resolution);
 
 	pScene->buildAccelStructure(20, 3);
@@ -233,6 +265,7 @@ int main() {
 	Timer::stop();
 
 	imshow("image", img);
+	imwrite("D:\\Renders\\CSG.jpg", img);
 	//waitKey(5);
 	//printf("%f\n", t);
 	//}

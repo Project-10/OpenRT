@@ -57,7 +57,7 @@ namespace rt {
     	class CBSPNode;
     	using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
 	
-#define RGB(r, g, b)  Vec3f((b), (g), (r))	
+#define RGB(r, g, b)  Vec3f((b), (g), (r)) / 255.0f
 	static const size_t maxRayCounter	= @MAX_RAY_COUNTER@;
-	static const Vec3f	exitColor		= RGB(0.4f, 0.4f, 0.4f);
+	static const Vec3f	exitColor		= Vec3f(0.4f, 0.4f, 0.4f);
 }
