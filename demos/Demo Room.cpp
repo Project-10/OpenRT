@@ -123,48 +123,65 @@ int main(int argc, char* argv[])
 	};
 	
 	
-	const Vec3f    bgColor = RGB(204, 230, 255);
-    const Size resolution(600, 600);
+	const Vec3f    bgColor = Kelvin2RGB.at(5500);
+    const Size resolution(4 * 1024, 4 * 512);
     CScene scene(bgColor);
     
     // matherials
     auto pShaderFloor    = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
 	auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(255, 0, 0), 0.5f, 0.5f, 0.0f, 40.0f);
 
-    CTransform t;
+
+	// Room.obj - 118 corresponds to 3m. => pd = 32mm = 1.258(6)
     CSolid room(pShaderFloor, dataPath + "room.obj");
 
     scene.add(room);
 
 	
-	scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(37.00f, 107.0f, -55.50f), 0.5f));
-	scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(37.00f, 107.0f, -67.50f), 0.5f));
-	scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(37.00f, 107.0f, -79.50f), 0.5f));
+	//scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(36.8784f, 106.8599f, -79.4961f), 0.5f));
+	//scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(36.4436f, 106.6133f, -67.3086f), 0.5f));
+	//scene.add(std::make_shared<CPrimSphere>(pShaderRed, Vec3f(36.2625f, 106.6358f, -55.6289f), 0.5f));
 
     // lights
 	scene.add(std::make_shared<CLightOmni>(2e2 * Kelvin2RGB.at(5500), Vec3f(-99.0f, 48.5f, -77.25f), true));
-	//scene.add(std::make_shared<CLightOmni>(2e2 * Kelvin2RGB.at(5500), Vec3f(35.75f, 104.0f, -67.43f), true));
+	
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.8784f, 106.8566f, -79.4961f), Vec3f(0.8008f, -0.5920f, -0.0901f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.4436f, 106.6100f, -67.3086f), Vec3f(0.7317f, -0.6783, 0.0677f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.2625f, 106.6325f, -55.6289f), Vec3f(0.6986f, -0.7030, 0.1335), 45.0f, 30.0f, true));
 
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.8784f, 106.8566f, -16.4629f), Vec3f(0.8008f, -0.5920f, -0.0901f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.4436f, 106.6100f, -4.2754f), Vec3f(0.7317f, -0.6783, 0.0677f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.2625f, 106.6325f, 7.4043f), Vec3f(0.6986f, -0.7030, 0.1335), 45.0f, 30.0f, true));
 
-	scene.add(std::make_shared<CLightOmni>(Vec3f::all(1e3), Vec3f(-50, 100, 0), true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.8784f, 106.8566f, 46.5703f), Vec3f(0.8008f, -0.5920f, -0.0901f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.4436f, 106.6100f, 58.7578f), Vec3f(0.7317f, -0.6783, 0.0677f), 45.0f, 30.0f, true));
+	scene.add(std::make_shared<CLightSpot>(2e2 * Kelvin2RGB.at(5500), Vec3f(36.2625f, 106.6325f, 70.4375f), Vec3f(0.6986f, -0.7030, 0.1335), 45.0f, 30.0f, true));
+
+	scene.add(std::make_shared<CLightOmni>(5e2 * Kelvin2RGB.at(5500), Vec3f(-50, 100, 0), true));
 	scene.add(std::make_shared<CLightOmni>(5e5 * Kelvin2RGB.at(4500), Vec3f(1000, 50, -500), true));
-    scene.add(std::make_shared<CLightSky>(Vec3f::all(0.25f)));
+    scene.add(std::make_shared<CLightSky>(Vec3f::all(0.2f)));
     
     // cameras
-    scene.add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(35, 65, -70), Vec3f(35.57f, 107.0f, -67.43f), Vec3f(1, 0, 0), 60.0f));
-	scene.add(std::make_shared<CCameraEnvironment>(resolution, Vec3f(0, 60, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0)));
-	scene.add(std::make_shared<CCameraStereoscopic>(resolution, Vec3f(0, 60, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0), 1, 1));
-	scene.add(std::make_shared<CCameraStereoscopic>(resolution, Vec3f(0, 60, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0), 2, 1));
+    scene.add(std::make_shared<CCameraOrthographic>(resolution, Vec3f(0, 90, 50), Vec3f(1, 0, 0), Vec3f(0, 1, 0), 25.0f));
+	scene.add(std::make_shared<CCameraEnvironment>(resolution, Vec3f(0, 67, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0)));
+	scene.add(std::make_shared<CCameraEnvironment>(resolution, Vec3f(0, 67, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0), -1.2587f));
+	scene.add(std::make_shared<CCameraEnvironment>(resolution, Vec3f(0, 67, 0), Vec3f(-1, 0, 0), Vec3f(0, 1, 0), 1.2587f));
 
     scene.buildAccelStructure(20, 3);
       
-    scene.setActiveCamera(0);
 
-	Timer::start("Rendering Main... ");
-	Mat img_main = scene.render(nullptr);
-	Timer::stop();
-	
-	imshow("Main", img_main);
+
+ //   scene.setActiveCamera(0);
+
+	//Timer::start("Rendering Main... ");
+	//Mat img_main = scene.render();
+	//Timer::stop();
+	//
+	//imshow("Main", img_main);
+	//imwrite("D:\\renders\\img_main.jpg", img_main);
+	//waitKey(20);
+
+
 
 	//scene.setActiveCamera(2);
  //   
@@ -173,18 +190,21 @@ int main(int argc, char* argv[])
  //   Timer::stop();
  //   
  //   imshow("Left", img_left);
+	//imwrite("D:\\renders\\img_left.jpg", img_left);
+	//waitKey(20);
 
- //   scene.setActiveCamera(3);
- //   
- //   Timer::start("Rendering Right... ");
- //   Mat img_right = scene.render(std::make_shared<CSamplerStratified>(4));
- //   Timer::stop();
- //   
- //   imshow("Right", img_right);
- //   
-    imwrite("D:\\renders\\img_main.jpg", img_main);
- //   imwrite("D:\\renders\\img_left.jpg", img_left);
- //   imwrite("D:\\renders\\img_right.jpg", img_right);
+
+
+    scene.setActiveCamera(3);
+    
+    Timer::start("Rendering Right... ");
+    Mat img_right = scene.render(std::make_shared<CSamplerStratified>(4));
+    Timer::stop();
+    
+    imshow("Right", img_right);
+	imwrite("D:\\renders\\img_right.jpg", img_right);
+	waitKey(20);
+
 
     waitKey();
     

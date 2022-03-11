@@ -23,9 +23,17 @@ namespace rt
 
 		float phi = 2 * Pif * (x + sample.val[0]) / width - Pif;
 		float theta = Pif * (y + sample.val[1]) / height;
+		Vec3f eq_dir = cosf(phi) * m_zAxis + sinf(phi) * m_xAxis;	// equatorial direction
 
 		ray.org = m_pos;
-		ray.dir = normalize(sinf(theta) * cosf(phi) * m_zAxis + sinf(theta) * sinf(phi) * m_xAxis - cosf(theta) * m_yAxis);
+		// If stereo - update position.
+		// For the left eye IPD - negative; for the right eye IPD - positive
+		if (m_PD) {
+			Vec3f eq_right = normalize(eq_dir.cross(m_up));
+			ray.org += m_PD * eq_right;
+		}
+
+		ray.dir = normalize(sinf(theta) * eq_dir - cosf(theta) * m_yAxis);
 		ray.t = std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
 	}
