@@ -1,6 +1,7 @@
 #include "openrt.h"
 #include "core/timer.h"
 #include "core/CheckboardTexture.h"
+#include "core/CircleTexture.h"
 
 using namespace rt;
 
@@ -14,9 +15,10 @@ int main() {
     // Scene
     auto scene = std::make_shared<CScene>(bgColor);
 
-    auto checkboardTexture = std::make_shared<CCheckboardTexture>();
+    auto checkboardTexture = std::make_shared<CCircleTexture>();
     auto shaderFlat = std::make_shared<CShaderFlat>(checkboardTexture);
     auto box = CSolidBox(shaderFlat, Vec3f(-5, 0, 0), 1);
+    checkboardTexture->setSolidBox(box.getPivot());
     scene->add(box);
 
     scene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 0, 2), box.getPivot(), Vec3f(0, 1, 0),
