@@ -60,14 +60,7 @@ namespace rt {
 		 * @param ray Point at the surface
 		 * @return The texture coordinates
 		 */
-                  /**
-            @brief returns the 3D texture coordinates in the ray - primitive intersection point
-            @param ray Point at the surface
-            @return The texture coordinates on the surface
-         */
-        DllExport virtual Vec3f             getObjectCoords(const Ray& ray) const = 0;
-        
-        
+                /**      
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
