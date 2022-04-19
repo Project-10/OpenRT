@@ -1,49 +1,65 @@
-// Disc Geaometrical Primitive class
-// Written by Dr. Sergey Kosov in 2021 for Jacobs University
-
-#include "IPrim.h"
+#include "PrimDisc.h"
+#include "Ray.h"
+#include "Transform.h"
 
 namespace rt {
-    // ================================ Disc Primitive Class ================================
-    /**
-     * @brief The Disc Geometrical Primitive class
-     * @ingroup modulePrimitive
-     * @author Sergey G. Kosov, sergey.kosov@project-10.de
-     */
-    class CPrimDisc : public IPrim
-    {
-    public:
-        /**
-         * @brief Constructor
-         * @param pShader Pointer to the shader to be applied for the prim
-         * @param origin The center pointof the disc
-         * @param normal Normal to the disc
-         * @param radius Radius of the disc
-         */
-        DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
-            : IPrim(pShader)
-            , m_normal(normal)
-            , m_origin(origin)
-            , m_radius(radius)
-        {}
-        DllExport virtual ~CPrimDisc(void) = default;
+        bool CPrimDisc::intersect(Ray& ray) const
+        {
+            float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
+            if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
+            if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
+
+            ray.t = dist;
+            ray.hit = shared_from_this();
+            return true;
+        }
+
+        /// @todo Optimize it
+        bool CPrimDisc::if_intersect(const Ray& ray) const
+        {
+            float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
+            if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
+            if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
+            return true;
+        }
+
+        void CPrimDisc::transform(const Mat& T)
+        {
+            // Transform origin
+            Vec3f o = Vec3f::all(0);        // point in the WCS origin
+            o = CTransform::point(o, T);    // transltion of the point
+            m_origin += o;                    // update the sphere's origin
+
+            // Transform normals
+            Mat T1 = T.inv().t();
+            m_normal = normalize(CTransform::vector(m_normal, T1));
+
+            // Transform radius
+            Vec3f r = m_radius * normalize(Vec3f::all(1));
+            r = CTransform::vector(r, T);
+            m_radius = static_cast<float>(norm(r));
+        }
+
+        Vec2f CPrimDisc::getTextureCoords(const Ray& ray) const
+        {
+            Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
+            if (m_normal[1] < 1.0f) mu = normalize(m_normal.cross(Vec3f(0, 1, 0)));    // assuming up-vector to be Y-direction in WCS
+            else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
+            mv = m_normal.cross(mu);
+            
+            Vec3f hit = ray.hitPoint();
+            Vec3f h = (hit - m_origin) * (0.5f / m_radius);
+            Vec2f res = norm(h) > Epsilon ? Vec2f(0.5f + h.dot(mu), 0.5f + h.dot(mv)) : Vec2f(0.5f, 0.5f);
         
-        DllExport virtual bool                intersect(Ray& ray) const override;
-        DllExport virtual bool                if_intersect(const Ray& ray) const override;
-        DllExport virtual void                transform(const Mat& T) override;
-        DllExport virtual Vec3f                getOrigin(void) const override { return m_origin; }
-        DllExport virtual Vec2f                getTextureCoords(const Ray& ray) const override;
-        DllExport virtual Vec3f             getObjectCoords(const Ray& ray) const override;
-        DllExport virtual CBoundingBox        getBoundingBox(void) const override;
-        
-        
-    private:
-        DllExport virtual Vec3f                doGetNormal(const Ray&) const override { return m_normal; }
-        
-        
-    private:
-        Vec3f m_normal;        ///< Point on the plane
-        Vec3f m_origin;        ///< Normal to the plane
-        float m_radius;        ///< Radius of the disc
-    };
+            return res;
+        }
+
+        // Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
+        CBoundingBox CPrimDisc::getBoundingBox(void) const
+        {
+            Vec3f e;
+            for (int i = 0; i < 3; i++)
+                e[i] = m_radius * sqrtf(1 - m_normal[i] * m_normal[i]);
+            return CBoundingBox(m_origin - e, m_origin + e);
+        }
 }
