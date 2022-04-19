@@ -44,7 +44,7 @@ source_group("Source Files\\Common\\Samplers" FILES "Sampler.h" "Sampler.cpp")
 source_group("Source Files\\Common\\Samplers\\Random" FILES "SamplerRandom.h" "SamplerRandom.cpp")
 source_group("Source Files\\Common\\Samplers\\Stratified" FILES "SamplerStratified.h" "SamplerStratified.cpp")
 source_group("Source Files\\Common\\Transform" FILES "Transform.h" "Transform.cpp")
-source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp")
+source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp" "Stripes.h" "Stripes.cpp" "Rings.h" "Rings.cpp")
 source_group("Source Files\\Common\\Ray" FILES "Ray.h" "Ray.cpp")
 source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h")
 
