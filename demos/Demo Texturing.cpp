@@ -50,29 +50,29 @@
 using namespace rt;
 
 int main() {
-    const Vec3f    bgColor = RGB(0.1f, 0.1f, 0.1f);
-    const Size    resolution = Size(800, 600);
-    const float intensity = 5000;
+    const Vec3f		bgColor = RGB(0.1f, 0.1f, 0.1f);
+    const Size		resolution = Size(800, 600);
+    const float		intensity = 5000;
 
     CScene scene(bgColor);
     
-    //Shader Pot
-    auto ringsTexture = std::make_shared<CTextureRings>();
-    auto shaderFlat = std::make_shared<CShaderFlat>(ringsTexture);
-    auto stripesTexture = std::make_shared<CTextureStripes>();
-    auto shaderFlat1 = std::make_shared<CShaderFlat>(stripesTexture);
+    // Textures
+	auto pTextureRings	 = std::make_shared<CTextureRings>(0.75f);
+	auto pTextureStripes = std::make_shared<CTextureStripes>(5);
+
+	// Shaders 
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderRings	= std::make_shared<CShaderPhong>(scene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
+    auto pShaderStripes	= std::make_shared<CShaderPhong>(scene, pTextureStripes, 0.1f, 0.9f, 0.0f, 40.0f);
     
-    // Tea Pots
-//    CSolid teaRings(shaderFlat1, dataPath + "teapot.obj");
-//    CTransform t;
-//    teaRings.transform(t.scale(5.01f).get());
-//    scene.add(teaRings);
-    
-    CSolid teaStripes(shaderFlat , dataPath + "teapot.obj");
-    CTransform t1;
-    teaStripes.transform(t1.translate(3, 0, 0).scale(1.01f).get());
-    teaStripes.transform(t1.scale(5.01f).get());
-    scene.add(teaStripes);
+	// Geometry
+	scene.add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+
+	CSolid teapot(pShaderRings, dataPath + "teapot.obj");
+
+    CTransform t;
+	teapot.transform(t.scale(5.0f).get());
+    scene.add(teapot);
     
     auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 30, 30), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
     auto pLightPoint = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 0));

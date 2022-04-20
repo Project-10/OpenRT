@@ -17,12 +17,9 @@ namespace rt{
 		float w = uvw.val[2];
     
 		//Difference between point and center of the shape
-		Vec3f lenght = uvw;
-		auto factor = 10;
-		float norm = sqrtf(powf(lenght[2], 2) + powf(lenght[1], 2));
-		auto value = factor * norm;
+		float value = m_period * sqrtf(w * w + u * u);
 
-		return (int) floor(value) % 2 == 0 ? Vec3f(0, 0, 255) : Vec3f(255, 255, 255);
+		return static_cast<int>(value) % 2 == 0 ? Vec3f(0, 0, 1) : Vec3f::all(1);
 	}
 
 }

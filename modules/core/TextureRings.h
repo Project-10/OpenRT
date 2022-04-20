@@ -9,15 +9,18 @@
 #include"Texture.h"
 
 namespace rt{
-
 	class CTextureRings : public CTexture{
 		public:
-		DllExport CTextureRings(void) = default;
+		DllExport CTextureRings(float period) : m_period(period) {}
 		DllExport virtual ~CTextureRings(void) = default;
     
 
 		DllExport Vec3f getTexel(const Vec3f &uvw) const override;
     
 		DllExport bool isProcedural(void) const override { return true; }
+
+
+	private:
+		float m_period;
 	};
 }

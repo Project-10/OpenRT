@@ -8,15 +8,12 @@ namespace rt{
 		float v = uvw.val[1];
 		float w = uvw.val[2];
 
-		float periods= 5;
-		float xSine = sinf(periods * u);
-		float zSine = cosf(periods * v);
-		float yCos  = sinf(periods * w);
+		float xSine = sinf(m_periods * u);
+		float zSine = cosf(m_periods * v);
+		float yCos  = sinf(m_periods * w);
 		float intensity = (1 + xSine) / 2;
     
-		std::cout << intensity << std::endl;
-    
-		return (intensity > 0.5) ? Vec3f(0, 0, 255) : Vec3f(255, 255 ,255);
+		return (intensity > 0.5) ? Vec3f(0, 0, 1) : Vec3f(1, 1 ,1);
 	}
 }
 
