@@ -45,6 +45,8 @@
 #include "core/Transform.h"
 
 #include "core/Texture.h"
+#include "core/TextureStripes.h"
+#include "core/TextureRings.h"
 
 #include "core/LightSpot.h"
 

@@ -46,8 +46,6 @@
 
 #include "openrt.h"
 #include "core/timer.h"
-#include "core/Rings.h"
-#include"core/Stripes.h"
 
 using namespace rt;
 
@@ -59,9 +57,9 @@ int main() {
     CScene scene(bgColor);
     
     //Shader Pot
-    auto ringsTexture = std::make_shared<CRings>();
+    auto ringsTexture = std::make_shared<CTextureRings>();
     auto shaderFlat = std::make_shared<CShaderFlat>(ringsTexture);
-    auto stripesTexture = std::make_shared<CStripes>();
+    auto stripesTexture = std::make_shared<CTextureStripes>();
     auto shaderFlat1 = std::make_shared<CShaderFlat>(stripesTexture);
     
     // Tea Pots

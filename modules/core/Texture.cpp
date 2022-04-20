@@ -45,11 +45,7 @@ namespace rt{
 		}
 	}
         
-        bool CTexture::isProcedural(){
-                return false;
-            }
-
-        Vec3f CTexture::getTextel3D(const Vec3f &ray) {
+        Vec3f CTexture::getTexel(const Vec3f& uvw) const {
              RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
          }
         
