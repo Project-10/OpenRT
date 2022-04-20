@@ -6,7 +6,7 @@
 //
 
 
-
+#include"Ray.h"
 #include "Rings.h"
 
 namespace rt{
