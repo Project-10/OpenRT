@@ -29,6 +29,7 @@ namespace rt {
 		double a = 1; // static_cast<double>(ray.dir.dot(ray.dir));	// must be equal to 1, since ray.dir must be normalized
 		double b = 2 * static_cast<double>(ray.dir.dot(diff));
 		double c = static_cast<double>(diff.dot(diff)) - r2;
+
 		// use 'abc'-formula for finding root t_1,2 = (-b +/- sqrt(b^2-4ac))/(2a)
 		double inRoot = b * b - 4 * a * c;
 		if (inRoot < 0)
@@ -89,3 +90,4 @@ namespace rt {
 		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
 	}
 }
+
