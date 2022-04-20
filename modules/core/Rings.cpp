@@ -8,8 +8,6 @@
 
 
 #include "Rings.h"
-#include"Texture.h"
-
 
 namespace rt{
 
