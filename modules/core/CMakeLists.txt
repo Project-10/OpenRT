@@ -48,7 +48,7 @@ source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp")
 source_group("Source Files\\Common\\Texture\\Stripes" FILES "TextureStripes.h" "TextureStripes.cpp")
 source_group("Source Files\\Common\\Texture\\Rings" FILES "TextureRings.h" "TextureRings.cpp")
 source_group("Source Files\\Common\\Ray" FILES "Ray.h" "Ray.cpp")
-source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h")
+source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h" "tools.h")
 
 
 
