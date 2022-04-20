@@ -29,7 +29,7 @@ namespace rt {
 
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
-		 * @details If a valid intersection has been found with the primitive, it sets Ray::t to the distance to this intersection
+		 * @details If a valid intersection has been found with the primitive, it sets Ray::t to the distance to this intersection 
 		 * point (if current t < ray.t) and sets Ray::hit to point to the current primitive
 		 * @param[in,out] ray The ray (Ref. @ref Ray for details)
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
@@ -59,7 +59,7 @@ namespace rt {
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
 		 * @param ray Point at the surface
 		 * @return The texture coordinates
-		 */      
+		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
