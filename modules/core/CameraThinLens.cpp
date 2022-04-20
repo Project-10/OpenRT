@@ -11,7 +11,7 @@ namespace rt
 		CCameraPerspective::InitRay(ray, x, y, sample);
 
 		float lensr = getlensRadius();
-		float nBlades = getnBlades();
+		int nBlades = getnBlades();
 		if (lensr > 0) {
 			// Sample point on lens
 			Vec2f pLens;

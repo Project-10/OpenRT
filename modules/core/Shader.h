@@ -21,19 +21,19 @@ namespace rt {
 		DllExport CShader(void) = default;
 		/**
 		 * @brief Consructor
-		 * @param diffuse The diffuse color
+		 * @param color The diffuse color
 		 */
 		DllExport CShader(const Vec3f& color) : m_diffuseColor(color), m_ambientColor(color) {}
 		/**
 		 * @brief Constructor
-		 * @param pDiffuseMap The pointer to the diffuse color texture (type: CV_8UC3)
+		 * @param pColorMap The pointer to the diffuse color texture (type: CV_8UC3)
 		 */
 		DllExport CShader(const ptr_texture_t pColorMap) : m_pDiffuseColorMap(pColorMap) {}
 		DllExport virtual ~CShader(void) = default;
 
 		/**
 		 * @brief Sets the ambient color
-		 * @param diffuse The ambient color
+		 * @param color The ambient color
 		 */
 		DllExport void	setAmbientColor(const Vec3f& color);
 		/**
@@ -43,12 +43,12 @@ namespace rt {
 		DllExport void	setAmbientColor(const ptr_texture_t pMap);
 		/**
 		 * @brief Sets the diffuse color
-		 * @param diffuse The diffuse color
+		 * @param color The color color
 		 */
 		DllExport void	setDiffuseColor(const Vec3f& color);
 		/**
 		 * @brief Sets the diffuse map
-		 * @param pDiffuseMap The pointer to the diffuse texture
+		 * @param pColorMap The pointer to the diffuse texture
 		 */
 		DllExport void	setDiffuseColor(const ptr_texture_t pColorMap);
 		/**
