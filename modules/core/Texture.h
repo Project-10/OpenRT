@@ -36,6 +36,18 @@ namespace rt {
 		 * @return The texture elment (color)
 		 */
 		DllExport Vec3f getTexel(const Vec2f& uv) const;
+		/**
+		* @brief Gets the intersection point and returns a color following a mathematical function
+		* @param uvw The textel coordinates in the object space
+		* @return The texture elment (color)
+		*/
+		DllExport virtual Vec3f getTexel(const Vec3f& uvw) const;
+		/**
+		* @brief Checks if we are dealing with Procedural textures
+		* @retval true If texture procedural
+		* @retval false Otherwise
+		*/
+		DllExport virtual bool isProcedural(void) const { return false; }
 	};
 
 	using ptr_texture_t = std::shared_ptr<CTexture>;

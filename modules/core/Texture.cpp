@@ -1,3 +1,4 @@
+
 #include "Texture.h"
 #include "macroses.h"
 #include <math.h>
@@ -43,5 +44,10 @@ namespace rt{
 			return (*this).at<Vec3f>(y, x);
 		}
 	}
+        
+        Vec3f CTexture::getTexel(const Vec3f& uvw) const {
+             RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+         }
+        
+        
 }
-
