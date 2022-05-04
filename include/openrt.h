@@ -47,6 +47,8 @@
 #include "core/Texture.h"
 #include "core/TextureStripes.h"
 #include "core/TextureRings.h"
+#include "core/TextureMarble.h"
+#include "core/PerlinNoise.h"
 
 #include "core/LightSpot.h"
 
