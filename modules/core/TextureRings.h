@@ -30,8 +30,6 @@ namespace rt{
     
      DllExport bool isProcedural(void) const override { return true; }
      
-     DllExport Vec3f woodMap(float value) const;
-
 
 	private:
 		float m_period;

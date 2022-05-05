@@ -1,6 +1,5 @@
 #include "openrt.h"
 #include "core/timer.h"
-#include "core/TextureBrick.h"
 
 using namespace rt;
 
@@ -13,7 +12,6 @@ int main() {
      CScene scene(bgColor);
      CScene scene1(bgColor);
 
-     auto pTextureBrick = std::make_shared<CTextureBrick>(1.0f);
      //For another "weird" type of marble, please change the boolean value to true
      auto pTextureMarble = std::make_shared<CTextureMarble>(2.0f, 6, 0.08, 2.0, 2.0, 0.6, true);
      auto  pShaderMarble = std::make_shared<CShaderPhong>(scene1, pTextureMarble, 0.1f, 0.9f, 0.0f, 1000.0f);
