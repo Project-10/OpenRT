@@ -35,6 +35,5 @@ create_demo(Demo_CSG "Demo CSG")
 create_demo(Demo_DoF "Demo DoF")
 create_demo(Demo_VR "Demo Virtual Reality")
 create_demo(Demo_Texturing "Demo Texturing")
-create_demo(Demo_Marble "Demo Marble")
 
 
