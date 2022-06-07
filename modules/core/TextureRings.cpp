@@ -2,7 +2,6 @@
 //
 
 #include "TextureRings.h"
-#include"PerlinNoise.h"
 
 namespace rt{
 
