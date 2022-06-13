@@ -1,6 +1,5 @@
 #include "openrt.h"
 #include "core/timer.h"
-#include"core/TextureWood.h"
 
 using namespace rt;
 
