@@ -66,6 +66,7 @@ namespace rt {
 
 	float CShader::getSpecularLevel(const Ray& ray) const
 	{
+		//return m_pSpecularLevelMap ? m_specularLevel * m_pSpecularLevelMap->getTexel(ray.hit->getTextureCoords(ray))[0] : m_specularLevel;
         if(m_pDiffuseColorMap){
             return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hitPoint())[0]
             : m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray))[0];
