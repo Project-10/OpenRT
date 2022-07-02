@@ -4,6 +4,32 @@
 #include "TextureMarble.h"
 #include "PerlinNoise.h"
 
+namespace {
+
+     Vec3f marbleMap(float value){
+               
+          Vec3f white = Vec3f(1,1,1);
+          Vec3f blue = Vec3f(0.6 , 0.53 , 0.467);
+          Vec3f color = (Vec3f) ((white - blue) * value + blue);
+               
+               return color;
+     }
+     
+     double smoothstep(float val){
+          return val * val * val *(val * (val * 6 -15) + 10);
+     }
+     
+         Vec3f mix(Vec3f& C0, Vec3f& C1, float f ){
+        
+        return (1-f) * C0 + f * C1;
+    }
+    
+    float step(float x, float a){
+          return (float) (x>a);
+    }
+
+}
+
 namespace rt{
 
 
@@ -32,25 +58,5 @@ namespace rt{
                
      }
  
-     Vec3f CTextureMarble::marbleMap(float value) const{
-               
-          Vec3f white = Vec3f(1,1,1);
-          Vec3f blue = Vec3f(0.6 , 0.53 , 0.467);
-          Vec3f color = (Vec3f) ((white - blue) * value + blue);
-               
-               return color;
-     }
-     
-     double CTextureMarble::smoothstep(float val) const{
-          return val * val * val *(val * (val * 6 -15) + 10);
-     }
-     
-         Vec3f CTextureMarble::mix(Vec3f& C0, Vec3f& C1, float f ) const{
-        
-        return (1-f) * C0 + f * C1;
-    }
-    
-    float CTextureMarble::step(float x, float a) const{
-          return (float) (x>a);
-    }
+
 }

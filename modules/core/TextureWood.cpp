@@ -8,8 +8,8 @@
 #include "TextureWood.h"
 #include "PerlinNoise.h"
 
-namespace rt{
-          Vec3f CTextureWood::woodMap(float value) const{
+namespace {
+          Vec3f woodMap(float value){
           
           Vec3f earlyWood = Vec3f(0.2862745,0.45490196,0.64313725);
           Vec3f lateWood = Vec3f(0.054901,0.184313,0.337254);
@@ -18,6 +18,8 @@ namespace rt{
                return color;
           // (int) ((r2 - r1) * val + r1)
      }
+}
+namespace rt{
 
 	Vec3f CTextureWood::getTexel(const Vec3f& uvw) const
 	{

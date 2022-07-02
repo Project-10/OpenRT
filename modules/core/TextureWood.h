@@ -5,6 +5,14 @@
 
 #include"Texture.h"
 
+namespace {
+     /**  @Brief Function to interpolate between pillar two wood colors
+          @param value value that we want to map
+          @return mapped color
+     */
+     DllExport Vec3f woodMap(float value);
+
+}
 
 namespace rt {
 
@@ -27,11 +35,6 @@ namespace rt {
      /**   @Brief Checks if we are dealing with procedural textiures
      */
      DllExport bool isProcedural(void) const override { return true; }
-     /**  @Brief Function to interpolate between pillar two wood colors
-          @param value value that we want to map
-          @return mapped color
-     */
-     DllExport Vec3f woodMap(float value) const;
 
 
 	private:
