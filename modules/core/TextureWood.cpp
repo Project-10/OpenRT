@@ -9,14 +9,19 @@
 #include "PerlinNoise.h"
 
 namespace {
-          Vec3f woodMap(float value){
+     /**
+     @Brief Function to interpolate between pillar two wood colors
+     @param value value that we want to map
+     @return mapped color
+     */
+     Vec3f woodMap(float value){
+     
+     Vec3f earlyWood = Vec3f(0.2862745,0.45490196,0.64313725);
+     Vec3f lateWood = Vec3f(0.054901,0.184313,0.337254);
+     Vec3f color = (Vec3f) ((lateWood - earlyWood) * value + earlyWood);
           
-          Vec3f earlyWood = Vec3f(0.2862745,0.45490196,0.64313725);
-          Vec3f lateWood = Vec3f(0.054901,0.184313,0.337254);
-          Vec3f color = (Vec3f) ((lateWood - earlyWood) * value + earlyWood);
-               
-               return color;
-          // (int) ((r2 - r1) * val + r1)
+          return color;
+     // (int) ((r2 - r1) * val + r1)
      }
 }
 namespace rt{

@@ -4,33 +4,6 @@
 #pragma once
 #include"Texture.h"
 
-namespace {
-     /**  @Brief Function to interpolate between marble pillar colors
-     @param value value that we want to map
-     @return mapped color
-     */
-     DllExport Vec3f marbleMap(float value);
-     
-     /**  @Brief Smoothstep function
-          @param val value that we want to use the smoothstep on
-          @return smoothstep value
-     */
-     DllExport double smoothstep(float val);
-     
-     /**  @Brief Mixes between two colors
-          @param C0 first color
-          @param C1 second color
-          @param f weight coefficient
-          @return returns the mixed color */
-     DllExport Vec3f mix(Vec3f& C0, Vec3f& C1, float f );
-     
-     /**  @Brief Step function
-          @param x value to use the step on
-          @param a step parameter*/
-     DllExport float step(float x , float a);
-     }
-
-
 namespace rt {
      class CTextureMarble : public CTexture{
      

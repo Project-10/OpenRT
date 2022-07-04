@@ -9,6 +9,7 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f&bgColor, const Size resolu
      auto pScene  = std::make_shared<CScene>(bgColor);
      
      //textures
+     //                                                     (2.0,  6, 0.24, 2.3, 2.5, 0.35 , true) 
 	auto pTextureStripes = std::make_shared<CTextureStripes>(5);
      
      //Shaders

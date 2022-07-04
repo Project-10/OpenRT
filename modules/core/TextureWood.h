@@ -5,15 +5,6 @@
 
 #include"Texture.h"
 
-namespace {
-     /**  @Brief Function to interpolate between pillar two wood colors
-          @param value value that we want to map
-          @return mapped color
-     */
-     DllExport Vec3f woodMap(float value);
-
-}
-
 namespace rt {
 
      class CTextureWood : public CTexture{
