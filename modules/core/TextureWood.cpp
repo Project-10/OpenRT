@@ -38,13 +38,13 @@ namespace rt{
           //fx,fy,fz increase -> more stiff peaks (value around 0.5 gives a more real-like wood texture)
           //Having a small difference between fx,fy, and fz gives more realism
           
-          double n = 0.6 * pn.noise(0.55*u, 0.45*v ,0.35*w); //This noise function call puts noise on the rings to give wood the                                                          natural felling
+          double n = 0.6 * pn.noise(Point3f(0.55f * u, 0.45f * v ,0.35f * w)); //This noise function call puts noise on the rings to give wood the                                                          natural felling
           //n = n - floor(n);
               
 		//Difference between point and center of the shape
-		float value = m_period * sqrt(w * w + u * u) + n; //This noise function call gives wood roughness to texture
+		float value = m_period * sqrtf(w * w + u * u) + n; //This noise function call gives wood roughness to texture
           
-          double n1 = 3.70 * pn.noise(20* u , 10*v , 10*w);
+          double n1 = 3.70 * pn.noise(Point3f(20 * u , 10 * v , 10 * w));
           
           
           //Perlin Noise
