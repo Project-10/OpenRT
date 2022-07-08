@@ -44,7 +44,7 @@ namespace rt{
 			@param x value to use the step on
 			@param a step parameter
 			*/
-			float step(float x, float a)
+			float stepFunc(float x, float a)
 			{
 				return (float)(x > a);
 			}
@@ -62,20 +62,29 @@ namespace rt{
 		double t =  pn.turbulence(uvw , m_octaves, m_frequency , m_amplitude , m_lacunarity, m_persistence);
 		Vec3f color;
 		if (m_weird ==  true) {
-			t = t - floor(t);
-			color = marbleMap(abs(sin(t)));
-		}
-		else
-			//color = marbleMap(abs(sin(0.5*u + t)));
-			color = marbleMap(abs(sin(0.5*u + 1.2*t)));
+               t = t - floor(t);
+               color = marbleMap(abs(sin(m_period*t)));
                
-		//unable for more control
-		//color.val[0] = smoothstep(color.val[0]);
-		//color.val[1] = smoothstep(color.val[1]);
-		//color.val[2] = smoothstep(color.val[2]);
+               Vec3f white = Vec3f::all(1);
+               color = mix(color, white, 0.1);
+		}
+		else{
+               //color = marbleMap(abs(sin(0.5*u + t)));
+               color = marbleMap(abs(sin(m_period*u + 1*t)));
+               //        unable for more control
+               color.val[0] = smoothstep(color.val[0] * 1.15);
+               color.val[1] = smoothstep(color.val[1]* 1.15);
+               color.val[2] = smoothstep(color.val[2]* 1.15);
 
-		//Vec3f color = marbleMap(abs(t));
-		Vec3f white = Vec3f::all(1);
-		return mix(color, white, 0.2);
+               //Vec3f color = marbleMap(abs(t));
+               Vec3f white = Vec3f::all(1);
+               color = mix(color, white, 0.1);
+               
+               if((stepFunc(color.val[0], 1) == 1) && (stepFunc(color.val[1], 1) == 1) && (stepFunc(color.val[2], 1) == 1))
+                    //vcolor = Vec3f(0.203, 0.2617 , 0.2422);
+                    //color = Vec3f(1,1,1);
+                    color = Vec3f(0.6 , 0.53 , 0.467);
+               }
+          return color;
 	}
 }

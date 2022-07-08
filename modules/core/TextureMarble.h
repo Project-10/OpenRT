@@ -39,6 +39,6 @@ namespace rt {
 		float	m_amplitude;	///< Noise amplitude
 		float	m_lacunarity;	///< Noise lacunarity
 		float	m_persistence;	///< Noise persistence
-		bool	m_weird;		///< boolean to enable a new type of marble(please look at the TextureMarble.cpp)
+		bool	     m_weird;		///< boolean to enable a new type of marble(please look at the TextureMarble.cpp)
 	};
 }

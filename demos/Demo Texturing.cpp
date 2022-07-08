@@ -9,7 +9,7 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f&bgColor, const Size resolu
      auto pScene  = std::make_shared<CScene>(bgColor);
      
      //textures
-     //                                                     (2.0,  6, 0.24, 2.3, 2.5, 0.35 , true) 
+     //                                                     (2.0,  6, 0.24, 2.3, 2.5, 0.35 , true)
 	auto pTextureStripes = std::make_shared<CTextureStripes>(5);
      
      //Shaders
@@ -113,7 +113,7 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f&bgColor, const Size resolut
      auto pScene  = std::make_shared<CScene>(bgColor);
      
      //textures
-	auto pTextureMarble = std::make_shared<CTextureMarble>(1.0f);
+	auto pTextureMarble = std::make_shared<CTextureMarble>(0.5f , 6 , 0.24 , 2.4 , 2.5 , 0.35 , false);
      
      //Shaders
      auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 0.0f, 40.0f);
@@ -170,3 +170,4 @@ int main() {
      waitKey();
      return 0;
 }
+

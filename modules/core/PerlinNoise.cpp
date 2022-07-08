@@ -9,7 +9,8 @@
 
 
 namespace rt{
-	namespace {
+	namespace
+     {
 		/**  @Brief Smoothstep function
 			 @param val value that we want to use the smoothstep on
 			 @return smoothstep value
@@ -46,7 +47,7 @@ namespace rt{
 			double v = h < 4 ? y : h == 12 || h == 14 ? x : z;
 			return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 		}
-	}
+     }
 	 
 	 
 	 CPerlinNoise::CPerlinNoise() 
@@ -98,7 +99,6 @@ namespace rt{
           int BB = m_p[B + 1] + Z;
           
           //Interpolation
-          
           return lerp(w ,
                          lerp(v,
                               lerp(u, grad(m_p[AA], x, y, z), grad(m_p[BA], x-1, y, z)),
