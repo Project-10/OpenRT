@@ -2,6 +2,7 @@
 
 #include "TextureMarble.h"
 #include "PerlinNoise.h"
+#include "CGradient.h"
 
 namespace rt{
 namespace {
@@ -24,9 +25,15 @@ Vec3f mix(const Vec3f& C0, const Vec3f& C1, float f)
  */
 Vec3f marbleMap(float value)
 {
-     Vec3f white =  RGB(255, 255, 255);
-     Vec3f blue  =  RGB(119, 135, 153);
-     return mix(blue, white, value);
+     Element white = Element (RGB(255, 255, 255), 1);
+     Element blue  = Element (RGB(119, 135, 153), 0);
+     Element green = Element (RGB(0, 135, 0), 0.5f);
+     
+     CGradient color(blue , white , value);
+     //  color.addColor(green);                            //Adding a new element to the gradient
+     
+     return color.getColorGradient(value);
+     
 }
 
 /**
@@ -87,3 +94,4 @@ Vec3f CTextureMarble::getTexel(const Vec3f& uvw) const
      return color;
 }
 }
+

@@ -50,6 +50,7 @@
 #include "core/TextureMarble.h"
 #include "core/TextureWood.h"
 #include "core/PerlinNoise.h"
+#include "core/CGradient.h"
 
 #include "core/LightSpot.h"
 
