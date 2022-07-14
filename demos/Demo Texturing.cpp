@@ -4,7 +4,6 @@
 using namespace rt;
 
 std::shared_ptr<CScene> buildSceneStripes(const Vec3f&bgColor, const Size resolution) {
-     
      const float		intensity = 5000;
      auto pScene  = std::make_shared<CScene>(bgColor);
      
@@ -41,7 +40,6 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f&bgColor, const Size resolu
 
 
 std::shared_ptr<CScene> buildSceneRings(const Vec3f&bgColor, const Size resolution) {
-     
      const float		intensity = 5000;
      auto pScene  = std::make_shared<CScene>(bgColor);
      
@@ -76,13 +74,11 @@ std::shared_ptr<CScene> buildSceneRings(const Vec3f&bgColor, const Size resoluti
 }
 
 std::shared_ptr<CScene> buildSceneWood(const Vec3f&bgColor, const Size resolution) {
-     
      const float		intensity = 5000;
      auto pScene  = std::make_shared<CScene>(bgColor);
-     
      //textures
      auto pTextureWood = std::make_shared<CTextureWood>(1.5f);
-     
+
      //Shaders
      auto pShaderWood	= std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
      auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
@@ -108,10 +104,8 @@ std::shared_ptr<CScene> buildSceneWood(const Vec3f&bgColor, const Size resolutio
 
 
 std::shared_ptr<CScene> buildSceneMarble(const Vec3f&bgColor, const Size resolution) {
-     
      const float		intensity = 5000;
      auto pScene  = std::make_shared<CScene>(bgColor);
-     
      //textures
      auto pTextureMarble = std::make_shared<CTextureMarble>(0.5f , 6 , 0.24 , 2.4 , 2.5 , 0.35 , false);
      
@@ -140,10 +134,9 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f&bgColor, const Size resolut
 
 
 int main() {
-     
+
      const Vec3f		bgColor = RGB(0.1f, 0.1f, 0.1f);
      const Size		     resolution = Size(800, 600);
-     
      auto pSceneStripes = buildSceneStripes(bgColor, resolution);
      auto pSceneRings = buildSceneRings(bgColor, resolution);
      auto pSceneWood = buildSceneWood(bgColor, resolution);

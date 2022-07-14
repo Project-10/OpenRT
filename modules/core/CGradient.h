@@ -14,7 +14,6 @@ namespace rt{
  */
 class Element{
 public:
-     
      /**
       @Brief Creates an instance with a color and its weight
       */
@@ -40,7 +39,6 @@ private:
 
 
 class CGradient{
-     
 public:
      /**
       @Brief Defines the borders of the color gradient
@@ -74,6 +72,3 @@ private:
      
 };
 }
-
-
-

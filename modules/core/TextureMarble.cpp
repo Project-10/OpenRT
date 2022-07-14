@@ -33,7 +33,6 @@ Vec3f marbleMap(float value)
      //  color.addColor(green);                            //Adding a new element to the gradient
      
      return color.getColorGradient(value);
-     
 }
 
 /**

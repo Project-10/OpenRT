@@ -28,7 +28,6 @@ void CGradient::addColor(Element newColor){
      float weight = newColor.getWeight();
      Vec3f color = newColor.getColor();
      for (int it = 0; it < m_colorsVec.size(); it++) {
-          
           if (m_colorsVec[it].getWeight() < weight) {
                m_colorsVec.insert(m_colorsVec.begin() + it + 1, newColor);
                break;
@@ -39,13 +38,10 @@ void CGradient::addColor(Element newColor){
           }
           
      }
-     
-     
 }
 
 //Calculate color gradient
 Vec3f CGradient::getColorGradient(float val){
-     
      std::vector<Element>::iterator it;
      
      for (int it = 0; it < m_colorsVec.size(); it++) {
@@ -65,6 +61,4 @@ Vec3f CGradient::getColorGradient(float val){
      
      
 }
-
-
 }

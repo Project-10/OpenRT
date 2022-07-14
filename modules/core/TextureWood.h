@@ -8,7 +8,6 @@
 namespace rt {
 
 class CTextureWood : public CTexture{
-     
 public:
      /**
       @brief wood constructor
