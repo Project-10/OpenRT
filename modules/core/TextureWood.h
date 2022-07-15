@@ -2,35 +2,36 @@
 //  Created by Mahmoud El Bergui on 21.04.22.
 //
 
-
-#include"Texture.h"
+#include "Texture.h"
+#include "CGradient.h"
 
 namespace rt {
 
-class CTextureWood : public CTexture{
-public:
-     /**
-      @brief wood constructor
-      @param Number of periods
-      */
-     DllExport CTextureWood(float period) : m_period(period) {}
+	class CTextureWood : public CTexture {
+	public:
+		/**
+		@brief wood constructor
+		@param Number of periods
+		*/
+		DllExport CTextureWood(float period);
      
-     DllExport virtual ~CTextureWood(void) = default;
+		DllExport virtual ~CTextureWood(void) = default;
      
-     /**
-      @brief Returns the texture element with coordinates \b (uvw)
-      @param uv The textel coordinates in World space
-      @return The texture elment (color)
-      */
-     DllExport Vec3f getTexel(const Vec3f &uvw) const override;
+		/**
+		@brief Returns the texture element with coordinates \b (uvw)
+		@param uv The textel coordinates in World space
+		@return The texture elment (color)
+		*/
+		DllExport Vec3f getTexel(const Vec3f &uvw) const override;
      
-     /**
-      @Brief Checks if we are dealing with procedural textiures
-      */
-     DllExport bool isProcedural(void) const override { return true; }
+		/**
+		@Brief Checks if we are dealing with procedural textiures
+		*/
+		DllExport bool isProcedural(void) const override { return true; }
      
      
-private:
-     float m_period;///<Period of the rings
-};
+	private:
+		float		m_period;	///< Period of the rings
+		CGradient	m_gradient;
+	};
 }
