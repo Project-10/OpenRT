@@ -6,6 +6,7 @@
 #include "types.h"
 
 namespace rt{
+	// TODO: copy constructor and copy operator
 	class CGradient{
 	public:
 		/**
@@ -13,7 +14,7 @@ namespace rt{
 		* @param color0
 		* @param color1
 		*/
-		DllExport CGradient(const Vec3f& color0, const Vec3f& color1);
+		DllExport CGradient(const Vec3f& color0 = Vec3f::all(0), const Vec3f& color1 = Vec3f::all(1));
      
 		/**
 		@Brief Adds a color and its weight to the gradient vector

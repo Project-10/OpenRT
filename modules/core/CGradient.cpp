@@ -37,6 +37,10 @@ namespace rt {
 
 	Vec3f CGradient::getColor(float val) const
 	{
+		// These 2 lines are for debugging
+		if (val < 0) return RGB(0, 0, 255);
+		if (val > 1) return RGB(255, 0, 0);
+		
 		return (1 - val) * m_color0 + val * m_color1;
 
 		 //std::vector<Element>::iterator it;
