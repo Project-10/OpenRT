@@ -17,6 +17,7 @@ namespace rt{
 		/**  
 		 * @brief Generate 3D noise
 		 * @param p coordinate of 3d point value
+		 * @return A pseudo-random value in range [-1; 1]
 		 */
 		DllExport static float noise(const Point3f& p);
      
