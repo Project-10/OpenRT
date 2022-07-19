@@ -32,11 +32,11 @@ namespace rt {
 		 //Having a small difference between fx,fy, and fz gives more realism
      
 		 //float noise0 = (1 + CPerlinNoise::noise(0.45f * uvw)) / 2;
-		 float noise1 = 1 + CPerlinNoise::noise(Point3f(0.55f * u, 0.45f * v ,0.35f * w));	// This noise function call puts noise on the rings to give wood the natural felling
-		 float noise2 = 1 + CPerlinNoise::noise(15 * uvw);									// This noise function call gives wood roughness to texture
+		 float noise1 = 1 + CPerlinNoise::noise(Point3f(m_period / 2.5f * u, m_period / 2.5f * v ,m_period / 2.5f * w));	// This noise function call puts noise on the rings to give wood the natural felling
+		 float noise2 = 1 + CPerlinNoise::noise(m_period * 10.0f * uvw);									// This noise function call gives wood roughness to texture
 
 		 // Rings texture distorted (with added) noise
-		 float value = m_period * sqrtf(w * w + u * u) + 0.6f * noise1 + 0.5f * noise2; 
+		 float value = m_period * sqrtf(w * w + u * u) + 0.4f * noise1 + 0.5f * noise2;
 
 		 
 		 return m_gradient.getColor(fmodf(value, 1));
