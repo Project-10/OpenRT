@@ -32,6 +32,6 @@ namespace rt {
      
 	private:
 		float		m_period;	///< Period of the rings
-		CGradient	m_gradient;
+		CGradient	     m_gradient;
 	};
 }
