@@ -85,6 +85,12 @@ namespace rt {
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 
+	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
+	{
+		// TODO: Implement this metho
+		return ray.hitPoint() - m_origin;
+	}
+
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 
 		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
