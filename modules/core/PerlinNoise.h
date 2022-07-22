@@ -21,18 +21,7 @@ namespace rt{
 		 */
 		DllExport static float noise(const Point3f& p);
      
-		/**  
-		 * @brief Generate 3D turbulence
-		 * @param p coordinate of 3d point value
-		 * @param octaves of noise octaves(layers)
-		 * @param f frequency of the noise
-		 * @param amplitude amplitude of the noise
-		 * @param lacunarity lacunarity value(Determines how finer the next octaves should be) Lacunarity>1
-		 * @param persistence persistence value(Controls how fast the next octave will die out) 0<Persistence<1
-		 * @return turbulence value
-		 */
-		DllExport static float turbulence(const Point3f& p, int octaves ,float f, float amplitude, float lacunarity, float persistence);
-     
+    
 	private:
 		inline static std::vector<int> m_p = { // Permutation vector with reference values used by Perlin
 			151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,

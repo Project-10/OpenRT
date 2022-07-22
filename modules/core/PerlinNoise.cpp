@@ -52,55 +52,48 @@ namespace rt{
 	}
 
 
-float CPerlinNoise::noise(const Point3f& p)
-{
-	 //Find the unit cube that contains the point
-     int X = (int) floor(p.x) & 255;
-     int Y = (int) floor(p.y) & 255;
-     int Z = (int) floor(p.z) & 255;
+	float CPerlinNoise::noise(const Point3f& p)
+	{
+		 // Find the unit cube that contains the point
+		 int X = (int) floor(p.x) & 255;
+		 int Y = (int) floor(p.y) & 255;
+		 int Z = (int) floor(p.z) & 255;
      
-     // Find the coordinates of the cube containing the points
-     float x = p.x - floor(p.x);
-     float y = p.y - floor(p.y);
-     float z = p.z - floor(p.z);
+		 // Find the coordinates of the cube containing the points
+		 float x = p.x - floor(p.x);
+		 float y = p.y - floor(p.y);
+		 float z = p.z - floor(p.z);
      
-     //Compute the smoothstep function for x,y,z coordinates
-     float u = fade(x);
-     float v = fade(y);
-     float w = fade(z);
+		 // Compute the smoothstep function for x,y,z coordinates
+		 float u = fade(x);
+		 float v = fade(y);
+		 float w = fade(z);
      
-     //Hash coordinates of 8 cube corners
-     const int n = static_cast<int>(m_p.size());
-	 int A  = (m_p[X % n] + Y);
-	 int B  = (m_p[(X + 1) % n] + Y);
+		 // Hash coordinates of 8 cube corners
+		 const int n = static_cast<int>(m_p.size());
+		 int A  = (m_p[X % n] + Y);
+		 int B  = (m_p[(X + 1) % n] + Y);
      
-	 int AA = (m_p[A % n] + Z);
-     int AB = (m_p[(A + 1) % n] + Z);
-     int BA = (m_p[B % n] + Z);
-     int BB = (m_p[(B + 1) % n] + Z);
+		 int AA = (m_p[A % n] + Z);
+		 int AB = (m_p[(A + 1) % n] + Z);
+		 int BA = (m_p[B % n] + Z);
+		 int BB = (m_p[(B + 1) % n] + Z);
 
-     // Interpolation
-     return	lerp(w ,
-				lerp(v,
-					lerp(u, grad(m_p[AA % n], x, y, z),   grad(m_p[BA % n], x-1, y, z)),
-					lerp(u, grad(m_p[AB % n], x, y-1, z), grad(m_p[BB % n], x-1, y-1, z))
-				),
-				lerp(v ,
-					lerp(u, grad(m_p[(AA+1) % n], x, y, z-1),   grad(m_p[(BA+1) % n], x-1, y, z-1)),
-					lerp(u, grad(m_p[(AB+1) % n], x, y-1, z-1), grad(m_p[(BB+1) % n], x-1, y-1, z-1))
-				)
-			);
-}
+		 // Interpolation
+		 float res = lerp(w ,
+					lerp(v,
+						lerp(u, grad(m_p[AA % n], x, y, z),   grad(m_p[BA % n], x-1, y, z)),
+						lerp(u, grad(m_p[AB % n], x, y-1, z), grad(m_p[BB % n], x-1, y-1, z))
+					),
+					lerp(v ,
+						lerp(u, grad(m_p[(AA+1) % n], x, y, z-1),   grad(m_p[(BA+1) % n], x-1, y, z-1)),
+						lerp(u, grad(m_p[(AB+1) % n], x, y-1, z-1), grad(m_p[(BB+1) % n], x-1, y-1, z-1))
+					)
+				);
+	
+		if (res > 1 || res < -1) printf("error in res: %f\n", res);
+		return res;
 
-float CPerlinNoise::turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity ,float persistence)  
-{
-     float res = 0;
-     for (int i = 1; i <= octaves; i++) {
-          res += amplitude * noise(f * p);
-          amplitude *= persistence;
-          f *= lacunarity;
-     }
-     return res;
-}
+	}
 
 }
