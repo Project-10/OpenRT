@@ -7,7 +7,7 @@
 #include "BoundingBox.h"
 
 namespace rt {
-	struct Ray;
+	//struct Ray;
 	
 	// ================================ Primitive Interface Class ================================
 	/**
@@ -57,10 +57,16 @@ namespace rt {
 		DllExport virtual Vec3f				getOrigin(void) const = 0;
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
-		 * @param ray Point at the surface
+		 * @param ray Ray, which has hit the geometry. 
 		 * @return The texture coordinates
 		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
+		/**
+		 * @brief Returns the 3d coordinates in OCS for solid procedural texturing
+		 * @param ray Ray, which has hit the geometry. 
+		 * return the 3d coordinates of the ray's hitpoint in OCS
+		 */
+		DllExport virtual Vec3f				getSolidTextureCoords(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive

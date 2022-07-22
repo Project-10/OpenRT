@@ -94,6 +94,11 @@ namespace rt {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
+	Vec3f CPrimBoolean::getSolidTextureCoords(const Ray& ray) const
+	{
+		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+	}
+
 	void CPrimBoolean::flipNormal(void) {
 		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();
 		for (auto &pPrim : m_vpPrims2) pPrim->flipNormal();

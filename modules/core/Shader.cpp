@@ -20,7 +20,7 @@ namespace rt {
 	{
 		//return m_pAmbientColorMap ? m_pAmbientColorMap->getTexel(ray.hit->getTextureCoords(ray)) : m_ambientColor;
         if(m_pDiffuseColorMap){
-            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hitPoint())
+            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hit->getSolidTextureCoords(ray))
             : m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray));
         }
             return m_pDiffuseColorMap ? m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray)):m_ambientColor;
@@ -47,7 +47,7 @@ namespace rt {
 		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
 #endif
         if(m_pDiffuseColorMap){
-            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hitPoint())
+            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hit->getSolidTextureCoords(ray))
             : m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray));
         }
         return m_pDiffuseColorMap ? m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray)):res;	}
@@ -68,7 +68,7 @@ namespace rt {
 	{
 		//return m_pSpecularLevelMap ? m_specularLevel * m_pSpecularLevelMap->getTexel(ray.hit->getTextureCoords(ray))[0] : m_specularLevel;
         if(m_pDiffuseColorMap){
-            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hitPoint())[0]
+            return m_pDiffuseColorMap->isProcedural() ? m_pDiffuseColorMap->getTexel(ray.hit->getSolidTextureCoords(ray))[0]
             : m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray))[0];
         }
             return m_pDiffuseColorMap ? m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray))[0]: m_specularLevel;

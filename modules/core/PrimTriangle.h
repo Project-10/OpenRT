@@ -49,6 +49,7 @@ namespace rt {
 		DllExport virtual void	transform(const Mat& t) override;
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
+		DllExport virtual Vec3f	getSolidTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
 		
 		

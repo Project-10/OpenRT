@@ -54,6 +54,12 @@ namespace rt {
 		return res;
 	}
 
+    DllExport Vec3f CPrimDisc::getSolidTextureCoords(const Ray& ray) const
+    {
+		// TODO: Implement this method
+		return ray.hitPoint();
+    }
+
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
 	CBoundingBox CPrimDisc::getBoundingBox(void) const
 	{

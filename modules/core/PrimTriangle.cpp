@@ -59,6 +59,12 @@ namespace rt {
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
 
+    DllExport Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
+    {
+		// TODO: Implement this metho
+		return ray.hitPoint();
+    }
+
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{
 		CBoundingBox res;
