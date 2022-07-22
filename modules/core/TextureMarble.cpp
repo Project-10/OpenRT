@@ -2,7 +2,6 @@
 
 #include "TextureMarble.h"
 #include "PerlinNoise.h"
-#include "CGradient.h"
 
 namespace rt{
 	namespace {
@@ -19,28 +18,11 @@ namespace rt{
 		}
 
 		/**
-		 @Brief Function to interpolate between marble pillar colors
-		 @param value value that we want to map
-		 @return mapped color
-		 */
-		Vec3f marbleMap(float value)
-		{
-			 Vec3f white = RGB(255, 255, 255);
-			 Vec3f blue  = RGB(119, 135, 153);
-			 Vec3f green = RGB(0, 135, 0);
-     
-			 CGradient color(blue , white);
-			 //  color.addColor(green);                            //Adding a new element to the gradient
-     
-			 return color.getColor(value);
-		}
-
-		/**
 		 @Brief Smoothstep function
 		 @param val value that we want to use the smoothstep on
 		 @return smoothstep value
 		 */
-		double smoothstep(float val)
+		float smoothstep(float val)
 		{
 			 return val * val * val * (val * (val * 6 - 15) + 10);
 		}
@@ -64,33 +46,32 @@ namespace rt{
 		 float v = uvw.val[1];
 		 float w = uvw.val[2];
      
-		 double t = CPerlinNoise::turbulence(uvw , m_octaves, m_frequency , m_amplitude , m_lacunarity, m_persistence);
+		 float t = CPerlinNoise::turbulence(uvw , m_octaves, m_frequency , m_amplitude , m_lacunarity, m_persistence);
 		 Vec3f color;
-		 if (m_weird ==  true) {
+		 if (m_weird) {
 			  t = t - floor(t);
-			  color = marbleMap(abs(sin(m_period*t)));
+			  color = m_gradient.getColor(abs(sinf(m_period*t)));
           
 			  Vec3f white = Vec3f::all(1);
-			  color = mix(color, white, 0.1);
+			  color = mix(color, white, 0.1f);
 		 }
 		 else{
 			  //color = marbleMap(abs(sin(0.5*u + t)));
-			  color = marbleMap(abs(sin(m_period*u + 1*t)));
+			  color = m_gradient.getColor(abs(sinf(m_period*u + 1*t)));
 			  //        unable for more control
-			  color.val[0] = smoothstep(color.val[0] * 1.15);
-			  color.val[1] = smoothstep(color.val[1]* 1.15);
-			  color.val[2] = smoothstep(color.val[2]* 1.15);
+			  color.val[0] = smoothstep(color.val[0] * 1.15f);
+			  color.val[1] = smoothstep(color.val[1] * 1.15f);
+			  color.val[2] = smoothstep(color.val[2] * 1.15f);
           
 			  //Vec3f color = marbleMap(abs(t));
 			  Vec3f white = Vec3f::all(1);
-			  color = mix(color, white, 0.1);
+			  color = mix(color, white, 0.1f);
           
 			  if((stepFunc(color.val[0], 1) == 1) && (stepFunc(color.val[1], 1) == 1) && (stepFunc(color.val[2], 1) == 1))
 				   //vcolor = Vec3f(0.203, 0.2617 , 0.2422);
 				   //color = Vec3f(1,1,1);
-				   color = Vec3f(0.6 , 0.53 , 0.467);
+				   color = Vec3f(0.6f, 0.53f, 0.467f);
 		 }
 		 return color;
 	}
 }
-

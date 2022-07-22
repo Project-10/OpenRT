@@ -1,6 +1,6 @@
 //  Created by Mahmoud El Bergui on 12.07.22.
 
-#include "CGradient.h"
+#include "Gradient.h"
 
 namespace rt {
 	Vec3f CGradient::getColor(float x) const

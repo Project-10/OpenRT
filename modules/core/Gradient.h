@@ -16,14 +16,14 @@ namespace rt{
 		* @param color0 Color value for the point 0
 		* @param color1 Color point for the point 1
 		*/
-		DllExport CGradient(const Vec3f& color0 = Vec3f::all(0), const Vec3f& color1 = Vec3f::all(1)) : m_mColors({{0, color0}, {1, color1}}) {}
+		DllExport CGradient(const Vec3f& color0 = Vec3f::all(0), const Vec3f& color1 = Vec3f::all(1)) : m_mColors({{0.0f, color0}, {1.0f, color1}}) {}
 		/**
 		* @brief Constructor
 		* @param colors The map with colors and their positions
 		* @warning Take care to assign a color for points 0 and 1
 		*/
-		DllExport CGradient(const std::map<float, Vec3f>& colors) : m_mColors(colors) {}
-		DllExport CGradient(const CGradient&) = delete;
+		DllExport CGradient(const std::map<float, Vec3f> colors) : m_mColors(colors) {}
+		DllExport CGradient(const CGradient&) = default;
 		DllExport ~CGradient(void) = default;
 		DllExport const CGradient& operator=(const CGradient&) = delete;
      
@@ -45,4 +45,6 @@ namespace rt{
 	private:
 		std::map<float, Vec3f>	m_mColors;	//< Data container that stores the RGB colors and their positions
 	};
+
+	using ptr_gradient_t = std::shared_ptr<CGradient>;
 }
