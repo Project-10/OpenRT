@@ -83,8 +83,8 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
 	
 	// Wood shader
-	//CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
-	CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
+	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
+	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
 	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 12.0f);
 	auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
 
@@ -97,6 +97,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Geometries
+	CTransform T;
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	
 	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
@@ -104,6 +105,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	
 	auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
 	auto primSphere = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(3, 1, 0), 1.5f);
+	primSphere->transform(T.rotate(Vec3f(0, 1, 0), 45).get());
 	pScene->add(primSphere);
 
 	//Light
@@ -162,7 +164,7 @@ int main()
 	 
 	 
 	 Timer::start("Rendering...");
-	 Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
+	 Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
 	 Timer::stop();
 	 
 	 imshow("Marble Texture", img);
@@ -170,4 +172,3 @@ int main()
      waitKey();
      return 0;
 }
-

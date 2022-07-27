@@ -1,7 +1,6 @@
 //  Created by Mahmoud El Bergui on 12.07.22.
 
 #pragma once
-#pragma once
 
 #include "types.h"
 
@@ -43,8 +42,6 @@ namespace rt{
      
      
 	private:
-		std::map<float, Vec3f>	m_mColors;	//< Data container that stores the RGB colors and their positions
+		std::map<float, Vec3f>	m_mColors;	///< Data container that stores the RGB colors and their positions
 	};
-
-	using ptr_gradient_t = std::shared_ptr<CGradient>;
 }

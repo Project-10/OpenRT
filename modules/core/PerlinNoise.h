@@ -2,28 +2,29 @@
 //  Created by Mahmoud El Bergui on 26.04.22.
 #pragma once
 
-#include <stdio.h>
-#include <vector>
+#include "types.h"
 
 namespace rt{
+	/**
+	 * @brief Perlin Noise class
+	 * @details Reference: https://cs.nyu.edu/~perlin/noise/
+	 * @author Mahmoud El Bergui, m.elbergui@jacobs-university.de
+	 */
 	class CPerlinNoise {
 	public:
-		/**  
-		 * @brief Construct Perlin Noise using values of the permutation vector
-		 */
 		DllExport CPerlinNoise(void) = default;
 		DllExport ~CPerlinNoise(void) = default;
      
 		/**  
 		 * @brief Generate 3D noise
-		 * @param p coordinate of 3d point value
+		 * @param p Coordinate of 3d point value
 		 * @return A pseudo-random value in range [-1; 1]
 		 */
 		DllExport static float noise(const Point3f& p);
      
     
 	private:
-		inline static std::vector<int> m_p = { // Permutation vector with reference values used by Perlin
+		inline static std::vector<int> m_p = {
 			151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
 			8,99,37,240,21,10,23,190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,
 			35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,
