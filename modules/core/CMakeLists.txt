@@ -6,7 +6,7 @@ file(GLOB CORE_SOURCES "*.cpp")
 file(GLOB CORE_HEADERS "*.h")
 
 source_group("Include" FILES ${CORE_INCLUDE})
-source_group("" FILES ${CORE_SOURCES} ${CORE_HEADERS}) 
+source_group("" FILES ${CORE_SOURCES} ${CORE_HEADERS})
 source_group("Source Files\\Cameras" FILES "ICamera.h" )
 source_group("Source Files\\Cameras\\perspective" FILES "CameraPerspective.h" "CameraPerspective.cpp"  "CameraPerspectiveTarget.h" "CameraThinLens.h" "CameraThinLens.cpp")
 source_group("Source Files\\Cameras\\orthographic" FILES "CameraOrthographic.h" "CameraOrthographic.cpp" "CameraOrthographicTarget.h")
@@ -44,9 +44,12 @@ source_group("Source Files\\Common\\Samplers" FILES "Sampler.h" "Sampler.cpp")
 source_group("Source Files\\Common\\Samplers\\Random" FILES "SamplerRandom.h" "SamplerRandom.cpp")
 source_group("Source Files\\Common\\Samplers\\Stratified" FILES "SamplerStratified.h" "SamplerStratified.cpp")
 source_group("Source Files\\Common\\Transform" FILES "Transform.h" "Transform.cpp")
+source_group("Source Files\\Common\\Gradient" FILES "Gradient.h" "Gradient.cpp")
 source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp")
+source_group("Source Files\\Common\\Texture" FILES "PerlinNoise.cpp" "PerlinNoise.h")
 source_group("Source Files\\Common\\Texture\\Stripes" FILES "TextureStripes.h" "TextureStripes.cpp")
 source_group("Source Files\\Common\\Texture\\Rings" FILES "TextureRings.h" "TextureRings.cpp")
+source_group("Source Files\\Common\\Texture\\Wood" FILES "TextureWood.h" "TextureWood.cpp")
 source_group("Source Files\\Common\\Ray" FILES "Ray.h" "Ray.cpp")
 source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h" "tools.h")
 
@@ -65,13 +68,13 @@ set_target_properties(core PROPERTIES VERSION ${OPENRT_VERSION_MAJOR}.${OPENRT_V
 set_target_properties(core PROPERTIES LINKER_LANGUAGE CXX)
 
 #install
-install(TARGETS core 
+install(TARGETS core
 	EXPORT OpenRTTargets
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin 
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
 	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 install(FILES ${CORE_INCLUDE} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 install(FILES ${CORE_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/openrt)
  
-# Creates folder "Modules" and adds target project 
+# Creates folder "Modules" and adds target project
 set_target_properties(core PROPERTIES FOLDER "Modules")
