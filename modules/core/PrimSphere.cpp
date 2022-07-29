@@ -4,6 +4,16 @@
 #include "macroses.h"
 
 namespace rt {
+	// Constructor
+	CPrimSphere::CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
+		: IPrim(pShader)
+		, m_origin(origin)
+		, m_radius(radius)
+		, m_t(Mat::eye(4, 4, CV_32FC1))
+	{
+		for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
+	}
+	
 	bool CPrimSphere::intersect(Ray& ray) const
 	{
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
@@ -70,6 +80,9 @@ namespace rt {
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
+
+		// Accumulate transformation in the transformation matrix
+		m_t = m_t * T;
 	}
 
 	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
@@ -79,7 +92,8 @@ namespace rt {
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
-		Vec3f hitPoint = ray.hitPoint() - m_origin;
+		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
+		Vec3f hitPoint = getSolidTextureCoords(ray);	// Hitpoint in OCS
 		float phi = atan2f(hitPoint[2], hitPoint[0]);
 		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
@@ -87,8 +101,7 @@ namespace rt {
 
 	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
 	{
-		// TODO: Implement this metho
-		return ray.hitPoint() - m_origin;
+		return CTransform::point(ray.hitPoint(), m_t.inv());
 	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 

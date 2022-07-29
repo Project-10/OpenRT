@@ -20,11 +20,7 @@ namespace rt {
 		 * @param origin Position of the center of the sphere
 		 * @param radius Radius of the sphere
 		 */
-		DllExport CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
-			: IPrim(pShader)
-			, m_origin(origin)
-			, m_radius(radius)
-		{}
+		DllExport CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius);
 		DllExport virtual ~CPrimSphere(void) = default;
 
 		DllExport virtual bool 			intersect(Ray& ray) const override;
@@ -41,7 +37,8 @@ namespace rt {
 
 		
 	private:
-		Vec3f m_origin;		///< Position of the center of the sphere
-		float m_radius;		///< Radius of the sphere
+		Vec3f	m_origin;	///< Position of the center of the sphere
+		float	m_radius;	///< Radius of the sphere
+		Mat		m_t;		///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 	};
 }
