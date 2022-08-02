@@ -5,14 +5,12 @@
 
 namespace rt{
 	namespace {
-		/** 
-		 * @brief Smoothstep function
-		 * @param val value that we want to use the smoothstep on
-		 * @return smoothstep value
-		 */
-		float fade(float val)
+		// Ken Perlin's smoothstep function
+		float smootherstep(float x)
 		{
-			return val * val * val * (val * (val * 6 - 15) + 10);
+			if (x < 0) return 0;
+			if (x > 1) return 1;
+			return x * x * x * (x * (x * 6 - 15) + 10);
 		}
 
 		/**
@@ -58,9 +56,9 @@ namespace rt{
 		float z = p.z - floor(p.z);
      
 		// Compute the smoothstep function for x,y,z coordinates
-		float u = fade(x);
-		float v = fade(y);
-		float w = fade(z);
+		float u = smootherstep(x);
+		float v = smootherstep(y);
+		float w = smootherstep(z);
      
 		// Hash coordinates of 8 cube corners
 		const int n = static_cast<int>(m_p.size());
