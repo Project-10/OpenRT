@@ -7,11 +7,13 @@ namespace rt {
 	{
 		float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 		if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
-		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
+		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) <= m_radius) return false;
 
 		ray.t = dist;
 		ray.hit = shared_from_this();
 		return true;
+  
+  
 	}
 
 	/// @todo Optimize it
@@ -38,6 +40,9 @@ namespace rt {
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
+          
+          // Accumulate transformation in the transformation matrix
+		m_t = m_t * T;
 	}
 
 	Vec2f CPrimDisc::getTextureCoords(const Ray& ray) const
@@ -57,7 +62,7 @@ namespace rt {
     DllExport Vec3f CPrimDisc::getSolidTextureCoords(const Ray& ray) const
     {
 		// TODO: Implement this method
-		return ray.hitPoint();
+		return CTransform::point(ray.hitPoint(), m_t.inv());
     }
 
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
