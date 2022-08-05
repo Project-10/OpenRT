@@ -163,11 +163,11 @@ int main()
 	//return 0;
 
 
-     const Vec3f		bgColor = RGB(0.1f, 0.1f, 0.1f);
-     const Size		     resolution = Size(800, 600);
-//	 auto pScene = buildSceneTemplates(bgColor, resolution);
+      const Vec3f		bgColor = RGB(0.1f, 0.1f, 0.1f);
+      const Size		     resolution = Size(800, 600);
+      //auto pScene = buildSceneTemplates(bgColor, resolution);
 	 //auto pSceneStripes = buildSceneStripes(bgColor, resolution);
-  //   auto pSceneRings = buildSceneRings(bgColor, resolution);
+      //auto pSceneRings = buildSceneRings(bgColor, resolution);
   
   
 	 const float intensity = 1e4;
@@ -206,7 +206,7 @@ int main()
 	 //pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
-//      auto plane = std::make_shared<CPrimPlane>(pShaderWood , Vec3f(0,1,0) , Vec3f(0,0,0));
+      //auto plane = std::make_shared<CPrimPlane>(pShaderWood , Vec3f(0,1,0) , Vec3f(0,0,0));
 	 auto sphere1  = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
 	 auto sphere2  = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
 	 auto sphere3  = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
@@ -233,7 +233,7 @@ int main()
 	 pScene->add(sphere3);
       pScene->add(triangle);
       pScene->add(disc);
-//      pScene->add(plane);
+      //pScene->add(plane);
       
 	 //Light
 	 if (true) {
@@ -272,7 +272,7 @@ int main()
            sphere3->transform(rotation);
            triangle->transform(rotation);
            disc->transform(rotation);
-//           plane->transform(rotation);
+           //plane->transform(rotation);
 		 
 		 if (key == 27) break;
 	 }

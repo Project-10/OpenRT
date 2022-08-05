@@ -29,7 +29,6 @@ namespace rt {
                , m_t(Mat::eye(4, 4, CV_32FC1))
 		{
                for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
-
           }
 		DllExport virtual ~CPrimDisc(void) = default;
 		

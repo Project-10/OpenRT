@@ -45,7 +45,6 @@ namespace rt {
 		{
                Vec3f t = getOrigin();
                for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = t[i];
-
           }
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
