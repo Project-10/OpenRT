@@ -41,7 +41,12 @@ namespace rt {
 			, m_edge1(b - a)
 			, m_edge2(c - a)
 			, m_normal(normalize(m_edge1.cross(m_edge2)))
-		{}
+               , m_t(Mat::eye(4, 4, CV_32FC1))
+		{
+               Vec3f t = getOrigin();
+               for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = t[i];
+
+          }
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
 		DllExport virtual bool	intersect(Ray& ray) const override;
@@ -76,5 +81,6 @@ namespace rt {
 		Vec3f m_edge1;					///< Edge AB
 		Vec3f m_edge2;					///< Edge AC
 		Vec3f m_normal;					///< Triangle normal
+          Mat m_t;                           ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 	};
 }

@@ -24,9 +24,12 @@ namespace rt {
 			: IPrim(pShader)
 			, m_normal(normal)
 			, m_origin(origin)
+               , m_t(Mat::eye(4, 4, CV_32FC1))
 		{
 			normalize(m_normal);
+               for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
 		}
+          
 		DllExport virtual ~CPrimPlane(void) = default;
 
 		DllExport virtual bool 			intersect(Ray& ray) const override;
@@ -45,5 +48,7 @@ namespace rt {
 	private:
 		Vec3f m_normal;	///< Point on the plane
 		Vec3f m_origin;	///< Normal to the plane
+          Mat m_t;               ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+
 	};
 }

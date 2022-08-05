@@ -199,17 +199,25 @@ int main()
 
 	 // Geometries
 	 pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+      //auto plane = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0));
+      //auto pPlane		= std::make_shared<CPrimPlane>(pShader, Vec3f::all(0), Vec3f(0, 1, 0));
+
 
 	 //pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
-	 auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
-	 auto sphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
-	 auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
+//      auto plane = std::make_shared<CPrimPlane>(pShaderWood , Vec3f(0,1,0) , Vec3f(0,0,0));
+	 auto sphere1  = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
+	 auto sphere2  = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
+	 auto sphere3  = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
+      auto triangle = std::make_shared<CPrimTriangle>(pShaderWood, Vec3f(-1, 3, 0), Vec3f(1, 3, 0), Vec3f(0, 5, 0));
+      auto disc     = std::make_shared<CPrimDisc>(pShaderWood , Vec3f(0, 1, 4.5f) , Vec3f(0, 1, 0) , 1.0f );
 
 	 // Transform
 	 CTransform T;
-	 Mat rotation = T.rotate(Vec3f(0, 1, 0), 1).get();
+	 Mat rotation = T.rotate(Vec3f(0, 1, 0), 20).get();
+	 Mat rotation1 = T.rotate(Vec3f(0, 0, 1), 20).get();
+
 
 	 //sphere1->transform(rotation);
 	 //sphere2.transform(rotation);
@@ -223,7 +231,10 @@ int main()
 	 pScene->add(sphere1);
 	 pScene->add(sphere2);
 	 pScene->add(sphere3);
-
+      pScene->add(triangle);
+      pScene->add(disc);
+//      pScene->add(plane);
+      
 	 //Light
 	 if (true) {
 		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50)));
@@ -253,12 +264,15 @@ int main()
 //		 Timer::start("Rendering...");
 		 Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
 //		 Timer::stop();
-		 imshow("Marble Texture", img);
+		 imshow("Procedural Texture: wood", img);
 		 char key = waitKey(1);
 		 
 		 sphere1->transform(rotation);
 		 sphere2.transform(rotation);
-		 sphere3->transform(rotation);
+           sphere3->transform(rotation);
+           triangle->transform(rotation);
+           disc->transform(rotation);
+//           plane->transform(rotation);
 		 
 		 if (key == 27) break;
 	 }

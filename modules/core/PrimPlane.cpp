@@ -30,6 +30,9 @@ namespace rt {
 		// Transform normals
 		Mat T1 = T.inv().t();
 		m_normal = normalize(CTransform::vector(m_normal, T1));
+
+		// Accumulate transformation in the transformation matrix
+		m_t = m_t * T;
 	}
 
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const
@@ -49,7 +52,7 @@ namespace rt {
     DllExport Vec3f CPrimPlane::getSolidTextureCoords(const Ray& ray) const
     {
 		// TODO: Implement this metho
-	   return ray.hitPoint();
+		return CTransform::point(ray.hitPoint(), m_t.inv());
     }
 
 	CBoundingBox CPrimPlane::getBoundingBox(void) const

@@ -7,7 +7,7 @@ namespace rt {
 	{
 		float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 		if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
-		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) <= m_radius) return false;
+		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
 
 		ray.t = dist;
 		ray.hit = shared_from_this();

@@ -34,6 +34,9 @@ namespace rt {
 		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
+  
+		// Accumulate transformation in the transformation matrix
+		m_t = m_t * T;
 	}
 	
 	Vec3f CPrimTriangle::getOrigin(void) const
@@ -62,7 +65,7 @@ namespace rt {
     DllExport Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
     {
 		// TODO: Implement this metho
-		return ray.hitPoint();
+		return CTransform::point(ray.hitPoint(), m_t.inv());
     }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
