@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 
 namespace rt {
 	// ================================ Sphere Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimSphere : public IPrim
+	class CPrimSphere : public CPrim
 	{
 	public:
 		/**
@@ -28,7 +28,6 @@ namespace rt {
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
-		DllExport virtual Vec3f			getSolidTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
 	
@@ -39,6 +38,7 @@ namespace rt {
 	private:
 		Vec3f	m_origin;	///< Position of the center of the sphere
 		float	m_radius;	///< Radius of the sphere
-		Mat		m_t;		///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+//		Mat		m_t;		///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+//          ptr_prim_t primitive = shared_from_this();
 	};
 }

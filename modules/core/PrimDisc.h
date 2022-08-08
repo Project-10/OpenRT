@@ -2,7 +2,7 @@
 // Written by Dr. Sergey Kosov in 2021 for Jacobs University
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 
 namespace rt {
 	// ================================ Disc Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimDisc : public IPrim
+	class CPrimDisc : public CPrim
 	{
 	public:
 		/**
@@ -22,13 +22,11 @@ namespace rt {
 		 * @param radius Radius of the disc
 		 */
 		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
-			: IPrim(pShader)
-			, m_normal(normal)
+			: m_normal(normal)
 			, m_origin(origin)
 			, m_radius(radius)
-               , m_t(Mat::eye(4, 4, CV_32FC1))
+               , CPrim(pShader, origin)
 		{
-               for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
           }
 		DllExport virtual ~CPrimDisc(void) = default;
 		
@@ -37,7 +35,6 @@ namespace rt {
 		DllExport virtual void				transform(const Mat& T) override;
 		DllExport virtual Vec3f				getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const override;
-		DllExport virtual Vec3f				getSolidTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox		getBoundingBox(void) const override;
 		
 	private:
@@ -45,7 +42,6 @@ namespace rt {
 		
 		
 	private:
-          Mat m_t;
 		Vec3f m_normal;		///< Point on the plane
 		Vec3f m_origin;		///< Normal to the plane
 		float m_radius;		///< Radius of the disc

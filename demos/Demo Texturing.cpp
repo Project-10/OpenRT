@@ -208,7 +208,7 @@ int main()
 
       //auto plane = std::make_shared<CPrimPlane>(pShaderWood , Vec3f(0,1,0) , Vec3f(0,0,0));
 	 auto sphere1  = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
-	 auto sphere2  = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
+	 auto sphere2  = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f);
 	 auto sphere3  = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
       auto triangle = std::make_shared<CPrimTriangle>(pShaderWood, Vec3f(-1, 3, 0), Vec3f(1, 3, 0), Vec3f(0, 5, 0));
       auto disc     = std::make_shared<CPrimDisc>(pShaderWood , Vec3f(0, 1, 4.5f) , Vec3f(0, 1, 0) , 1.0f );
@@ -233,7 +233,6 @@ int main()
 	 pScene->add(sphere3);
       pScene->add(triangle);
       pScene->add(disc);
-      //pScene->add(plane);
       
 	 //Light
 	 if (true) {
@@ -272,7 +271,6 @@ int main()
            sphere3->transform(rotation);
            triangle->transform(rotation);
            disc->transform(rotation);
-           //plane->transform(rotation);
 		 
 		 if (key == 27) break;
 	 }

@@ -6,6 +6,7 @@
 #include "IShader.h"
 #include "BoundingBox.h"
 
+
 namespace rt {
 	//struct Ray;
 	
@@ -15,17 +16,17 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class IPrim : public std::enable_shared_from_this<IPrim>
+	class CPrim : public std::enable_shared_from_this<CPrim>
 	{
 	public:
 		/**
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 */
-		DllExport IPrim(const ptr_shader_t pShader) : m_pShader(pShader) {}
-		DllExport IPrim(const IPrim&) = delete;
-		DllExport virtual ~IPrim(void) = default;
-		DllExport const IPrim& operator=(const IPrim&) = delete;
+		DllExport CPrim(const ptr_shader_t pShader, Vec3f m_origin);
+		DllExport CPrim(const CPrim&) = delete;
+		DllExport virtual ~CPrim(void) = default;
+		DllExport const CPrim& operator=(const CPrim&) = delete;
 
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
@@ -55,6 +56,8 @@ namespace rt {
 		 * @return The origin point
 		 */
 		DllExport virtual Vec3f				getOrigin(void) const = 0;
+		DllExport Vec3f				     getPivot(void) const;
+
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
 		 * @param ray Ray, which has hit the geometry. 
@@ -66,7 +69,7 @@ namespace rt {
 		 * @param ray Ray, which has hit the geometry. 
 		 * return the 3d coordinates of the ray's hitpoint in OCS
 		 */
-		DllExport virtual Vec3f				getSolidTextureCoords(const Ray& ray) const = 0;
+		DllExport Vec3f				getSolidTextureCoords(const Ray& ray) const;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
@@ -126,5 +129,12 @@ namespace rt {
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
 		std::string			m_name;				///< Optional name of the primitive.
 		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
+          //Vec3f m_origin = this->m_origin;     ///< Origin point of the primitive
+          Vec3f m_origin;                    ///< origin of the primitive
+          
+          
+     protected:
+          Mat m_t;                           ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+
 	};
 }

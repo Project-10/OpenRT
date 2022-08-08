@@ -7,7 +7,7 @@ namespace rt {
 	enum class IntersectionState { Enter, Exit, Miss };
 
 	CPrimBoolean::CPrimBoolean(const CSolid &A, const CSolid &B, BoolOp operation, int maxDepth, int maxPrimitives)
-		: IPrim(nullptr)
+		: CPrim(nullptr, NULL)
 		, m_vpPrims1(A.getPrims())
 		, m_vpPrims2(B.getPrims())
 		, m_operation(operation)
@@ -93,11 +93,6 @@ namespace rt {
 	{
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
-
-	Vec3f CPrimBoolean::getSolidTextureCoords(const Ray& ray) const
-	{
-		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-	}
 
 	void CPrimBoolean::flipNormal(void) {
 		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();

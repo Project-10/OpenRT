@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 
 namespace rt {
 	// ================================ Infinite Plane Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimPlane : public IPrim
+	class CPrimPlane : public CPrim
 	{
 	public:
 		/**
@@ -21,13 +21,11 @@ namespace rt {
 		 * @param normal Normal to the plane
 		 */
 		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
-			: IPrim(pShader)
-			, m_normal(normal)
+			: m_normal(normal)
 			, m_origin(origin)
-               , m_t(Mat::eye(4, 4, CV_32FC1))
+               , CPrim(pShader, origin)
 		{
 			normalize(m_normal);
-               for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
 		}
           
 		DllExport virtual ~CPrimPlane(void) = default;
@@ -37,7 +35,6 @@ namespace rt {
 		DllExport virtual void 			transform(const Mat& T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
-		DllExport virtual Vec3f			getSolidTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
 		
@@ -48,7 +45,5 @@ namespace rt {
 	private:
 		Vec3f m_normal;	///< Point on the plane
 		Vec3f m_origin;	///< Normal to the plane
-          Mat m_t;               ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
-
 	};
 }

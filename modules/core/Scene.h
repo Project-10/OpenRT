@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 #include "ILight.h"
 #include "ICamera.h"
 #include "Sampler.h"

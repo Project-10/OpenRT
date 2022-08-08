@@ -6,12 +6,10 @@
 namespace rt {
 	// Constructor
 	CPrimSphere::CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
-		: IPrim(pShader)
-		, m_origin(origin)
+		: m_origin(origin)
 		, m_radius(radius)
-		, m_t(Mat::eye(4, 4, CV_32FC1))
+          , CPrim(pShader, origin)
 	{
-		for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
 	}
 	
 	bool CPrimSphere::intersect(Ray& ray) const
@@ -99,10 +97,10 @@ namespace rt {
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 
-	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
-	{
-		return CTransform::point(ray.hitPoint(), m_t.inv());
-	}
+//	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
+//	{
+//		return CTransform::point(ray.hitPoint(), m_t.inv());
+//	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 

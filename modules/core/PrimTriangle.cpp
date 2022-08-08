@@ -35,7 +35,7 @@ namespace rt {
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
   
-		// Accumulate transformation in the transformation matrix
+		 //Accumulate transformation in the transformation matrix
 		m_t = m_t * T;
 	}
 	
@@ -43,6 +43,11 @@ namespace rt {
 	{
 		return 0.33f * (m_a + m_b + m_c);
 	}
+          
+     Vec3f CPrimTriangle::getPivot() const
+     {
+          return m_a;
+     }
 
 	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
 	{
@@ -62,11 +67,11 @@ namespace rt {
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
 
-    DllExport Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
-    {
-		// TODO: Implement this metho
-		return CTransform::point(ray.hitPoint(), m_t.inv());
-    }
+//    DllExport Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
+//    {
+//		// TODO: Implement this metho
+//		return CTransform::point(ray.hitPoint(), m_t.inv());
+//    }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{

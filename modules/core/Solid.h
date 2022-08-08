@@ -2,13 +2,13 @@
 // Written by Dr. Sergey G. Kosov in 2019 for Project X 
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 
 namespace rt {
 	// ================================ Solid Base Class ================================
 	/**
 	 * @brief Base Solid class
-	 * @details This class represent objects which consist of multiple primitives (obkects derived from IPrim class). 
+	 * @details This class represent objects which consist of multiple primitives (obkects derived from CPrim class). 
 	 * The main purpose of the class is to allow for convinient transformations of the solid objects
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de

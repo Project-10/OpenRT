@@ -2,7 +2,7 @@
 // Written by Otmane Sabir in 2020
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 #include "Solid.h"
 #ifdef ENABLE_BSP
 #include "BSPTree.h"
@@ -26,7 +26,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Otmane Sabir, o.sabir@jacobs-university.de
 	 */
-	class CPrimBoolean : public IPrim {
+	class CPrimBoolean : public CPrim {
     public:
         /*
 		 * @brief Constructor
@@ -45,7 +45,6 @@ namespace rt {
         DllExport virtual void			transform(const Mat &T) override;
         DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
-		DllExport virtual Vec3f			getSolidTextureCoords(const Ray& ray) const override;
         DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
 		DllExport virtual void			flipNormal(void) override;
 

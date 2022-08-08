@@ -49,12 +49,6 @@ namespace rt {
 		return res;
 	}
 
-    DllExport Vec3f CPrimPlane::getSolidTextureCoords(const Ray& ray) const
-    {
-		// TODO: Implement this metho
-		return CTransform::point(ray.hitPoint(), m_t.inv());
-    }
-
 	CBoundingBox CPrimPlane::getBoundingBox(void) const
 	{
 		Vec3f minPoint = Vec3f::all(-Infty);

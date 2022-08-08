@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "IPrim.h"
+#include "CPrim.h"
 
 namespace rt {
 	// ================================ Triangle Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimTriangle : public IPrim
+	class CPrimTriangle : public CPrim
 	{
 	public:
 		/**
@@ -28,7 +28,7 @@ namespace rt {
 		 * @param nc Normal at vertex c
 		 */
 		DllExport CPrimTriangle(const ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
-			: IPrim(pShader)
+			: CPrim(pShader, 0.33*(a + b + c))
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
@@ -41,10 +41,7 @@ namespace rt {
 			, m_edge1(b - a)
 			, m_edge2(c - a)
 			, m_normal(normalize(m_edge1.cross(m_edge2)))
-               , m_t(Mat::eye(4, 4, CV_32FC1))
 		{
-               Vec3f t = getOrigin();
-               for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = t[i];
           }
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
@@ -53,8 +50,9 @@ namespace rt {
 		DllExport virtual void	transform(const Mat& t) override;
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
-		DllExport virtual Vec3f	getSolidTextureCoords(const Ray& ray) const override;
+		//DllExport virtual Vec3f	getSolidTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
+          DllExport Vec3f getPivot(void) const;
 		
 		
 	private:
@@ -68,7 +66,7 @@ namespace rt {
 		
 		
 	protected:
-		Vec3f m_a;						///< Position of the first vertex
+          Vec3f m_a;						///< Position of the first vertex
 		Vec3f m_b;						///< Position of the second vertex
 		Vec3f m_c;						///< Position of the third vertex
 		Vec2f m_ta;						///< Vertex a texture coordiante
@@ -80,6 +78,5 @@ namespace rt {
 		Vec3f m_edge1;					///< Edge AB
 		Vec3f m_edge2;					///< Edge AC
 		Vec3f m_normal;					///< Triangle normal
-          Mat m_t;                           ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 	};
 }
