@@ -32,7 +32,7 @@ namespace rt {
 		m_normal = normalize(CTransform::vector(m_normal, T1));
 
 		// Accumulate transformation in the transformation matrix
-		m_t = m_t * T;
+		CPrim::transform(T);
 	}
 
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const

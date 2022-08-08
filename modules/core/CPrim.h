@@ -23,7 +23,7 @@ namespace rt {
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 */
-		DllExport CPrim(const ptr_shader_t pShader, Vec3f m_origin);
+		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& m_origin);
 		DllExport CPrim(const CPrim&) = delete;
 		DllExport virtual ~CPrim(void) = default;
 		DllExport const CPrim& operator=(const CPrim&) = delete;
@@ -129,11 +129,7 @@ namespace rt {
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
 		std::string			m_name;				///< Optional name of the primitive.
 		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
-          //Vec3f m_origin = this->m_origin;     ///< Origin point of the primitive
           Vec3f m_origin;                    ///< origin of the primitive
-          
-          
-     protected:
           Mat m_t;                           ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 
 	};

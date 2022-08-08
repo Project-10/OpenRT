@@ -7,7 +7,7 @@ namespace rt {
 	enum class IntersectionState { Enter, Exit, Miss };
 
 	CPrimBoolean::CPrimBoolean(const CSolid &A, const CSolid &B, BoolOp operation, int maxDepth, int maxPrimitives)
-		: CPrim(nullptr, NULL)
+		: CPrim(nullptr, Vec3f::all(0))
 		, m_vpPrims1(A.getPrims())
 		, m_vpPrims2(B.getPrims())
 		, m_operation(operation)

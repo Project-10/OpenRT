@@ -21,7 +21,7 @@ namespace rt {
 		 * @param normal Normal to the disc
 		 * @param radius Radius of the disc
 		 */
-		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
+		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f origin, const Vec3f& normal, float radius)
 			: m_normal(normal)
 			, m_origin(origin)
 			, m_radius(radius)

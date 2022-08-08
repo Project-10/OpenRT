@@ -80,7 +80,7 @@ namespace rt {
 		m_radius = static_cast<float>(norm(r));
 
 		// Accumulate transformation in the transformation matrix
-		m_t = m_t * T;
+          CPrim::transform(T);
 	}
 
 	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const

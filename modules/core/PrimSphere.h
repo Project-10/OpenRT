@@ -38,7 +38,5 @@ namespace rt {
 	private:
 		Vec3f	m_origin;	///< Position of the center of the sphere
 		float	m_radius;	///< Radius of the sphere
-//		Mat		m_t;		///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
-//          ptr_prim_t primitive = shared_from_this();
 	};
 }

@@ -36,7 +36,7 @@ namespace rt {
 		m_edge2 = m_c - m_a;
   
 		 //Accumulate transformation in the transformation matrix
-		m_t = m_t * T;
+          CPrim::transform(T);
 	}
 	
 	Vec3f CPrimTriangle::getOrigin(void) const
