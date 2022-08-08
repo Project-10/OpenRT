@@ -115,7 +115,7 @@ namespace rt {
 		Vec3f							getAmbientColor(void) const { return m_ambientColor; }
 		/**
 		 * @brief Checks intersection between ray \b ray and the geometry present in scene
-		 * @details This function calls \b IPrim::intersect() method for all scene's primitives. If valid intersecton(s) is(are) found, the argument \b ray is updated:
+		 * @details This function calls \b CPrim::intersect() method for all scene's primitives. If valid intersecton(s) is(are) found, the argument \b ray is updated:
 		 * Ray::t will be set to the distance to the closest intersection point and Ray::hit will point to the closest primitive intersected by the ray.
 		 * @note This method is to be used only in OpenRT shaders
 		 * @param[in,out] ray The ray (Ref. @ref Ray for details)
