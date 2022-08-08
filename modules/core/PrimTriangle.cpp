@@ -35,7 +35,7 @@ namespace rt {
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
   
-		 //Accumulate transformation in the transformation matrix
+          //Accumulate transformation in the transformation matrix
           CPrim::transform(T);
 	}
 	

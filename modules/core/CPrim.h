@@ -127,10 +127,9 @@ namespace rt {
 	
 	private:
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
-		std::string			m_name;				///< Optional name of the primitive.
-		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
-          Vec3f m_origin;                    ///< origin of the primitive
-          Mat m_t;                           ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+		std::string		m_name;				///< Optional name of the primitive.
+		bool			     m_flipped = false;	     ///< Flag which helps decide whether to flip the normal or not.
+          Mat                 m_t;                     ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 
 	};
 }

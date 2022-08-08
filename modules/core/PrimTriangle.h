@@ -28,9 +28,7 @@ namespace rt {
 		 * @param nc Normal at vertex c
 		 */
 		DllExport CPrimTriangle(const ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
-               :
-//			: CPrimTriangle(pShader, m_a(a), m_b(b), m_c(c), m_ta(ta), m_tb(tb), const Vec2f& tc ,  na = , nb = std::nullopt,  nc = std::nullopt, const Vec3f& origin = Vec3f (0.33 * (a + b + c)))
-                CPrim(pShader, (0.33 * (a + b + c)))
+               : CPrim(pShader, (0.33 * (a + b + c)))
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
