@@ -19,6 +19,8 @@ namespace rt {
 
 	void CPrimTriangle::transform(const Mat& T)
 	{
+		CPrim::transform(T);
+
 		// Transform vertexes
 		m_a = CTransform::point(m_a, T);
 		m_b = CTransform::point(m_b, T);
@@ -34,9 +36,6 @@ namespace rt {
 		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
-  
-          //Accumulate transformation in the transformation matrix
-          CPrim::transform(T);
 	}
 	
 	Vec3f CPrimTriangle::getOrigin(void) const

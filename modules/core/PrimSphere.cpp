@@ -4,14 +4,6 @@
 #include "macroses.h"
 
 namespace rt {
-	// Constructor
-	CPrimSphere::CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
-		: m_origin(origin)
-		, m_radius(radius)
-          , CPrim(pShader, origin)
-	{
-	}
-	
 	bool CPrimSphere::intersect(Ray& ray) const
 	{
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
@@ -69,6 +61,8 @@ namespace rt {
 
 	void CPrimSphere::transform(const Mat& T)
 	{
+		CPrim::transform(T);
+		
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
 		o = CTransform::point(o, T);	// translation of the point
@@ -78,9 +72,6 @@ namespace rt {
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
-
-		// Accumulate transformation in the transformation matrix
-          CPrim::transform(T);
 	}
 
 	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
@@ -91,16 +82,11 @@ namespace rt {
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
 		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
-		Vec3f hitPoint = getSolidTextureCoords(ray);	// Hitpoint in OCS
+		Vec3f hitPoint = wcs2ocs(ray.hitPoint());		// Hitpoint in OCS
 		float phi = atan2f(hitPoint[2], hitPoint[0]);
 		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
-
-//	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
-//	{
-//		return CTransform::point(ray.hitPoint(), m_t.inv());
-//	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 

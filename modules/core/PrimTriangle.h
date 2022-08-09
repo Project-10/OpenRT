@@ -28,7 +28,7 @@ namespace rt {
 		 * @param nc Normal at vertex c
 		 */
 		DllExport CPrimTriangle(const ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
-               : CPrim(pShader, (0.33 * (a + b + c)))
+			: CPrim(pShader, (0.33f * (a + b + c)))
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
@@ -41,8 +41,7 @@ namespace rt {
 			, m_edge1(b - a)
 			, m_edge2(c - a)
 			, m_normal(normalize(m_edge1.cross(m_edge2)))
-		{
-          }
+		{}
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
 		DllExport virtual bool	intersect(Ray& ray) const override;
@@ -50,9 +49,8 @@ namespace rt {
 		DllExport virtual void	transform(const Mat& t) override;
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
-		//DllExport virtual Vec3f	getSolidTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
-          DllExport Vec3f getPivot(void) const;
+		DllExport Vec3f			getPivot(void) const;
 		
 		
 	private:
@@ -66,7 +64,7 @@ namespace rt {
 		
 		
 	protected:
-          Vec3f m_a;						///< Position of the first vertex
+		Vec3f m_a;						///< Position of the first vertex
 		Vec3f m_b;						///< Position of the second vertex
 		Vec3f m_c;						///< Position of the third vertex
 		Vec2f m_ta;						///< Vertex a texture coordiante

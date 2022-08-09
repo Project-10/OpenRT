@@ -65,12 +65,6 @@ namespace rt {
 		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
-		 * @brief Returns the 3d coordinates in OCS for solid procedural texturing
-		 * @param ray Ray, which has hit the geometry. 
-		 * return the 3d coordinates of the ray's hitpoint in OCS
-		 */
-		DllExport Vec3f				getSolidTextureCoords(const Ray& ray) const;
-		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
 		 */
@@ -107,6 +101,12 @@ namespace rt {
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
         DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
+		/**
+		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
+		 * @param p Point in the WCS
+		 * return Point \b p in OCS
+		 */
+		DllExport Vec3f						wcs2ocs(const Vec3f& p) const;
 
 		
     private:
@@ -127,9 +127,9 @@ namespace rt {
 	
 	private:
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
-		std::string		m_name;				///< Optional name of the primitive.
-		bool			     m_flipped = false;	     ///< Flag which helps decide whether to flip the normal or not.
-          Mat                 m_t;                     ///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+		std::string			m_name;				///< Optional name of the primitive.
+		bool				m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
+		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 
 	};
 }

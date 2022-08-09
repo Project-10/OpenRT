@@ -22,6 +22,8 @@ namespace rt {
 
 	void CPrimPlane::transform(const Mat& T)
 	{
+		CPrim::transform(T);
+
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
 		o = CTransform::point(o, T);	// transltion of the point
@@ -30,9 +32,6 @@ namespace rt {
 		// Transform normals
 		Mat T1 = T.inv().t();
 		m_normal = normalize(CTransform::vector(m_normal, T1));
-
-		// Accumulate transformation in the transformation matrix
-		CPrim::transform(T);
 	}
 
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const
@@ -42,6 +41,7 @@ namespace rt {
 		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
 		mv = m_normal.cross(mu);
 		
+		// TODO: Use wcs2ocs here
 		Vec3f hit = ray.hitPoint();
 		Vec3f h = hit - m_origin;
 		Vec2f res = norm(h) > Epsilon ? Vec2f(h.dot(mu), h.dot(mv)) : Vec2f(0, 0);

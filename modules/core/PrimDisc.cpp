@@ -27,6 +27,8 @@ namespace rt {
 
 	void CPrimDisc::transform(const Mat& T)
 	{
+		CPrim::transform(T);
+
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
 		o = CTransform::point(o, T);	// transltion of the point
@@ -40,9 +42,6 @@ namespace rt {
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
-          
-          // Accumulate transformation in the transformation matrix
-		CPrim::transform(T);
 	}
 
 	Vec2f CPrimDisc::getTextureCoords(const Ray& ray) const
@@ -52,6 +51,7 @@ namespace rt {
 		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
 		mv = m_normal.cross(mu);
 		
+		// TODO: Use wcs2ocs here
 		Vec3f hit = ray.hitPoint();
 		Vec3f h = (hit - m_origin) * (0.5f / m_radius);
 		Vec2f res = norm(h) > Epsilon ? Vec2f(0.5f + h.dot(mu), 0.5f + h.dot(mv)) : Vec2f(0.5f, 0.5f);

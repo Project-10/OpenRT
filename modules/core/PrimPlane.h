@@ -21,9 +21,9 @@ namespace rt {
 		 * @param normal Normal to the plane
 		 */
 		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
-			: m_normal(normal)
+			: CPrim(pShader, origin)
+			, m_normal(normal)
 			, m_origin(origin)
-               , CPrim(pShader, origin)
 		{
 			normalize(m_normal);
 		}
