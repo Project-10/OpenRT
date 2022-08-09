@@ -41,10 +41,8 @@ namespace rt {
 		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
 		mv = m_normal.cross(mu);
 		
-		// TODO: Use wcs2ocs here
-		Vec3f hit = ray.hitPoint();
-		Vec3f h = hit - m_origin;
-		Vec2f res = norm(h) > Epsilon ? Vec2f(h.dot(mu), h.dot(mv)) : Vec2f(0, 0);
+		Vec3f hit = wcs2ocs(ray.hitPoint());
+		Vec2f res = norm(hit) > Epsilon ? Vec2f(hit.dot(mu), hit.dot(mv)) : Vec2f(0, 0);
 	
 		return res;
 	}
