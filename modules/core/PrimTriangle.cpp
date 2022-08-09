@@ -42,11 +42,6 @@ namespace rt {
 	{
 		return 0.33f * (m_a + m_b + m_c);
 	}
-          
-     Vec3f CPrimTriangle::getPivot() const
-     {
-          return m_a;
-     }
 
 	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
 	{

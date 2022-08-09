@@ -50,7 +50,6 @@ namespace rt {
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
-		DllExport Vec3f			getPivot(void) const;
 		
 		
 	private:
