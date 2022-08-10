@@ -178,7 +178,11 @@ int main()
 	// Rings shader
 	auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
 	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
-
+     
+     //Stripes shader
+     auto pTextureStripes = std::make_shared<CTextureRings>(24.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
+     
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
@@ -207,7 +211,8 @@ int main()
 	auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
 	auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, -3), 1.5f);
 	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
-	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 1, 4), 1.0f));
+	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 1, 3), 1.0f));
+     pScene->add(CSolidCone(pShaderWood, Vec3f(4 , 0 , 3), 1 ,2));
 
 
 	// Transform

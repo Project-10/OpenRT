@@ -70,9 +70,9 @@ namespace rt {
      Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
      {
           if(m_isSolid == false)
-               return wcs2ocs(ray.hitPoint() /*- m_solid->getPivot()*/);
+               return wcs2ocs(ray.hitPoint());
           else
-               return wcs2ocs(ray.hitPoint()) - m_solid->getPivot();
+               return ray.hitPoint() - m_solid->getPivot() ;
      }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
