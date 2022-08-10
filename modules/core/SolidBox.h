@@ -30,6 +30,8 @@ namespace rt {
 		 */
 		DllExport CSolidBox(const ptr_shader_t pShader, const Vec3f& origin, float width, float height, float depth);
 		DllExport virtual ~CSolidBox(void) = default;
+          DllExport bool                                    isSolid(void) const override{return true;}
+        
 		
 	};
 }

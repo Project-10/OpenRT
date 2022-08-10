@@ -87,6 +87,11 @@ namespace rt {
 		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
+     
+          Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
+     {
+          return wcs2ocs(ray.hitPoint());
+     }
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 

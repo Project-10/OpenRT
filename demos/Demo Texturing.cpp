@@ -199,14 +199,16 @@ int main()
 
 
 	// Geometries
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 400.0f));
 
 	//pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
 	auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
-	auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f);
+	auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, -3), 1.5f);
 	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
+	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 1, 4), 1.0f));
+
 
 	// Transform
 	CTransform T;

@@ -56,6 +56,11 @@ namespace rt {
 		return res;
 	}
 
+     Vec3f CPrimDisc::getSolidTextureCoords(const Ray& ray) const
+     {
+          return wcs2ocs(ray.hitPoint());
+     }
+
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
 	CBoundingBox CPrimDisc::getBoundingBox(void) const
 	{

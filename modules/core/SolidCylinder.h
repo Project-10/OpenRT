@@ -25,6 +25,8 @@ namespace rt {
 		 */
 		DllExport CSolidCylinder(ptr_shader_t pShader, const Vec3f& origin = Vec3f::all(0), float radius = 1, float height = 1, size_t height_segments = 1, size_t sides = 24, bool smooth = true);
 		DllExport virtual ~CSolidCylinder(void) = default;
+          DllExport bool                                    isSolid(void) const override{return true;}
+
 	};
 }
 

@@ -4,6 +4,7 @@
 
 #include "IShader.h"
 #include "Texture.h"
+#include "Solid.h"
 
 namespace rt {
 	// ================================ Shader Class ================================
@@ -102,8 +103,7 @@ namespace rt {
 		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
 		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
-		
-		
+
 		// --- MAPS (amount + map) ---
 		// Ambient color (usually equal to diffuse color)
 		// Diffuse color

@@ -36,14 +36,14 @@ namespace rt {
 
                 if (h == 0) { // ----- Bottom cap: triangles -----
                     if (smooth)
-                        add(std::make_shared<CPrimTriangle>(pShader,
+                        add(std::make_shared<CPrimTriangle>(pShader, this,
                             origin + n00 * radius,
                             origin + n11 * radius,
                             origin + n01 * radius,
                             Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
                             n00, n11, n01));
                     else    
-                        add(std::make_shared<CPrimTriangle>(pShader,
+                        add(std::make_shared<CPrimTriangle>(pShader, this,
                             origin + n00 * radius,
                             origin + n11 * radius,
                             origin + n01 * radius,
@@ -51,14 +51,14 @@ namespace rt {
                 }
                 else if (h == height_segments - 1) { // ----- Top cap: triangles -----
                     if (smooth)
-                        add(std::make_shared<CPrimTriangle>(pShader,
+                        add(std::make_shared<CPrimTriangle>(pShader, this,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,
                             Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1),
                             n00, n10, n11));
                     else
-                        add(std::make_shared<CPrimTriangle>(pShader,
+                        add(std::make_shared<CPrimTriangle>(pShader, this,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,
@@ -66,7 +66,7 @@ namespace rt {
                 }
                 else { // ----- Sides: quads -----
                     if (smooth) 
-                        add(CSolidQuad(pShader,
+                        add(CSolidQuad(pShader, this,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,
@@ -74,7 +74,7 @@ namespace rt {
                             Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
                             n00, n10, n11, n01));
                     else 
-                        add(CSolidQuad(pShader,
+                        add(CSolidQuad(pShader, this,
                             origin + n00 * radius,
                             origin + n10 * radius,
                             origin + n11 * radius,

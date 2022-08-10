@@ -35,7 +35,8 @@ namespace rt {
 		DllExport virtual Vec3f				getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox		getBoundingBox(void) const override;
-		
+          DllExport virtual Vec3f getSolidTextureCoords(const Ray& ray) const override;
+        
 
 	private:
 		DllExport virtual Vec3f				doGetNormal(const Ray&) const override { return m_normal; }

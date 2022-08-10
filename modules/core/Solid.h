@@ -2,6 +2,7 @@
 // Written by Dr. Sergey G. Kosov in 2019 for Project X 
 #pragma once
 
+#include "types.h"
 #include "CPrim.h"
 
 namespace rt {
@@ -15,6 +16,8 @@ namespace rt {
 	 */
 	class CSolid {
 	public:
+          ///<Default constructor
+          DllExport CSolid() = default;
 		/**
 		 * @brief Constructor
 		 * @param pPrim Pointer to the primitive
@@ -57,8 +60,11 @@ namespace rt {
 		 * @return The solid's pivot point
 		 */
 		DllExport Vec3f 							getPivot(void) const { return m_pivot; }
-		
-		
+          
+          DllExport virtual bool                                    isSolid(void) const {return true;}
+          
+          ///<Pointer to a solid
+		using ptr_solid_t = std::shared_ptr<CSolid>;
 	protected:
 		/**
 		 * @brief Constructor

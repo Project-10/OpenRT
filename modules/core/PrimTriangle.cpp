@@ -66,6 +66,14 @@ namespace rt {
 //		// TODO: Implement this metho
 //		return CTransform::point(ray.hitPoint(), m_t.inv());
 //    }
+     
+     Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
+     {
+          if(m_isSolid == false)
+               return wcs2ocs(ray.hitPoint() /*- m_solid->getPivot()*/);
+          else
+               return wcs2ocs(ray.hitPoint()) - m_solid->getPivot();
+     }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{

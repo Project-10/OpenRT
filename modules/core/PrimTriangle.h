@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CPrim.h"
+#include "Solid.h"
 
 namespace rt {
 	// ================================ Triangle Primitive Class ================================
@@ -41,6 +42,25 @@ namespace rt {
 			, m_edge1(b - a)
 			, m_edge2(c - a)
 			, m_normal(normalize(m_edge1.cross(m_edge2)))
+               ,m_isSolid(false)
+		{}
+          
+  		DllExport CPrimTriangle(const ptr_shader_t pShader, CSolid* solid , const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
+			: CPrim(pShader, (0.33f * (a + b + c)))
+               , m_solid(solid)
+			, m_a(a)
+			, m_b(b)
+			, m_c(c)
+			, m_ta(ta)
+			, m_tb(tb)
+			, m_tc(tc)
+			, m_na(na)
+			, m_nb(nb)
+			, m_nc(nc)
+			, m_edge1(b - a)
+			, m_edge2(c - a)
+			, m_normal(normalize(m_edge1.cross(m_edge2)))
+               ,m_isSolid(true)
 		{}
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
@@ -50,6 +70,8 @@ namespace rt {
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
+          DllExport void isSolid(void) const {return true;}
+          DllExport virtual Vec3f getSolidTextureCoords(const Ray& ray) const override;
 		
 		
 	private:
@@ -75,5 +97,8 @@ namespace rt {
 		Vec3f m_edge1;					///< Edge AB
 		Vec3f m_edge2;					///< Edge AC
 		Vec3f m_normal;					///< Triangle normal
+          bool m_isSolid;
+          CSolid* m_solid;
+          std::shared_ptr<const CPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
 	};
 }

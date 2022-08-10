@@ -46,6 +46,11 @@ namespace rt {
 	
 		return res;
 	}
+     
+          Vec3f CPrimPlane::getSolidTextureCoords(const Ray& ray) const
+     {
+          return wcs2ocs(ray.hitPoint());
+     }
 
 	CBoundingBox CPrimPlane::getBoundingBox(void) const
 	{

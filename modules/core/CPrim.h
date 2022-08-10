@@ -107,6 +107,8 @@ namespace rt {
 		 * return Point \b p in OCS
 		 */
 		DllExport Vec3f						wcs2ocs(const Vec3f& p) const;
+          
+          DllExport virtual Vec3f                getSolidTextureCoords(const Ray& ray) const = 0;
 
 		
     private:
@@ -130,6 +132,5 @@ namespace rt {
 		std::string			m_name;				///< Optional name of the primitive.
 		bool				m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
 		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
-
 	};
 }
