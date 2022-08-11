@@ -206,6 +206,7 @@ int main()
 
 	auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
 	auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f);
+	sphere2.setPivot(Vec3f(0, 1, 0));
 	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
 
 	// Transform

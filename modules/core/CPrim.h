@@ -56,7 +56,11 @@ namespace rt {
 		 * @return The origin point
 		 */
 		DllExport virtual Vec3f				getOrigin(void) const = 0;
-		DllExport Vec3f				     getPivot(void) const;
+
+		DllExport void						setPivot(const Vec3f& pivot) {
+			for (int i = 0; i < 3; i++)
+				m_t.at<float>(i, 3) = pivot[i];
+		}
 
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
@@ -130,6 +134,5 @@ namespace rt {
 		std::string			m_name;				///< Optional name of the primitive.
 		bool				m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
 		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
-
 	};
 }

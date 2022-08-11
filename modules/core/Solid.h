@@ -51,7 +51,7 @@ namespace rt {
 		 * @brief Sets new pivot point for affine transformations
 		 * @param pivot The new pivot point 
 		 */
-		DllExport void								setPivot(const Vec3f& pivot) { m_pivot = pivot; }
+		DllExport void								setPivot(const Vec3f& pivot);
 		/**
 		 * @brief Returns the solid's pivot point 
 		 * @return The solid's pivot point
@@ -64,7 +64,7 @@ namespace rt {
 		 * @brief Constructor
 		 * @param org The origin of the object. This point may be the virtual center of mass and will be used as a pivot point for object transformations.
 		 */
-		CSolid(Vec3f org) : m_pivot(org) {}
+		CSolid(const Vec3f& org) : m_pivot(org) {}
 		/**
 		 * @brief Adds a new primitive to the solid
 		 * @param pPrim Pointer to the primitive
