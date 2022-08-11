@@ -24,24 +24,24 @@ namespace rt {
 			for (int h = 0; h < height_segments; h++) {
 				float h1 = static_cast<float>(h + 1) / height_segments;	// Next height: [1/height_segments; 1]
 				if (height >= 0) {
-					if (smooth)	add(CSolidQuad(pShader,this, p0 + h0 * top, p1 + h0 * top, p1 + h1 * top, p0 + h1 * top, Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1), n0, n1, n1, n0));
-					else		add(CSolidQuad(pShader,this, p0 + h0 * top, p1 + h0 * top, p1 + h1 * top, p0 + h1 * top, Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1)));
+					if (smooth)	add(CSolidQuad(pShader,*this, p0 + h0 * top, p1 + h0 * top, p1 + h1 * top, p0 + h1 * top, Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1), n0, n1, n1, n0));
+					else		add(CSolidQuad(pShader,*this, p0 + h0 * top, p1 + h0 * top, p1 + h1 * top, p0 + h1 * top, Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1)));
 				}
 				else {
-					if (smooth)	add(CSolidQuad(pShader,this, p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0), n0, n0, n1, n1));
-					else		add(CSolidQuad(pShader,this ,p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0)));
+					if (smooth)	add(CSolidQuad(pShader,*this, p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0), n0, n0, n1, n1));
+					else		add(CSolidQuad(pShader,*this ,p0 + h0 * top, p0 + h1 * top, p1 + h1 * top, p1 + h0 * top, Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0)));
 				}
 				h0 = h1;
 			} // h
 
 			// Caps
 			if (height >= 0) {
-				add(std::make_shared<CPrimTriangle>(pShader,this, org, p1, p0, Vec2f(0.5f, 1), Vec2f(t1, 1), Vec2f(t0, 1)));
-				add(std::make_shared<CPrimTriangle>(pShader,this, org + top, p0 + top, p1 + top, Vec2f(0.5f, 0), Vec2f(t0, 0), Vec2f(t1, 0)));
+				add(std::make_shared<CPrimTriangle>(pShader,*this, org, p1, p0, Vec2f(0.5f, 1), Vec2f(t1, 1), Vec2f(t0, 1)));
+				add(std::make_shared<CPrimTriangle>(pShader,*this, org + top, p0 + top, p1 + top, Vec2f(0.5f, 0), Vec2f(t0, 0), Vec2f(t1, 0)));
 			}
 			else {
-				add(std::make_shared<CPrimTriangle>(pShader,this, org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
-				add(std::make_shared<CPrimTriangle>(pShader,this, org + top, p1 + top, p0 + top, Vec2f(0.5f, 0), Vec2f(t1, 0), Vec2f(t0, 0)));
+				add(std::make_shared<CPrimTriangle>(pShader,*this, org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
+				add(std::make_shared<CPrimTriangle>(pShader,*this, org + top, p1 + top, p0 + top, Vec2f(0.5f, 0), Vec2f(t1, 0), Vec2f(t0, 0)));
 			}
 			p0 = p1;
 			n0 = n1;

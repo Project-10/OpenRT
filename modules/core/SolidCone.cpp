@@ -26,7 +26,7 @@ namespace rt {
 				float h1 = static_cast<float>(h + 1) / height_segments;		// Next height: [1/height_segments; 1]
 				if (height >= 0) {
 					if (smooth)
-						add(CSolidQuad(pShader,this,
+						add(CSolidQuad(pShader,*this,
 							p0 + h0 * (top - radius * dir0),
 							p1 + h0 * (top - radius * dir1),
 							p1 + h1 * (top - radius * dir1),
@@ -34,7 +34,7 @@ namespace rt {
 							Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
 							n0, n1, n1, n0));
 					else
-						add(CSolidQuad(pShader,this,
+						add(CSolidQuad(pShader,*this,
 							p0 + h0 * (top - radius * dir0),
 							p1 + h0 * (top - radius * dir1),
 							p1 + h1 * (top - radius * dir1),
@@ -43,7 +43,7 @@ namespace rt {
 				} 
 				else {
 					if (smooth)
-						add(CSolidQuad(pShader,this,
+						add(CSolidQuad(pShader,*this,
 							p0 + h0 * (top - radius * dir0),
 							p0 + h1 * (top - radius * dir0),
 							p1 + h1 * (top - radius * dir1),
@@ -51,7 +51,7 @@ namespace rt {
 							Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0),
 							n0, n0, n1, n1));
 					else
-						add(CSolidQuad(pShader,this,
+						add(CSolidQuad(pShader,*this,
 							p0 + h0 * (top - radius * dir0),
 							p0 + h1 * (top - radius * dir0),
 							p1 + h1 * (top - radius * dir1),
@@ -65,14 +65,14 @@ namespace rt {
 			// Top Sides: triangles  
 			if (height >= 0) {
 				if (smooth)
-					add(std::make_shared<CPrimTriangle>(pShader, this ,
+					add(std::make_shared<CPrimTriangle>(pShader,*this ,
 						org + top,
 						p0 + h0 * (top - radius * dir0),
 						p1 + h0 * (top - radius * dir1),
 						Vec2f(0.5f, 0), Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0),
 						normalize(n0 + n1), n0, n1));
 				else
-					add(std::make_shared<CPrimTriangle>(pShader,this ,
+					add(std::make_shared<CPrimTriangle>(pShader,*this ,
 						org + top,
 						p0 + h0 * (top - radius * dir0),
 						p1 + h0 * (top - radius * dir1),
@@ -80,14 +80,14 @@ namespace rt {
 			}
 			else {
 				if (smooth)
-					add(std::make_shared<CPrimTriangle>(pShader,this ,
+					add(std::make_shared<CPrimTriangle>(pShader,*this ,
 						org + top,
 						p1 + h0 * (top - radius * dir1),
 						p0 + h0 * (top - radius * dir0),
 						Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0),
 						normalize(n0 + n1), n1, n0));
 				else
-					add(std::make_shared<CPrimTriangle>(pShader,this ,
+					add(std::make_shared<CPrimTriangle>(pShader,*this ,
 						org + top,
 						p1 + h0 * (top - radius * dir1),
 						p0 + h0 * (top - radius * dir0),
@@ -95,8 +95,8 @@ namespace rt {
 			}
 
 			// Cap
-			if (height >= 0)	add(std::make_shared<CPrimTriangle>(pShader, org, p1, p0, Vec2f(0.5f, 1), Vec2f(t1, 1), Vec2f(t0, 1)));
-			else				add(std::make_shared<CPrimTriangle>(pShader, org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
+			if (height >= 0)	add(std::make_shared<CPrimTriangle>(pShader,*this ,org, p1, p0, Vec2f(0.5f, 1), Vec2f(t1, 1), Vec2f(t0, 1)));
+			else				add(std::make_shared<CPrimTriangle>(pShader,*this ,org, p0, p1, Vec2f(0.5f, 1), Vec2f(t0, 1), Vec2f(t1, 1)));
 
 
 			dir0 = dir1;

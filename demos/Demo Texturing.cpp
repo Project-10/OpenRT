@@ -213,15 +213,19 @@ int main()
 	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
 	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 1, 3), 1.0f));
      pScene->add(CSolidCone(pShaderWood, Vec3f(4 , 0 , 3), 1 ,2));
-
+     pScene->add(CSolidQuad(pShaderWood, Vec3f(-4,0,3)));
+//     auto teaPot = CSolid(pShaderWood, dataPath + "teapot.obj"));
+//     CTransform t;
+//	teaPot.transform(t.scale(1.01f).get());
+//	pScene.add(teaPot);
 
 	// Transform
 	CTransform T;
 	Mat rotation = T.rotate(Vec3f(0, 1, 0), 1).get();
 
-	//sphere1->transform(rotation);
-	//sphere2.transform(rotation);
-	//sphere3->transform(rotation);
+	sphere1->transform(rotation);
+	sphere2.transform(rotation);
+	sphere3->transform(rotation);
 
 	//auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
 	//auto primSphere = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(3, 1, 0), 1.5f);
@@ -262,7 +266,7 @@ int main()
 		//		 Timer::start("Rendering...");
 		Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
 		//		 Timer::stop();
-		imshow("Marble Texture", img);
+		imshow("3D Texturing", img);
 		char key = waitKey(1);
 
 		sphere1->transform(rotation);

@@ -72,7 +72,7 @@ namespace rt {
           if(m_isSolid == false)
                return wcs2ocs(ray.hitPoint());
           else
-               return ray.hitPoint() - m_solid->getPivot() ;
+               return ray.hitPoint() - m_solid.getPivot() ;
      }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const

@@ -1,7 +1,7 @@
 #include "Solid.h"
 #include "PrimTriangle.h"
 #include "Transform.h"
-#include <fstream> 
+#include <fstream>
 #include <utility>
 
 namespace rt {
@@ -74,20 +74,20 @@ namespace rt {
 					bool ifNormals = N.val[0] > 0 && N.val[0] < vNormals.size();
 
 					if (!ifTextures && !ifNormals) {
-						add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+						add(std::make_shared<CPrimTriangle>(pShader,*this ,vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
 						if (i == 4)
-							add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]]));
+							add(std::make_shared<CPrimTriangle>(pShader,*this, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]]));
 					} else if (!ifTextures) {
-						add(std::make_shared<CPrimTriangle>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+						add(std::make_shared<CPrimTriangle>(pShader,*this,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 																	  Vec2f::all(0), Vec2f::all(0), Vec2f::all(0),
 																	  vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
 					} else {
-						add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+						add(std::make_shared<CPrimTriangle>(pShader,*this ,vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
 																	 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
-																	 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));			
+																	 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
 
 						if (i == 4)
-							add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]],
+							add(std::make_shared<CPrimTriangle>(pShader,*this ,vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]],
 																		 vTextures[T.val[0]], vTextures[T.val[2]], vTextures[T.val[3]],
 																		 vNormals[N.val[0]], vNormals[N.val[2]], vNormals[N.val[3]]));
 					}

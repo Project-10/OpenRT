@@ -45,7 +45,7 @@ namespace rt {
                ,m_isSolid(false)
 		{}
           
-  		DllExport CPrimTriangle(const ptr_shader_t pShader, CSolid* solid , const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
+  		DllExport CPrimTriangle(const ptr_shader_t pShader, CSolid& solid , const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
 			: CPrim(pShader, (0.33f * (a + b + c)))
                , m_solid(solid)
 			, m_a(a)
@@ -98,7 +98,7 @@ namespace rt {
 		Vec3f m_edge2;					///< Edge AC
 		Vec3f m_normal;					///< Triangle normal
           bool m_isSolid;
-          CSolid* m_solid;
+          CSolid m_solid;
           std::shared_ptr<const CPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
 	};
 }
