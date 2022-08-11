@@ -59,10 +59,8 @@ namespace rt {
 		return intersect(lvalue_cast(Ray(ray)));
 	}
 
-	void CPrimSphere::transform(const Mat& T)
+	void CPrimSphere::doTransform(const Mat& T)
 	{
-		CPrim::transform(T);
-		
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
 		o = CTransform::point(o, T);	// translation of the point

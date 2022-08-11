@@ -20,20 +20,6 @@ namespace rt {
 		return true;
 	}
 
-	void CPrimPlane::transform(const Mat& T)
-	{
-		CPrim::transform(T);
-
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
-		m_origin += o;					// update the sphere's origin
-
-		// Transform normals
-		Mat T1 = T.inv().t();
-		m_normal = normalize(CTransform::vector(m_normal, T1));
-	}
-
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const
 	{
 		Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
@@ -58,5 +44,17 @@ namespace rt {
 				break;
 			}
 		return CBoundingBox(minPoint, maxPoint);
+	}
+
+	void CPrimPlane::doTransform(const Mat& T)
+	{
+		// Transform origin
+		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+		o = CTransform::point(o, T);	// transltion of the point
+		m_origin += o;					// update the sphere's origin
+
+		// Transform normals
+		Mat T1 = T.inv().t();
+		m_normal = normalize(CTransform::vector(m_normal, T1));
 	}
 }

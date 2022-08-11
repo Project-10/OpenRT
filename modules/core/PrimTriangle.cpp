@@ -17,10 +17,13 @@ namespace rt {
 			return false;
 	}
 
-	void CPrimTriangle::transform(const Mat& T)
+	Vec3f CPrimTriangle::getOrigin(void) const
 	{
-		CPrim::transform(T);
+		return 0.33f * (m_a + m_b + m_c);
+	}
 
+	void CPrimTriangle::doTransform(const Mat& T)
+	{
 		// Transform vertexes
 		m_a = CTransform::point(m_a, T);
 		m_b = CTransform::point(m_b, T);
@@ -36,11 +39,6 @@ namespace rt {
 		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
-	}
-	
-	Vec3f CPrimTriangle::getOrigin(void) const
-	{
-		return 0.33f * (m_a + m_b + m_c);
 	}
 
 	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
@@ -60,12 +58,6 @@ namespace rt {
 	{
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
-
-//    DllExport Vec3f CPrimTriangle::getSolidTextureCoords(const Ray& ray) const
-//    {
-//		// TODO: Implement this metho
-//		return CTransform::point(ray.hitPoint(), m_t.inv());
-//    }
 
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{

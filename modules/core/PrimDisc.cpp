@@ -23,25 +23,6 @@ namespace rt {
 		return true;
 	}
 
-	void CPrimDisc::transform(const Mat& T)
-	{
-		CPrim::transform(T);
-
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
-		m_origin += o;					// update the sphere's origin
-
-		// Transform normals
-		Mat T1 = T.inv().t();
-		m_normal = normalize(CTransform::vector(m_normal, T1));
-
-		// Transform radius
-		Vec3f r = m_radius * normalize(Vec3f::all(1));
-		r = CTransform::vector(r, T);
-		m_radius = static_cast<float>(norm(r));
-	}
-
 	Vec2f CPrimDisc::getTextureCoords(const Ray& ray) const
 	{
 		Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
@@ -63,5 +44,22 @@ namespace rt {
 		for (int i = 0; i < 3; i++)
 			e[i] = m_radius * sqrtf(1 - m_normal[i] * m_normal[i]);
 		return CBoundingBox(m_origin - e, m_origin + e);
+	}
+
+	void CPrimDisc::doTransform(const Mat& T)
+	{
+		// Transform origin
+		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+		o = CTransform::point(o, T);	// transltion of the point
+		m_origin += o;					// update the sphere's origin
+
+		// Transform normals
+		Mat T1 = T.inv().t();
+		m_normal = normalize(CTransform::vector(m_normal, T1));
+
+		// Transform radius
+		Vec3f r = m_radius * normalize(Vec3f::all(1));
+		r = CTransform::vector(r, T);
+		m_radius = static_cast<float>(norm(r));
 	}
 }

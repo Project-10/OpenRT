@@ -58,36 +58,37 @@ namespace rt {
         return intersect(lvalue_cast(Ray(ray)));
     }
 
-    void CPrimBoolean::transform(const Mat &T) 
-	{
-        CTransform tr;
-        Mat T1 = tr.translate(-m_origin).get();
-        Mat T2 = tr.translate(m_origin).get();
-
-        // transform first geometry
-        for (auto &pPrim : m_vpPrims1) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vpPrims1) pPrim->transform(T2);
-
-        // transform second geometry
-        for (auto &pPrim : m_vpPrims2) pPrim->transform(T * T1);
-        for (auto &pPrim : m_vpPrims2) pPrim->transform(T2);
-
-        // update pivots point
-        for (int i = 0; i < 3; i++)
-            m_origin.val[i] += T.at<float>(i, 3);
-
-        // recompute the bounding box
-        computeBoundingBox();
-#ifdef ENABLE_BSP
-		m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
-		m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
-#endif
-    }
-
     Vec3f CPrimBoolean::doGetNormal(const Ray &ray) const 
 	{
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
+
+	void CPrimBoolean::doTransform(const Mat& T)
+	{
+		CTransform tr;
+		Mat T1 = tr.translate(-m_origin).get();
+		Mat T2 = tr.translate(m_origin).get();
+
+		// transform first geometry
+		for (auto& pPrim : m_vpPrims1) pPrim->transform(T * T1);
+		for (auto& pPrim : m_vpPrims1) pPrim->transform(T2);
+
+		// transform second geometry
+		for (auto& pPrim : m_vpPrims2) pPrim->transform(T * T1);
+		for (auto& pPrim : m_vpPrims2) pPrim->transform(T2);
+
+		// TODO: check this, after the addition of the pivot point to the primitives
+		// update pivots point
+		for (int i = 0; i < 3; i++)
+			m_origin.val[i] += T.at<float>(i, 3);
+
+		// recompute the bounding box
+		computeBoundingBox();
+#ifdef ENABLE_BSP
+		m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
+		m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
+#endif
+	}
 
     Vec2f CPrimBoolean::getTextureCoords(const Ray &ray) const 
 	{

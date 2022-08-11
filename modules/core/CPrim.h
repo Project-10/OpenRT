@@ -22,8 +22,9 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
+		 * @param pivot The pivot point (origin) of the primitive
 		 */
-		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& m_origin);
+		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& pivot);
 		DllExport CPrim(const CPrim&) = delete;
 		DllExport virtual ~CPrim(void) = default;
 		DllExport const CPrim& operator=(const CPrim&) = delete;
@@ -46,11 +47,6 @@ namespace rt {
 		 * @retval false Otherwise
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
-		/**
-		 * @brief Performs affine transformation
-		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
-		 */
-		DllExport virtual void				transform(const Mat& T) = 0;
 		/**
 		 * @brief Returns the origin point of the primitive
 		 * @return The origin point
@@ -78,6 +74,11 @@ namespace rt {
 		 */
 		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
 		/**
+		 * @brief Performs affine transformation
+		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
+		 */
+		DllExport void						transform(const Mat& T);
+		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		 */
@@ -97,14 +98,14 @@ namespace rt {
          * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-        DllExport Vec3f				        getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray): doGetNormal(ray); }
+        DllExport Vec3f				        getNormal(const Ray& ray) const;
         /**
         * @brief Returns the  normal vector of the primitive in the ray - primitive intersection point
         * @note In contrast to the @ref doGetNormal() method, this methods takes into account the possible normal interpolation along the primitive
         * @param ray Ray intersecting the primitive
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
-        DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
+        DllExport Vec3f				        getShadingNormal(const Ray& ray) const;
 		/**
 		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
 		 * @param p Point in the WCS
@@ -114,7 +115,12 @@ namespace rt {
 
 		
     private:
-        /**
+		/**
+		* @brief Performs affine transformation
+		* @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
+		*/
+		DllExport virtual void				doTransform(const Mat& T) = 0;
+		/**
         * @brief Returns the normal vector of the primitive in the ray - primitive intersection point
         * @param ray Ray intersecting the primitive
         * @return The normalized normal of the primitive at the ray - primitive intersection point
