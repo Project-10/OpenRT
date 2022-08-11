@@ -63,8 +63,6 @@ namespace rt {
           
           DllExport virtual bool                                    isSolid(void) const {return true;}
           
-          ///<Pointer to a solid
-		using ptr_solid_t = std::shared_ptr<CSolid>;
 	protected:
 		/**
 		 * @brief Constructor
