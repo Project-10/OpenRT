@@ -70,7 +70,6 @@ namespace rt {
 		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
-          DllExport void isSolid(void) const {return true;}
           DllExport virtual Vec3f getSolidTextureCoords(const Ray& ray) const override;
 		
 		
