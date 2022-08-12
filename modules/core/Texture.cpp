@@ -23,9 +23,8 @@ namespace rt{
 
 	Vec3f CTexture::getTexel(const Vec2f& uv) const
 	{
-		float t;
-		float u = modff(uv.val[0] + Epsilon, &t);
-		float v = modff(uv.val[1] + Epsilon, &t);
+		float u = fmodf(uv[0], 1);
+		float v = fmodf(uv[1], 1);
 
 		if (u < 0) u += 1;
 		if (v < 0) v += 1;
@@ -38,8 +37,8 @@ namespace rt{
 			return c ? Vec3f::all(1) : Vec3f::all(0.5f);
 		} else {
 			// find texel indices
-			int x = static_cast<int>(cols * u);
-			int y = static_cast<int>(rows * v);
+			int x = static_cast<int>((cols - 1) * u);
+			int y = static_cast<int>((rows - 1) * v);
 
 			return (*this).at<Vec3f>(y, x);
 		}
