@@ -25,16 +25,9 @@ namespace rt {
 
 	Vec2f CPrimDisc::getTextureCoords(const Ray& ray) const
 	{
-		Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
-		if (m_normal[1] < 1.0f) mu = normalize(m_normal.cross(Vec3f(0, 1, 0)));	// assuming up-vector to be Y-direction in WCS
-		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
-		mv = m_normal.cross(mu);
-		
-		Vec3f hit = wcs2ocs(ray.hitPoint());
-		hit = hit * (0.5f / m_radius);
-		Vec2f res = norm(hit) > Epsilon ? Vec2f(0.5f + hit.dot(mu), 0.5f + hit.dot(mv)) : Vec2f(0.5f, 0.5f);
-	
-		return res;
+		Vec3f hit = wcs2ocs(ray.hitPoint());	// Hitpoint in OCS
+		hit = hit * (0.5f / m_r);
+		return norm(hit) > Epsilon ? Vec2f(0.5f + hit.dot(m_u), 0.5f + hit.dot(m_v)) : Vec2f(0.5f, 0.5f);
 	}
 
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm

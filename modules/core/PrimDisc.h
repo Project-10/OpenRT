@@ -26,6 +26,9 @@ namespace rt {
 			, m_origin(origin)
 			, m_normal(normal)
 			, m_radius(radius)
+			, m_u(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
+			, m_v(m_u.cross(normal))
+			, m_r(radius)
 		{}
 		DllExport virtual ~CPrimDisc(void) = default;
 		
@@ -45,5 +48,9 @@ namespace rt {
 		Vec3f m_normal;		///< Point on the plane
 		Vec3f m_origin;		///< Normal to the plane
 		float m_radius;		///< Radius of the disc
+
+		const Vec3f m_u;	///< Vector orthogonal to the normal and \b m_v (used for texturing)
+		const Vec3f m_v;	///< Vector orthogonal to the normal and \b m_u (used for texturing)
+		const float m_r;	///< The initial radius if the disc (used for texturing)
 	};
 }

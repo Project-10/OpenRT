@@ -79,10 +79,12 @@ namespace rt {
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
-		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
+		// Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
+		// float r = m_radius;
 		Vec3f hitPoint = wcs2ocs(ray.hitPoint());		// Hitpoint in OCS
-		float phi = atan2f(hitPoint[2], hitPoint[0]);
-		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
+		float r = norm(hitPoint);						// sqrt(x^2 + y^2 + z^2)
+		float phi = atan2f(hitPoint[2], hitPoint[0]);	// arctg(z / x)
+		float theta = acosf(MIN(r, hitPoint[1]) / r);	// arccos(y / r)
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 
