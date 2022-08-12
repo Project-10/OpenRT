@@ -10,18 +10,28 @@ namespace rt{
 		: m_pShader(pShader)
 		, m_t(Mat::eye(4, 4, CV_32FC1))
 	{
-		 for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = pivot[i];
+		setPivot(pivot);
 	}
 
 	Vec3f CPrim::wcs2ocs(const Vec3f& p) const
 	{
-		 return CTransform::point(p, m_t.inv());
+		return CTransform::point(p, m_t.inv());
 	}
 
 	void CPrim::transform(const Mat &T)
 	{
 		// Accumulate transformation in the transformation matrix
-		m_t = m_t * T;
+		Vec3f pivot;
+		for (int i = 0; i < 3; i++) {
+			pivot[i] = m_t.at<float>(i, 3);
+			m_t.at<float>(i, 3) = 0;
+		}
+
+		m_t = T * m_t;
+
+		for (int i = 0; i < 3; i++)
+			m_t.at<float>(i, 3) += pivot[i];
+
 		doTransform(T);
 	}
 
