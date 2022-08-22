@@ -11,8 +11,7 @@ namespace rt {
 		DllExport virtual ~CTextureStripes(void) = default;
     
 		DllExport Vec3f getTexel(const Vec3f &uvw) const override;
-    
-		DllExport bool isProcedural(void) const override { return true; }
+		DllExport bool	isProcedural(void) const override { return true; }
 
 
 	private:

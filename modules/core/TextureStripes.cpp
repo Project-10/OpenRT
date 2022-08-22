@@ -1,7 +1,6 @@
 #include "TextureStripes.h"
 
 namespace rt{
-
 	Vec3f CTextureStripes::getTexel(const Vec3f& uvw) const
 	{
 		float u = uvw.val[0];
@@ -16,5 +15,3 @@ namespace rt{
 		return (intensity > 0.5) ? Vec3f(0, 0, 1) : Vec3f(1, 1 ,1);
 	}
 }
-
-

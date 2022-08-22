@@ -44,9 +44,8 @@ namespace rt{
 		}
 	}
         
-        Vec3f CTexture::getTexel(const Vec3f& uvw) const {
-             RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-         }
-        
-        
+	Vec3f CTexture::getTexel(const Vec3f& uvw) const 
+	{
+		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+	}        
 }
