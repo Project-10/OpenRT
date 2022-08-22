@@ -28,7 +28,7 @@ namespace rt {
 		 * @brief Constructor
 		 * @param pColorMap The pointer to the diffuse color texture (type: CV_8UC3)
 		 */
-		DllExport CShader(const ptr_texture_t pColorMap) : m_pDiffuseColorMap(pColorMap) {}
+		DllExport CShader(const ptr_texture_t pColorMap) : m_pDiffuseColorMap(pColorMap), m_pAmbientColorMap(pColorMap) {}
 		DllExport virtual ~CShader(void) = default;
 
 		/**
