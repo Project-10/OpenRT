@@ -64,7 +64,7 @@ namespace rt {
 		 * @brief Constructor
 		 * @param org The origin of the object. This point may be the virtual center of mass and will be used as a pivot point for object transformations.
 		 */
-		CSolid(Vec3f org) : m_pivot(org) {}
+		CSolid(const Vec3f& org) : m_pivot(org) {}
 		/**
 		 * @brief Adds a new primitive to the solid
 		 * @param pPrim Pointer to the primitive

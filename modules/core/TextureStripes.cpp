@@ -14,5 +14,3 @@ namespace rt{
 		return static_cast<int>(value) % 2 == 0 ? RGB(255, 0, 0) : RGB(255, 255, 255);
 	}
 }
-
-
