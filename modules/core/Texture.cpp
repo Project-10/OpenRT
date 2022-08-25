@@ -37,8 +37,8 @@ namespace rt{
 			return c ? RGB(255, 255, 255) : RGB(127, 127, 127);
 		} else {
 			// find texel indices
-			int x = static_cast<int>((cols - 1) * u);
-			int y = static_cast<int>((rows - 1) * v);
+			int x = static_cast<int>(cols * u);
+			int y = static_cast<int>(rows * v);
 
 			return (*this).at<Vec3f>(y, x);
 		}
