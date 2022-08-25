@@ -84,4 +84,15 @@ namespace rt{
 	
 		return res;
 	}
+
+	float CPerlinNoise::turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence)
+	{
+		float res = 0;
+		for (int i = 1; i <= octaves; i++) {
+			res += amplitude * noise(f * p);
+			amplitude *= persistence;
+			f *= lacunarity;
+		}
+		return res;
+	}
 }

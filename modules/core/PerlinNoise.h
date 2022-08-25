@@ -21,7 +21,7 @@ namespace rt{
 		 * @return A pseudo-random value in range [-1; 1]
 		 */
 		DllExport static float noise(const Point3f& p);
-     
+		DllExport static float turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence);
     
 	private:
 		inline static std::vector<int> m_p = {
