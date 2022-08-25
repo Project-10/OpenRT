@@ -59,12 +59,6 @@ namespace rt {
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
 
-    DllExport Vec3f CPrimTriangle::wcs2ocs(const Vec3f& p) const
-    {
-		// TODO: Implement this metho
-		return p;
-    }
-
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{
 		CBoundingBox res;

@@ -22,7 +22,10 @@ namespace rt {
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 */
-		DllExport IPrim(const ptr_shader_t pShader) : m_pShader(pShader) {}
+		DllExport IPrim(const ptr_shader_t pShader) : m_pShader(pShader), m_t(Mat::eye(4, 4, CV_32FC1)) 
+		{
+			// for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
+		}
 		DllExport IPrim(const IPrim&) = delete;
 		DllExport virtual ~IPrim(void) = default;
 		DllExport const IPrim& operator=(const IPrim&) = delete;
@@ -62,12 +65,6 @@ namespace rt {
 		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
-		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
-		 * @param p Point in the WCS
-		 * return Point \b p in OCS
-		 */
-		DllExport virtual Vec3f				wcs2ocs(const Vec3f& p) const = 0;
-		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
 		 */
@@ -104,6 +101,12 @@ namespace rt {
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
         DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
+		/**
+		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
+		 * @param p Point in the WCS
+		 * return Point \b p in OCS
+		 */
+		DllExport Vec3f						wcs2ocs(const Vec3f& p) const { return p; }
 
 		
     private:
@@ -126,5 +129,6 @@ namespace rt {
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
 		std::string			m_name;				///< Optional name of the primitive.
 		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
+		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 	};
 }

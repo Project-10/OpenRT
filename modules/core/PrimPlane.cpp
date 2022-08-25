@@ -46,12 +46,6 @@ namespace rt {
 		return res;
 	}
 
-    DllExport Vec3f CPrimPlane::wcs2ocs(const Vec3f& p) const
-    {
-		// TODO: Implement this metho
-	   return p;
-    }
-
 	CBoundingBox CPrimPlane::getBoundingBox(void) const
 	{
 		Vec3f minPoint = Vec3f::all(-Infty);

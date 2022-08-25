@@ -54,12 +54,6 @@ namespace rt {
 		return res;
 	}
 
-    DllExport Vec3f CPrimDisc::wcs2ocs(const Vec3f& p) const
-    {
-		// TODO: Implement this method
-		return p;
-    }
-
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
 	CBoundingBox CPrimDisc::getBoundingBox(void) const
 	{

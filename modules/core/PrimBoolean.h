@@ -41,12 +41,11 @@ namespace rt {
         DllExport virtual ~CPrimBoolean(void) override = default;
         
 		DllExport virtual bool			intersect(Ray &ray) const override;
-        DllExport virtual bool			if_intersect(const Ray &ray) const override;
-        DllExport virtual void			transform(const Mat &T) override;
-        DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
+		DllExport virtual bool			if_intersect(const Ray &ray) const override;
+		DllExport virtual void			transform(const Mat &T) override;
+		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
-		DllExport virtual Vec3f			wcs2ocs(const Vec3f& p) const override;
-        DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
+		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
 		DllExport virtual void			flipNormal(void) override;
 
 		
