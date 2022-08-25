@@ -162,57 +162,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 //waitKey();
 //return 0;
 
-std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolution)
-{
-	auto pScene = std::make_shared<CScene>(bgColor);
-	
-	// Texture
-	auto pTextureMarble = std::make_shared<CTexture>(dataPath + "marble-light.jpg");
-	
-	// Shader
-	auto pShaderWhite = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
-	auto pShaderFloor = std::make_shared<CShaderBlinn>(*pScene, RGB(120, 120, 120), 0.1f, 0.9f, 0, 0);
-	auto pShaderMarble = std::make_shared<CShaderGeneral>(*pScene, pTextureMarble, 0.1f, 0.9f, 0, 0, 0.2f, 0, 1);
-
-	// Geometry
-	pScene->add(std::make_shared<CPrimDisc>(pShaderWhite, Vec3f(0, 5.1f, 0), Vec3f(0, -1, 0), 1));
-	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
-	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
-	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
-	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 100));
-
-	pScene->add(std::make_shared<CPrimSphere>(pShaderMarble, Vec3f(0, 1.3f, 0), 1));
-
-	// Light
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(9), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4, true, true)));
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(9), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4, true, true)));
-
-	// Camera
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 1.5f, -3), Vec3f(0, 1.2f, 0), Vec3f(0, 1, 0), 60));
-	
-	return pScene;
-}
-
 int main()
-{
-	const Vec3f		bgColor = RGB(12, 12, 12);
-	const Size		resolution = Size(800, 600);
-	
-	auto pScene = buildSceneMarble(bgColor, resolution);
-	
-	pScene->buildAccelStructure(20, 3);
-	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
-	Timer::stop();
-	imshow("Marble Texture", img);
-	imwrite("D:\\renders\\marble.jpg", img);
-	waitKey();
-
-	return 0;
-}
-
-int main1()
 {
 
 	const Vec3f		bgColor = RGB(100, 100, 100);
