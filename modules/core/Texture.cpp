@@ -34,7 +34,7 @@ namespace rt{
 			bool ay = v > 0.5f ? true : false;
 		
 			bool c = ax ^ ay;
-			return c ? Vec3f::all(1) : Vec3f::all(0.5f);
+			return c ? RGB(255, 255, 255) : RGB(127, 127, 127);
 		} else {
 			// find texel indices
 			int x = static_cast<int>((cols - 1) * u);
@@ -44,8 +44,8 @@ namespace rt{
 		}
 	}
         
-	Vec3f CTexture::getTexel(const Vec3f& uvw) const 
+	Vec3f CTexture::getTexel(const Vec3f&) const 
 	{
 		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
-	}        
+	}
 }
