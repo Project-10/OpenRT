@@ -8,6 +8,7 @@
 namespace rt {
 	/**
 	 * @brief Wood procedural texture class
+	 * @ingroup moduleTexture
 	 * @author Mahmoud El Bergui, m.elbergui@jacobs-university.de
 	 */
 	class CTextureWood : public CTexture {

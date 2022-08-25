@@ -8,7 +8,7 @@ namespace rt {
 	// ================================ Quad Solid Class ================================
 	/**
 	 * @brief Quadrilateral Solid class
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolidQuad : public CSolid {

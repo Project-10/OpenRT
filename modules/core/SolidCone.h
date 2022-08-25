@@ -8,7 +8,7 @@ namespace rt {
 	// ================================ Cone Solid Class ================================
 	/**
 	 * @brief Cone Solid class
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolidCone : public CSolid {

@@ -105,6 +105,39 @@ The OpenRT framework consist of the following essential blocks:
 */
 
 /**
+@defgroup moduleCore OpenRT Module
+@section sec_openrt_core Core OpenRT Module
+
+@defgroup moduleCamera Camera
+@ingroup moduleCore
+@brief Module containing variouse camera models
+
+@defgroup moduleGeometry Geometry
+@ingroup moduleCore
+@brief Sub-module containing classes to describe scene geometry
+
+@defgroup modulePrimitive
+@ingroup moduleGeometry
+@brief Atomic geometry
+		
+@defgroup moduleSolid
+@ingroup moduleGeometry
+@brief Compound geometry
+
+@defgroup moduleShader Shading
+@ingroup moduleCore
+@brief A set of methods for shading the geometry
+
+@defgroup moduleTexture Texturing
+@ingroup moduleShader
+@brief Bitmap and procedural texturing methods
+
+@defgroup moduleLight Light
+@ingroup moduleCore
+@brief Module containing variouse light sources
+*/
+
+/**
 @page s3 Installation
 OpenRT is a cross-platform C++ library. The description here was tested on Windows 10 / Visual Studio 2019, macOS Catalina 10.15.6 / Xcode 11.4 and Ubuntu 18.04 / gcc 7.3.0. 
 If you encounter errors after following the steps described below, feel free to contact us via our 
