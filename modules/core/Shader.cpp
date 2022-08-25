@@ -19,7 +19,7 @@ namespace rt {
 	Vec3f CShader::getAmbientColor(const Ray& ray) const
 	{
 		if (m_pAmbientColorMap)
-			if (m_pAmbientColorMap->isProcedural()) return m_pAmbientColorMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()));		// procedural texture
+			if (m_pAmbientColorMap->isProcedural()) return m_pAmbientColorMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()));	// procedural texture
 			else									return m_pAmbientColorMap->getTexel(ray.hit->getTextureCoords(ray));		// bitmap texture
 		else										return m_ambientColor;														// color		
 	}
@@ -45,7 +45,7 @@ namespace rt {
 		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
 #endif
 		if (m_pDiffuseColorMap)
-			if (m_pDiffuseColorMap->isProcedural()) return m_pDiffuseColorMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()));		// procedural texture
+			if (m_pDiffuseColorMap->isProcedural()) return m_pDiffuseColorMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()));	// procedural texture
 			else									return m_pDiffuseColorMap->getTexel(ray.hit->getTextureCoords(ray));		// bitmap texture
 		else										return res;																	// color
 	}
@@ -65,7 +65,7 @@ namespace rt {
 	float CShader::getSpecularLevel(const Ray& ray) const
 	{
 		if (m_pSpecularLevelMap)
-			if (m_pSpecularLevelMap->isProcedural()) return m_pSpecularLevelMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()))[0];		// procedural texture
+			if (m_pSpecularLevelMap->isProcedural()) return m_pSpecularLevelMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()))[0];	// procedural texture
 			else									 return m_pSpecularLevelMap->getTexel(ray.hit->getTextureCoords(ray))[0];		// bitmap texture
 		else										 return m_specularLevel;														// color
 	}

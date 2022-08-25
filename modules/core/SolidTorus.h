@@ -8,7 +8,7 @@ namespace rt {
     // ================================ Cone Solid Class ================================
     /**
      * @brief Torus Solid class
-     * @ingroup modulePrimitive
+     * @ingroup moduleSolid
      */
     class CSolidTorus : public CSolid {
     public:

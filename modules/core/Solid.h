@@ -10,7 +10,7 @@ namespace rt {
 	 * @brief Base Solid class
 	 * @details This class represent objects which consist of multiple primitives (obkects derived from CPrim class). 
 	 * The main purpose of the class is to allow for convinient transformations of the solid objects
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolid {
