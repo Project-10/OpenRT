@@ -2,7 +2,7 @@
 // Written by Dr. Sergey Kosov in 2021 for Jacobs University
 #pragma once
 
-#include "CPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Disc Primitive Class ================================

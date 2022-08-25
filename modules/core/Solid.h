@@ -2,7 +2,7 @@
 // Written by Dr. Sergey G. Kosov in 2019 for Project X 
 #pragma once
 
-#include "CPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Solid Base Class ================================

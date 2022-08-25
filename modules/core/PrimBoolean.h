@@ -2,7 +2,7 @@
 // Written by Otmane Sabir in 2020
 #pragma once
 
-#include "CPrim.h"
+#include "Prim.h"
 #include "Solid.h"
 #ifdef ENABLE_BSP
 #include "BSPTree.h"
