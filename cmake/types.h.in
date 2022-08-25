@@ -52,8 +52,8 @@ template <class T>  T& lvalue_cast(T&& t) { return t; }
 #endif
 
 namespace rt { 
-	class IPrim;
-	using ptr_prim_t 	= std::shared_ptr<IPrim>;
+	class CPrim;
+	using ptr_prim_t 	= std::shared_ptr<CPrim>;
     	class CBSPNode;
     	using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
 	
