@@ -15,20 +15,20 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class IPrim : public std::enable_shared_from_this<IPrim>
+	class CPrim : public std::enable_shared_from_this<CPrim>
 	{
 	public:
 		/**
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 */
-		DllExport IPrim(const ptr_shader_t pShader) : m_pShader(pShader), m_t(Mat::eye(4, 4, CV_32FC1)) 
+		DllExport CPrim(const ptr_shader_t pShader) : m_pShader(pShader), m_t(Mat::eye(4, 4, CV_32FC1)) 
 		{
 			// for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
 		}
-		DllExport IPrim(const IPrim&) = delete;
-		DllExport virtual ~IPrim(void) = default;
-		DllExport const IPrim& operator=(const IPrim&) = delete;
+		DllExport CPrim(const CPrim&) = delete;
+		DllExport virtual ~CPrim(void) = default;
+		DllExport const CPrim& operator=(const CPrim&) = delete;
 
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive

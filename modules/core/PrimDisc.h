@@ -2,7 +2,7 @@
 // Written by Dr. Sergey Kosov in 2021 for Jacobs University
 #pragma once
 
-#include "IPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Disc Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimDisc : public IPrim
+	class CPrimDisc : public CPrim
 	{
 	public:
 		/**
@@ -22,7 +22,7 @@ namespace rt {
 		 * @param radius Radius of the disc
 		 */
 		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
-			: IPrim(pShader)
+			: CPrim(pShader)
 			, m_normal(normal)
 			, m_origin(origin)
 			, m_radius(radius)

@@ -2,7 +2,7 @@
 // Written by Otmane Sabir in 2020
 #pragma once
 
-#include "IPrim.h"
+#include "Prim.h"
 #include "Solid.h"
 #ifdef ENABLE_BSP
 #include "BSPTree.h"
@@ -26,7 +26,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Otmane Sabir, o.sabir@jacobs-university.de
 	 */
-	class CPrimBoolean : public IPrim {
+	class CPrimBoolean : public CPrim {
     public:
         /*
 		 * @brief Constructor

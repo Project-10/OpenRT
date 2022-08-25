@@ -1,5 +1,5 @@
 #include "BSPTree.h"
-#include "IPrim.h"
+#include "Prim.h"
 #include "Ray.h"
 #include "macroses.h"
 

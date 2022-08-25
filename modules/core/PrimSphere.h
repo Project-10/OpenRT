@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "IPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Sphere Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimSphere : public IPrim
+	class CPrimSphere : public CPrim
 	{
 	public:
 		/**
@@ -21,7 +21,7 @@ namespace rt {
 		 * @param radius Radius of the sphere
 		 */
 		DllExport CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
-			: IPrim(pShader)
+			: CPrim(pShader)
 			, m_origin(origin)
 			, m_radius(radius)
 		{}

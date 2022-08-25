@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2005 for Rendering Competition
 #pragma once
 
-#include "IPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Infinite Plane Primitive Class ================================
@@ -11,7 +11,7 @@ namespace rt {
 	 * @ingroup modulePrimitive
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CPrimPlane : public IPrim
+	class CPrimPlane : public CPrim
 	{
 	public:
 		/**
@@ -21,7 +21,7 @@ namespace rt {
 		 * @param normal Normal to the plane
 		 */
 		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
-			: IPrim(pShader)
+			: CPrim(pShader)
 			, m_normal(normal)
 			, m_origin(origin)
 		{
