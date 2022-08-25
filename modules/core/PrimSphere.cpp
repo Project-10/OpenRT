@@ -93,15 +93,15 @@ namespace rt {
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
 		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
-		Vec3f hitPoint = getSolidTextureCoords(ray);	// Hitpoint in OCS
+		Vec3f hitPoint = wcs2ocs(ray.hitPoint());	// Hitpoint in OCS
 		float phi = atan2f(hitPoint[2], hitPoint[0]);
 		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 
-	DllExport Vec3f CPrimSphere::getSolidTextureCoords(const Ray& ray) const
+	DllExport Vec3f CPrimSphere::wcs2ocs(const Vec3f& p) const
 	{
-		return CTransform::point(ray.hitPoint(), m_t.inv());
+		return CTransform::point(p, m_t.inv());
 	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 

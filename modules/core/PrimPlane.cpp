@@ -46,10 +46,10 @@ namespace rt {
 		return res;
 	}
 
-    DllExport Vec3f CPrimPlane::getSolidTextureCoords(const Ray& ray) const
+    DllExport Vec3f CPrimPlane::wcs2ocs(const Vec3f& p) const
     {
 		// TODO: Implement this metho
-	   return ray.hitPoint();
+	   return p;
     }
 
 	CBoundingBox CPrimPlane::getBoundingBox(void) const

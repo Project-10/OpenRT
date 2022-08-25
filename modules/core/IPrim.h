@@ -62,11 +62,11 @@ namespace rt {
 		 */
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
 		/**
-		 * @brief Returns the 3d coordinates in OCS for solid procedural texturing
-		 * @param ray Ray, which has hit the geometry. 
-		 * return the 3d coordinates of the ray's hitpoint in OCS
+		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
+		 * @param p Point in the WCS
+		 * return Point \b p in OCS
 		 */
-		DllExport virtual Vec3f				getSolidTextureCoords(const Ray& ray) const = 0;
+		DllExport virtual Vec3f				wcs2ocs(const Vec3f& p) const = 0;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
 		 * @returns The bounding box, which contain the primitive
