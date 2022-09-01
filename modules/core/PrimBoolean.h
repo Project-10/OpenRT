@@ -42,7 +42,6 @@ namespace rt {
         
 		DllExport virtual bool			intersect(Ray &ray) const override;
 		DllExport virtual bool			if_intersect(const Ray &ray) const override;
-		DllExport virtual void			transform(const Mat &T) override;
 		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
@@ -51,6 +50,7 @@ namespace rt {
 		
     private:
 		DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
+		DllExport virtual void			doTransform(const Mat& T) override;
 		
 		std::optional<Ray>				computeUnion(const Ray &ray) const;			///< Helper method to perform union logic
 		std::optional<Ray>				computeIntersection(const Ray& ray) const;	///< Helper method to perform intersection logic

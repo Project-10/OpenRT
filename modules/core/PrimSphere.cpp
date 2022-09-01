@@ -59,22 +59,22 @@ namespace rt {
 		return intersect(lvalue_cast(Ray(ray)));
 	}
 
-	void CPrimSphere::transform(const Mat& T)
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
+	{
+		return normalize(ray.hitPoint() - m_origin);
+	}
+
+	void CPrimSphere::doTransform(const Mat& T)
 	{
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
 		o = CTransform::point(o, T);	// translation of the point
 		m_origin += o;					// update the sphere's origin
-		
+
 		// Transform radius
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
-	}
-
-	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
-	{
-		return normalize(ray.hitPoint() - m_origin);
 	}
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const

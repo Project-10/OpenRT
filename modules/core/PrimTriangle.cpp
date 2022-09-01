@@ -17,25 +17,6 @@ namespace rt {
 			return false;
 	}
 
-	void CPrimTriangle::transform(const Mat& T)
-	{
-		// Transform vertexes
-		m_a = CTransform::point(m_a, T);
-		m_b = CTransform::point(m_b, T);
-		m_c = CTransform::point(m_c, T);
-
-		// Transform normals
-		Mat T1 = T.inv().t();
-		m_normal = normalize(CTransform::vector(m_normal, T1));
-		if (m_na) m_na = normalize(CTransform::vector(m_na.value(), T1));
-		if (m_nb) m_nb = normalize(CTransform::vector(m_nb.value(), T1));
-		if (m_nc) m_nc = normalize(CTransform::vector(m_nc.value(), T1));
-
-		// Update edges
-		m_edge1 = m_b - m_a;
-		m_edge2 = m_c - m_a;
-	}
-	
 	Vec3f CPrimTriangle::getOrigin(void) const
 	{
 		return 0.33f * (m_a + m_b + m_c);
@@ -52,6 +33,25 @@ namespace rt {
 			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
 		else
 			return m_normal;
+	}
+
+	void CPrimTriangle::doTransform(const Mat& T)
+	{
+		// Transform vertexes
+		m_a = CTransform::point(m_a, T);
+		m_b = CTransform::point(m_b, T);
+		m_c = CTransform::point(m_c, T);
+
+		// Transform normals
+		Mat T1 = T.inv().t();
+		m_normal = normalize(CTransform::vector(m_normal, T1));
+		if (m_na) m_na = normalize(CTransform::vector(m_na.value(), T1));
+		if (m_nb) m_nb = normalize(CTransform::vector(m_nb.value(), T1));
+		if (m_nc) m_nc = normalize(CTransform::vector(m_nc.value(), T1));
+
+		// Update edges
+		m_edge1 = m_b - m_a;
+		m_edge2 = m_c - m_a;
 	}
 
 	Vec2f CPrimTriangle::getTextureCoords(const Ray& ray) const
