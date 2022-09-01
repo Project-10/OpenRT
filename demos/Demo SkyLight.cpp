@@ -5,7 +5,7 @@ using namespace rt;
 
 int main() 
 {
-	const Vec3f	bgColor = RGB(1, 1, 1);
+	const Vec3f	bgColor = RGB(255, 255, 255);
 	const Size	resolution = Size(800, 600);
 	const float intensity = 1000;
 
@@ -13,9 +13,9 @@ int main()
 	CScene scene(bgColor);
 	
 	// Shaders
-	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderGlass = std::make_shared<CShader>(scene, RGB(0.55f, 0.65f, 0.70f), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderGlass = std::make_shared<CShaderGeneral>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// Floor
 	float s = 50;

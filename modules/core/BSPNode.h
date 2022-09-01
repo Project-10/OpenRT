@@ -47,8 +47,6 @@ namespace rt {
 		 */
         bool intersect(Ray& ray, double t0, double t1) const;
 
-        bool intersect_furthest(Ray& ray, double t0, double t1) const;
-
 		/**
 		 * @brief Returns the pointer to the \a left child
 		 * @returns The pointer to the root-node of the \a left sub-tree

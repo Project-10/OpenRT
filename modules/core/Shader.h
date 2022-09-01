@@ -1,124 +1,125 @@
-// General shader class
-// Written by Dr. Sergey G. Kosov in 2019 for Project X
+// Shader intermediate class
+// Written by Sergey Kosov in 2021 for Jacobs University
 #pragma once
 
-#include "ShaderFlat.h"
-#include "Sampler.h"
+#include "IShader.h"
+#include "Texture.h"
 
 namespace rt {
-	class CScene;
-	// ================================ General Shader Class ================================
+	// ================================ Shader Class ================================
 	/**
-	 * @brief Flat shader class
+	 * @brief Shader intermediate class for storing textures
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShader : public CShaderFlat
+	class CShader : public IShader
 	{
 	public:
 		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param color The color of the object
-		 * @param ka The ambient coefficient
-		 * @param kd The diffuse reflection coefficient
-		 * @param ks The specular refelection coefficient
-		 * @param ke The shininess exponent
-		 * @param km The perfect reflection (mirror) coefficient
-		 * @param kt The perfect transmission coefficient
-		 * @param refractiveIndex The refractive index of the medium (\a e.g. for glass use 1.517)
-		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
+		 * @brief Default constructor
 		 */
-		DllExport CShader(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr )
-			: CShaderFlat(color)
-			, m_scene(scene)
-			, m_ka(ka)
-			, m_kd(kd)
-			, m_ks(ks)
-			, m_ke(ke)
-			, m_km(km)
-			, m_kt(kt)
-			, m_refractiveIndex(refractiveIndex)
-			, m_pSampler(pSampler)
-		{}
+		DllExport CShader(void) = default;
+		/**
+		 * @brief Consructor
+		 * @param color The diffuse color
+		 */
+		DllExport CShader(const Vec3f& color) : m_diffuseColor(color), m_ambientColor(color) {}
 		/**
 		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param pTexture Pointer to the texture
-		 * @param ka The ambient coefficient
-		 * @param kd The diffuse reflection coefficient
-		 * @param ks The specular refelection coefficient
-		 * @param ke The shininess exponent
-		 * @param km The perfect reflection (mirror) coefficient
-		 * @param kt The perfect transmission coefficient
-		 * @param refractiveIndex The refractive index of the medium (\a e.g. for glass use 1.517)
-		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
+		 * @param pColorMap The pointer to the diffuse color texture (type: CV_8UC3)
 		 */
-		DllExport CShader(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr)
-			: CShaderFlat(pTexture)
-			, m_scene(scene)
-			, m_ka(ka)
-			, m_kd(kd)
-			, m_ks(ks)
-			, m_ke(ke)
-			, m_km(km)
-			, m_kt(kt)
-			, m_refractiveIndex(refractiveIndex)
-			, m_pSampler(pSampler)
-		{}
+		DllExport CShader(const ptr_texture_t pColorMap) : m_pDiffuseColorMap(pColorMap), m_pAmbientColorMap(pColorMap) {}
 		DllExport virtual ~CShader(void) = default;
+
+		/**
+		 * @brief Sets the ambient color
+		 * @param color The ambient color
+		 */
+		DllExport void	setAmbientColor(const Vec3f& color);
+		/**
+		 * @brief Sets the ambient color map
+		 * @param pMap The pointer to the ambient texture
+		 */
+		DllExport void	setAmbientColor(const ptr_texture_t pMap);
+		/**
+		 * @brief Sets the diffuse color
+		 * @param color The color color
+		 */
+		DllExport void	setDiffuseColor(const Vec3f& color);
+		/**
+		 * @brief Sets the diffuse map
+		 * @param pColorMap The pointer to the diffuse texture
+		 */
+		DllExport void	setDiffuseColor(const ptr_texture_t pColorMap);
+		/**
+		 * @brief Sets the specular level value
+		 * @param level The specular level value
+		 */
+		DllExport void	setSpecularLevel(float level);
+		/**
+		 * @brief Sets the specular level map
+		 * @param pSpecularLevel The specular level map
+		 */
+		DllExport void	setSpecularLevel(const ptr_texture_t pSpecularLevel);
+		/**
+		 * @brief Sets the opacity
+		 * @param opacity The opacity. Number between 0 and 1
+		 */
+		DllExport void	setOpacity(float opacity) { m_opacity = MAX(0, MIN(1, opacity)); }
+
+
+		/**
+		 * @brief Returns the ambient color value at the intersection point
+		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
+		 * @return The ambient color of the hit objesct
+		 */
+		DllExport Vec3f	getAmbientColor(const Ray& ray) const;
+		/**
+		 * @brief Returns the diffuse color value at the intersection point
+		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
+		 * @return The diffuse color of the hit objesct
+		 */
+		DllExport Vec3f	getDiffuseColor(const Ray& ray) const;
+		/**
+		 * @brief Returns the specular level value at the intersection point
+		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
+		 * @return The specular level value at the intersection point
+		 */
+		DllExport float getSpecularLevel(const Ray& ray) const;
+		/**
+		 * @brief Returns the opacity
+		 * @return The opacity value
+		 */
+		DllExport float	getOpacity(void) const { return m_opacity; }
 		
-		DllExport virtual Vec3f shade(const Ray& ray) const override;
-	
-	
+		
 	private:
-		const CScene& m_scene;		///< Reference to the scene object
+		Vec3f			m_ambientColor		= Vec3f::all(0);	///< The ambient color
+		Vec3f			m_diffuseColor		= Vec3f::all(0);	///< The diffuse color
+		float			m_specularLevel		= 0;				///< The specular level
+		float			m_opacity			= 1;				///< The opacity
 		
-		float m_ka;    				///< The ambient coefficient
-		float m_kd;    				///< The diffuse reflection coefficients
-		float m_ks;    				///< The specular refelection coefficients
-		float m_ke;    				///< The shininess exponent
-		float m_km;					///< The perfect reflection (mirror) coefficient
-		float m_kt;					///< The perfect transmission coefficient
+		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map
+		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
+		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
 		
-		float m_refractiveIndex;	///< The refractive index for transmitted rays
 		
-		ptr_sampler_t	m_pSampler;	///< Pointer to the sampler to be used for perturbing the shape normal during shading
+		// --- MAPS (amount + map) ---
+		// Ambient color (usually equal to diffuse color)
+		// Diffuse color
+		// Specular color
+		// Specular level
+		// Glossiness
+		// Self-Illumination
+		// Opacity
+		// Filter color
+		// Bump
+		// Reflection
+		// Refraction
+		// Displacement
+
 	};
 
-	// ================================ Glass Shader Class ================================
-	/**
-	 * @brief Glass shader 
-	 * @details Fully transparent shader
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderGlass : public CShader
-	{
-	public:
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param refractiveIndex The refractive index of the medium (for glass use 1.517)
-		 */
-		DllExport CShaderGlass(const CScene& scene, float refractiveIndex) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 0, 1, refractiveIndex) {}
-		DllExport virtual ~CShaderGlass(void) = default;
-	};
 
-	// ================================ Mirror Shader Class ================================
-	/**
-	 * @brief Mirror shader
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderMirror : public CShader
-	{
-	public:
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 */
-		DllExport CShaderMirror(const CScene& scene) : CShader(scene, Vec3f::all(0), 0, 0, 0, 0, 1, 0, 0) {}
-		DllExport virtual ~CShaderMirror(void) = default;
-	};
 }
+

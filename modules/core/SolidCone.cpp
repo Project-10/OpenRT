@@ -24,41 +24,46 @@ namespace rt {
 			float h0 = 0;							// The initial height
 			for (int h = 0; h < height_segments - 1; h++) {
 				float h1 = static_cast<float>(h + 1) / height_segments;		// Next height: [1/height_segments; 1]
-				if (smooth)
-					add(CSolidQuad(pShader,
-						p0 + h0 * (top - radius * dir0),
-						p0 + h1 * (top - radius * dir0),
-						p1 + h1 * (top - radius * dir1),
-						p1 + h0 * (top - radius * dir1),
-						Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0),
-						n0, n0, n1, n1));
-				else
-					add(CSolidQuad(pShader,
-						p0 + h0 * (top - radius * dir0),
-						p0 + h1 * (top - radius * dir0),
-						p1 + h1 * (top - radius * dir1),
-						p1 + h0 * (top - radius * dir1),
-						Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0)));
+				if (height >= 0) {
+					if (smooth)
+						add(CSolidQuad(pShader,
+							p0 + h0 * (top - radius * dir0),
+							p1 + h0 * (top - radius * dir1),
+							p1 + h1 * (top - radius * dir1),
+							p0 + h1 * (top - radius * dir0),
+							Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1),
+							n0, n1, n1, n0));
+					else
+						add(CSolidQuad(pShader,
+							p0 + h0 * (top - radius * dir0),
+							p1 + h0 * (top - radius * dir1),
+							p1 + h1 * (top - radius * dir1),
+							p0 + h1 * (top - radius * dir0),
+							Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0), Vec2f(t1, 1 - h1), Vec2f(t0, 1 - h1)));
+				} 
+				else {
+					if (smooth)
+						add(CSolidQuad(pShader,
+							p0 + h0 * (top - radius * dir0),
+							p0 + h1 * (top - radius * dir0),
+							p1 + h1 * (top - radius * dir1),
+							p1 + h0 * (top - radius * dir1),
+							Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0),
+							n0, n0, n1, n1));
+					else
+						add(CSolidQuad(pShader,
+							p0 + h0 * (top - radius * dir0),
+							p0 + h1 * (top - radius * dir0),
+							p1 + h1 * (top - radius * dir1),
+							p1 + h0 * (top - radius * dir1),
+							Vec2f(t0, 1 - h0), Vec2f(t0, 1 - h1), Vec2f(t1, 1 - h1), Vec2f(t1, 1 - h0)));
+				}
 				h0 = h1;
+			
 			}
 
-			// Top Sides: triangles
+			// Top Sides: triangles  
 			if (height >= 0) {
-				if (smooth)
-					add(std::make_shared<CPrimTriangle>(pShader,
-						org + top,
-						p1 + h0 * (top - radius * dir1),
-						p0 + h0 * (top - radius * dir0),
-						Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0),
-						normalize(n0 + n1), n1, n0));
-				else
-					add(std::make_shared<CPrimTriangle>(pShader,
-						org + top,
-						p1 + h0 * (top - radius * dir1),
-						p0 + h0 * (top - radius * dir0),
-						Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0)));
-			}
-			else {
 				if (smooth)
 					add(std::make_shared<CPrimTriangle>(pShader,
 						org + top,
@@ -72,6 +77,21 @@ namespace rt {
 						p0 + h0 * (top - radius * dir0),
 						p1 + h0 * (top - radius * dir1),
 						Vec2f(0.5f, 0), Vec2f(t0, 1 - h0), Vec2f(t1, 1 - h0)));
+			}
+			else {
+				if (smooth)
+					add(std::make_shared<CPrimTriangle>(pShader,
+						org + top,
+						p1 + h0 * (top - radius * dir1),
+						p0 + h0 * (top - radius * dir0),
+						Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0),
+						normalize(n0 + n1), n1, n0));
+				else
+					add(std::make_shared<CPrimTriangle>(pShader,
+						org + top,
+						p1 + h0 * (top - radius * dir1),
+						p0 + h0 * (top - radius * dir0),
+						Vec2f(0.5f, 0), Vec2f(t1, 1 - h0), Vec2f(t0, 1 - h0)));
 			}
 
 			// Cap

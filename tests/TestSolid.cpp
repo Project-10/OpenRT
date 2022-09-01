@@ -3,7 +3,7 @@
 
 using namespace rt;
 TEST_F(CTestSolid, solid_sphere) {
-    auto shader = std::make_shared<CShaderFlat>(RGB(1, 1, 1));
+    auto shader = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
     auto radius = 3.0f;
     auto n_sides = 22;
     auto sphere = CSolidSphere(shader, Vec3f::all(0), radius, n_sides, true);

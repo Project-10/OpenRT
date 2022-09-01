@@ -7,7 +7,7 @@ namespace rt {
 	{
 		Vec3f res = Vec3f::all(0);
 
-		Vec3f normal = ray.hit->getNormal(ray);									// shading normal
+		Vec3f normal = ray.hit->getShadingNormal(ray);									// shading normal
 
 		size_t nSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
 		size_t k = 0;
@@ -27,6 +27,10 @@ namespace rt {
 		}
 		if (k != 0)
 			res = (1.0f / k) * res;
+		
+		const float q = 0.8f;
+		res = q * res + (1 - q) * getDiffuseColor(ray);
+		
 		return res;
 	}
 }

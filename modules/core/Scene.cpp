@@ -222,7 +222,7 @@ namespace rt {
 		const Range range(0, depth.rows);
 #endif
 		Ray ray;
-		for (int y = 0; y < depth.rows; y++) {
+		for (int y = range.start; y < range.end; y++) {
 			double* pDepth = depth.ptr<double>(y);
 			for (int x = 0; x < depth.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
@@ -256,11 +256,14 @@ namespace rt {
 	bool CScene::intersect(Ray& ray) const
 	{
 #ifdef ENABLE_BSP
-		return m_pBSPTree->intersect(ray);
+	    return m_pBSPTree->intersect(ray);
 #else
-		bool hit = false;
+        bool hit = false;
 		for (auto& pPrim : m_vpPrims)
 			hit |= pPrim->intersect(ray);
+		
+		
+
 		return hit;
 #endif
 	}
@@ -271,7 +274,7 @@ namespace rt {
 		return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));
 #else
 		for (auto& pPrim : m_vpPrims)
-			if (pPrim->if_intersect(ray)) return true;
+            if (pPrim->if_intersect(ray)) return true;
 		return false;
 #endif
 	}

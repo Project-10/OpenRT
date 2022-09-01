@@ -16,16 +16,16 @@ int main()
 	auto pCamera = std::make_shared<CCameraPerspective>(resolution, Vec3f(278, 273, -800), Vec3f(0, 0, 1), Vec3f(0, 1, 0), 39.3f);
 	
 	// Shaders
-	auto pShaderLight	= std::make_shared<CShaderFlat>(RGB(1, 1, 1));
-	auto pShaderWhite	= std::make_shared<CShaderPhong>(scene, RGB(1, 1, 1), 0.2f, 0.8f, 0.0f, 0.0f);
-	auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(1, 0, 0), 0.2f, 0.8f, 0.0f, 0.0f);
-	auto pShaderGreen	= std::make_shared<CShaderPhong>(scene, RGB(0, 1, 0), 0.2f, 0.8f, 0.0f, 0.0f);
-	auto pShader		= std::make_shared<CShader>(scene, RGB(1, 1, 1), 0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShaderLight	= std::make_shared<CShaderFlat>(RGB(255, 255, 255));
+	auto pShaderWhite	= std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.2f, 0.8f, 0.0f, 0.0f);
+	auto pShaderRed		= std::make_shared<CShaderPhong>(scene, RGB(255, 0, 0), 0.2f, 0.8f, 0.0f, 0.0f);
+	auto pShaderGreen	= std::make_shared<CShaderPhong>(scene, RGB(0, 255, 0), 0.2f, 0.8f, 0.0f, 0.0f);
+	auto pShader		= std::make_shared<CShaderGeneral>(scene, RGB(255, 255, 255), 0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, std::make_shared<CSamplerStratified>(4, true, true));
 	
 	// Lights
-	auto pLight			= std::make_shared<CLightArea>(intensity * RGB(1.0f, 0.839f, 0.494f), Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerStratified>(6, true, true));
-	auto pLightGreen	= std::make_shared<CLightOmni>(20 * intensity * RGB(0, 1, 0), Vec3f(-1000, 400, 280), false);
-	auto pLightRed		= std::make_shared<CLightOmni>(20 * intensity * RGB(1, 0, 0), Vec3f(1553.7f, 400, 280), false);
+	auto pLight			= std::make_shared<CLightArea>(intensity * RGB(255, 214, 126), Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerStratified>(6, true, true));
+	auto pLightGreen	= std::make_shared<CLightOmni>(20 * intensity * RGB(0, 255, 0), Vec3f(-1000, 400, 280), false);
+	auto pLightRed		= std::make_shared<CLightOmni>(20 * intensity * RGB(255, 0, 0), Vec3f(1553.7f, 400, 280), false);
 	
 	// Blocks
 	CSolidBox shortBlock(pShaderWhite, Vec3f(185.5f, 82.5f, 169), 165, 165, 168);

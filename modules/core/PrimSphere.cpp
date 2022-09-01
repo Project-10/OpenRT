@@ -12,8 +12,6 @@ namespace rt {
 		Vec3f L = m_origin - ray.org;
 
 		double tb = static_cast<double>(L.dot(ray.dir));
-		if (tb > -Epsilon && tb < Epsilon)	// if tb \in (-Epsilon; Epsilon)
-			return false;
 
 		double h2 = static_cast<double>(L.dot(L)) - tb * tb;
 		if (h2 > r2)					// no intersection
@@ -65,7 +63,7 @@ namespace rt {
 	{
 		// Transform origin
 		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
+		o = CTransform::point(o, T);	// translation of the point
 		m_origin += o;					// update the sphere's origin
 		
 		// Transform radius
@@ -74,16 +72,17 @@ namespace rt {
 		m_radius = static_cast<float>(norm(r));
 	}
 
-	Vec3f CPrimSphere::getNormal(const Ray& ray) const
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
 		return normalize(ray.hitPoint() - m_origin);
 	}
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
-		Vec3f hitPoint = ray.hitPoint() - m_origin;
+		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
+		Vec3f hitPoint = wcs2ocs(ray.hitPoint());	// Hitpoint in OCS
 		float phi = atan2f(hitPoint[2], hitPoint[0]);
-		float theta = acosf(hitPoint[1] / m_radius);
+		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 

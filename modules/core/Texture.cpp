@@ -1,10 +1,11 @@
+
 #include "Texture.h"
 #include "macroses.h"
 #include <math.h>
 
 namespace rt{
 	// Constructor
-	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName))
+	CTexture::CTexture(const std::string& fileName) : CTexture(imread(fileName, 1))
 	{
 		RT_ASSERT_MSG(!empty(), "Can't read file %s", fileName.c_str());
 	}
@@ -22,9 +23,8 @@ namespace rt{
 
 	Vec3f CTexture::getTexel(const Vec2f& uv) const
 	{
-		float t;
-		float u = modff(uv.val[0] + Epsilon, &t);
-		float v = modff(uv.val[1] + Epsilon, &t);
+		float u = fmodf(uv[0], 1);
+		float v = fmodf(uv[1], 1);
 
 		if (u < 0) u += 1;
 		if (v < 0) v += 1;
@@ -34,7 +34,7 @@ namespace rt{
 			bool ay = v > 0.5f ? true : false;
 		
 			bool c = ax ^ ay;
-			return c ? Vec3f::all(1) : Vec3f::all(0);
+			return c ? RGB(255, 255, 255) : RGB(127, 127, 127);
 		} else {
 			// find texel indices
 			int x = static_cast<int>(cols * u);
@@ -43,5 +43,9 @@ namespace rt{
 			return (*this).at<Vec3f>(y, x);
 		}
 	}
+        
+	Vec3f CTexture::getTexel(const Vec3f&) const 
+	{
+		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+	}
 }
-

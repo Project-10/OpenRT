@@ -18,54 +18,84 @@ namespace rt {
 			std::vector<Vec2f> vTextures;
 
 			std::string line;
+			std::string key;
 
 			int nFaces = 0;
 			for (;;) {
 				if (!getline(file, line)) break;
 				std::stringstream ss(line);
-				getline(ss, line, ' ');
-				if (line == "v") {
+				getline(ss, key, ' ');	// get key;
+				if (key == "g") {
+					std::string group_name;
+					ss >> group_name;
+					std::cout << "Reading group " << group_name << std::endl;
+				}
+				else if (key == "v") {
 					Vec3f v;
 					for (int i = 0; i < 3; i++) ss >> v.val[i];
 					// std::cout << "Vertex: " << v << std::endl;
 					vVertexes.push_back(v);
 				}
-				else if (line == "vt") {
+				else if (key == "vt") {
 					Vec2f vt;
 					for (int i = 0; i < 2; i++) ss >> vt.val[i];
 					vt[1] = 1 - vt[1];
 					vTextures.push_back(vt);
 				}
-				else if (line == "vn") {
+				else if (key == "vn") {
 					Vec3f vn;
 					for (int i = 0; i < 3; i++) ss >> vn.val[i];
 					vNormals.push_back(vn);
 				}
-				else if (line == "f") {
+				else if (key == "f") {
 					nFaces++;
 					//if (nFaces > 10000) continue;
-					int v, n, t;
-					Vec3i V, N, T;
-					for (int i = 0; i < 3; i++) {
-						getline(ss, line, ' ');
-						sscanf(line.c_str(), "%d/%d/%d", &v, &t, &n);
-						V.val[i] = v - 1;
-						T.val[i] = t - 1;
-						N.val[i] = n - 1;
+					std::string v, t, n;
+					Vec4i V, N, T;
+					int i = 0;
+					while (getline(ss, line, ' ')) {
+						std::stringstream ss1(line);
+
+						getline(ss1, v, '/');
+						getline(ss1, t, '/');
+						getline(ss1, n, '/');
+						
+						V.val[i] = v.empty() ? -1 : std::stoi(v) - 1;
+						T.val[i] = t.empty() ? -1 : std::stoi(t) - 1;
+						N.val[i] = n.empty() ? -1 : std::stoi(n) - 1;
+
+						if (++i == 4) break;
 					}
-					//std::cout << "Face: " << V << std::endl;
+					//std::cout << "Vertex: " << V << std::endl;
+					//std::cout << "Texture: " << T << std::endl;
 					//std::cout << "Normal: " << N << std::endl;
-					//add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
-					//add(std::make_shared<CPrimTriangleSmooth>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-					//													vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
-					add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-																 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
-																 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					
+					bool ifTextures = T.val[0] > 0 && T.val[0] < vTextures.size();
+					bool ifNormals = N.val[0] > 0 && N.val[0] < vNormals.size();
+
+					if (!ifTextures && !ifNormals) {
+						add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
+						if (i == 4)
+							add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]]));
+					} else if (!ifTextures) {
+						add(std::make_shared<CPrimTriangle>(pShader,  vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+																	  Vec2f::all(0), Vec2f::all(0), Vec2f::all(0),
+																	  vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					} else {
+						add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
+																	 vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
+																	 vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));			
+
+						if (i == 4)
+							add(std::make_shared<CPrimTriangle>(pShader, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]],
+																		 vTextures[T.val[0]], vTextures[T.val[2]], vTextures[T.val[3]],
+																		 vNormals[N.val[0]], vNormals[N.val[2]], vNormals[N.val[3]]));
+					}
 	
 				}
-				else if (line == "#") {}
+				else if (key == "#" || key == "") {}
 				else {
-					std::cout << "Unknown key [" << line << "] met in the OBJ file" << std::endl;
+					std::cout << "Unknown key [" << key << "] met in the OBJ file" << std::endl;
 				}
 			}
 
@@ -89,6 +119,11 @@ namespace rt {
 		// Update pivot point
 		for (int i = 0; i < 3; i++)
 			m_pivot.val[i] += t.at<float>(i, 3);
+	}
+
+	void CSolid::flipNormal(void)
+	{
+		for(auto pPrim : m_vpPrims) pPrim->flipNormal();
 	}
 }
 

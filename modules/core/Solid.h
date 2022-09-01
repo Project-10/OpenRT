@@ -2,15 +2,15 @@
 // Written by Dr. Sergey G. Kosov in 2019 for Project X 
 #pragma once
 
-#include "IPrim.h"
+#include "Prim.h"
 
 namespace rt {
 	// ================================ Solid Base Class ================================
 	/**
 	 * @brief Base Solid class
-	 * @details This class represent objects which consist of multiple primitives (obkects derived from IPrim class). 
+	 * @details This class represent objects which consist of multiple primitives (obkects derived from CPrim class). 
 	 * The main purpose of the class is to allow for convinient transformations of the solid objects
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolid {
@@ -39,6 +39,10 @@ namespace rt {
 		 */
 		DllExport void 								transform(const Mat& t);
 		/**
+		 * @brief Flips the normal of the solid
+		 */
+		DllExport void								flipNormal(void);
+		/**
 		 * @brief Returns the primitives which build the solid
 		 * @return The vector with pointers to the primitives which build the solid
 		 */
@@ -54,12 +58,13 @@ namespace rt {
 		 */
 		DllExport Vec3f 							getPivot(void) const { return m_pivot; }
 		
+		
 	protected:
 		/**
 		 * @brief Constructor
 		 * @param org The origin of the object. This point may be the virtual center of mass and will be used as a pivot point for object transformations.
 		 */
-		CSolid(Vec3f org) : m_pivot(org) {}
+		CSolid(const Vec3f& org) : m_pivot(org) {}
 		/**
 		 * @brief Adds a new primitive to the solid
 		 * @param pPrim Pointer to the primitive
@@ -67,7 +72,7 @@ namespace rt {
 		void add(const ptr_prim_t pPrim) { m_vpPrims.push_back(pPrim); }
 		/**
 		 * @brief Add a new solid to the solid
-		 * @param pSolid The pointer to the solid
+		 * @param solid The pointer to the solid
 		 */
 		void add(const CSolid& solid) {
 			for (const auto& pPrim : solid.getPrims())

@@ -1,5 +1,5 @@
 #include "BSPTree.h"
-#include "IPrim.h"
+#include "Prim.h"
 #include "Ray.h"
 #include "macroses.h"
 
@@ -44,20 +44,9 @@ namespace rt {
         return m_root->intersect(ray, t0, t1);
     }
 
-    bool CBSPTree::intersect_furthest(Ray &ray) const {
-        RT_ASSERT(!ray.hit);
-
-        double t0 = 0;
-        double t1 = ray.t;
-        m_treeBoundingBox.clip(ray, t0, t1);
-        if (t1 < t0) return false;  // no intersection with the bounding box
-
-        return m_root->intersect_furthest(ray, t0, t1);
-    }
-
     ptr_bspnode_t CBSPTree::build(const CBoundingBox& box, const std::vector<ptr_prim_t>& vpPrims, size_t depth)
     {
-        // Check for stoppong criteria
+        // Check for stopping criteria
         if (depth >= m_maxDepth || vpPrims.size() <= m_minPrimitives)
             return std::make_shared<CBSPNode>(vpPrims);                                     // => Create a leaf node and break recursion
 

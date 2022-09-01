@@ -8,7 +8,7 @@ namespace rt {
 	// ================================ Box Solid Class ================================
 	/**
 	 * @brief Box Solid class
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolidBox : public CSolid {

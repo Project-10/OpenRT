@@ -7,7 +7,7 @@ namespace rt
     // ================================ Sphere Solid Class ================================
     /**
      * @brief Cone Solid class
-     * @ingroup modulePrimitive
+     * @ingroup moduleSolid
      * @author Otmane Sabir, O.Sabir@jacobs-university.de
      */
     class CSolidSphere : public CSolid

@@ -1,6 +1,6 @@
 // Phong shader class
 // Written by Dr. Sergey G. Kosov in 2019 for Project X
-#include "ShaderFlat.h"
+#include "Shader.h"
 
 #pragma once
 
@@ -12,7 +12,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderPhong : public CShaderFlat
+	class CShaderPhong : public CShader
 	{
 	public:
 		/**
@@ -25,13 +25,14 @@ namespace rt {
 		 * @param ke The shininess exponent
 		 */
 		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
-			: CShaderFlat(color)
+			: CShader(color)
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
-		{}
+		{
+			setSpecularLevel(ks);
+		}
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
@@ -42,13 +43,14 @@ namespace rt {
 		 * @param ke The shininess exponent
 		 */
 		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
-			: CShaderFlat(pTexture)
+			: CShader(pTexture)
 			, m_scene(scene)
 			, m_ka(ka)
 			, m_kd(kd)
-			, m_ks(ks)
 			, m_ke(ke)
-		{}
+		{
+			setSpecularLevel(ks);
+		}
 		DllExport virtual ~CShaderPhong(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
@@ -59,7 +61,6 @@ namespace rt {
 		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
-		float m_ks;    				///< The specular refelection coefficients
 		float m_ke;    				///< The shininess exponent
 	};
 }

@@ -8,7 +8,7 @@ namespace rt {
 	// ================================ Cylinder Solid Class ================================
 	/**
 	 * @brief Cylinder Solid class
-	 * @ingroup modulePrimitive
+	 * @ingroup moduleSolid
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSolidCylinder : public CSolid {

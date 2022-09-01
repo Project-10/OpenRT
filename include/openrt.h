@@ -6,6 +6,7 @@
 #include "core/CameraPerspectiveTarget.h"
 #include "core/CameraOrthographic.h"
 #include "core/CameraOrthographicTarget.h"
+#include "core/CameraThinLens.h"
 #include "core/CameraEnvironment.h"
 #include "core/CameraEnvironmentTarget.h"
 #include "core/CameraThinLens.h"
@@ -19,16 +20,18 @@
 
 #include "core/PrimSphere.h"
 #include "core/PrimPlane.h"
+#include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
-#include "core/CompositeGeometry.h"
+#include "core/PrimBoolean.h"
 
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"
 #include "core/SolidCone.h"
 #include "core/SolidCylinder.h"
 #include "core/SolidSphere.h"
+#include "core/SolidTorus.h"
 
-#include "core/Shader.h"
+#include "core/ShaderGeneral.h"
 #include "core/ShaderFlat.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
@@ -43,6 +46,11 @@
 #include "core/Transform.h"
 
 #include "core/Texture.h"
+#include "core/TextureStripes.h"
+#include "core/TextureRings.h"
+#include "core/TextureWood.h"
+#include "core/PerlinNoise.h"
+#include "core/Gradient.h"
 
 #include "core/LightSpot.h"
 
@@ -95,6 +103,39 @@ The OpenRT framework consist of the following essential blocks:
 	- <b>Glass:</b> @ref rt::CShaderGlass
 	- <b>Mirror:</b> @ref rt::CShaderMirror
 	- <b>General Purpose Shader:</b> @ref rt::CShader
+*/
+
+/**
+@defgroup moduleCore OpenRT Module
+@section sec_openrt_core Core OpenRT Module
+
+@defgroup moduleCamera Camera
+@ingroup moduleCore
+@brief Module containing variouse camera models
+
+@defgroup moduleGeometry Geometry
+@ingroup moduleCore
+@brief Sub-module containing classes to describe scene geometry
+
+@defgroup modulePrimitive
+@ingroup moduleGeometry
+@brief Atomic geometry
+		
+@defgroup moduleSolid
+@ingroup moduleGeometry
+@brief Compound geometry
+
+@defgroup moduleShader Shading
+@ingroup moduleCore
+@brief A set of methods for shading the geometry
+
+@defgroup moduleTexture Texturing
+@ingroup moduleShader
+@brief Bitmap and procedural texturing methods
+
+@defgroup moduleLight Light
+@ingroup moduleCore
+@brief Module containing variouse light sources
 */
 
 /**
