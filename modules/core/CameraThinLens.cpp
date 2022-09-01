@@ -10,19 +10,16 @@ namespace rt
 	{
 		CCameraPerspective::InitRay(ray, x, y, sample);
 
-		float lensr = getlensRadius();
-		float nBlades = getnBlades();
-		if (lensr > 0) {
+		if (m_lensRadius > 0) {
 			// Sample point on lens
-			Vec2f pLens;
 			Vec2f sample(random::U<float>(), random::U<float>());
 			
 			//sample from uniformly distributed points in a regular polygon
-			RT_ASSERT(nBlades == 0 || (nBlades >= 3 && nBlades <= 16));
-			pLens = lensr * CSampler::uniformSampleRegularNgon(sample, nBlades, random::u<int>(1, nBlades));
+			RT_ASSERT(m_nBlades == 0 || (m_nBlades >= 3 && m_nBlades <= 16));
+			Vec2f pLens = m_lensRadius * CSampler::uniformSampleRegularNgon(sample, m_nBlades, random::u<int>(1, m_nBlades));
 			
 			// Compute point on plane of focus
-			float ft = abs(getfocalDistance() / ray.dir.val[2]);
+			float ft = abs(m_focalDistance / ray.dir.val[2]);
 			Vec3f pFocus = ray.org + ray.dir * ft;
 			//std::cout << "a " << pFocus.val[2] << std::endl;
 			// Update ray for effect of lens

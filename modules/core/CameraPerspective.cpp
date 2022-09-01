@@ -13,7 +13,6 @@ namespace rt
 		// Asserts
 		RT_IF_WARNING(x >= width, "Argument x = %d exceeds the camera resolution width (%d)", x, width);
 		RT_IF_WARNING(y >= height, "Argument y = %d exceeds the camera resolution height (%d)", y, height);
-		RT_ASSERT(m_dir.cross(m_up) != Vec3f::all(0));
 		
 		// Screen-space coordinates \in [-1, 1]
 		float sscx = 2 * (x + sample.val[0]) / width - 1;
