@@ -52,9 +52,9 @@ int main()
 	//auto pCamera = std::make_shared<CCameraThinLens>(resolution, Vec3f(-4, 2, 0), Vec3f(1, 0, 0), Vec3f(0, 1, 0), 45.0f, 0, 4, 4);
 	//auto pCamera = std::make_shared<CCameraThinLens>(resolution, Vec3f(-4, 2, 0), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 45.0f, 0.3f, 4, 4);
 	auto pLight = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(-10, 10, 0));
-	auto pLightRed = std::make_shared<CLightOmni>(RGB(intensity, 0, 0), Vec3f(0, 5, 3), true);
-	auto pLightGreen = std::make_shared<CLightOmni>(RGB(0, intensity, 0), Vec3f(2.12f, 5, 2.12f), true);
-	auto pLightBlue = std::make_shared<CLightOmni>(RGB(0, 0, intensity), Vec3f(3, 5, 0), true);
+	auto pLightRed = std::make_shared<CLightOmni>(Vec3f(0, 0, intensity), Vec3f(0, 5, 3), true);
+	auto pLightGreen = std::make_shared<CLightOmni>(Vec3f(0, intensity, 0), Vec3f(2.12f, 5, 2.12f), true);
+	auto pLightBlue = std::make_shared<CLightOmni>(Vec3f(intensity, 0, 0), Vec3f(3, 5, 0), true);
 	//auto pLightRed	= std::make_shared<CLightArea>(RGB(intensity, 0, 0 ), Vec3f(0.5f, 0, 3), Vec3f(-0.5f, 0, 3), Vec3f(-0.5f, 10, 3), Vec3f(0.5f, 10, 3), std::make_shared<CSamplerStratified>(1, false, false), false);
 	//auto pLightGreen	= std::make_shared<CLightArea>(RGB(0, intensity, 0), Vec3f(2.47f, 0, 1.77f), Vec3f(1.77f, 0, 2.47f), Vec3f(1.77f, 10, 2.47f), Vec3f(2.47f, 10, 1.77f), std::make_shared<CSamplerStratified>(1, false, false));
 	//auto pLightBlue	= std::make_shared<CLightArea>(RGB(0, 0, intensity), Vec3f(3, 0, -0.5f), Vec3f(3, 0, 0.5f), Vec3f(3, 10, 0.5f), Vec3f(3, 10, -0.5f), std::make_shared<CSamplerStratified>(1, false, false));
