@@ -203,9 +203,9 @@ int main()
 	 //pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
-	 auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
+	 auto sphere1 = CSolid(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f));
 	 auto sphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
-	 auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
+	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
 
 	 // Transform
 	 CTransform T;
@@ -237,7 +237,7 @@ int main()
 	 pScene->add(pCamera);
 
 
-	 pScene->buildAccelStructure(20, 3);
+
      //pSceneRings-> buildAccelStructure(20, 3);
      //pSceneWood-> buildAccelStructure(20, 3);
      
@@ -250,15 +250,16 @@ int main()
 	 //imshow("Rings Texture", imgRings);
 	 
 	 for (;;) {
-//		 Timer::start("Rendering...");
+		 pScene->buildAccelStructure(20, 3);
+		 Timer::start("Rendering...");
 		 Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
-//		 Timer::stop();
-		 imshow("Marble Texture", img);
+		 Timer::stop();
+		 imshow("Image", img);
 		 char key = waitKey(1);
 		 
-		 sphere1->transform(rotation);
+		 sphere1.transform(rotation);
 		 sphere2.transform(rotation);
-		 sphere3->transform(rotation);
+		 sphere3.transform(rotation);
 		 
 		 if (key == 27) break;
 	 }

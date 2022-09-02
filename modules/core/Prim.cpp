@@ -4,7 +4,16 @@
 #include "Transform.h"
 
 namespace rt {
-	void CPrim::transform(const Mat& T) 
+	// Constructor
+	CPrim::CPrim(const ptr_shader_t pShader, const Vec3f& origin)
+		: m_pShader(pShader)
+		, m_origin(origin)
+		, m_t(Mat::eye(4, 4, CV_32FC1))
+	{
+		for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = origin[i];
+	}
+
+	void CPrim::transform(const Mat& T)
 	{
 		// --- Transform origin ---
 //		// Appies only translation. This leads to the effect that the rotation and scaling transformations
@@ -20,12 +29,15 @@ namespace rt {
 		// The rotation and scaling transformatons are applied relative to the origin of the WCS
 		m_origin = CTransform::point(m_origin, T);
 		
+		// Accumulate transformations in the m_t matrix
+		m_t = T * m_t;
+		
 		// --- Transform primitives' properties ---
 		doTransform(T);
 	}
 	
 	Vec3f CPrim::wcs2ocs(const Vec3f& p) const 
-	{ 
-		return p; 
+	{
+		return CTransform::point(p, m_t.inv());
 	}
 }

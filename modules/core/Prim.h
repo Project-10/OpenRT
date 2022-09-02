@@ -23,10 +23,7 @@ namespace rt {
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 * @param origin Position of the center of the primitive
 		 */
-		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& origin) : m_pShader(pShader), m_origin(origin), m_t(Mat::eye(4, 4, CV_32FC1))
-		{
-			// for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
-		}
+		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& origin);
 		DllExport CPrim(const CPrim&) = delete;
 		DllExport virtual ~CPrim(void) = default;
 		DllExport const CPrim& operator=(const CPrim&) = delete;
