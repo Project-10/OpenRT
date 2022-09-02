@@ -47,11 +47,6 @@ namespace rt {
 		 * @retval false Otherwise
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
-		/**
-		 * @brief Returns the origin point of the primitive
-		 * @return The origin point
-		 */
-		DllExport virtual Vec3f				getOrigin(void) const = 0;
 
 		// TODO: rethink about this method
 		DllExport void						setPivot(const Vec3f& pivot) {

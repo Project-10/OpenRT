@@ -38,7 +38,6 @@ namespace rt {
 		
 
 	private:
-		DllExport virtual void				doTransform(const Mat& T) override;
 		DllExport virtual Vec3f				doGetNormal(const Ray&) const override { return m_normal; }
 		DllExport virtual void				doTransform(const Mat& T) override;
 		
