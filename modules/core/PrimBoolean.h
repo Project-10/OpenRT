@@ -43,7 +43,7 @@ namespace rt {
 		DllExport virtual bool			intersect(Ray &ray) const override;
 		DllExport virtual bool			if_intersect(const Ray &ray) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
-        DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
+		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
 		DllExport virtual void			flipNormal(void) override;
 
 		
