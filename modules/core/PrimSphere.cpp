@@ -9,7 +9,7 @@ namespace rt {
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1
 		// geometrical derivation
-		Vec3f L = m_origin - ray.org;
+		Vec3f L = getOrigin() - ray.org;
 
 		double tb = static_cast<double>(L.dot(ray.dir));
 
@@ -59,22 +59,17 @@ namespace rt {
 		return intersect(lvalue_cast(Ray(ray)));
 	}
 
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
+	{
+		return normalize(ray.hitPoint() - getOrigin());
+	}
+
 	void CPrimSphere::doTransform(const Mat& T)
 	{
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// translation of the point
-		m_origin += o;					// update the sphere's origin
-		
-		// Transform radius
+		// --- Transform radius ---
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
-	}
-
-	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
-	{
-		return normalize(ray.hitPoint() - m_origin);
 	}
 
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
@@ -90,7 +85,7 @@ namespace rt {
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 
-		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
+		return CBoundingBox(getOrigin() - Vec3f::all(m_radius), getOrigin() + Vec3f::all(m_radius));
 	}
 }
 

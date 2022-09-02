@@ -5,9 +5,9 @@
 namespace rt {
 	bool CPrimDisc::intersect(Ray& ray) const
 	{
-		float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
+		float dist = (getOrigin() - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 		if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
-		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
+		if (static_cast<float>(norm(ray.org + ray.dir * dist - getOrigin())) > m_radius) return false;
 
 		ray.t = dist;
 		ray.hit = shared_from_this();
@@ -17,9 +17,9 @@ namespace rt {
 	/// @todo Optimize it
 	bool CPrimDisc::if_intersect(const Ray& ray) const
 	{
-		float dist = (m_origin - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
+		float dist = (getOrigin() - ray.org).dot(m_normal) / ray.dir.dot(m_normal);
 		if (dist < Epsilon || isinf(dist) || dist > ray.t) return false;
-		if (static_cast<float>(norm(ray.org + ray.dir * dist - m_origin)) > m_radius) return false;
+		if (static_cast<float>(norm(ray.org + ray.dir * dist - getOrigin())) > m_radius) return false;
 		return true;
 	}
 
@@ -36,21 +36,12 @@ namespace rt {
 		Vec3f e;
 		for (int i = 0; i < 3; i++)
 			e[i] = m_radius * sqrtf(1 - m_normal[i] * m_normal[i]);
-		return CBoundingBox(m_origin - e, m_origin + e);
+		return CBoundingBox(getOrigin() - e, getOrigin() + e);
 	}
 
 	void CPrimDisc::doTransform(const Mat& T)
 	{
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// transltion of the point
-		m_origin += o;					// update the sphere's origin
-
-		// Transform normals
-		Mat T1 = T.inv().t();
-		m_normal = normalize(CTransform::vector(m_normal, T1));
-
-		// Transform radius
+		// --- Transform radius ---
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));

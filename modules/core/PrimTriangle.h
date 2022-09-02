@@ -28,7 +28,7 @@ namespace rt {
 		 * @param nc Normal at vertex c
 		 */
 		DllExport CPrimTriangle(const ptr_shader_t pShader, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta = Vec2f::all(0), const Vec2f& tb = Vec2f::all(0), const Vec2f& tc = Vec2f::all(0), std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt)
-			: CPrim(pShader, (0.33f * (a + b + c)))
+			: CPrim(pShader, 0.33f * (a + b + c))
 			, m_a(a)
 			, m_b(b)
 			, m_c(c)
@@ -46,7 +46,6 @@ namespace rt {
 		
 		DllExport virtual bool	intersect(Ray& ray) const override;
 		DllExport virtual bool	if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
-		DllExport virtual Vec3f	getOrigin(void) const override;
 		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
 		DllExport CBoundingBox	getBoundingBox(void) const override;
 		
@@ -55,7 +54,8 @@ namespace rt {
 		DllExport virtual void	doTransform(const Mat& t) override;
 		DllExport virtual Vec3f doGetNormal(const Ray& ray) const override;
 		DllExport virtual Vec3f doGetShadingNormal(const Ray& ray) const override;
-		
+		DllExport virtual void	doTransform(const Mat& T) override;
+
 		
 	private:
 		// Moeller-Trumbore intersection algorithm

@@ -23,7 +23,6 @@ namespace rt {
 		 */
 		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
 			: CPrim(pShader, origin)
-			, m_origin(origin)
 			, m_normal(normal)
 			, m_radius(radius)
 			, m_u(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
@@ -34,7 +33,6 @@ namespace rt {
 		
 		DllExport virtual bool				intersect(Ray& ray) const override;
 		DllExport virtual bool				if_intersect(const Ray& ray) const override;
-		DllExport virtual Vec3f				getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox		getBoundingBox(void) const override;
 		
@@ -42,11 +40,11 @@ namespace rt {
 	private:
 		DllExport virtual void				doTransform(const Mat& T) override;
 		DllExport virtual Vec3f				doGetNormal(const Ray&) const override { return m_normal; }
+		DllExport virtual void				doTransform(const Mat& T) override;
 		
-		
+
 	private:
-		Vec3f m_normal;		///< Point on the plane
-		Vec3f m_origin;		///< Normal to the plane
+		Vec3f m_normal;		///< Normal to the plane
 		float m_radius;		///< Radius of the disc
 
 		const Vec3f m_u;	///< Vector orthogonal to the normal and \b m_v (used for texturing)

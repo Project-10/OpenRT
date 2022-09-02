@@ -7,7 +7,7 @@ namespace rt {
 	enum class IntersectionState { Enter, Exit, Miss };
 
 	CPrimBoolean::CPrimBoolean(const CSolid &A, const CSolid &B, BoolOp operation, int maxDepth, int maxPrimitives)
-		: CPrim(nullptr, Vec3f::all(0))
+		: CPrim(nullptr, A.getPivot())
 		, m_vpPrims1(A.getPrims())
 		, m_vpPrims2(B.getPrims())
 		, m_operation(operation)
@@ -20,8 +20,7 @@ namespace rt {
     {
         if (operation == BoolOp::Substraction)
 			for (auto& pPrim : m_vpPrims2) pPrim->flipNormal();
-		computeBoundingBox();
-        m_origin = m_boundingBox.getCenter();
+		computeBoundingBox();;
 #ifdef ENABLE_BSP
         m_pBSPTree1->build(m_vpPrims1, m_maxDepth, m_maxPrimitives);
         m_pBSPTree2->build(m_vpPrims2, m_maxDepth, m_maxPrimitives);
@@ -65,23 +64,12 @@ namespace rt {
 
 	void CPrimBoolean::doTransform(const Mat& T)
 	{
-		CTransform tr;
-		Mat T1 = tr.translate(-m_origin).get();
-		Mat T2 = tr.translate(m_origin).get();
-
 		// transform first geometry
-		for (auto& pPrim : m_vpPrims1) pPrim->transform(T * T1);
-		for (auto& pPrim : m_vpPrims1) pPrim->transform(T2);
-
+		for (auto& pPrim : m_vpPrims1) pPrim->transform(T);
+		
 		// transform second geometry
-		for (auto& pPrim : m_vpPrims2) pPrim->transform(T * T1);
-		for (auto& pPrim : m_vpPrims2) pPrim->transform(T2);
-
-		// TODO: check this, after the addition of the pivot point to the primitives
-		// update pivots point
-		for (int i = 0; i < 3; i++)
-			m_origin.val[i] += T.at<float>(i, 3);
-
+		for (auto& pPrim : m_vpPrims2) pPrim->transform(T);
+		
 		// recompute the bounding box
 		computeBoundingBox();
 #ifdef ENABLE_BSP

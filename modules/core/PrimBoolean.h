@@ -41,8 +41,7 @@ namespace rt {
         DllExport virtual ~CPrimBoolean(void) override = default;
         
 		DllExport virtual bool			intersect(Ray &ray) const override;
-        DllExport virtual bool			if_intersect(const Ray &ray) const override;
-        DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
+		DllExport virtual bool			if_intersect(const Ray &ray) const override;
 		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
         DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
 		DllExport virtual void			flipNormal(void) override;
@@ -51,6 +50,7 @@ namespace rt {
     private:
 		DllExport virtual void			doTransform(const Mat& T) override;
 		DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
+		DllExport virtual void			doTransform(const Mat& T) override;
 		
 		std::optional<Ray>				computeUnion(const Ray &ray) const;			///< Helper method to perform union logic
 		std::optional<Ray>				computeIntersection(const Ray& ray) const;	///< Helper method to perform intersection logic
@@ -60,12 +60,11 @@ namespace rt {
 
 		
 	private:
-        std::vector<ptr_prim_t>			m_vpPrims1;			        ///< Vector of primitives of the first geometry
-        std::vector<ptr_prim_t>			m_vpPrims2;					///< Vector of primitives of the second geometry
-		Vec3f							m_origin;                   ///< Origin/Pivot of the geometry
+		std::vector<ptr_prim_t>			m_vpPrims1;			        ///< Vector of primitives of the first geometry
+		std::vector<ptr_prim_t>			m_vpPrims2;					///< Vector of primitives of the second geometry
 		bool							m_flippedNormal = false; 	///< Flag indicating whether the normals were flipped
 		BoolOp							m_operation;				///< Type of operation
-        CBoundingBox                    m_boundingBox;              ///< Bounding box of this composite geometry
+        CBoundingBox					m_boundingBox;              ///< Bounding box of this composite geometry
 #ifdef ENABLE_BSP
 		int								m_maxDepth;					///< The maximum allowed depth of the trees
 		int								m_maxPrimitives;			///< The minimum number of primitives in a leaf-node
