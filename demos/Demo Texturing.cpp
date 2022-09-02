@@ -200,50 +200,6 @@ int main()
 	auto pShaderEarth = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
 
 
-	// Geometries
-	//pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
-	//pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
-
-	//auto floor = std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0));
-	auto floor = CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500);
-
-	auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
-	auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f);
-	sphere2.setPivot(Vec3f(0, 1, 0));
-	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
-
-	auto disc1 = std::make_shared<CPrimDisc>(pShaderEarth, Vec3f(-4, 1, 0), Vec3f(0, 0, 1), 1.5f);
-	auto disc3 = std::make_shared<CPrimDisc>(pShaderWood, Vec3f(4, 1, 0), Vec3f(0, 0, 1), 1.5f);
-
-	// Transform
-	CTransform T;
-	Mat rotation = T.rotate(Vec3f(0, 1, 0), 3).translate(0, 0, 0.05f).get();
-
-	sphere1->transform(rotation);
-	//sphere2.transform(rotation);
-	//sphere3->transform(rotation);
-	//disc1->transform(rotation);
-	//disc3->transform(rotation);
-
-	//auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
-	//auto primSphere = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(3, 1, 0), 1.5f);
-	//primSphere->transform(T.rotate(Vec3f(0, 1, 0), -90).scale(2).get());
-	//
-
-	pScene->add(floor);
-	pScene->add(sphere1);
-	pScene->add(sphere2);
-	pScene->add(sphere3);
-	//pScene->add(disc1);
-	//pScene->add(disc3);
-
-	//Light
-	if (true) {
-		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50)));
-		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, -100, -50), false));
-	}
-	else pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 0.0f));
-
 
 	//Cameras
 	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(1.5f, 6, 12), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 45.0f);

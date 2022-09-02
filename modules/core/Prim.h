@@ -94,14 +94,14 @@ namespace rt {
          * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-        DllExport Vec3f				        getNormal(const Ray& ray) const;
+        DllExport Vec3f				        getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray) : doGetNormal(ray); }
         /**
         * @brief Returns the  normal vector of the primitive in the ray - primitive intersection point
         * @note In contrast to the @ref doGetNormal() method, this methods takes into account the possible normal interpolation along the primitive
         * @param ray Ray intersecting the primitive
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
-        DllExport Vec3f				        getShadingNormal(const Ray& ray) const;
+        DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray) : doGetShadingNormal(ray); }
 		/**
 		 * @brief Performs affine transformation
 		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
