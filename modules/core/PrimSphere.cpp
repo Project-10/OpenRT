@@ -9,7 +9,7 @@ namespace rt {
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1
 		// geometrical derivation
-		Vec3f L = m_origin - ray.org;
+		Vec3f L = getOrigin() - ray.org;
 
 		double tb = static_cast<double>(L.dot(ray.dir));
 
@@ -61,25 +61,11 @@ namespace rt {
 
 	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
-		return normalize(ray.hitPoint() - m_origin);
+		return normalize(ray.hitPoint() - getOrigin());
 	}
 
 	void CPrimSphere::doTransform(const Mat& T)
 	{
-		// --- Transform origin ---
-//		// Appies only translation. This leads to the effect that the rotation and scaling transformations
-//		// are done relative to the origin of the primitive and not relative to the origin of the WCS
-//		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-//		o = CTransform::point(o, T);	// translation of the point
-//		m_origin += o;					// update the primitive's origin
-//
-//		// Above is the same as
-//		for (int i = 0; i < 3; i++)
-//			m_origin.val[i] += T.at<float>(i, 3);
-		
-		// The rotation and scaling transformatons are applied relative to the origin of the WCS
-		m_origin = CTransform::point(m_origin, T);
-
 		// --- Transform radius ---
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
@@ -97,7 +83,7 @@ namespace rt {
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 
-		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
+		return CBoundingBox(getOrigin() - Vec3f::all(m_radius), getOrigin() + Vec3f::all(m_radius));
 	}
 }
 

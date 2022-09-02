@@ -22,16 +22,14 @@ namespace rt {
 		 * @param radius Radius of the disc
 		 */
 		DllExport CPrimDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius)
-			: CPrim(pShader)
+			: CPrim(pShader, origin)
 			, m_normal(normal)
-			, m_origin(origin)
 			, m_radius(radius)
 		{}
 		DllExport virtual ~CPrimDisc(void) = default;
 		
 		DllExport virtual bool				intersect(Ray& ray) const override;
 		DllExport virtual bool				if_intersect(const Ray& ray) const override;
-		DllExport virtual Vec3f				getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox		getBoundingBox(void) const override;
 		
@@ -42,8 +40,7 @@ namespace rt {
 		
 
 	private:
-		Vec3f m_normal;		///< Point on the plane
-		Vec3f m_origin;		///< Normal to the plane
+		Vec3f m_normal;		///< Normal to the plane
 		float m_radius;		///< Radius of the disc
 	};
 }

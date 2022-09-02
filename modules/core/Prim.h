@@ -21,8 +21,9 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
+		 * @param origin Position of the center of the primitive
 		 */
-		DllExport CPrim(const ptr_shader_t pShader) : m_pShader(pShader), m_t(Mat::eye(4, 4, CV_32FC1)) 
+		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& origin) : m_pShader(pShader), m_origin(origin), m_t(Mat::eye(4, 4, CV_32FC1))
 		{
 			// for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = m_origin[i];
 		}
@@ -49,11 +50,6 @@ namespace rt {
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
 		/**
-		 * @brief Returns the origin point of the primitive
-		 * @return The origin point
-		 */
-		DllExport virtual Vec3f				getOrigin(void) const = 0;
-		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
 		 * @param ray Ray, which has hit the geometry. 
 		 * @return The texture coordinates
@@ -68,6 +64,11 @@ namespace rt {
 		 * @brief Flips the normal of the primitive.
 		 */
 		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
+		/**
+		 * @brief Returns the center of the primitive
+		 * @return The origin point
+		 */
+		DllExport Vec3f						getOrigin(void) const { return m_origin; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
@@ -132,6 +133,7 @@ namespace rt {
 
 	private:
 		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
+		Vec3f				m_origin;			///< Position of the center of the primitive
 		std::string			m_name;				///< Optional name of the primitive.
 		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
 		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
