@@ -24,7 +24,7 @@ namespace rt {
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 * @param pivot The pivot point (origin) of the primitive
 		 */
-		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& pivot);
+		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& origin);
 		DllExport CPrim(const CPrim&) = delete;
 		DllExport virtual ~CPrim(void) = default;
 		DllExport const CPrim& operator=(const CPrim&) = delete;

@@ -5,43 +5,40 @@
 #include "Ray.h"
 
 namespace rt {
-
-	CPrim::CPrim(const ptr_shader_t pShader, const Vec3f& pivot)
+	// Constructor
+	CPrim::CPrim(const ptr_shader_t pShader, const Vec3f& origin)
 		: m_pShader(pShader)
+		, m_origin(origin)
 		, m_t(Mat::eye(4, 4, CV_32FC1))
 	{
-		setPivot(pivot);
-	}
-
-	Vec3f CPrim::wcs2ocs(const Vec3f& p) const
-	{
-		return CTransform::point(p, m_t.inv());
+		for (int i = 0; i < 3; i++) m_t.at<float>(i, 3) = origin[i];
 	}
 
 	void CPrim::transform(const Mat& T)
 	{
-		// Accumulate transformation in the transformation matrix
-		Vec3f pivot;
-		for (int i = 0; i < 3; i++) {
-			pivot[i] = m_t.at<float>(i, 3);
-			m_t.at<float>(i, 3) = 0;
-		}
-
+		// --- Transform origin ---
+//		// Appies only translation. This leads to the effect that the rotation and scaling transformations
+//		// are done relative to the origin of the primitive and not relative to the origin of the WCS
+//		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+//		o = CTransform::point(o, T);	// translation of the point
+//		m_origin += o;					// update the primitive's origin
+//
+//		// Above is the same as
+//		for (int i = 0; i < 3; i++)
+//			m_origin.val[i] += T.at<float>(i, 3);
+		
+		// The rotation and scaling transformatons are applied relative to the origin of the WCS
+		m_origin = CTransform::point(m_origin, T);
+		
+		// Accumulate transformations in the m_t matrix
 		m_t = T * m_t;
-
-		for (int i = 0; i < 3; i++)
-			m_t.at<float>(i, 3) += pivot[i];
-
+		
+		// --- Transform primitives' properties ---
 		doTransform(T);
 	}
-
-	Vec3f CPrim::getNormal(const Ray& ray) const
+	
+	Vec3f CPrim::wcs2ocs(const Vec3f& p) const 
 	{
-		return m_flipped ? -doGetNormal(ray) : doGetNormal(ray);
-	}
-
-	Vec3f CPrim::getShadingNormal(const Ray& ray) const
-	{
-		return m_flipped ? -doGetShadingNormal(ray) : doGetShadingNormal(ray);
+		return CTransform::point(p, m_t.inv());
 	}
 }
