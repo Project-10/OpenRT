@@ -66,12 +66,21 @@ namespace rt {
 
 	void CPrimSphere::doTransform(const Mat& T)
 	{
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// translation of the point
-		m_origin += o;					// update the sphere's origin
+		// --- Transform origin ---
+//		// Appies only translation. This leads to the effect that the rotation and scaling transformations
+//		// are done relative to the origin of the primitive and not relative to the origin of the WCS
+//		Vec3f o = Vec3f::all(0);		// point in the WCS origin
+//		o = CTransform::point(o, T);	// translation of the point
+//		m_origin += o;					// update the primitive's origin
+//
+//		// Above is the same as
+//		for (int i = 0; i < 3; i++)
+//			m_origin.val[i] += T.at<float>(i, 3);
+		
+		// The rotation and scaling transformatons are applied relative to the origin of the WCS
+		m_origin = CTransform::point(m_origin, T);
 
-		// Transform radius
+		// --- Transform radius ---
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
