@@ -9,25 +9,22 @@ namespace rt
 	void CCameraThinLens::InitRay(Ray& ray, int x, int y, const Vec2f& sample)
 	{
 		CCameraPerspective::InitRay(ray, x, y, sample);
-
-		float lensr = getlensRadius();
-		int nBlades = getnBlades();
-		if (lensr > 0) {
+		if (m_lensRadius > 0) {
 			// Sample point on lens
-			Vec2f pLens;
-			Vec2f sample(random::U<float>(), random::U<float>());
+			Vec2f sample(random::U<float>(), sqrtf(random::U<float>()));	// placing more samples to the outer border 
 			
 			//sample from uniformly distributed points in a regular polygon
-			RT_ASSERT(nBlades == 0 || (nBlades >= 3 && nBlades <= 16));
-			pLens = lensr * CSampler::uniformSampleRegularNgon(sample, nBlades, random::u<int>(1, nBlades));
+			RT_ASSERT(m_nBlades == 0 || (m_nBlades >= 3 && m_nBlades <= 16));
+			Point2f lens_point = m_lensRadius * CSampler::uniformSampleRegularNgon(sample, m_nBlades, random::u<int>(1, m_nBlades));
 			
 			// Compute point on plane of focus
-			float ft = getfocalDistance() / ray.dir.val[2];
-			Vec3f pFocus = ray.org + ray.dir * ft;
-
+			//float ft = abs(m_focalDistance / ray.dir.val[2]);	// TODO: possible bug here
+			float ft = m_focalDistance;
+			Vec3f focus_point = ray.org + ray.dir * ft;
+			
 			// Update ray for effect of lens
-			ray.org += Vec3f(pLens.val[0], pLens.val[1], 0);
-			ray.dir = normalize(pFocus - ray.org);
+			ray.org += (lens_point.x * getXAxis() + lens_point.y * getYAxis());
+			ray.dir = normalize(focus_point - ray.org);
 		}
 	}
 }
