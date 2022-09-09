@@ -11,7 +11,7 @@ namespace rt
 		CCameraPerspective::InitRay(ray, x, y, sample);
 		if (m_lensRadius > 0) {
 			// Sample point on lens
-			Vec2f sample(random::U<float>(), random::U<float>());
+			Vec2f sample(random::U<float>(), sqrtf(random::U<float>()));	// placing more samples to the outer border 
 			
 			//sample from uniformly distributed points in a regular polygon
 			RT_ASSERT(m_nBlades == 0 || (m_nBlades >= 3 && m_nBlades <= 16));

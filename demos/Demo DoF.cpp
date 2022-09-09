@@ -61,8 +61,8 @@ int main()
 	const Vec3f	bgColor = RGB(0, 0, 0);
 	const Size	resolution = Size(500, 500);
 
-	//auto pScene = buildSceneLightPoint(bgColor, resolution);
-	auto pScene = buildSceneBalls(bgColor, resolution);
+	auto pScene = buildSceneLightPoint(bgColor, resolution);
+	//auto pScene = buildSceneBalls(bgColor, resolution);
 
 	pScene->buildAccelStructure(20, 3);
 	

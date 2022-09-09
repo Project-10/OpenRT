@@ -119,7 +119,7 @@ namespace rt {
 		Vec2f a(sinf(theta * (side - 1)), cosf(theta * (side - 1)));
 		Vec2f b(sinf(theta * side), cosf(theta * side));
 		Vec2f c = s[0] * a + (1.0f - s[0]) * b;
-		return powf(s[1], 0.25f) * c;	// placing more samples to the outer border 
+		return sqrtf(s[1]) * c;	
 	}
 
 	namespace {
