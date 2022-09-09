@@ -109,16 +109,17 @@ namespace rt {
 		return Vec3f(s[0], s[1], z);
 	}
 
-	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& sample, int n, int m) 
+	Vec2f CSampler::uniformSampleRegularNgon(const Vec2f& s, size_t nSides, size_t side)
 	{
-		if (n == 0) return CSampler::concentricSampleDisk(sample);
-		float theta = 2 * Pif / n;
-		Vec2f a(0, 0);
-		Vec2f b(cosf(theta * m), sinf(theta * m));
-		Vec2f c(cosf(theta * (m + 1)), sinf(theta * (m + 1)));
-		float s = sample[0];
-		float t = sample[1];
-		return Vec2f(s * a[0] + (t - s) * b[0] + (1 - t) * c[0], s * a[1] + (t - s) * b[1] + (1 - t) * c[1]);
+		if (nSides == 0) return CSampler::concentricSampleDisk(s);
+		
+		RT_ASSERT(side > 0 && side <= nSides);
+		
+		float theta = 2 * Pif / nSides;
+		Vec2f a(sinf(theta * (side - 1)), cosf(theta * (side - 1)));
+		Vec2f b(sinf(theta * side), cosf(theta * side));
+		Vec2f c = s[0] * a + (1.0f - s[0]) * b;
+		return powf(s[1], 0.25f) * c;	// placing more samples to the outer border 
 	}
 
 	namespace {
