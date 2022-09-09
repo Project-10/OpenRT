@@ -86,10 +86,21 @@ namespace rt {
 		 * @return The camera opening angle
 		 */
 		DllExport float			getAngle(void) const { return 360 * atanf(1.0f / m_focus) / Pif; }
-
-		DllExport Vec3f			getxAxis(void) const { return m_xAxis; }
-
-		DllExport Vec3f			getyAxis(void) const { return m_yAxis; }
+		/**
+		 * @brief Returns the camera's x-axis
+		 * @return The camra x-axis in WCS
+		 */
+		DllExport Vec3f			getXAxis(void) const { return m_xAxis; }
+		/**
+		 * @brief Returns the camera's y-axis
+		 * @return The camra y-axis in WCS
+		 */
+		DllExport Vec3f			getYAxis(void) const { return m_yAxis; }
+		/**
+		 * @brief Returns the camera's z-axis
+		 * @return The camra z-axis in WCS
+		 */
+		DllExport Vec3f			getZAxis(void) const { return m_zAxis; }
 
 
 	private:

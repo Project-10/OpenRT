@@ -23,7 +23,7 @@ namespace rt
 			Vec3f pFocus = ray.org + ray.dir * ft;
 			//std::cout << "a " << pFocus.val[2] << std::endl;
 			// Update ray for effect of lens
-			ray.org += (pLens.val[0] * getxAxis() + pLens.val[1] * getyAxis());
+			ray.org += (pLens.val[0] * getXAxis() + pLens.val[1] * getYAxis());
 			ray.dir = normalize(pFocus - ray.org);
 		}
 	}
