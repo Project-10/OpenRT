@@ -42,6 +42,9 @@ namespace rt {
         DllExport virtual ~CCameraEnvironment(void) = default;
 
         DllExport void InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+		DllExport virtual Vec3f	getXAxis(void) const override { return Vec3f::all(0); }
+		DllExport virtual Vec3f	getYAxis(void) const override { return Vec3f::all(0); }
+		DllExport virtual Vec3f	getZAxis(void) const override { return Vec3f::all(0); }
 
         /**
          * @brief Sets new camera position
