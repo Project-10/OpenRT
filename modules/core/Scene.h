@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Prim.h"
+#include "Texture.h"
 #include "ILight.h"
 #include "ICamera.h"
 #include "Sampler.h"
@@ -24,11 +25,19 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param bgColor The default background color
-		 * @todo Background may be image
 		 */
 		DllExport CScene(const Vec3f& bgColor = RGB(0,0,0))
 			: m_bgColor(bgColor)
-			, m_ambientColor(1, 1, 1)
+#ifdef ENABLE_BSP	
+			, m_pBSPTree(new CBSPTree())
+#endif
+		{}
+		/**
+		 * @brief Constructor
+		 * @param bgMap The default background texture map
+		 */
+		DllExport CScene(const ptr_texture_t bgMap)
+			: m_bgMap(bgMap)
 #ifdef ENABLE_BSP	
 			, m_pBSPTree(new CBSPTree())
 #endif
@@ -159,17 +168,20 @@ namespace rt {
 		
 		
 	private:
-		const Vec3f						m_bgColor;    				///< background color
-		const Vec3f						m_ambientColor;				///< ambient color
-		std::vector<ptr_prim_t> 		m_vpPrims;					///< Primitives
-		std::vector<ptr_light_t>		m_vpLights;					///< Lights
-		std::vector<ptr_camera_t>		m_vpCameras;				///< Cameras
-		size_t							m_activeCamera	= 0;		///< The index of the active camera
+		const Vec3f						m_bgColor		= Vec3f::all(0);	///< background color
+		const Vec3f						m_ambientColor	= Vec3f::all(1);	///< ambient color
+
+		const ptr_texture_t				m_bgMap			= nullptr;			///< background texture map
+
+		std::vector<ptr_prim_t> 		m_vpPrims;							///< Primitives
+		std::vector<ptr_light_t>		m_vpLights;							///< Lights
+		std::vector<ptr_camera_t>		m_vpCameras;						///< Cameras
+		size_t							m_activeCamera	= 0;				///< The index of the active camera
 #ifdef ENABLE_BSP		
-		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;	///< Pointer to the acceleration structure
+		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;			///< Pointer to the acceleration structure
 #endif
 #ifdef ENABLE_CACHE
-		const std::string m_lriFileName = "last_render.png";		///< Last rendered image filename
+		const std::string m_lriFileName = "last_render.png";				///< Last rendered image filename
 #endif
 	};
 }

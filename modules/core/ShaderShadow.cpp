@@ -6,7 +6,7 @@ namespace rt {
 	Vec3f CShaderShadow::shade(const Ray& ray) const
 	{
 		// Traverse ray behind the geometry to make it fully transparent
-		Ray R(ray.hitPoint(), ray.dir, ray.counter);	// traverse ray
+		Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);	// traverse ray
 		Vec3f res = R.reTrace(m_scene);
 		
 		// Gathering shadows

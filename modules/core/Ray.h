@@ -15,22 +15,24 @@ namespace rt {
 	{
 		Vec3f							org;												///< %Ray origin
 		Vec3f							dir;												///< %Ray direction
+		Vec2f							ndc;												///< Coordinates of the %Ray in NDC system
 		size_t 							counter;											///< Number of re-traces
 		
 		double							t		= std::numeric_limits<double>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<const CPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
 		float							u		= 0;										///< Barycentric u coordinate
 		float							v		= 0;										///< Barycentric v coordinate
-		
+
 		/**
 		 * @brief Constructor
 		 * @param _org %Ray origin
 		 * @param _dir %Ray direction
 		 * @param _counter Number of re-traces
 		 */
-		explicit Ray(Vec3f _org = Vec3f::all(0), Vec3f _dir = Vec3f::all(0), size_t _counter = 0)
+		explicit Ray(const Vec3f& _org = Vec3f::all(0), const Vec3f& _dir = Vec3f::all(0), const Vec2f& _ndc = Vec2f::all(0), size_t _counter = 0)
 			: org(_org)
 			, dir(_dir)
+			, ndc(_ndc)
 			, counter(_counter)
 		{}
 		friend std::ostream& operator<<(std::ostream& os, const Ray& ray) {

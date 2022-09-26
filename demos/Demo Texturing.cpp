@@ -162,27 +162,31 @@ int main()
 	//waitKey();
 	//return 0;
 
-
-     const Vec3f		bgColor = RGB(0.1f, 0.1f, 0.1f);
-     const Size		     resolution = Size(800, 600);
+	const Vec3f		 bgColor = RGB(0.1f, 0.1f, 0.1f);
+	const Size		     resolution = Size(800, 600);
 //	 auto pScene = buildSceneTemplates(bgColor, resolution);
 	 //auto pSceneStripes = buildSceneStripes(bgColor, resolution);
-  //   auto pSceneRings = buildSceneRings(bgColor, resolution);
+//   auto pSceneRings = buildSceneRings(bgColor, resolution);
   
-  
-	 const float intensity = 1e4;
-	 auto pScene = std::make_shared<CScene>(bgColor);
+	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
+
+	// Textures
+	auto bgMap			= std::make_shared<CTexture>(dataPath + "tnf.jpg");
+	auto pTextureEarth  = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+	auto pTextureRings	= std::make_shared<CTextureRings>(24.0f);
+	auto pTextureWood	= std::make_shared<CTextureWood>(gradientWood, 4.0f);
+	
+	
+	const float intensity = 1e4;
+	auto pScene = std::make_shared<CScene>(pTextureWood);
 
 	 // --- Materials ---
 	 // Rings shader
-	 auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
 	 auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	 // Wood shader
-	 CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	 //CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
-	 auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 12.0f);
-	 auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
+	 auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.0f, 1.0f, 0.0f, 40.0f);
 
 	 // Marble shader
 	 //CGradient gradientMarble(RGB(255, 255, 255), RGB(119, 135, 153));
@@ -190,22 +194,22 @@ int main()
 	 //auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	 // other shaders
-	 auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.5f, 0.5f, 0.0f, 40.0f);
-
+	 auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.0f, 1.0f, 0.0f, 40.0f);
+	 auto pShaderShadow = std::make_shared<CShaderShadow>(*pScene);
 	 // Earth shader
-	 auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
-	 auto pShaderEarth = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
+	 
+	 auto pShaderEarth = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.0f, 1.0f, 0.0f, 40.0f);
 
 
 	 // Geometries
-	 pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	 pScene->add(CSolidQuad(pShaderShadow, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 15));
 
 	 //pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
-	 auto sphere1 = CSolid(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f));
-	 auto sphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
-	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
+	 auto sphere1 = CSolid(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-8, 3.5f, 0), 3.5f));
+	 auto sphere2 = CSolidSphere(pShaderFloor, Vec3f(0, 3.5f, 0), 3.5f);
+	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(8, 3.5f, 0), 3.5f));
 
 	 // Transform
 	 CTransform T;
@@ -225,15 +229,15 @@ int main()
 	 pScene->add(sphere3);
 
 	 //Light
-	 if (true) {
+	 if (false) {
 		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50)));
 		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, -100, -50), false));
 	 }
-	 else pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 0.0f));
+	 else pScene->add(std::make_shared<CLightSky>(Vec3f::all(.75f), 0.0f));
 
 
 	 //Cameras
-	 auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(1.5f, 6, 12), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 45.0f);
+	 auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 10, 32), Vec3f(0, 10, 0), Vec3f(0, 1, 0), 54.4f);
 	 pScene->add(pCamera);
 
 
@@ -252,7 +256,7 @@ int main()
 	 for (;;) {
 		 pScene->buildAccelStructure(20, 3);
 		 Timer::start("Rendering...");
-		 Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
+		 Mat img = pScene->render(std::make_shared<CSamplerStratified>(1, true, true));
 		 Timer::stop();
 		 imshow("Image", img);
 		 char key = waitKey(1);
