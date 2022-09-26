@@ -32,6 +32,7 @@
 
 #include "core/ShaderGeneral.h"
 #include "core/ShaderFlat.h"
+#include "core/ShaderShadow.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
 #include "core/ShaderChrome.h"
