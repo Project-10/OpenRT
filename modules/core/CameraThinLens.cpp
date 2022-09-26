@@ -8,7 +8,8 @@ namespace rt
 {
 	void CCameraThinLens::InitRay(Ray& ray, int x, int y, const Vec2f& sample)
 	{
-		CCameraPerspective::InitRay(ray, x, y, sample);
+		m_pCamera->InitRay(ray, x, y, sample);
+		
 		if (m_lensRadius > 0) {
 			// Sample point on lens
 			Vec2f sample(random::U<float>(), sqrtf(random::U<float>()));	// placing more samples to the outer border 
@@ -23,7 +24,7 @@ namespace rt
 			Vec3f focus_point = ray.org + ray.dir * ft;
 			
 			// Update ray for effect of lens
-			ray.org += (lens_point.x * getXAxis() + lens_point.y * getYAxis());
+			ray.org += (lens_point.x * m_pCamera->getXAxis() + lens_point.y * m_pCamera->getYAxis());
 			ray.dir = normalize(focus_point - ray.org);
 		}
 	}
