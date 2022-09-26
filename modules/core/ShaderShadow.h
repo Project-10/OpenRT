@@ -18,7 +18,7 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
-		 * @details This is a texture-free and light-source-free shader
+		 * @details This is a texture-free shader
 		 * @param color The color of the object
 		 */
 		DllExport CShaderShadow(const CScene& scene) : CShader(), m_scene(scene) {}

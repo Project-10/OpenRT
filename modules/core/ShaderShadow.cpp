@@ -34,10 +34,9 @@ namespace rt {
 			} // s
 		} // pLight
 
-		for (int i = 0; i < 3; i++) {
-			float l = L_possible[i] > 0 ? (L_possible[i] - L_actual[i]) / L_possible[i] : 0.0f;
-			res[i] *= (1.0f - l);
-		}
+		for (int i = 0; i < 3; i++) 
+			if (L_possible[i] > 0)
+				res[i] *= L_actual[i] / L_possible[i];
 
 		return res;
 	}
