@@ -39,12 +39,12 @@ rt::CSolidTorus::CSolidTorus(const rt::ptr_shader_t &pShader, const Vec3f &origi
             auto c = torus_vertices[(segments * (i + 1)) + (s + 1)]; 
             auto d = torus_vertices[(segments * i) + (s + 1)];
             if (smooth) 
-                add(CSolidQuad(pShader, a.t_vertex, b.t_vertex, c.t_vertex, d.t_vertex,
-                                        a.t_uv_coord, b.t_uv_coord, c.t_uv_coord, d.t_uv_coord,
-                                        a.t_normal, b.t_normal, c.t_normal, d.t_normal));
+                add(CSolidQuad(pShader, origin, a.t_vertex, b.t_vertex, c.t_vertex, d.t_vertex,
+                                                a.t_uv_coord, b.t_uv_coord, c.t_uv_coord, d.t_uv_coord,
+                                                a.t_normal, b.t_normal, c.t_normal, d.t_normal));
             else 
-                add(CSolidQuad(pShader, a.t_vertex, b.t_vertex, c.t_vertex, d.t_vertex, 
-                                        a.t_uv_coord, b.t_uv_coord, c.t_uv_coord, d.t_uv_coord));
+                add(CSolidQuad(pShader, origin, a.t_vertex, b.t_vertex, c.t_vertex, d.t_vertex,
+                                                a.t_uv_coord, b.t_uv_coord, c.t_uv_coord, d.t_uv_coord));
         }
     }
 }

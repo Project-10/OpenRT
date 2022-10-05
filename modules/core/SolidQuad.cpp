@@ -32,4 +32,15 @@ namespace rt {
 		add(std::make_shared<CPrimTriangle>(pShader, a, b, c, ta, tb, tc, na, nb, nc));
 		add(std::make_shared<CPrimTriangle>(pShader, a, c, d, ta, tc, td, na, nc, nd));
 	}
+	
+	// Constructor
+	CSolidQuad::CSolidQuad(const ptr_shader_t pShader, const Vec3f& origin,
+		const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& d,
+		const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, const Vec2f& td,
+		std::optional<Vec3f> na, std::optional<Vec3f> nb, std::optional<Vec3f> nc, std::optional<Vec3f> nd
+	) : CSolid(origin)
+	{
+		add(std::make_shared<CPrimTriangle>(pShader, origin, a, b, c, ta, tb, tc, na, nb, nc));
+		add(std::make_shared<CPrimTriangle>(pShader, origin, a, c, d, ta, tc, td, na, nc, nd));
+	}
 }

@@ -12,13 +12,13 @@ namespace rt {
 	{
 		width /= 2; height /= 2; depth /= 2;
 
-		add(CSolidQuad(pShader, origin + Vec3f(width, -height, -depth), origin + Vec3f(width, height, -depth), origin + Vec3f(width, height, depth), origin + Vec3f(width, -height, depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
-		add(CSolidQuad(pShader, origin + Vec3f(-width, -height, -depth), origin + Vec3f(-width, -height, depth), origin + Vec3f(-width, height, depth), origin + Vec3f(-width, height, -depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(width, -height, -depth), origin + Vec3f(width, height, -depth), origin + Vec3f(width, height, depth), origin + Vec3f(width, -height, depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(-width, -height, -depth), origin + Vec3f(-width, -height, depth), origin + Vec3f(-width, height, depth), origin + Vec3f(-width, height, -depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
 
-		add(CSolidQuad(pShader, origin + Vec3f(-width, height, -depth), origin + Vec3f(-width, height, depth), origin + Vec3f(width, height, depth), origin + Vec3f(width, height, -depth), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0)));
-		add(CSolidQuad(pShader, origin + Vec3f(-width, -height, -depth), origin + Vec3f(width, -height, -depth), origin + Vec3f(width, -height, depth), origin + Vec3f(-width, -height, depth), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(-width, height, -depth), origin + Vec3f(-width, height, depth), origin + Vec3f(width, height, depth), origin + Vec3f(width, height, -depth), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(-width, -height, -depth), origin + Vec3f(width, -height, -depth), origin + Vec3f(width, -height, depth), origin + Vec3f(-width, -height, depth), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1), Vec2f(1, 1)));
 
-		add(CSolidQuad(pShader, origin + Vec3f(-width, -height, depth), origin + Vec3f(width, -height, depth), origin + Vec3f(width, height, depth), origin + Vec3f(-width, height, depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
-		add(CSolidQuad(pShader, origin + Vec3f(-width, -height, -depth), origin + Vec3f(-width, height, -depth), origin + Vec3f(width, height, -depth), origin + Vec3f(width, -height, -depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(-width, -height, depth), origin + Vec3f(width, -height, depth), origin + Vec3f(width, height, depth), origin + Vec3f(-width, height, depth), Vec2f(0, 1), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0)));
+		add(CSolidQuad(pShader, origin, origin + Vec3f(-width, -height, -depth), origin + Vec3f(-width, height, -depth), origin + Vec3f(width, height, -depth), origin + Vec3f(width, -height, -depth), Vec2f(1, 1), Vec2f(1, 0), Vec2f(0, 0), Vec2f(0, 1)));
 	}
 }

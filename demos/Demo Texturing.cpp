@@ -207,18 +207,19 @@ int main()
 
 
 	 // Geometries
-	 pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	 //pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 
 	 //pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
 	 auto sphere1 = CSolid(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f));
-	 auto sphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
+	 //auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f, 64);
+	 auto sphere2 = CSolidTorus(pShaderWood, Vec3f(0, 1, 0), 1.5f, 1.0f, 24);
 	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
 
 	 // Transform
 	 CTransform T;
-	 Mat rotation = T.rotate(Vec3f(0, 1, 0), 1).get();
+	 Mat rotation = T.rotate(Vec3f(0, 1, 0), 5).get();
 
 	 //sphere1->transform(rotation);
 	 //sphere2.transform(rotation);
@@ -235,7 +236,7 @@ int main()
 
 	 //Light
 	 if (true) {
-		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50)));
+		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50), false));
 		 pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, -100, -50), false));
 	 }
 	 else pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 0.0f));
