@@ -85,7 +85,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
-	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 12.0f);
+	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 2022, 12.0f);
 	auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Marble shader
@@ -184,8 +184,10 @@ int main()
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
-	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 12.0f);
-	auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pTextureWood1 = std::make_shared<CTextureWood>(gradientWood, 2021, 12.0f);
+	auto pTextureWood2 = std::make_shared<CTextureWood>(gradientWood, 2022, 12.0f);
+	auto pShaderWood1 = std::make_shared<CShaderPhong>(*pScene, pTextureWood1, 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderWood2 = std::make_shared<CShaderPhong>(*pScene, pTextureWood2, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Marble shader
 	//CGradient gradientMarble(RGB(255, 255, 255), RGB(119, 135, 153));
@@ -213,9 +215,9 @@ int main()
 	 //pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
 	 auto sphere1 = CSolid(std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f));
-	 //auto sphere2 = CSolidSphere(pShaderWood, Vec3f(0, 1, 0), 1.5f, 64);
-	 auto sphere2 = CSolidTorus(pShaderWood, Vec3f(0, 1, 0), 1.5f, 1.0f, 24);
-	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
+	 auto sphere2 = CSolidSphere(pShaderWood1, Vec3f(0, 1, 0), 1.5f, 64);
+	 //auto sphere2 = CSolidTorus(pShaderWood, Vec3f(0, 1, 0), 1.5f, 1.0f, 24);
+	 auto sphere3 = CSolid(std::make_shared<CPrimSphere>(pShaderWood2, Vec3f(4, 1, 0), 1.5f));
 
 	 // Transform
 	 CTransform T;
