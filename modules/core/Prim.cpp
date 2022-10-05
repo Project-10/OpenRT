@@ -2,7 +2,6 @@
 
 #include "Prim.h"
 #include "Transform.h"
-#include "Ray.h"
 
 namespace rt {
 	// Constructor
