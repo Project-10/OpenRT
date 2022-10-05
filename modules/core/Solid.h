@@ -51,7 +51,7 @@ namespace rt {
 		 * @brief Sets new pivot point for affine transformations
 		 * @param pivot The new pivot point 
 		 */
-		DllExport void								setPivot(const Vec3f& pivot);
+		DllExport void								setPivot(const Vec3f& pivot) { m_pivot = pivot; }
 		/**
 		 * @brief Returns the solid's pivot point 
 		 * @return The solid's pivot point

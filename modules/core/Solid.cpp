@@ -125,11 +125,5 @@ namespace rt {
 	{
 		for(auto pPrim : m_vpPrims) pPrim->flipNormal();
 	}
-
-	void CSolid::setPivot(const Vec3f& pivot) 
-	{ 
-		m_pivot = pivot;
-		for (auto pPrim : m_vpPrims) pPrim->setPivot(pivot);
-	}
 }
 

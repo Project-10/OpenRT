@@ -47,13 +47,6 @@ namespace rt {
 		 * @retval false Otherwise
 		 */
 		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
-
-		// TODO: rethink about this method
-		DllExport void						setPivot(const Vec3f& pivot) {
-			for (int i = 0; i < 3; i++)
-				m_t.at<float>(i, 3) = pivot[i];
-		}
-
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
 		 * @param ray Ray, which has hit the geometry. 
