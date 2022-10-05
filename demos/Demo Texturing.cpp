@@ -150,7 +150,7 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 	// Texture
 	auto pTextureMarble = std::make_shared<CTexture>(dataPath + "marble-light.jpg");
 	CGradient gradientMarble;
-	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble);
+	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 2022);
 
 	// Shader
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(RGB(255, 255, 255));
@@ -188,13 +188,13 @@ int main()
 		 //auto pSceneStripes = buildSceneStripes(bgColor, resolution);
 	  //   auto pSceneRings = buildSceneRings(bgColor, resolution);
 
-	pScene->buildAccelStructure(25, 3);
-	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
-	Timer::stop();
-	imshow("Marble Texture", img);
-	imwrite("D:\\renders\\marble.jpg", img);
-	waitKey();
+	//pScene->buildAccelStructure(25, 3);
+	//Timer::start("Rendering...");
+	//Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
+	//Timer::stop();
+	//imshow("Marble Texture", img);
+	//imwrite("D:\\renders\\marble.jpg", img);
+	//waitKey();
 
 
 	const float intensity = 1e4;

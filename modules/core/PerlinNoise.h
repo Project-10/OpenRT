@@ -25,7 +25,10 @@ namespace rt{
 		 * @return A pseudo-random value in range [-1; 1]
 		 */
 		DllExport float eval(const Point3f& p) const;
-		DllExport static float turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence);
+		/**
+		 * @brief 
+		 */
+		DllExport float turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence) const;
 
     
 	private:

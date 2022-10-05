@@ -93,21 +93,21 @@ namespace rt{
 		return std::lerp(e, f, w);
 	}
 
+	float CPerlinNoise::turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence) const
+	{
+		float res = 0;
+		for (int i = 1; i <= octaves; i++) {
+			res += amplitude * eval(f * p);
+			amplitude *= persistence;
+			f *= lacunarity;
+		}
+		return res;
+	}
+
 	// --- Private ---
 	unsigned int CPerlinNoise::hash(int x, int y, int z) const
 	{
 		const size_t N = m_aPermutationVector.size();
 		return m_aPermutationVector[(m_aPermutationVector[(m_aPermutationVector[x] + y) % N] + z) % N];
-	}
-
-	float CPerlinNoise::turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence)
-	{
-		float res = 0;
-		for (int i = 1; i <= octaves; i++) {
-			res += amplitude * noise(f * p);
-			amplitude *= persistence;
-			f *= lacunarity;
-		}
-		return res;
 	}
 }

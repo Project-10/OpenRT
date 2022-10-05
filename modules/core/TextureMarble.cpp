@@ -46,7 +46,7 @@ namespace rt{
 		 float v = uvw.val[1];
 		 float w = uvw.val[2];
      
-		 float t = CPerlinNoise::turbulence(uvw , m_octaves, m_frequency , m_amplitude , m_lacunarity, m_persistence);
+		 float t = m_noise.turbulence(uvw, m_octaves, m_frequency, m_amplitude, m_lacunarity, m_persistence);
 		 Vec3f color;
 		 if (m_weird) {
 			  t = t - floor(t);
