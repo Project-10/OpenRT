@@ -25,6 +25,9 @@ namespace rt {
 			: CPrim(pShader, origin)
 			, m_normal(normal)
 			, m_radius(radius)
+			, m_u(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
+			, m_v(m_u.cross(normal))
+			, m_r(radius)
 		{}
 		DllExport virtual ~CPrimDisc(void) = default;
 		
@@ -33,7 +36,7 @@ namespace rt {
 		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox		getBoundingBox(void) const override;
 		
-		
+
 	private:
 		DllExport virtual Vec3f				doGetNormal(const Ray&) const override { return m_normal; }
 		DllExport virtual void				doTransform(const Mat& T) override;
@@ -42,5 +45,9 @@ namespace rt {
 	private:
 		Vec3f m_normal;		///< Normal to the plane
 		float m_radius;		///< Radius of the disc
+
+		const Vec3f m_u;	///< Vector orthogonal to the normal and \b m_v (used for texturing)
+		const Vec3f m_v;	///< Vector orthogonal to the normal and \b m_u (used for texturing)
+		const float m_r;	///< The initial radius if the disc (used for texturing)
 	};
 }
