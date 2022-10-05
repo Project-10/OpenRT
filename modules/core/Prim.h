@@ -6,7 +6,6 @@
 #include "IShader.h"
 #include "BoundingBox.h"
 
-
 namespace rt {
 	//struct Ray;
 	
@@ -22,7 +21,7 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param pShader Pointer to the shader to be applied for the primitive
-		 * @param pivot The pivot point (origin) of the primitive
+		 * @param origin Position of the center of the primitive
 		 */
 		DllExport CPrim(const ptr_shader_t pShader, const Vec3f& origin);
 		DllExport CPrim(const CPrim&) = delete;
@@ -87,14 +86,14 @@ namespace rt {
          * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-        DllExport Vec3f				        getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray) : doGetNormal(ray); }
+        DllExport Vec3f				        getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray): doGetNormal(ray); }
         /**
         * @brief Returns the  normal vector of the primitive in the ray - primitive intersection point
         * @note In contrast to the @ref doGetNormal() method, this methods takes into account the possible normal interpolation along the primitive
         * @param ray Ray intersecting the primitive
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
-        DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray) : doGetShadingNormal(ray); }
+        DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
 		/**
 		 * @brief Performs affine transformation
 		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
