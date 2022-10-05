@@ -18,21 +18,19 @@ namespace rt {
 		Vec2f tc(1, 1);
 		Vec2f td(0, 1);
 
-		add(std::make_shared<CPrimTriangle>(pShader, a, b, c, ta, tb, tc));
-		add(std::make_shared<CPrimTriangle>(pShader, a, c, d, ta, tc, td));
+		add(std::make_shared<CPrimTriangle>(pShader, origin, a, b, c, ta, tb, tc));
+		add(std::make_shared<CPrimTriangle>(pShader, origin, a, c, d, ta, tc, td));
 	}
 
 	// Constructor
-	CSolidQuad::CSolidQuad(const ptr_shader_t pShader, 
-		const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& d, 
-		const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, const Vec2f& td, 
+	CSolidQuad::CSolidQuad(const ptr_shader_t pShader,
+		const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& d,
+		const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, const Vec2f& td,
 		std::optional<Vec3f> na, std::optional<Vec3f> nb, std::optional<Vec3f> nc, std::optional<Vec3f> nd
-	) : CSolid(0.25f * (a + b + c + d))
-	{
-		add(std::make_shared<CPrimTriangle>(pShader, a, b, c, ta, tb, tc, na, nb, nc));
-		add(std::make_shared<CPrimTriangle>(pShader, a, c, d, ta, tc, td, na, nc, nd));
-	}
-	
+	) : CSolidQuad(pShader, 0.25 * (a + b +c + d), a, b, c, d, ta, tb, tc, td, na, nb, nc, nd)
+	{}
+
+
 	// Constructor
 	CSolidQuad::CSolidQuad(const ptr_shader_t pShader, const Vec3f& origin,
 		const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& d,
