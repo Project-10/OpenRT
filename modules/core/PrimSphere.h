@@ -21,26 +21,23 @@ namespace rt {
 		 * @param radius Radius of the sphere
 		 */
 		DllExport CPrimSphere(const ptr_shader_t pShader, const Vec3f& origin, float radius)
-			: CPrim(pShader)
-			, m_origin(origin)
+			: CPrim(pShader, origin)
 			, m_radius(radius)
 		{}
 		DllExport virtual ~CPrimSphere(void) = default;
 
 		DllExport virtual bool 			intersect(Ray& ray) const override;
 		DllExport virtual bool 			if_intersect(const Ray& ray) const override;
-		DllExport virtual void 			transform(const Mat& T) override;
-		DllExport virtual Vec3f			getOrigin(void) const override { return m_origin; }
 		DllExport virtual Vec2f			getTextureCoords(const Ray& ray) const override;
 		DllExport virtual CBoundingBox	getBoundingBox(void) const override;
 
 	
 	private:
 		DllExport virtual Vec3f 		doGetNormal(const Ray& ray) const override;
-
+		DllExport virtual void			doTransform(const Mat& T) override;
 		
+
 	private:
-		Vec3f	m_origin;	///< Position of the center of the sphere
 		float	m_radius;	///< Radius of the sphere
 	};
 }

@@ -9,7 +9,7 @@ namespace rt {
 		double r2 = static_cast<double>(m_radius) * static_cast<double>(m_radius);
 #if 1
 		// geometrical derivation
-		Vec3f L = m_origin - ray.org;
+		Vec3f L = getOrigin() - ray.org;
 
 		double tb = static_cast<double>(L.dot(ray.dir));
 
@@ -59,36 +59,31 @@ namespace rt {
 		return intersect(lvalue_cast(Ray(ray)));
 	}
 
-	void CPrimSphere::transform(const Mat& T)
+	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
 	{
-		// Transform origin
-		Vec3f o = Vec3f::all(0);		// point in the WCS origin
-		o = CTransform::point(o, T);	// translation of the point
-		m_origin += o;					// update the sphere's origin
-		
-		// Transform radius
+		return normalize(ray.hitPoint() - getOrigin());
+	}
+
+	void CPrimSphere::doTransform(const Mat& T)
+	{
+		// --- Transform radius ---
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
 	}
 
-	Vec3f CPrimSphere::doGetNormal(const Ray& ray) const
-	{
-		return normalize(ray.hitPoint() - m_origin);
-	}
-
 	Vec2f CPrimSphere::getTextureCoords(const Ray& ray) const
 	{
-		//Vec3f hitPoint = ray.hitPoint() - m_origin;	// Hitpoint in WCS
-		Vec3f hitPoint = wcs2ocs(ray.hitPoint());	// Hitpoint in OCS
-		float phi = atan2f(hitPoint[2], hitPoint[0]);
-		float theta = acosf(MIN(m_radius, hitPoint[1]) / m_radius);
+		Vec3f hitPoint = wcs2ocs(ray.hitPoint());		// Hitpoint in OCS
+		float r = static_cast<float>(norm(hitPoint));	// Radius in OCS: sqrt(x^2 + y^2 + z^2) (the initial radius of the sphere before any transforms)
+		float phi = atan2f(hitPoint[2], hitPoint[0]);	// arctg(z / x)
+		float theta = acosf(MIN(r, hitPoint[1]) / r);	// arccos(y / r)
 		return Vec2f(-0.5f * phi / Pif, theta / Pif);
 	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 
 	{ 
-		return CBoundingBox(m_origin - Vec3f::all(m_radius), m_origin + Vec3f::all(m_radius)); 
+		return CBoundingBox(getOrigin() - Vec3f::all(m_radius), getOrigin() + Vec3f::all(m_radius));
 	}
 }
 

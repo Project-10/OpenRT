@@ -195,67 +195,58 @@ std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resoluti
 	auto pScene = std::make_shared<CScene>(bgColor);
 
 	// shaders
-	auto pShader = std::make_shared<CShaderFlat>(Vec3f(1, 1, 1));
+	auto pShader1 = std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 100), 0.1f, 0.9f, 0.5f, 40.0f);
+	auto pShader3 = std::make_shared<CShaderPhong>(*pScene, RGB(100, 200, 255), 0.1f, 0.9f, 0.5f, 40.0f);
+	auto pShader2 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 255, 100), 0.1f, 0.9f, 0.5f, 40.0f);
+	auto pShader4 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 100, 255), 0.1f, 0.9f, 0.5f, 40.0f);
 
 	// geometry
-	ptr_prim_t largeSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 5.0f);
-	ptr_prim_t smallSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, -5), 1.0f);
-	ptr_prim_t composite = std::make_shared<CPrimBoolean>(largeSphere, smallSphere, BoolOp::Substraction);
+	auto box1 = CSolidBox(pShader1);
+	auto box2 = CSolidBox(pShader2);
+	auto sphere1 = std::make_shared<CPrimSphere>(pShader3, Vec3f::all(0), 1);
+	auto sphere2 = std::make_shared<CPrimSphere>(pShader4, Vec3f::all(0), 1);
+	//ptr_prim_t largeSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 5.0f);
+	//ptr_prim_t smallSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, -5), 1.0f);
+	//ptr_prim_t composite = std::make_shared<CPrimBoolean>(largeSphere, smallSphere, BoolOp::Substraction);
 
+	CTransform T;
+	box1.transform(T.translate(0, 1, 0).get());
+	sphere1->transform(T.translate(-1, 2, -1).get());
+	box2.transform(T.translate(0, 1, 0).get());
+	sphere2->transform(T.translate(-1, 2, -1).get());
+
+	auto composite1 = std::make_shared<CPrimBoolean>(box1, CSolid(sphere1), BoolOp::Substraction);
+	auto composite2 = std::make_shared<CPrimBoolean>(box2, CSolid(sphere2), BoolOp::Substraction);
+
+	composite1->transform(T.translate(3, 0, 0).rotate(Vec3f(0, 1, 0), 30).get());
+	composite2->transform(T.translate(-1, 0, 0).scale(2).rotate(Vec3f(0, 1, 0), -60).get());
+	//pScene->add(box1);
+	pScene->add(composite1);
+	pScene->add(composite2);
 	//pScene->add(largeSphere);
 	//pScene->add(smallSphere);
-	pScene->add(composite);
+	//pScene->add(composite);
 
 	// Light
-	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e3), Vec3f(0, 0, 0), true));
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e2), Vec3f(-3, 10, 0), true));
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e2), Vec3f(3, 10, -10), true));
 
 	// camera
-	pScene->add(std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 0, 0), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 45.0f));
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, -10), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 60.0f));
 
 	return pScene;
 }
 
 int main() {
-	
-	
-	Mat mat, mat32;
-	Mat res, res32;
-	int k  = 0;
-	for (int i = 6822; i < 7304; i++) {
-		std::string fileName = "C:\\Users\\Creator\\Desktop\\LITE\\_MG_" + std::to_string(i) + ".tif";
-		std::cout << fileName << std::endl;
-		mat = imread(fileName, 1);
-		mat.convertTo(mat32, CV_32FC3);
-		if (res32.empty()) res32 = mat32.clone();
-		else res32 += mat32;
-		k++;
-		//if (k >= 9) break;
-	}	
-	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res.tif", res32);
-	
-	res32.convertTo(res, CV_8UC3, 1.0 / k);
-	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res1.png", res);
-	res32.convertTo(res, CV_8UC3, 2.0 / k);
-	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res2.png", res);
-	res32.convertTo(res, CV_8UC3, 4.0 / k);
-	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res4.png", res);
-	res32.convertTo(res, CV_8UC3, 8.0 / k);
-	imwrite("C:\\Users\\Creator\\Desktop\\LITE\\res8.png", res);
-
-
-	
-	
-	
-	
 	const Vec3f bgColor = RGB(0, 0, 0);
 	const Size  resolution = Size(800, 600);
 
 	//for (float t = 29; t > -29; t=t-0.5f) {
 
-	auto pScene = buildSceneEarth(bgColor, resolution);
+	//auto pScene = buildSceneEarth(bgColor, resolution);
 	//auto pScene = buildSceneLens(bgColor, resolution, 0);
 	//auto pScene	= buildClassicExample(RGB(255, 255, 255), resolution);
-	//auto pScene = buildSceneTest(bgColor, resolution);
+	auto pScene = buildSceneTest(bgColor, resolution);
 
 	pScene->buildAccelStructure(20, 3);
 

@@ -38,6 +38,9 @@ namespace rt {
 		DllExport virtual ~CCameraPerspective(void) = default;
 
 		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+		DllExport virtual Vec3f	getXAxis(void) const override { return m_xAxis; }
+		DllExport virtual Vec3f	getYAxis(void) const override { return m_yAxis; }
+		DllExport virtual Vec3f	getZAxis(void) const override { return m_zAxis; }
 
 		/**
 		 * @brief Sets new camera position
@@ -101,4 +104,6 @@ namespace rt {
 		Vec3f m_yAxis;						///< Camera y-axis in WCS
 		Vec3f m_zAxis;						///< Camera z-axis in WCS
 	};
+
+	using ptr_camera_t = std::shared_ptr<ICamera>;
 }

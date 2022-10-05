@@ -17,7 +17,20 @@ namespace rt {
 			return false;
 	}
 
-	void CPrimTriangle::transform(const Mat& T)
+	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
+	{
+			return m_normal;
+	}
+
+	Vec3f CPrimTriangle::doGetShadingNormal(const Ray& ray) const
+	{
+		if (m_na && m_nb && m_nc)
+			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
+		else
+			return m_normal;
+	}
+
+	void CPrimTriangle::doTransform(const Mat& T)
 	{
 		// Transform vertexes
 		m_a = CTransform::point(m_a, T);
@@ -34,24 +47,6 @@ namespace rt {
 		// Update edges
 		m_edge1 = m_b - m_a;
 		m_edge2 = m_c - m_a;
-	}
-	
-	Vec3f CPrimTriangle::getOrigin(void) const
-	{
-		return 0.33f * (m_a + m_b + m_c);
-	}
-
-	Vec3f CPrimTriangle::doGetNormal(const Ray& ray) const
-	{
-			return m_normal;
-	}
-
-	Vec3f CPrimTriangle::doGetShadingNormal(const Ray& ray) const
-	{
-		if (m_na && m_nb && m_nc)
-			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
-		else
-			return m_normal;
 	}
 
 	Vec2f CPrimTriangle::getTextureCoords(const Ray& ray) const

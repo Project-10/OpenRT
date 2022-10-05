@@ -38,6 +38,21 @@ namespace rt {
 		 * @param[in] sample The x- and y-shifts to the center of the pixel (used for anti-aliasing).
 		 */
 		DllExport virtual void InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) = 0;
+		/**
+		 * @brief Returns the camera's x-axis
+		 * @return The camra x-axis in WCS
+		 */
+		DllExport virtual Vec3f getXAxis(void) const = 0;
+		/**
+		 * @brief Returns the camera's y-axis
+		 * @return The camra y-axis in WCS
+		 */
+		DllExport virtual Vec3f	getYAxis(void) const = 0;
+		/**
+		 * @brief Returns the camera's z-axis
+		 * @return The camra z-axis in WCS
+		 */
+		DllExport virtual Vec3f	getZAxis(void) const = 0;
 		
 		/**
 		 * @brief Retuns the camera resolution in pixels
