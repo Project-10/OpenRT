@@ -37,6 +37,7 @@ namespace rt{
 			return c ? RGB(255, 255, 255) : RGB(127, 127, 127);
 		} else {
 			// find texel indices
+			// TODO: add interpolation
 			int x = static_cast<int>(cols * u);
 			int y = static_cast<int>(rows * v);
 
