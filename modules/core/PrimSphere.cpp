@@ -76,9 +76,22 @@ namespace rt {
 	{
 		Vec3f hitPoint = wcs2ocs(ray.hitPoint());		// Hitpoint in OCS
 		float r = static_cast<float>(norm(hitPoint));	// Radius in OCS: sqrt(x^2 + y^2 + z^2) (the initial radius of the sphere before any transforms)
-		float phi = atan2f(hitPoint[2], hitPoint[0]);	// arctg(z / x)
+		float phi = -atan2f(hitPoint[2], hitPoint[0]);	// -arctg(z / x)
 		float theta = acosf(MIN(r, hitPoint[1]) / r);	// arccos(y / r)
-		return Vec2f(-0.5f * phi / Pif, theta / Pif);
+		return Vec2f(0.5f * phi / Pif, theta / Pif);
+	}
+
+	std::pair<Vec3f, Vec3f> CPrimSphere::dp(const Vec3f& p) const
+	{
+		float x = p[0];
+		float y = p[1];
+		float z = p[2];
+		float rm = sqrtf(x * x + y * y);
+
+		Vec3f dpdu = 2 * Pif * Vec3f(z, 0, -x);
+		Vec3f dpdv = Pif * Vec3f(x * y / rm, -rm, z * y / rm);
+
+		return std::make_pair(dpdu, dpdv);
 	}
 
 	CBoundingBox CPrimSphere::getBoundingBox(void) const 

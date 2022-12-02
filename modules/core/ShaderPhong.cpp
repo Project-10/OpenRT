@@ -13,34 +13,29 @@ namespace rt {
 
 		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
+		
+		
+		auto du = getBump(ray);
+		if (du) {
+			Vec3f ocs = ray.hit->wcs2ocs(ray.hitPoint());
+			auto  dp = ray.hit->dp(ocs);
+			Vec3f dpdu = dp.first;
+			Vec3f dpdv = dp.second;
+			dpdu = ray.hit->ocs2wcs(dpdu);
+			dpdv = ray.hit->ocs2wcs(dpdv);
+
+			shadingNormal += getBumpAmount() * (du.value().first * dpdv.cross(shadingNormal) - du.value().second * dpdu.cross(shadingNormal));
+			shadingNormal = normalize(shadingNormal);
+		}
+
 		bool inside = false;
 		if (faceNormal.dot(ray.dir) > 0) {
 			shadingNormal = -shadingNormal;										// turn shading normal to front
 			inside = true;
 		}
-		
+
+
 		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;		// reflection vector
-
-		float bump = getBump(ray);
-		if (bump != 0) {
-			Vec3f ocs = ray.hit->wcs2ocs(ray.hitPoint());
-			float x = ocs[0];
-			float y = ocs[1];
-			float z = ocs[2];
-			float r = norm(ocs);
-			float cos_phi = x / r;
-			float sin_phi = z / r;
-			float sin_theta = sqrtf(x*x + z*z) / r;
-
-			const Vec3f dpdu = 2 * Pif * Vec3f(-z, 0, x);
-			const Vec3f dpdv = Pif * Vec3f(y * cos_phi, -r * sin_theta, y * sin_phi);
-			
-			float dddu = getBumpU(ray);
-			float dddv = getBumpV(ray);
-
-			shadingNormal += 0.005f * (dddv * dpdu.cross(shadingNormal) + dddu * dpdv.cross(shadingNormal));
-			shadingNormal = normalize(shadingNormal);
-		}
 
 #ifdef DEBUG_MODE
 		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);

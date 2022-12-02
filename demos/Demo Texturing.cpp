@@ -147,15 +147,15 @@ std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resoluti
 {
 	auto pScene = std::make_shared<CScene>(bgColor);
 
-	auto pDiffuseMap = std::make_shared<CTexture>(dataPath + "lroc_color_poles.tif");
-	auto pBumpMap = std::make_shared<CTexture>(dataPath + "ldem_64.tif");
 	auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
-	pShader->setDiffuseColor(pDiffuseMap);
-	pShader->setBumpMap(pBumpMap);
+	//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "lroc_color_poles.tif"));
+	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "bump-map-warp-source_v1.jpg"));
+	pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
 
-	pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1));
-	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e4), Vec3f(-100, 0, -100), false));
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 15));
+	//pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f));
+	pScene->add(CSolidSphere(pShader, Vec3f(0, 0, 0), 1.7374f));
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e16), Vec3f(-150e6 * cosf(Pif*60/180), 0, -150e6 * sinf(Pif * 60 / 180)), false));
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
 
 	return pScene;
 }
@@ -179,22 +179,98 @@ std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resoluti
 //waitKey();
 //return 0;
 
+// --- The Moon ---
+//const Vec3f		bgColor = RGB(0, 0, 0);
+//const Size		resolution = Size(1280, 720);
+//
+//auto pScene = std::make_shared<CScene>(bgColor);
+//
+//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 160);
+//Mat diff = imread(dataPath + "lroc_color_poles.tif");
+//Mat bump = imread(dataPath + "ldem_64.tif");
+//
+//resize(diff, diff, Size(4000, 2000), 0, 0, INTER_AREA);
+//resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
+//
+//pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
+//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg"));
+//pShader->setBumpMap(std::make_shared<CTexture>(bump));
+//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "ldem_64.tif"));
+//
+//auto sphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
+//auto sphere = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 0, 0), Vec3f(-1, 0, 0), 1.7374f);
+//pScene->add(sphere);
+//
+//auto sun = std::make_shared<CLightOmni>(Vec3f::all(20e15), Vec3f(-150e6 * cosf(Pif * 60 / 180), 0, -150e6 * sinf(Pif * 60 / 180)), true);
+//pScene->add(sun);
+//
+//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
+
+
 int main()
 {
 	const Vec3f		bgColor = RGB(0, 0, 0);
-	const Size		resolution = Size(1200, 1000);
+	const Size		resolution = Size(1280, 720);
 	//auto pScene = buildSceneTemplates(bgColor, resolution);
 	//auto pSceneStripes = buildSceneStripes(bgColor, resolution);
 	//auto pSceneRings = buildSceneRings(bgColor, resolution);
 	auto pScene = buildSceneMoon(bgColor, resolution);
+	pScene->buildAccelStructure(20, 1);
+
+	//auto pScene = std::make_shared<CScene>(bgColor);
+
+	//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 160);
+	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg"));
+	////Mat diff = imread(dataPath + "lroc_color_poles.tif");
+	////Mat diff = imread(dataPath + "lroc_color_poles.tif");
+	////Mat diff = imread(dataPath + "A.png");
+	////Mat bump = imread(dataPath + "ldem_64.tif");
+	//
+	////resize(diff, diff, Size(100, 100), 0, 0, INTER_NEAREST);
+	////resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
+
+	////pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
+	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "A.png"));
+	////pShader->setBumpMap(std::make_shared<CTexture>(bump));
+	//
+	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "A.png"), 0.5f);
+	////pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "ldem_64.tif"));
+
+	//pScene->add(std::make_shared<CPrimPlane>(pShader, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
+	////auto sphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
+	//auto sphere = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.0f, 0), Vec3f(-1, 0, 0), 1.0f);
+	//pScene->add(sphere);
 
 
+	//pScene->add(std::make_shared<CLightOmni>(Vec3f(1e1, 0, 0), Vec3f(5, 5, 0), true));
+	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e1), Vec3f(-5, 5, 0), true));
+	//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-5, 4, -5), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 30.0f));
 
-	pScene->buildAccelStructure(20, 3);
-	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
-	Timer::stop();
-	imshow("Image", img);
-	waitKey();
+	//CTransform T;
+	//Mat t = T.rotate(Vec3f(0, 1, 0), 3.0f).get();
+
+	
+	//float alpha = -90;
+	//VideoWriter videoWriter;
+	//auto codec = VideoWriter::fourcc('M', 'J', 'P', 'G');		// Native windows codec
+	//videoWriter.open("D:\\Renders\\moon.avi", codec, 60, resolution);
+	//if (!videoWriter.isOpened()) printf("ERROR: Can't open vide file for writing\n");
+	for (; ; ) {
+		//sun->setOrigin(Vec3f(-150e6 * cosf(Pif * alpha / 180), 0, -150e6 * sinf(Pif * alpha / 180)));
+		//alpha += 1.0f;
+
+		Timer::start("Rendering...");
+		Mat img = pScene->render(std::make_shared<CSamplerStratified>(1, false, false));
+		Timer::stop();
+		//sphere->transform(t);
+		//videoWriter << img;
+		imshow("Image", img);
+		//imwrite("D:\\renders\\moon.png", img);
+		char key = waitKey(1);
+		if (key == 27) break;
+	}
     return 0;
 }

@@ -40,4 +40,9 @@ namespace rt {
 	{
 		return CTransform::point(p, m_t.inv());
 	}
+
+	Vec3f CPrim::ocs2wcs(const Vec3f& p) const
+	{
+		return CTransform::vector(p, m_t);
+	}
 }

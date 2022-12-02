@@ -28,6 +28,11 @@ namespace rt {
 		return res;
 	}
 
+	std::pair<Vec3f, Vec3f> CPrimPlane::dp(const Vec3f& p) const
+	{
+		return std::make_pair(m_u, m_v);
+	}
+
 	CBoundingBox CPrimPlane::getBoundingBox(void) const
 	{
 		Vec3f minPoint = Vec3f::all(-Infty);

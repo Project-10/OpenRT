@@ -64,8 +64,9 @@ namespace rt {
 		/**
 		* @brief Sets the bump map
 		* @param pBumpMap The bump map
+		* @param amount The power of bump
 		*/
-		DllExport void setBumpMap(const ptr_texture_t pBumpMap);
+		DllExport void setBumpMap(const ptr_texture_t pBumpMap, float amount = 1.0f);
 		/**
 		 * @brief Sets the opacity
 		 * @param opacity The opacity. Number between 0 and 1
@@ -96,9 +97,14 @@ namespace rt {
 		* @param ray The ray hitting the primitive. ray.hit must point to the primitive
 		* @return The bump map value at the intersection point
 		*/
-		DllExport float getBump(const Ray& ray) const;
-		DllExport float getBumpU(const Ray& ray) const;
-		DllExport float getBumpV(const Ray& ray) const;
+		DllExport std::optional<std::pair<float, float>> getBump(const Ray& ray) const;
+		/**
+		* @brief Returns the amount of bump
+		* @return The amount of bump
+		*/
+		DllExport float getBumpAmount(void) const { return m_bumpAmount; }
+		//DllExport float getBumpU(const Ray& ray) const;
+		//DllExport float getBumpV(const Ray& ray) const;
 
 		/**
 		 * @brief Returns the opacity
@@ -112,11 +118,12 @@ namespace rt {
 		Vec3f			m_diffuseColor		= Vec3f::all(0);	///< The diffuse color
 		float			m_specularLevel		= 0;				///< The specular level
 		float			m_opacity			= 1;				///< The opacity
-		
+		float			m_bumpAmount		= 1;				///< The power of bump map
+
 		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
 		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
-		ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
+		//ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
 		ptr_texture_t	m_pBumpMap_u = nullptr;
 		ptr_texture_t	m_pBumpMap_v = nullptr;
 		

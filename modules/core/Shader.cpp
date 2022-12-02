@@ -71,37 +71,41 @@ namespace rt {
 	}
 
 	// ============================================== Bump Map ==============================================
-	void CShader::setBumpMap(const ptr_texture_t pBumpMap) 
+	void CShader::setBumpMap(const ptr_texture_t pBumpMap, float amount) 
 	{
-		m_pBumpMap = pBumpMap;
+		m_bumpAmount = amount;
+		//m_pBumpMap = pBumpMap;
 		Mat a, b;
 
-		Sobel(*pBumpMap, a, CV_32F, 1, 0, 5);
-		Sobel(*pBumpMap, b, CV_32F, 0, 1, 5);
+		Sobel(*pBumpMap, a, CV_32F, 1, 0, 1);
+		Sobel(*pBumpMap, b, CV_32F, 0, 1, 1);
 
 		m_pBumpMap_u = std::make_shared<CTexture>(a);
 		m_pBumpMap_v = std::make_shared<CTexture>(b);
 	}
 
-	float CShader::getBump(const Ray& ray) const 
+	std::optional<std::pair<float, float>> CShader::getBump(const Ray& ray) const
 	{
-		if (m_pBumpMap)
-			if (m_pBumpMap->isProcedural()) return m_pBumpMap->getTexel(ray.hit->wcs2ocs(ray.hitPoint()))[0];		// procedural texture
-			else							return m_pBumpMap->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
-		else								return 0;
+		if (m_pBumpMap_u) {
+			Vec2f uv = ray.hit->getTextureCoords(ray);
+			float du = m_pBumpMap_u->getTexel(uv)[0];
+			float dv = m_pBumpMap_v->getTexel(uv)[0];
+			return std::make_pair(du, dv);
+		} else return std::nullopt;
+		
 	}
 
-	float CShader::getBumpU(const Ray& ray) const
-	{
-		if (m_pBumpMap) return m_pBumpMap_u->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
-		else			return 0;
-	}
+	//float CShader::getBumpU(const Ray& ray) const
+	//{
+	//	if (m_pBumpMap_u) return m_pBumpMap_u->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
+	//	else			return 0;
+	//}
 
-	float CShader::getBumpV(const Ray& ray) const
-	{
-		if (m_pBumpMap) return m_pBumpMap_v->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
-		else			return 0;
-	}
+	//float CShader::getBumpV(const Ray& ray) const
+	//{
+	//	if (m_pBumpMap_v) return m_pBumpMap_v->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
+	//	else			return 0;
+	//}
 
 }
 

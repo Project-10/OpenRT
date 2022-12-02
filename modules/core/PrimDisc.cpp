@@ -30,6 +30,11 @@ namespace rt {
 		return norm(hit) > Epsilon ? Vec2f(0.5f + hit.dot(m_u), 0.5f + hit.dot(m_v)) : Vec2f(0.5f, 0.5f);
 	}
 
+	std::pair<Vec3f, Vec3f> CPrimDisc::dp(const Vec3f& p) const
+	{
+		return std::make_pair(m_u, m_v);
+	}
+
 	// Implementation is taken from: https://iquilezles.org/www/articles/diskbbox/diskbbox.htm
 	CBoundingBox CPrimDisc::getBoundingBox(void) const
 	{
@@ -45,5 +50,9 @@ namespace rt {
 		Vec3f r = m_radius * normalize(Vec3f::all(1));
 		r = CTransform::vector(r, T);
 		m_radius = static_cast<float>(norm(r));
+
+		// --- Transform normals ---
+		Mat T1 = T.inv().t();
+		m_normal = normalize(CTransform::vector(m_normal, T1));
 	}
 }
