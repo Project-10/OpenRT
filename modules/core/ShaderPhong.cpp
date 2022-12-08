@@ -17,12 +17,9 @@ namespace rt {
 		
 		auto du = getBump(ray);
 		if (du) {
-			Vec3f ocs = ray.hit->wcs2ocs(ray.hitPoint());
-			auto  dp = ray.hit->dp(ocs);
+			auto  dp = ray.hit->dp(ray.hitPoint());
 			Vec3f dpdu = dp.first;
 			Vec3f dpdv = dp.second;
-			dpdu = ray.hit->ocs2wcs(dpdu);
-			dpdv = ray.hit->ocs2wcs(dpdv);
 
 			shadingNormal += getBumpAmount() * (du.value().first * dpdv.cross(shadingNormal) - du.value().second * dpdu.cross(shadingNormal));
 			shadingNormal = normalize(shadingNormal);

@@ -83,13 +83,14 @@ namespace rt {
 
 	std::pair<Vec3f, Vec3f> CPrimSphere::dp(const Vec3f& p) const
 	{
-		float x = p[0];
-		float y = p[1];
-		float z = p[2];
+		Vec3f hitPoint = wcs2ocs(p);		// Hitpoint in OCS
+		float x = hitPoint[0];
+		float y = hitPoint[1];
+		float z = hitPoint[2];
 		float rm = sqrtf(x * x + y * y);
 
-		Vec3f dpdu = 2 * Pif * Vec3f(z, 0, -x);
-		Vec3f dpdv = Pif * Vec3f(x * y / rm, -rm, z * y / rm);
+		Vec3f dpdu = ocs2wcs(2 * Pif * Vec3f(z, 0, -x));
+		Vec3f dpdv = ocs2wcs(Pif * Vec3f(x * y / rm, -rm, z * y / rm));
 
 		return std::make_pair(dpdu, dpdv);
 	}

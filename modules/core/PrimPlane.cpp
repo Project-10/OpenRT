@@ -28,9 +28,11 @@ namespace rt {
 		return res;
 	}
 
-	std::pair<Vec3f, Vec3f> CPrimPlane::dp(const Vec3f& p) const
+	std::pair<Vec3f, Vec3f> CPrimPlane::dp(const Vec3f&) const
 	{
-		return std::make_pair(m_u, m_v);
+		Vec3f dpdu = ocs2wcs(m_u);
+		Vec3f dpdv = ocs2wcs(m_v);
+		return std::make_pair(dpdu, dpdv);
 	}
 
 	CBoundingBox CPrimPlane::getBoundingBox(void) const

@@ -36,7 +36,7 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				intersect(Ray& ray) const = 0;
+		DllExport virtual bool						intersect(Ray& ray) const = 0;
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
 		 * @details This function does not modify argument \b ray and is used just to check if there is an intersection.
@@ -53,9 +53,9 @@ namespace rt {
 		 */
 		DllExport virtual Vec2f						getTextureCoords(const Ray& ray) const = 0;
 		/**
-		 * @brief
+		 * @brief Calculates derivatives of the primitive's surface over its parametrization parameters \a u and \a v
 		 * @param p Point in the WCS
-		 * @return
+		 * @return A couple of vectors \f$ \frac{\partial p}{\partial u} \f$, \f$ \frac{\partial p}{\partial v} \f$
 		 */
 		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const = 0;
 		/**
@@ -108,13 +108,15 @@ namespace rt {
 		/**
 		 * @brief Translates the \i point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
 		 * @param p Point in the WCS
-		 * return Point \b p in OCS
+		 * @return Point \b p in OCS
 		 */
 		DllExport Vec3f								wcs2ocs(const Vec3f& p) const;
 		/**
-		* @ brief Translates the \i vector \b p from OCS to WCS
+		* @brief Translates the \i vector \b v from OCS to WCS
+		* @param v Vector on OCS
+		* @return Vector \b v in WCS
 		*/
-		DllExport Vec3f								ocs2wcs(const Vec3f& p) const;
+		DllExport Vec3f								ocs2wcs(const Vec3f& v) const;
 
 		
     private:

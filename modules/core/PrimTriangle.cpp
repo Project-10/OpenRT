@@ -54,7 +54,7 @@ namespace rt {
 		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
 	}
 
-	std::pair<Vec3f, Vec3f> CPrimTriangle::dp(const Vec3f& p) const
+	std::pair<Vec3f, Vec3f> CPrimTriangle::dp(const Vec3f&) const
 	{
 		Vec3f dpdu(1, 0, 0);
 		Vec3f dpdv(0, 0, 1);
@@ -74,6 +74,7 @@ namespace rt {
 			dpdv = (-du2 * dp1 + du1 * dp2) * invdet;
 		}
 
+		// Note that ocs2wcs is not needed here
 		return std::make_pair(dpdu, dpdv);
 	}
 
