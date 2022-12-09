@@ -24,8 +24,7 @@ namespace rt {
 		DllExport CTextureWood(const CGradient& gradient, unsigned int seed, float period = 1.0f, float alpha_lf = 1.5f, float alpha_hf = 0.1f);
 		DllExport virtual ~CTextureWood(void) = default;
      
-		DllExport Vec3f	getTexel(const Vec3f &uvw) const override;
-		DllExport bool	isProcedural(void) const override { return true; }
+		DllExport Vec3f	getTexel(const Ray& ray) const override;
      
      
 	private:

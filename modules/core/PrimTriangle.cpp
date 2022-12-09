@@ -8,8 +8,8 @@ namespace rt {
 		auto t = MoellerTrumbore(ray);
 		if (t) {
 			ray.t = t.value().val[0];
-			ray.u = t.value().val[1];
-			ray.v = t.value().val[2];
+			ray.b1 = t.value().val[1];
+			ray.b2 = t.value().val[2];
 			ray.hit = shared_from_this();
 			return true;
 		}
@@ -25,7 +25,7 @@ namespace rt {
 	Vec3f CPrimTriangle::doGetShadingNormal(const Ray& ray) const
 	{
 		if (m_na && m_nb && m_nc)
-			return (1.0f - ray.u - ray.v) * m_na.value() + ray.u * m_nb.value() + ray.v * m_nc.value();
+			return (1.0f - ray.b1 - ray.b2) * m_na.value() + ray.b1 * m_nb.value() + ray.b2 * m_nc.value();
 		else
 			return m_normal;
 	}
@@ -51,7 +51,7 @@ namespace rt {
 
 	Vec2f CPrimTriangle::getTextureCoords(const Ray& ray) const
 	{
-		return (1.0f - ray.u - ray.v) * m_ta + ray.u * m_tb + ray.v * m_tc;
+		return (1.0f - ray.b1 - ray.b2) * m_ta + ray.b1 * m_tb + ray.b2 * m_tc;
 	}
 
 	std::pair<Vec3f, Vec3f> CPrimTriangle::dp(const Vec3f&) const

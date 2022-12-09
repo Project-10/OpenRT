@@ -45,8 +45,8 @@ namespace rt {
 
 		ray.t = t;
 		ray.hit = res.value().hit;
-		ray.u = res.value().u;
-		ray.v = res.value().v;
+		ray.b1 = res.value().b1;
+		ray.b2 = res.value().b2;
 		
 		return true;
     }

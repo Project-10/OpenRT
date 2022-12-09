@@ -1,6 +1,7 @@
 //  Created by Mahmoud El Bergui on 21.04.22.
 
 #include "TextureWood.h"
+#include "Ray.h"
 
 namespace rt {
 	// Constructor
@@ -14,8 +15,10 @@ namespace rt {
 		, m_alpha_hf(alpha_hf)
 	{}
 	
-	Vec3f CTextureWood::getTexel(const Vec3f& uvw) const
+	Vec3f CTextureWood::getTexel(const Ray& ray) const
 	{
+		Vec3f uvw = ray.hit->wcs2ocs(ray.hitPoint());					// Hitpoint in OCS
+		
 		//float noise0 = (1 + m_noise.eval(0.45f * uvw)) / 2;
 		float noise_lf = 1 + m_noise.eval(uvw.mul(m_period_lf));		// This noise function call puts noise on the rings to give wood the natural felling
 		float noise_hf = 1 + m_noise.eval(uvw.mul(m_period_hf));		// This noise function call gives wood roughness to texture
