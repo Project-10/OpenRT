@@ -1,5 +1,6 @@
 
 #include "Texture.h"
+#include "Ray.h"
 #include "macroses.h"
 #include <math.h>
 
@@ -21,8 +22,10 @@ namespace rt{
 		}
 	}
 
-	Vec3f CTexture::getTexel(const Vec2f& uv) const
+	Vec3f CTexture::getTexel(const Ray& ray) const
 	{
+		Vec2f uv = ray.hit->getTextureCoords(ray);
+
 		float u = fmodf(uv[0], 1);
 		float v = fmodf(uv[1], 1);
 
@@ -42,10 +45,5 @@ namespace rt{
 
 			return (*this).at<Vec3f>(y, x);
 		}
-	}
-        
-	Vec3f CTexture::getTexel(const Vec3f&) const 
-	{
-		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
 	}
 }

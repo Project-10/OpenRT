@@ -1,9 +1,12 @@
 #include "TextureStripes.h"
+#include "Ray.h"
 
 namespace rt{
 	/// @todo Play with the direction of the stripes
-	Vec3f CTextureStripes::getTexel(const Vec3f& uvw) const
+	Vec3f CTextureStripes::getTexel(const Ray& ray) const
 	{
+		Vec3f uvw = ray.hit->wcs2ocs(ray.hitPoint());					// Hitpoint in OCS
+		
 		// Full form
 		//const Vec3f period = m_period * Vec3f(1, 0, 0); // orintation of the stripes
 		//float value = static_cast<float>(sum(uvw.mul(period))[0]);
