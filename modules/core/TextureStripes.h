@@ -1,6 +1,6 @@
 #pragma once
 
-#include"Texture.h"
+#include "Texture.h"
 
 namespace rt {
 	/**
@@ -19,8 +19,7 @@ namespace rt {
 		DllExport CTextureStripes(float period) : m_period(period) {}
 		DllExport virtual ~CTextureStripes(void) = default;
     
-		DllExport Vec3f	getTexel(const Vec3f& uvw) const override;
-		DllExport bool	isProcedural(void) const override { return true; }
+		DllExport Vec3f	getTexel(const Ray& ray) const override;
 
 
 	private:

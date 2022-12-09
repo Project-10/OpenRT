@@ -19,8 +19,8 @@ namespace rt {
 		
 		double							t		= std::numeric_limits<double>::infinity();	///< Current/maximum hit distance
 		std::shared_ptr<const CPrim>	hit		= nullptr;									///< Pointer to currently closest primitive
-		float							u		= 0;										///< Barycentric u coordinate
-		float							v		= 0;										///< Barycentric v coordinate
+		float							b1		= 0;										///< Barycentric coordinate
+		float							b2		= 0;										///< Barycentric coordinate
 		
 		/**
 		 * @brief Constructor
