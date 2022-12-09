@@ -147,13 +147,23 @@ std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resoluti
 {
 	auto pScene = std::make_shared<CScene>(bgColor);
 
-	auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
-	//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "lroc_color_poles.tif"));
-	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "bump-map-warp-source_v1.jpg"));
-	pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+	Mat diff = imread(dataPath + "lroc_color_poles.tif");
+	Mat bump = imread(dataPath + "ldem_64.tif");
 
+	resize(diff, diff, Size(4000, 2000), 0, 0, INTER_AREA);
+	resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
+	
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
+	pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
+	pShader->setBumpMap(std::make_shared<CTexture>(bump), 0.05f);
+	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+
+	auto moon = CSolidSphere(pShader, Vec3f(0, 0, 0), 1.7374f, 24);
+	//CTransform t;
+	//moon.transform(t.rotate(Vec3f(0, 1, 0), 90).get());
+	
 	//pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f));
-	pScene->add(CSolidSphere(pShader, Vec3f(0, 0, 0), 1.7374f));
+	pScene->add(moon);
 	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e16), Vec3f(-150e6 * cosf(Pif*60/180), 0, -150e6 * sinf(Pif * 60 / 180)), false));
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
 
@@ -263,7 +273,7 @@ int main()
 		//alpha += 1.0f;
 
 		Timer::start("Rendering...");
-		Mat img = pScene->render(std::make_shared<CSamplerStratified>(1, false, false));
+		Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, false, false));
 		Timer::stop();
 		//sphere->transform(t);
 		//videoWriter << img;
