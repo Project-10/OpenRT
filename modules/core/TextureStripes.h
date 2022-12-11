@@ -5,6 +5,7 @@
 namespace rt {
 	/**
 	 * @brief Stripes Procedural Texture class
+	 * @note This class is an experimental class
 	 * @ingroup moduleTexture
 	 * @author Mahmoud El Bergui, m.elbergui@jacobs-university.de
 	 */
@@ -12,7 +13,6 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
-		 * @note This class is an experimental class
 		 * @ingroup moduleTexture
 		 * @param period The number of stripes per 1 unit of WCS
 		 */
