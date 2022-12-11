@@ -6,46 +6,49 @@
 #include "PerlinNoise.h"
 
 namespace rt {
+	/**
+	* @brief Marble procedural texture class
+	* @details This class is based on the stripes (@ref CTextureStripes) class
+	* @ingroup moduleTexture
+	* @author Mahmoud El Bergui, m.elbergui@jacobs-university.de
+	*/
 	class CTextureMarble : public CTexture {
 	public:
 		/**  
 		 * @brief Marble texture contructor
-		 * @param gradient Wood color
+		 * @param gradient Marble color
 		 * @param seed The seed for the random number generator, allows to generate unique textures
-		 * @param period The number of annual rings per one unit of WCS
-		 * @param octaves of noise octaves(layers)
-		 * @param frequency frequency of the noise
-		 * @param amplitude amplitude of the noise
-		 * @param lacunarity lacunarity value(Determines how finer the next octaves should be) Lacunarity>1
-		 * @param persistence persistence value(Controls how fast the next octave will die out) 0<Persistence<1
-		 * @param weird Boolean generating a different type of textures
+		 * @param period The number of stripes per 1 unit of WCS
+		 * @param amplitude Amplitude of the noise.
+		 * @param frequency The frequency determines a scaling value to be applied to point \p p before calling the noise function.
+		 * @param numOctaves The number of octaves determines how many times the noise function is called.
+		 * @param gain Gain is a value in the range (0; 1) that controls how quickly the later octaves "die out". Something around \b 0.5 is pretty conventional here.
+		 * @param lacunarity Lacunarity is a value greater than 1 that controls how much finer a scale each subsequent octave should use. Something around \b 2.0 is a conventional choice.
  		 */
-		DllExport CTextureMarble(const CGradient& gradient, unsigned int seed, float period = 2.0f, int octave = 6, float frequency = 0.24f, float amplitude = 2.3f, float lacunarity = 2.5f, float persistence = 0.35f , bool weird = false)
+		DllExport CTextureMarble(const CGradient& gradient, unsigned int seed, float period, float amplitude = 1.0f, float frequency = 1.0f, size_t numOctaves = 1, float gain = 0.5f, float lacunarity = 2.0f)
 			: m_gradient(gradient)
 			, m_noise(seed)
 			, m_period(period)
-			, m_octaves(octave)
-			, m_frequency(frequency)
 			, m_amplitude(amplitude)
+			, m_frequency(frequency)
+			, m_numOctaves(numOctaves)
+			, m_gain(gain)
 			, m_lacunarity(lacunarity)
-			, m_persistence(persistence)
-			, m_weird(weird) 
 		{}
 		DllExport virtual ~CTextureMarble(void) = default;
      
-		DllExport Vec3f	getTexel(const Vec3f &uvw) const override;
-		DllExport bool	isProcedural(void) const override { return true; }
+		DllExport Vec3f	getTexel(const Ray& ray) const override;
     
      
 	private:
 		CGradient		m_gradient;		///< The color gradient for the wood
 		CPerlinNoise	m_noise;		///< The Perlin Noise
 		float			m_period;		///< The period of the noise
-		int				m_octaves;		///< The noise octaves
+		
+		float			m_amplitude;	///< Amplitude of the noise
 		float			m_frequency;	///< Frequency of the noise
-		float			m_amplitude;	///< Noise amplitude
+		size_t			m_numOctaves;	///< Noise octaves
+		float			m_gain;			///< Noise gain
 		float			m_lacunarity;	///< Noise lacunarity
-		float			m_persistence;	///< Noise persistence
-		bool			m_weird;		///< boolean to enable a new type of marble(please look at the TextureMarble.cpp)
 	};
 }

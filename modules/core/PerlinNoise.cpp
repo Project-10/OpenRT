@@ -93,13 +93,13 @@ namespace rt{
 		return std::lerp(e, f, w);
 	}
 
-	float CPerlinNoise::turbulence(const Point3f& p, int octaves, float f, float amplitude, float lacunarity, float persistence) const
+	float CPerlinNoise::eval_fbm(const Point3f& p, float amplitude, float frequency, size_t numOctaves, float gain, float lacunarity) const
 	{
 		float res = 0;
-		for (int i = 1; i <= octaves; i++) {
-			res += amplitude * eval(f * p);
-			amplitude *= persistence;
-			f *= lacunarity;
+		for (size_t i = 0; i < numOctaves; i++) {
+			res += amplitude * eval(frequency * p);
+			frequency *= lacunarity;
+			amplitude *= gain;
 		}
 		return res;
 	}
