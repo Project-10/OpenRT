@@ -7,11 +7,14 @@ namespace rt{
 	{
 		Vec3f hitPoint = ray.hit->wcs2ocs(ray.hitPoint());			// Hitpoint in OCS
 
-		const Vec3f period = m_period * Vec3f(1, 1, 0);				// Orintation of the rings
+		const Vec3f dir = Vec3f(1, 1, 0);							// Orintation of the rings
+		const Vec3f proj = hitPoint.mul(dir);						// Projection of the hitpoint to the directional vector
 		
 		// Difference between point and center of the shape
-		float value = static_cast<float>(norm(hitPoint.mul(period)));
+		float value = m_period * static_cast<float>(norm(proj));
 
-		return static_cast<int>(value) % 2 == 0 ? RGB(255, 0, 0) : RGB(255, 255, 255);
+		value = 0.5f * (1 + sinf(value));
+		
+		return m_gradient.getColor(value);
 	}
 }
