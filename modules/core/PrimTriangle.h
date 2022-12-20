@@ -44,7 +44,7 @@ namespace rt {
 		{}
 		/**
 		 * @brief Constructor with origin
-		 * @detail This constructor is used by solids, when many triangles share the same origin
+		 * @details This constructor is used by solids, when many triangles share the same origin
 		 * @param pShader Pointer to the shader to be applied for the prim
 		 * @param origin The pivot point (origin) of the triangle (or solid)
 		 * @param a Position of the first vertex

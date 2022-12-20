@@ -9,25 +9,35 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 
 	// Gradient for texture
 	CGradient gradient({{0.0f, RGB(255, 255, 255)}, {0.5f, RGB(255, 255, 255)}, {0.501f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
+	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
+	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
+	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
+	gradientMarble.addColor(0.66f, RGB(103, 152, 176));
+	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
+	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
+	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
 	
 	// Textures
 	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
-	//auto pTextureRings = std::make_shared<CTextureRings>(1);
+	auto pTextureRings	 = std::make_shared<CTextureRings>(gradient, 1);
+	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
 
 	// Shaders
-	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
 	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderRings	= std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
 	
 	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
-	pScene->add(CSolidBox(pShaderStripes, Vec3f(0, 5, 0), 5));
-	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5));
-	CSolid teapot(pShaderStripes, dataPath + "Stanford Dragon.obj");
+	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
+	//pScene->add(CSolidSphere(pShaderRings, Vec3f(0, 5, 0), 5));
+	CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
 
 	// Transformation
 	CTransform t;
-	teapot.transform(t.scale(2.0f).get());
-	//pScene->add(teapot);
+	teapot.transform(t.scale(1.5f).get());
+	pScene->add(teapot);
 
 	// Light
 	const float	intensity = 3e3;
@@ -43,41 +53,7 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 
 
 	// Cameras
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 33, 50), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f));
-
-	return pScene;
-}
-
-std::shared_ptr<CScene> buildSceneRings(const Vec3f& bgColor, const Size resolution) {
-	const float		intensity = 5000;
-	auto pScene = std::make_shared<CScene>(bgColor);
-
-	//textures
-	auto pTextureRings = std::make_shared<CTextureRings>(1.5f);
-
-	//Shaders
-	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-
-	//Geometries
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
-	CSolid teapot(pShaderRings, dataPath + "teapot.obj");
-
-	//Transformation
-	CTransform t;
-	teapot.transform(t.scale(5.0f).get());
-	pScene->add(teapot);
-
-	//Light
-	auto pLightPoint = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10));
-	auto pLightSpot = std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(20, 100, -10), Vec3f(0, 0, 0), 15.0f, 30.0f);
-	if (false) pScene->add(pLightPoint);
-	else pScene->add(pLightSpot);
-
-
-	//Cameras
-	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-15, 30, 40), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
-	pScene->add(pCamera);
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 33, 50), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 30.0f));
 
 	return pScene;
 }
@@ -89,8 +65,8 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 
 	// --- Materials ---
 	// Rings shader
-	auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
-	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
+	//auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
+	//auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
@@ -111,7 +87,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 
 	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
-	pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
+	//pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
 
 	auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
@@ -192,7 +168,7 @@ int main()
 
 	pScene->buildAccelStructure(20, 3);
 	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(1, false, false));
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
 	Timer::stop();
 	imshow("Image", img);
 	//-imwrite("D:\\renders\\procedural marble.png", img);
