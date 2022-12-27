@@ -21,28 +21,31 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
 	auto pTextureRings	 = std::make_shared<CTextureRings>(gradient, 1);
 	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture		 = std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// Shaders
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 4.0f, 320.0f);
 	auto pShaderRings	= std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
 	auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 0.1f, 0.9f, 2.0f, 320.0f);
 	
 	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
-	//pScene->add(CSolidSphere(pShaderRings, Vec3f(0, 5, 0), 5));
-	CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
+	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
+	pScene->add(std::make_shared<CPrimDisc>(pShader, Vec3f(0, 5, 0), normalize(Vec3f(0, 1, 0.7f)), 7.5f, 2.5f));
+	//CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
 
 	// Transformation
 	CTransform t;
-	teapot.transform(t.scale(1.5f).get());
-	pScene->add(teapot);
+	//teapot.transform(t.scale(1.5f).get());
+	//pScene->add(teapot);
 
 	// Light
-	const float	intensity = 3e3;
+	const float	intensity = 5e3;
 	const float radius = 66;
-	const float alpha = 8;
+	const float alpha = 6;
 	if (false) {
 		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10)));
 	} else {
@@ -124,7 +127,7 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
 	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
-	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.2f, 10, 0.5f, 2.0f);
+	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 2021, 0, 1.5f, 0.2f, 10, 0.5f, 2.0f);
 	CGradient gradientRedWhite({{0.0f, RGB(255, 255, 255)}, {1.0f, RGB(255, 0, 0)} });
 //	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientRedWhite, 2022, 0, 3.0f, 0.2f, 10, 0.5f, 2.0f);
 
@@ -161,18 +164,78 @@ int main()
 	const Vec3f		bgColor = RGB(12, 12, 12);
 	const Size		resolution = Size(800, 600);
 	
-	auto pScene = buildSceneStripes(bgColor, resolution);
-//	auto pScene = buildSceneRings(bgColor, resolution);
+	//auto pScene = buildSceneStripes(bgColor, resolution);
 	// auto pScene = buildSceneTemplates(bgColor, resolution);
-	// auto pScene = buildSceneMarble(bgColor, resolution);
+	//auto pScene = buildSceneMarble(bgColor, resolution);
 
-	pScene->buildAccelStructure(20, 3);
-	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
-	Timer::stop();
-	imshow("Image", img);
-	//-imwrite("D:\\renders\\procedural marble.png", img);
-	waitKey();
-	 
+
+	auto pScene = std::make_shared<CScene>(bgColor);
+
+	// Gradient for texture
+	CGradient gradient({ {0.0f, RGB(255, 255, 255)}, {0.5f, RGB(255, 255, 255)}, {0.501f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)} });
+	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
+	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
+	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
+	gradientMarble.addColor(0.66f, RGB(103, 152, 176));
+	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
+	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
+	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+
+	// Textures
+	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureRings = std::make_shared<CTextureRings>(gradient, 1);
+	auto pTextureMarble = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+
+	// Shaders
+	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 4.0f, 320.0f);
+	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 0.1f, 0.9f, 2.0f, 320.0f);
+
+	// Geometries
+	auto pGeom = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.3f, 0), normalize(Vec3f(.0f, 1.0f, .0f)), 7.5f, 0 * 2.5f);
+	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
+	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
+	pScene->add(pGeom);
+	//CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
+
+	// Transformation
+	CTransform t;
+	Mat T = t.rotate(Vec3f(0, 1, 0), 2).scale(1.01f).get();
+	//teapot.transform(t.scale(1.5f).get());
+	//pScene->add(teapot);
+
+	// Light
+	const float	intensity = 5e3;
+	const float radius = 66;
+	const float alpha = 6;
+	if (false) {
+		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10)));
+	}
+	else {
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(radius, 100, 0), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, -sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+	}
+
+
+	// Cameras
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 33, 50), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 30.0f));
+
+
+	for (;;) {
+		pScene->buildAccelStructure(20, 3);
+		Timer::start("Rendering...");
+		Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, false, false));
+		Timer::stop();
+		imshow("Image", img);
+		pGeom->transform(T);
+		//-imwrite("D:\\renders\\procedural marble.png", img);
+		char key = waitKey(1);
+		if (key == 27) break;
+	}
 	return 0;
 }
