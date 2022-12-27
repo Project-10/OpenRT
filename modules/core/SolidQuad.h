@@ -44,7 +44,7 @@ namespace rt {
 			std::optional<Vec3f> na = std::nullopt, std::optional<Vec3f> nb = std::nullopt, std::optional<Vec3f> nc = std::nullopt, std::optional<Vec3f> nd = std::nullopt);
 		/**
 		 * @brief Constructor with origin
-		 * @detail This constructor is used by solids, when many triangles share the same origin
+		 * @details This constructor is used by solids, when many triangles share the same origin
 		 * @param pShader Pointer to the shader to be applied for the solid
 		 * @param origin The pivot point (origin) of the triangle (or solid)
 		 * @param a Position of the first vertex

@@ -4,70 +4,59 @@
 using namespace rt;
 
 std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resolution) {
-	const float		intensity = 5000;
+	
 	auto pScene = std::make_shared<CScene>(bgColor);
 
-	//textures
-	//                                                     (2.0,  6, 0.24, 2.3, 2.5, 0.35 , true)
-	auto pTextureStripes = std::make_shared<CTextureStripes>(5);
+	// Gradient for texture
+	CGradient gradient({{0.0f, RGB(255, 255, 255)}, {0.5f, RGB(255, 255, 255)}, {0.501f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
+	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
+	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
+	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
+	gradientMarble.addColor(0.66f, RGB(103, 152, 176));
+	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
+	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
+	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+	
+	// Textures
+	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureRings	 = std::make_shared<CTextureRings>(gradient, 1);
+	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture		 = std::make_shared<CTexture>(dataPath + "b13.jpg");
 
-	//Shaders
-	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-
-	//Geometries
+	// Shaders
+	auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 4.0f, 320.0f);
+	auto pShaderRings	= std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 0.1f, 0.9f, 2.0f, 320.0f);
+	
+	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
-	CSolid teapot(pShaderStripes, dataPath + "teapot.obj");
+	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
+	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
+	pScene->add(std::make_shared<CPrimDisc>(pShader, Vec3f(0, 5, 0), normalize(Vec3f(0, 1, 0.7f)), 7.5f, 2.5f));
+	//CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
 
-	//Transformation
+	// Transformation
 	CTransform t;
-	teapot.transform(t.scale(5.0f).get());
-	pScene->add(teapot);
+	//teapot.transform(t.scale(1.5f).get());
+	//pScene->add(teapot);
 
-	//Light
-	auto pLightPoint = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10));
-	auto pLightSpot = std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(20, 100, -10), Vec3f(0, 0, 0), 15.0f, 30.0f);
-	if (false) pScene->add(pLightPoint);
-	else pScene->add(pLightSpot);
-
-
-	//Cameras
-	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-15, 30, 40), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
-	pScene->add(pCamera);
-
-	return pScene;
-}
-
-std::shared_ptr<CScene> buildSceneRings(const Vec3f& bgColor, const Size resolution) {
-	const float		intensity = 5000;
-	auto pScene = std::make_shared<CScene>(bgColor);
-
-	//textures
-	auto pTextureRings = std::make_shared<CTextureRings>(1.5f);
-
-	//Shaders
-	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-
-	//Geometries
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
-	CSolid teapot(pShaderRings, dataPath + "teapot.obj");
-
-	//Transformation
-	CTransform t;
-	teapot.transform(t.scale(5.0f).get());
-	pScene->add(teapot);
-
-	//Light
-	auto pLightPoint = std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10));
-	auto pLightSpot = std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(20, 100, -10), Vec3f(0, 0, 0), 15.0f, 30.0f);
-	if (false) pScene->add(pLightPoint);
-	else pScene->add(pLightSpot);
+	// Light
+	const float	intensity = 5e3;
+	const float radius = 66;
+	const float alpha = 6;
+	if (false) {
+		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10)));
+	} else {
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(radius, 100, 0), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius/2, 100, sqrtf(3) * radius/2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius/2, 100, -sqrtf(3) * radius/2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+	}
 
 
-	//Cameras
-	auto pCamera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-15, 30, 40), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
-	pScene->add(pCamera);
+	// Cameras
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 33, 50), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 30.0f));
 
 	return pScene;
 }
@@ -79,13 +68,13 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 
 	// --- Materials ---
 	// Rings shader
-	auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
-	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
+	//auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
+	//auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
-	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 2022, 12.0f);
+	auto pTextureWood = std::make_shared<CTextureWood>(gradientWood, 2022, 12.0f, 2.5f, 1.5f);
 	auto pShaderWood = std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Marble shader
@@ -96,37 +85,19 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	// other shaders
 	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.5f, 0.5f, 0.0f, 40.0f);
 
-	// Earth shader
-	auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
-	auto pShaderEarth = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.2f, 0.7f, 0.0f, 40.0f);
-
 
 	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 
-	//pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
+	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
-	auto sphere1 = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-4, 1, 0), 1.5f);
-	auto sphere2 = CSolidSphere(pShaderEarth, Vec3f(0, 1, 0), 1.5f);
-	auto sphere3 = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f);
 
-	// Transform
-	CTransform T;
-	Mat rotation = T.rotate(Vec3f(0, 1, 0), 15).get();
+	auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
+	auto primSphere = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(3, 1, 0), 1.5f);
 
-	sphere1->transform(rotation);
-	sphere2.transform(rotation);
-	sphere3->transform(rotation);
-
-	//auto solidSphere = CSolidSphere(pShaderWood, Vec3f(0, 0.5f, 3), 2, 32);
-	//auto primSphere = std::make_shared<CPrimSphere>(pShaderWood, Vec3f(3, 1, 0), 1.5f);
-	//primSphere->transform(T.rotate(Vec3f(0, 1, 0), -90).scale(2).get());
-	//
-	//pScene->add(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(0, 0, 0), 1.5f));
-	pScene->add(sphere1);
-	pScene->add(sphere2);
-	pScene->add(sphere3);
+	//	pScene->add(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(0, 0, 0), 1.5f));
+	pScene->add(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
 
 	//Light
 	if (true) {
@@ -143,8 +114,7 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	return pScene;
 }
 
-std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resolution)
-{
+std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resolution) {
 	auto pScene = std::make_shared<CScene>(bgColor);
 
 	Mat diff = imread(dataPath + "lroc_color_poles.tif");
@@ -189,98 +159,129 @@ std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resoluti
 //waitKey();
 //return 0;
 
-// --- The Moon ---
-//const Vec3f		bgColor = RGB(0, 0, 0);
-//const Size		resolution = Size(1280, 720);
-//
-//auto pScene = std::make_shared<CScene>(bgColor);
-//
-//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 160);
-//Mat diff = imread(dataPath + "lroc_color_poles.tif");
-//Mat bump = imread(dataPath + "ldem_64.tif");
-//
-//resize(diff, diff, Size(4000, 2000), 0, 0, INTER_AREA);
-//resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
-//
-//pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
-//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
-//pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg"));
-//pShader->setBumpMap(std::make_shared<CTexture>(bump));
-//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
-//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "ldem_64.tif"));
-//
-//auto sphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
-//auto sphere = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 0, 0), Vec3f(-1, 0, 0), 1.7374f);
-//pScene->add(sphere);
-//
-//auto sun = std::make_shared<CLightOmni>(Vec3f::all(20e15), Vec3f(-150e6 * cosf(Pif * 60 / 180), 0, -150e6 * sinf(Pif * 60 / 180)), true);
-//pScene->add(sun);
-//
-//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
+
+std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolution) {
+	auto pScene = std::make_shared<CScene>(bgColor);
+
+	// Texture
+	// auto pTextureMarble = std::make_shared<CTexture>(dataPath + "marble-light.jpg");
+	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
+	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
+	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
+	gradientMarble.addColor(0.66f, RGB(103, 152, 176));
+	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
+	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
+	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 2021, 0, 1.5f, 0.2f, 10, 0.5f, 2.0f);
+	CGradient gradientRedWhite({{0.0f, RGB(255, 255, 255)}, {1.0f, RGB(255, 0, 0)} });
+	// auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientRedWhite, 2022, 0, 3.0f, 0.2f, 10, 0.5f, 2.0f);
+
+
+	// Shader
+	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
+	auto pShaderFloor	= std::make_shared<CShaderBlinn>(*pScene, RGB(120, 120, 120), 0.1f, 0.9f, 0, 0);
+	//auto pShaderMarble	= std::make_shared<CShaderGeneral>(*pScene, pTextureMarble, 0.1f, 0.9f, 0, 0, 0.2f, 0, 1);
+	auto pShaderMarble1	= std::make_shared<CShaderGeneral>(*pScene, pTextureMarble1, 0.1f, 0.9f, 0, 0, 0.2f, 0, 1);
+
+	// Geometry
+	pScene->add(std::make_shared<CPrimDisc>(pShaderWhite, Vec3f(0, 5.1f, 0), Vec3f(0, -1, 0), 1));
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
+	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 100));
+
+	//pScene->add(CSolidSphere(pShaderMarble, Vec3f(0, 1.3f, 0), 1, 64));
+	pScene->add(std::make_shared<CPrimSphere>(pShaderMarble1, Vec3f(0, 1.3f, 0), 1));
+
+	// Light
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(9), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4, true, true)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(9), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4, true, true)));
+
+	// Camera
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 1.5f, -3), Vec3f(0, 1.2f, 0), Vec3f(0, 1, 0), 60));
+
+	return pScene;
+}
 
 
 int main()
 {
-	const Vec3f		bgColor = RGB(0, 0, 0);
-	const Size		resolution = Size(1280, 720);
-	//auto pScene = buildSceneTemplates(bgColor, resolution);
-	//auto pSceneStripes = buildSceneStripes(bgColor, resolution);
-	//auto pSceneRings = buildSceneRings(bgColor, resolution);
-	auto pScene = buildSceneMoon(bgColor, resolution);
-	pScene->buildAccelStructure(20, 1);
-
-	//auto pScene = std::make_shared<CScene>(bgColor);
-
-	//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 160);
-	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
-	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg"));
-	////Mat diff = imread(dataPath + "lroc_color_poles.tif");
-	////Mat diff = imread(dataPath + "lroc_color_poles.tif");
-	////Mat diff = imread(dataPath + "A.png");
-	////Mat bump = imread(dataPath + "ldem_64.tif");
-	//
-	////resize(diff, diff, Size(100, 100), 0, 0, INTER_NEAREST);
-	////resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
-
-	////pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
-	////pShader->setDiffuseColor(std::make_shared<CTexture>(dataPath + "A.png"));
-	////pShader->setBumpMap(std::make_shared<CTexture>(bump));
-	//
-	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "A.png"), 0.5f);
-	////pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "ldem_64.tif"));
-
-	//pScene->add(std::make_shared<CPrimPlane>(pShader, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
-	////auto sphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
-	//auto sphere = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.0f, 0), Vec3f(-1, 0, 0), 1.0f);
-	//pScene->add(sphere);
-
-
-	//pScene->add(std::make_shared<CLightOmni>(Vec3f(1e1, 0, 0), Vec3f(5, 5, 0), true));
-	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e1), Vec3f(-5, 5, 0), true));
-	//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-5, 4, -5), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 30.0f));
-
-	//CTransform T;
-	//Mat t = T.rotate(Vec3f(0, 1, 0), 3.0f).get();
-
+	const Vec3f		bgColor = RGB(12, 12, 12);
+	const Size		resolution = Size(800, 600);
 	
-	//float alpha = -90;
-	//VideoWriter videoWriter;
-	//auto codec = VideoWriter::fourcc('M', 'J', 'P', 'G');		// Native windows codec
-	//videoWriter.open("D:\\Renders\\moon.avi", codec, 60, resolution);
-	//if (!videoWriter.isOpened()) printf("ERROR: Can't open vide file for writing\n");
-	for (; ; ) {
-		//sun->setOrigin(Vec3f(-150e6 * cosf(Pif * alpha / 180), 0, -150e6 * sinf(Pif * alpha / 180)));
-		//alpha += 1.0f;
+	//auto pScene = buildSceneStripes(bgColor, resolution);
+	// auto pScene = buildSceneTemplates(bgColor, resolution);
+	//auto pScene = buildSceneMarble(bgColor, resolution);
 
+
+	auto pScene = std::make_shared<CScene>(bgColor);
+
+	// Gradient for texture
+	CGradient gradient({ {0.0f, RGB(255, 255, 255)}, {0.5f, RGB(255, 255, 255)}, {0.501f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)} });
+	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
+	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
+	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
+	gradientMarble.addColor(0.66f, RGB(103, 152, 176));
+	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
+	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
+	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+
+	// Textures
+	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureRings = std::make_shared<CTextureRings>(gradient, 1);
+	auto pTextureMarble = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+
+	// Shaders
+	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.1f, 0.9f, 4.0f, 320.0f);
+	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 0.1f, 0.9f, 2.0f, 320.0f);
+
+	// Geometries
+	auto pGeom = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.3f, 0), normalize(Vec3f(.0f, 1.0f, .0f)), 7.5f, 0 * 2.5f);
+	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
+	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
+	pScene->add(pGeom);
+	//CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
+
+	// Transformation
+	CTransform t;
+	Mat T = t.rotate(Vec3f(0, 1, 0), 2).scale(1.01f).get();
+	//teapot.transform(t.scale(1.5f).get());
+	//pScene->add(teapot);
+
+	// Light
+	const float	intensity = 5e3;
+	const float radius = 66;
+	const float alpha = 6;
+	if (false) {
+		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, -10)));
+	}
+	else {
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(radius, 100, 0), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, -sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+	}
+
+
+	// Cameras
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 33, 50), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 30.0f));
+
+
+	for (;;) {
+		pScene->buildAccelStructure(20, 3);
 		Timer::start("Rendering...");
-		Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, false, false));
+		Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, false, false));
 		Timer::stop();
-		//sphere->transform(t);
-		//videoWriter << img;
 		imshow("Image", img);
-		//imwrite("D:\\renders\\moon.png", img);
+		pGeom->transform(T);
+		//-imwrite("D:\\renders\\procedural marble.png", img);
 		char key = waitKey(1);
 		if (key == 27) break;
 	}
-    return 0;
+	return 0;
 }

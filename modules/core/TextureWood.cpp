@@ -4,28 +4,25 @@
 #include "Ray.h"
 
 namespace rt {
-	// Constructor
-	CTextureWood::CTextureWood(const CGradient& gradient, unsigned int seed, float period, float alpha_lf, float alpha_hf)
-		: m_gradient(gradient)
-		, m_noise(seed)
-		, m_period(period * Vec3f(1.0f, 1.0f, 0.0f))		// This is an orientation vector - defyning corcles in direction of Z-axis.
-		, m_period_lf(period * Vec3f(0.2f, 0.2f, 0.01f))
-		, m_alpha_lf(alpha_lf)
-		, m_period_hf(period * Vec3f(1.0f, 1.0f, 0.05f))
-		, m_alpha_hf(alpha_hf)
-	{}
-	
 	Vec3f CTextureWood::getTexel(const Ray& ray) const
 	{
-		Vec3f uvw = ray.hit->wcs2ocs(ray.hitPoint());					// Hitpoint in OCS
+		Vec3f hitPoint = ray.hit->wcs2ocs(ray.hitPoint());			// Hitpoint in OCS
 		
-		//float noise0 = (1 + m_noise.eval(0.45f * uvw)) / 2;
-		float noise_lf = 1 + m_noise.eval(uvw.mul(m_period_lf));		// This noise function call puts noise on the rings to give wood the natural felling
-		float noise_hf = 1 + m_noise.eval(uvw.mul(m_period_hf));		// This noise function call gives wood roughness to texture
+		const Vec3f period = m_period * Vec3f(1, 1, 0);				// Orintation of the rings
 
-		// Rings texture distorted (with added) noise
-		float value =  static_cast<float>(norm(uvw.mul(m_period))) + m_alpha_lf * noise_lf + m_alpha_hf * noise_hf;
+		// Difference between point and center of the shape
+		float value = static_cast<float>(norm(hitPoint.mul(period)));
+		
+		float amplitude = m_amplitude;
+		float frequency = m_frequency;
+		// Fractional Brownian Motion function
+		for (size_t i = 0; i < 2; i++) {
+			value += amplitude * (1.0f + m_noise.eval(hitPoint.mul(frequency * Vec3f(1.0f, 1.0f, 0.05f))));
+			amplitude *= 0.5f;
+			frequency *= 2.0f;
+		}
 
-		return m_gradient.getColor(fmodf(value, 1));
+		value = fmodf(value, 1.0f);
+		return m_gradient.getColor(value);
 	}
 }

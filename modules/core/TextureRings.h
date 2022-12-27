@@ -1,7 +1,8 @@
 //  Created by Mahmoud El Bergui on 18.04.22.
 #pragma once
 
-#include"Texture.h"
+#include "Texture.h"
+#include "Gradient.h"
 
 namespace rt {
 	/**
@@ -14,15 +15,18 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
+		 * @ingroup moduleTexture
+		 * @param gradient Texture color
 		 * @param period The number of rings per 1 unit of WCS
 		 */
-		DllExport CTextureRings(float period) : m_period(period) {}
+		DllExport CTextureRings(const CGradient& gradient, float period) : m_gradient(gradient), m_period(period) {}
 		DllExport virtual ~CTextureRings(void) = default;
     
 		DllExport Vec3f	getTexel(const Ray& ray) const override;
 
 
 	private:
-		float m_period;		///< The number of rings per 1 unit of WCS
+		CGradient	m_gradient;		///< The color gradient for the wood
+		float 		m_period;		///< The number of rings per 1 unit of WCS
 	};
 }
