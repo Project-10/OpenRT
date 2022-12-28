@@ -167,13 +167,7 @@ namespace rt {
 	{ 
 		if (intersect(ray))				return ray.hit->getShader()->shade(ray);
 		if (!m_bgMap)					return m_bgColor;
-		if (!m_bgMap->isProcedural())	return m_bgMap->getTexel(ray.ndc);
-
-		Vec3f uvw;
-		uvw[0] = 2 * ray.ndc[0] - 1;
-		uvw[1] = 2 * ray.ndc[1] - 1;
-		uvw[2] = 0;
-		return m_bgMap->getTexel(uvw);
+		return m_bgMap->getTexel(ray);
 	}
 
 	double CScene::rayTraceDepth(Ray& ray) const 

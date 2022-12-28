@@ -24,7 +24,7 @@ namespace rt{
 
 	Vec3f CTexture::getTexel(const Ray& ray) const
 	{
-		Vec2f uv = ray.hit->getTextureCoords(ray);
+		Vec2f uv = ray.hit ? ray.hit->getTextureCoords(ray) : ray.ndc;
 
 		float u = fmodf(uv[0], 1);
 		float v = fmodf(uv[1], 1);
