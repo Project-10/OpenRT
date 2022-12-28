@@ -6,8 +6,8 @@ namespace rt{
 	Vec3f CTextureStripes::getTexel(const Ray& ray) const
 	{
 		Vec3f hitPoint = ray.hit
-			? ray.hit->wcs2ocs(ray.hitPoint())
-			: Vec3f(2 * ray.ndc[0] - 1, 2 * ray.ndc[1] - 1, 0);			// Hitpoint in OCS
+			? ray.hit->wcs2ocs(ray.hitPoint())						// Hitpoint in OCS
+			: Vec3f(2 * ray.ndc[0] - 1, 2 * ray.ndc[1] - 1, 0);		// or NDC for background
 		
 		// Full form
 		const Vec3f dir = normalize(Vec3f(1, 0, 0));					// Orintation of the stripes

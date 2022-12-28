@@ -168,20 +168,18 @@ namespace rt {
 		
 		
 	private:
-		const Vec3f						m_bgColor		= Vec3f::all(0);	///< background color
-		const Vec3f						m_ambientColor	= Vec3f::all(1);	///< ambient color
-
-		const ptr_texture_t				m_bgMap			= nullptr;			///< background texture map
-
-		std::vector<ptr_prim_t> 		m_vpPrims;							///< Primitives
-		std::vector<ptr_light_t>		m_vpLights;							///< Lights
-		std::vector<ptr_camera_t>		m_vpCameras;						///< Cameras
-		size_t							m_activeCamera	= 0;				///< The index of the active camera
-#ifdef ENABLE_BSP		
-		std::unique_ptr<CBSPTree>		m_pBSPTree		= nullptr;			///< Pointer to the acceleration structure
+		const Vec3f					m_bgColor		= Vec3f::all(0);		///< background color
+		const Vec3f					m_ambientColor	= Vec3f::all(1);		///< ambient color
+		const ptr_texture_t			m_bgMap			= nullptr;				///< background texture map
+		std::vector<ptr_prim_t>		m_vpPrims;								///< Primitives
+		std::vector<ptr_light_t>	m_vpLights;								///< Lights
+		std::vector<ptr_camera_t>	m_vpCameras;							///< Cameras
+		size_t						m_activeCamera	= 0;					///< The index of the active camera
+#ifdef ENABLE_BSP
+		std::unique_ptr<CBSPTree>	m_pBSPTree		= nullptr;				///< Pointer to the acceleration structure
 #endif
 #ifdef ENABLE_CACHE
-		const std::string m_lriFileName = "last_render.png";				///< Last rendered image filename
+		const std::string			m_lriFileName	= "last_render.png";	///< Last rendered image filename
 #endif
 	};
 }
