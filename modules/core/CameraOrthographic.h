@@ -38,7 +38,10 @@ namespace rt {
 		DllExport virtual ~CCameraOrthographic(void) = default;
 		
 		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
-		
+		DllExport virtual Vec3f	getXAxis(void) const override { return m_xAxis; }
+		DllExport virtual Vec3f	getYAxis(void) const override { return m_yAxis; }
+		DllExport virtual Vec3f	getZAxis(void) const override { return m_zAxis; }
+
 		/**
 		 * @brief Sets new camera position
 		 * @param pos Camera origin (center of projection)

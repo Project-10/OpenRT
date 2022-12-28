@@ -22,14 +22,8 @@ namespace rt {
 
 	Vec2f CPrimPlane::getTextureCoords(const Ray& ray) const
 	{
-		Vec3f mu, mv; // Together with the normal these vectors should build an object coordinate system
-		if (m_normal[1] < 1.0f) mu = normalize(m_normal.cross(Vec3f(0, 1, 0)));	// assuming up-vector to be Y-direction in WCS
-		else mu = normalize(m_normal.cross(Vec3f(1, 0, 0)));
-		mv = m_normal.cross(mu);
-		
-		Vec3f hit = ray.hitPoint();
-		Vec3f h = hit - getOrigin();
-		Vec2f res = norm(h) > Epsilon ? Vec2f(h.dot(mu), h.dot(mv)) : Vec2f(0, 0);
+		Vec3f hit = wcs2ocs(ray.hitPoint());
+		Vec2f res = norm(hit) > Epsilon ? Vec2f(hit.dot(m_u), hit.dot(m_v)) : Vec2f(0, 0);
 	
 		return res;
 	}

@@ -1,16 +1,19 @@
 #include "TextureStripes.h"
+#include "Ray.h"
 
 namespace rt{
 	/// @todo Play with the direction of the stripes
-	Vec3f CTextureStripes::getTexel(const Vec3f& uvw) const
+	Vec3f CTextureStripes::getTexel(const Ray& ray) const
 	{
+		Vec3f hitPoint = ray.hit->wcs2ocs(ray.hitPoint());				// Hitpoint in OCS
+		
 		// Full form
-		//const Vec3f period = m_period * Vec3f(1, 0, 0); // orintation of the stripes
-		//float value = static_cast<float>(sum(uvw.mul(period))[0]);
+		const Vec3f dir = normalize(Vec3f(1, 0, 0));					// Orintation of the stripes
+		const Vec3f proj = hitPoint.mul(dir);							// Projection of the hitpoint to the directional vector
+		
+		float value = m_period * static_cast<float>(sum(proj)[0]);
 
-		float value = m_period * uvw[2];	// Short form
-		if (value < 0) value -= 1;			// Making stripes to be odd function (0.1 -> even, -0.1 -> odd)
-
-		return static_cast<int>(value) % 2 == 0 ? RGB(255, 0, 0) : RGB(255, 255, 255);
+		value = 0.5f * (1 + sinf(value * Pif));
+		return m_gradient.getColor(value);
 	}
 }

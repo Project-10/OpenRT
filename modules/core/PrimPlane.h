@@ -23,9 +23,10 @@ namespace rt {
 		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
 			: CPrim(pShader, origin)
 			, m_normal(normal)
-		{
-			normalize(m_normal);
-		}
+			, m_u(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
+			, m_v(m_u.cross(normal))
+		{}
+          
 		DllExport virtual ~CPrimPlane(void) = default;
 
 		DllExport virtual bool 			intersect(Ray& ray) const override;
@@ -40,6 +41,9 @@ namespace rt {
 		
 
 	private:
-		Vec3f m_normal;	///< Normal to the plane
+		Vec3f m_normal;		///< Normal to the plane
+
+		const Vec3f m_u;	///< Vector orthogonal to the normal and \b m_v (used for texturing)
+		const Vec3f m_v;	///< Vector orthogonal to the normal and \b m_u (used for texturing)
 	};
 }

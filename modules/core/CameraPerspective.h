@@ -38,6 +38,9 @@ namespace rt {
 		DllExport virtual ~CCameraPerspective(void) = default;
 
 		DllExport virtual void	InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+		DllExport virtual Vec3f	getXAxis(void) const override { return m_xAxis; }
+		DllExport virtual Vec3f	getYAxis(void) const override { return m_yAxis; }
+		DllExport virtual Vec3f	getZAxis(void) const override { return m_zAxis; }
 
 		/**
 		 * @brief Sets new camera position
@@ -86,21 +89,6 @@ namespace rt {
 		 * @return The camera opening angle
 		 */
 		DllExport float			getAngle(void) const { return 360 * atanf(1.0f / m_focus) / Pif; }
-		/**
-		 * @brief Returns the camera's x-axis
-		 * @return The camra x-axis in WCS
-		 */
-		DllExport Vec3f			getXAxis(void) const { return m_xAxis; }
-		/**
-		 * @brief Returns the camera's y-axis
-		 * @return The camra y-axis in WCS
-		 */
-		DllExport Vec3f			getYAxis(void) const { return m_yAxis; }
-		/**
-		 * @brief Returns the camera's z-axis
-		 * @return The camra z-axis in WCS
-		 */
-		DllExport Vec3f			getZAxis(void) const { return m_zAxis; }
 
 
 	private:
@@ -116,4 +104,6 @@ namespace rt {
 		Vec3f m_yAxis;						///< Camera y-axis in WCS
 		Vec3f m_zAxis;						///< Camera z-axis in WCS
 	};
+
+	using ptr_camera_t = std::shared_ptr<ICamera>;
 }

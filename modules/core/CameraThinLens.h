@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CameraPerspective.h"
+#include "ICamera.h"
 
 namespace rt {
 	// ================================ Perspective Thin Lens Camera Class ================================
@@ -9,22 +9,19 @@ namespace rt {
 	 * @ingroup moduleCamera
 	 * @author Yonatan G. Mamo, y.mamo@jacobs-university.de
 	 */
-	class CCameraThinLens : public CCameraPerspective
+	class CCameraThinLens : public ICamera
 	{
 	public:
 		/**
 		 * @brief Constructor
-		 * @param resolution The image resolution
-		 * @param pos Camera origin (center of projection)
-		 * @param target The target point
-		 * @param up Camera up-vector
-		 * @param angle (Vertical) full opening angle of the viewing frustum (in degrees)
+		 * @param pCamera Pointer to the base camera
 		 * @param lensRadius The radius of the lense 
 		 * @param focalDistance distance from Camera origin to the focal plane 
 		 * @param nBlades number of aperture blades of the camera
 		 */
-		DllExport CCameraThinLens(Size resolution, const Vec3f& pos, const Vec3f& dir, const Vec3f& up, float angle, float lensRadius = 0, float focalDistance = 10, int nBlades = 0)
-			: CCameraPerspective(resolution, pos, dir, up, angle)
+		DllExport CCameraThinLens(const ptr_camera_t pCamera, float lensRadius = 0, float focalDistance = 10, int nBlades = 0)
+			: ICamera(pCamera->getResolution())
+			, m_pCamera(pCamera)
 			, m_lensRadius(lensRadius)
 			, m_focalDistance(focalDistance)
 			, m_nBlades(nBlades)
@@ -32,11 +29,15 @@ namespace rt {
 		DllExport virtual ~CCameraThinLens(void) = default;
 			
 		DllExport void InitRay(Ray& ray, int x, int y, const Vec2f& sample = Vec2f::all(0.5f)) override;
+		DllExport virtual Vec3f	getXAxis(void) const override { return m_pCamera->getXAxis(); }
+		DllExport virtual Vec3f	getYAxis(void) const override { return m_pCamera->getYAxis(); }
+		DllExport virtual Vec3f	getZAxis(void) const override { return m_pCamera->getZAxis(); }
 
 
 	private:
-		const float m_lensRadius;		///< The radius of the lense 
-		const float m_focalDistance;	///< The distance from Camera origin to the focal plane 
-		const int	m_nBlades;			///< Number of aperture blades of the camera
+		const ptr_camera_t	m_pCamera;			///< Pointer to the base camera
+		const float			m_lensRadius;		///< The radius of the lense 
+		const float			m_focalDistance;	///< The distance from Camera origin to the focal plane 
+		const int			m_nBlades;			///< Number of aperture blades of the camera
 	};
 }

@@ -7,36 +7,50 @@
 namespace rt{
 	/**
 	 * @brief Perlin Noise class
-	 * @details Reference: https://cs.nyu.edu/~perlin/noise/
 	 * @author Mahmoud El Bergui, m.elbergui@jacobs-university.de
 	 */
 	class CPerlinNoise {
 	public:
-		DllExport CPerlinNoise(void) = default;
+		/**
+		* @brief Constructor
+		* @param seed The seed for the random number generator, which modulates the resulting noise
+		*/
+		DllExport CPerlinNoise(unsigned int seed);
 		DllExport ~CPerlinNoise(void) = default;
      
 		/**  
 		 * @brief Generate 3D noise
+		 * @details Reference: <a href="https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2/perlin-noise" target="_blank">Perlin Noise: Part 2</a>.
 		 * @param p Coordinate of 3d point value
 		 * @return A pseudo-random value in range [-1; 1]
 		 */
-		DllExport static float noise(const Point3f& p);
-     
+		DllExport float eval(const Point3f& p) const;
+		/**
+		 * @brief Fractional Brownian Motion (FBM) noise turbulence function
+		 * @details This method calculates a superposition of the Perlin noise functions as follows: \f[ \sum^{N-1}_{i=0} A\cdot gain^i \cdot\mathcal{N}(frequency\cdot lacunarity^i \cdot p)  \f]
+		 * By other words, this method layers Perlin noise into something like FBM. 
+		 * If called as CPerlinNoise::eval_fbm(\p p, \p 1, \p 1, \p 1) this method is equvalent to method CPerlinNoise::eval(\p p).
+		 * @see <a href="https://thebookofshaders.com/13" target="_blank">Fractal Brownian Motion</a>.
+		 * @param p Coordinate of 3d point value.
+		 * @param amplitude Amplitude of the noise (\f$A\f$).
+		 * @param frequency The frequency determines a scaling value to be applied to point \p p before calling the noise function.
+		 * @param numOctaves The number of octaves (\f$N\f$) determines how many times the noise function is called. If \p numOctaves = \b 0, the result of this method will be zero as well.
+		 * @param gain Gain is a value in the range (0; 1) that controls how quickly the later octaves "die out". Something around \b 0.5 is pretty conventional here.
+		 * @param lacunarity Lacunarity is a value greater than 1 that controls how much finer a scale each subsequent octave should use. Something around \b 2.0 is a conventional choice.
+		 * @return A pseudo-random value
+		 */
+		DllExport float eval_fbm(const Point3f& p, float amplitude, float frequency, size_t numOctaves, float gain = 0.5f, float lacunarity = 2.0f) const;
+
     
 	private:
-		inline static std::vector<int> m_p = {
-			151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
-			8,99,37,240,21,10,23,190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,
-			35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,
-			134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,
-			55,46,245,40,244,102,143,54, 65,25,63,161,1,216,80,73,209,76,132,187,208, 89,
-			18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,
-			250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,
-			189,28,42,223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167,
-			43,172,9,129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,
-			97,228,251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,
-			107,49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
-			138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
-		};	///< The permutation vector
+		/**
+		* @brief Hash function, which returns a value from permutation vector based on arguments
+		*/
+		unsigned int hash(int x, int y, int z) const;
+
+
+	private:
+		std::array<Vec3f, 256>			m_aGradients;			///< The array of gradients
+		std::array<unsigned int, 256>	m_aPermutationVector;	///< The permutation vector
 	};
 }
