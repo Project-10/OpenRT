@@ -14,7 +14,7 @@ namespace rt
 	{
 		Vec3f n = ray.hit->getNormal(ray);
 		
-		Ray I(ray.hitPoint(), ray.dir, ray.counter);
+		Ray I(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
 		Vec3f res = I.reTrace(m_scene);
 		
 		//if (ray.dir.dot(n) < 0) { // entering the surface

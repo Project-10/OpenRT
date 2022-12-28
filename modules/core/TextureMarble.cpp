@@ -7,7 +7,9 @@
 namespace rt{
 	Vec3f CTextureMarble::getTexel(const Ray& ray) const
 	{
-		Vec3f hitPoint = ray.hit->wcs2ocs(ray.hitPoint());	// hitpoint in OCS
+		Vec3f hitPoint = ray.hit
+			? ray.hit->wcs2ocs(ray.hitPoint())							// Hitpoint in OCS
+			: Vec3f(2 * ray.ndc[0] - 1, 2 * ray.ndc[1] - 1, 0);			// or NDC for background
 
 		const Vec3f dir = normalize(Vec3f(1, 1, 0));					// orintation of the stripes
 		const Vec3f proj = hitPoint.mul(dir);							// projection of the hitpoint to the directional vector

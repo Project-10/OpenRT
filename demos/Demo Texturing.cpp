@@ -62,7 +62,6 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 }
 
 std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size resolution) {
-
 	const float intensity = 1e4;
 	auto pScene = std::make_shared<CScene>(bgColor);
 
@@ -164,12 +163,10 @@ int main()
 	const Vec3f		bgColor = RGB(12, 12, 12);
 	const Size		resolution = Size(800, 600);
 	
-	//auto pScene = buildSceneStripes(bgColor, resolution);
+	// auto pScene = buildSceneStripes(bgColor, resolution);
 	// auto pScene = buildSceneTemplates(bgColor, resolution);
-	//auto pScene = buildSceneMarble(bgColor, resolution);
+	// auto pScene = buildSceneMarble(bgColor, resolution);
 
-
-	auto pScene = std::make_shared<CScene>(bgColor);
 
 	// Gradient for texture
 	CGradient gradient({ {0.0f, RGB(255, 255, 255)}, {0.5f, RGB(255, 255, 255)}, {0.501f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)} });
@@ -180,12 +177,16 @@ int main()
 	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
 	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 
 	// Textures
-	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
-	auto pTextureRings = std::make_shared<CTextureRings>(gradient, 1);
-	auto pTextureMarble = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
-	auto pTexture = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+	auto pTextureStripes	= std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureRings		= std::make_shared<CTextureRings>(gradient, 5);
+	auto pTextureWood		= std::make_shared<CTextureWood>(gradientWood, 2022, 5, 0, 0);
+	auto pTextureMarble		= std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture			= std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+
+	auto pScene = std::make_shared<CScene>(pTextureWood);
 
 	// Shaders
 	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
@@ -196,7 +197,7 @@ int main()
 
 	// Geometries
 	auto pGeom = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.3f, 0), normalize(Vec3f(.0f, 1.0f, .0f)), 7.5f, 0 * 2.5f);
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
+	//pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
 	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
 	pScene->add(pGeom);
