@@ -68,8 +68,8 @@ namespace rt {
 		//m_pBumpMap = pBumpMap;
 		Mat a, b;
 
-		Sobel(*pBumpMap, a, CV_32F, 1, 0, 1);
-		Sobel(*pBumpMap, b, CV_32F, 0, 1, 1);
+		Sobel(*pBumpMap, a, CV_32F, 1, 0, 3);
+		Sobel(*pBumpMap, b, CV_32F, 0, 1, 3);
 
 		m_pBumpMap_u = std::make_shared<CTexture>(a);
 		m_pBumpMap_v = std::make_shared<CTexture>(b);
@@ -78,9 +78,8 @@ namespace rt {
 	std::optional<std::pair<float, float>> CShader::getBump(const Ray& ray) const
 	{
 		if (m_pBumpMap_u) {
-			Vec2f uv = ray.hit->getTextureCoords(ray);
-			float du = m_pBumpMap_u->getTexel(uv)[0];
-			float dv = m_pBumpMap_v->getTexel(uv)[0];
+			float du = m_pBumpMap_u->getTexel(ray)[0];
+			float dv = m_pBumpMap_v->getTexel(ray)[0];
 			return std::make_pair(du, dv);
 		} else return std::nullopt;
 		

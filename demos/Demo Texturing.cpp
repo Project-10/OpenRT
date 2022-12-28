@@ -228,10 +228,11 @@ int main()
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
 
 	// Textures
-	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
-	auto pTextureRings = std::make_shared<CTextureRings>(gradient, 1);
-	auto pTextureMarble = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
-	auto pTexture = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+	auto pTextureStripes	= std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureRings		= std::make_shared<CTextureRings>(gradient, 1);
+	auto pTextureMarble		= std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTexture			= std::make_shared<CTexture>(dataPath + "b13.jpg");
+	auto pTextureBump		= std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// Shaders
 	auto pShaderFloor = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
@@ -239,9 +240,10 @@ int main()
 	auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
 	auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
 	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 0.1f, 0.9f, 2.0f, 320.0f);
+	pShader->setBumpMap(pTextureBump, 1.0f);
 
 	// Geometries
-	auto pGeom = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 1.3f, 0), normalize(Vec3f(.0f, 1.0f, .0f)), 7.5f, 0 * 2.5f);
+	auto pGeom = std::make_shared<CPrimDisc>(pShader, Vec3f(0, 5.0f, 0), normalize(Vec3f(.0f, 1.0f, .7f)), 12.5f, 2.5f);
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
 	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
@@ -250,12 +252,12 @@ int main()
 
 	// Transformation
 	CTransform t;
-	Mat T = t.rotate(Vec3f(0, 1, 0), 2).scale(1.01f).get();
+	Mat T = t.rotate(Vec3f(0, 1, 0), 2).scale(1.0f).get();
 	//teapot.transform(t.scale(1.5f).get());
 	//pScene->add(teapot);
 
 	// Light
-	const float	intensity = 5e3;
+	const float	intensity = 15e3;
 	const float radius = 66;
 	const float alpha = 6;
 	if (false) {
@@ -263,8 +265,8 @@ int main()
 	}
 	else {
 		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(radius, 100, 0), Vec3f(0, 0, 0), alpha, 2 * alpha));
-		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
-		pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, -sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		//pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
+		//pScene->add(std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(-radius / 2, 100, -sqrtf(3) * radius / 2), Vec3f(0, 0, 0), alpha, 2 * alpha));
 	}
 
 
@@ -275,7 +277,7 @@ int main()
 	for (;;) {
 		pScene->buildAccelStructure(20, 3);
 		Timer::start("Rendering...");
-		Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, false, false));
+		Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
 		Timer::stop();
 		imshow("Image", img);
 		pGeom->transform(T);

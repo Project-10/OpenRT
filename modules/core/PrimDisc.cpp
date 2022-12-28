@@ -39,10 +39,13 @@ namespace rt {
 		return Vec2f(-0.5f * phi / Pif, (m_r - r) / (m_r - m_ri));
 	}
 
-	std::pair<Vec3f, Vec3f> CPrimDisc::dp(const Vec3f&) const
+	std::pair<Vec3f, Vec3f> CPrimDisc::dp(const Vec3f& p) const
 	{
-		Vec3f dpdu = ocs2wcs(m_u);
-		Vec3f dpdv = ocs2wcs(m_v);
+		Vec3f hitPoint = wcs2ocs(p);		// Hitpoint in OCS
+		hitPoint = normalize(hitPoint);
+
+		Vec3f dpdu = ocs2wcs(2 * Pif * hitPoint.cross(m_n) );
+		Vec3f dpdv = ocs2wcs((m_ri - m_r) * hitPoint);
 		return std::make_pair(dpdu, dpdv);
 	}
 
