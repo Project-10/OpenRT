@@ -26,7 +26,7 @@ namespace rt
 		//}
 		//else return res;
 		
-		float opacity = getOpacity();
+		float opacity = getOpacity(ray);
 		return opacity * getDiffuseColor(ray) + (1.0f - opacity) * res;
 	}
 }
