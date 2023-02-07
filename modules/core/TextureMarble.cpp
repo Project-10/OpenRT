@@ -17,17 +17,19 @@ namespace rt{
 		float value = m_period * static_cast<float>(sum(proj)[0]);
 		//value += m_noise.eval_fbm(hitPoint, m_amplitude, m_frequency, m_numOctaves, m_gain, m_lacunarity);	// add noise to value;
 
-		float qx = m_pNoise->eval_fbm(hitPoint + Vec3f(0.0f, 0.0f, 0.0f));
-		float qy = m_pNoise->eval_fbm(hitPoint + Vec3f(5.2f, 1.3f, 1.7f));
-		float qz = m_pNoise->eval_fbm(hitPoint + Vec3f(9.2f, 8.3f, 2.8f));
-		Vec3f q(qx, qy, qz);
+		if (m_pNoise) {
+			float qx = m_pNoise->eval_fbm(hitPoint + Vec3f(0.0f, 0.0f, 0.0f));
+			float qy = m_pNoise->eval_fbm(hitPoint + Vec3f(5.2f, 1.3f, 1.7f));
+			float qz = m_pNoise->eval_fbm(hitPoint + Vec3f(9.2f, 8.3f, 2.8f));
+			Vec3f q(qx, qy, qz);
 		
-		float rx = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(1.7f, 9.2f, 3.4f));
-		float ry = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(8.3f, 2.8f, 1.7f));
-		float rz = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(4.2f, 2.3f, 9.4f));
-		Vec3f r(rx, ry, rz);
+			float rx = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(1.7f, 9.2f, 3.4f));
+			float ry = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(8.3f, 2.8f, 1.7f));
+			float rz = m_pNoise->eval_fbm(hitPoint + 4 * q + Vec3f(4.2f, 2.3f, 9.4f));
+			Vec3f r(rx, ry, rz);
 		
-		value += m_pNoise->eval_fbm(hitPoint + 4 * r);
+			value += m_pNoise->eval_fbm(hitPoint + 4 * r);
+		}
 
 		value = 0.5f + 0.5f * sinf(value);
 		//value = abs(sinf(value));

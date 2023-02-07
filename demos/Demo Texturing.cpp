@@ -17,12 +17,12 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
 
-	auto pNoise = std::make_shared<CPerlinNoise>(2022, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pNoise = std::make_shared<CPerlinNoise>(2022, 3.0f, 0.04f, 10, 0.5f, 2.0f);
 	
 	// Textures
-	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
+	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1, pNoise);
 	auto pTextureRings	 = std::make_shared<CTextureRings>(gradient, 1);
-	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 0, pNoise);
+	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 1, pNoise);
 	auto pTexture		 = std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// Shaders
@@ -35,8 +35,8 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(0, 5, 0), 5));
-	//pScene->add(CSolidSphere(pShaderStripes, Vec3f(0, 5, 0), 5, 64));
-	pScene->add(std::make_shared<CPrimDisc>(pShader, Vec3f(0, 5, 0), normalize(Vec3f(0, 1, 0.7f)), 7.5f, 2.5f));
+	pScene->add(CSolidSphere(pShaderMarble, Vec3f(0, 5, 0), 5, 64));
+	//pScene->add(std::make_shared<CPrimDisc>(pShader, Vec3f(0, 5, 0), normalize(Vec3f(0, 1, 0.7f)), 7.5f, 2.5f));
 	//CSolid teapot(pShaderMarble, dataPath + "Stanford Dragon.obj");
 
 	// Transformation
@@ -192,9 +192,9 @@ int main()
 	const Vec3f		bgColor = RGB(0, 0, 0);
 	const Size		resolution = Size(3072 / 4, 1920 / 4);
 	
-	//auto pScene = buildSceneStripes(bgColor, resolution);
+	auto pScene = buildSceneStripes(bgColor, resolution);
 	//auto pScene = buildSceneTemplates(bgColor, resolution);
-	auto pScene = buildSceneMarble(bgColor, resolution);
+	//auto pScene = buildSceneMarble(bgColor, resolution);
 	// auto pScene = buildSceneSaturn(bgColor, resolution);
 	pScene->buildAccelStructure(20, 3);
 	Timer::start("Rendering...");

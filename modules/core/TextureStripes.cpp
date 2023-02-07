@@ -15,6 +15,9 @@ namespace rt{
 		
 		float value = m_period * static_cast<float>(sum(proj)[0]);
 
+		if (m_pNoise)
+			value += m_pNoise->eval_fbm(hitPoint);
+
 		value = 0.5f * (1 + sinf(value * Pif));
 		return m_gradient.getColor(value);
 	}
