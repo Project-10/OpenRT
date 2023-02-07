@@ -16,24 +16,14 @@ namespace rt {
 	public:
 		/**  
 		 * @brief Marble texture contructor
-		 * @param gradient Marble color
-		 * @param seed The seed for the random number generator, allows to generate unique textures
+		 * @param gradient Texture color
 		 * @param period The number of stripes per 1 unit of WCS
-		 * @param amplitude Amplitude of the noise.
-		 * @param frequency The frequency determines a scaling value to be applied to point \p p before calling the noise function.
-		 * @param numOctaves The number of octaves determines how many times the noise function is called.
-		 * @param gain Gain is a value in the range (0; 1) that controls how quickly the later octaves "die out". Something around \b 0.5 is pretty conventional here.
-		 * @param lacunarity Lacunarity is a value greater than 1 that controls how much finer a scale each subsequent octave should use. Something around \b 2.0 is a conventional choice.
+		 * @param pNoise Pointer to the Perlin Noise function (ref. @ref CPrelinNoise) 
  		 */
-		DllExport CTextureMarble(const CGradient& gradient, unsigned int seed, float period, float amplitude = 1.0f, float frequency = 1.0f, size_t numOctaves = 1, float gain = 0.5f, float lacunarity = 2.0f)
+		DllExport CTextureMarble(const CGradient& gradient, float period, ptr_perlin_t pNoise = nullptr)
 			: m_gradient(gradient)
-			, m_noise(seed)
 			, m_period(period)
-			, m_amplitude(amplitude)
-			, m_frequency(frequency)
-			, m_numOctaves(numOctaves)
-			, m_gain(gain)
-			, m_lacunarity(lacunarity)
+			, m_pNoise(pNoise)
 		{}
 		DllExport virtual ~CTextureMarble(void) = default;
      
@@ -42,13 +32,7 @@ namespace rt {
      
 	private:
 		CGradient		m_gradient;		///< The color gradient for the wood
-		CPerlinNoise	m_noise;		///< The Perlin Noise
 		float			m_period;		///< The period of the noise
-		
-		float			m_amplitude;	///< Amplitude of the noise
-		float			m_frequency;	///< Frequency of the noise
-		size_t			m_numOctaves;	///< Noise octaves
-		float			m_gain;			///< Noise gain
-		float			m_lacunarity;	///< Noise lacunarity
+		ptr_perlin_t	m_pNoise;		///< The Perlin Noise
 	};
 }

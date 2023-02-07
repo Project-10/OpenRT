@@ -14,7 +14,13 @@ namespace rt{
 		
 		float value = m_period * static_cast<float>(norm(proj));
 
-		value = 0.5f * (1 + sinf(value * Pif));
+		if (m_pNoise) {
+			const Vec3f proj = hitPoint.mul(dir + Vec3f::all(0.05f));
+			value += m_pNoise->eval_fbm(proj);
+		}
+
+		value = fmodf(1.0f + value, 1.0f);
+		
 		return m_gradient.getColor(value);
 	}
 }

@@ -8,7 +8,7 @@ namespace rt {
 		if (x < 0) return RGB(0, 0, 255);
 		if (x > 1) return RGB(255, 0, 0);
 #else
-		RT_IF_WARNING(x < 0 || x > 1, "The argument is out of allowed range [0; 1]");
+		RT_IF_WARNING(x < 0 || x > 1, "The argument is out of allowed range [0; 1]. x = %f", x);
 #endif
 		
 		auto b = m_mColors.lower_bound(x);		// upper known position

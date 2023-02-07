@@ -7,7 +7,12 @@
 
 namespace rt{
 	// Constructor
-	CPerlinNoise::CPerlinNoise(unsigned int seed) 
+	CPerlinNoise::CPerlinNoise(unsigned int seed, float amplitude, float frequency, size_t numOctaves, float gain, float lacunarity)
+	: m_amplitude(amplitude)
+	, m_frequency(frequency)
+	, m_numOctaves(numOctaves)
+	, m_gain(gain)
+	, m_lacunarity(lacunarity)
 	{
 		std::mt19937 generator(seed);
 

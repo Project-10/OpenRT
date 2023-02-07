@@ -16,11 +16,13 @@ std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Size resol
 	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
 	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
+
+	auto pNoise = std::make_shared<CPerlinNoise>(2022, 3.0f, 0.02f, 10, 0.5f, 2.0f);
 	
 	// Textures
 	auto pTextureStripes = std::make_shared<CTextureStripes>(gradient, 1);
 	auto pTextureRings	 = std::make_shared<CTextureRings>(gradient, 1);
-	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 2022, 0, 3.0f, 0.02f, 10, 0.5f, 2.0f);
+	auto pTextureMarble	 = std::make_shared<CTextureMarble>(gradientMarble, 0, pNoise);
 	auto pTexture		 = std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// Shaders
@@ -65,15 +67,11 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 	const float intensity = 1e4;
 	auto pScene = std::make_shared<CScene>(bgColor);
 
-	// --- Materials ---
-	// Rings shader
-	//auto pTextureRings = std::make_shared<CTextureRings>(24.0f);
-	//auto pShaderRings = std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 0.0f, 40.0f);
-
 	// Wood shader
 	CGradient gradientWood({ {0.0f, RGB(255, 205, 140)}, {0.1f, RGB(216, 139, 74)}, {0.4f, RGB(226, 147, 82)}, {0.6f, RGB(250, 180, 127)}, {1.0f, RGB(255, 205, 140)} });
 	//CGradient gradientWood({{0.0f, RGB(255, 255, 255)}, {0.499f, RGB(255, 255, 255)}, {0.5f, RGB(255, 0, 0)}, {1.0f, RGB(255, 0, 0)}});
-	auto pTextureWood	= std::make_shared<CTextureWood>(gradientWood, 2022, 12.0f, 2.5f, 1.5f);
+	auto pNoise			= std::make_shared<CPerlinNoise>(2022, 2.5f, 1.5f, 2, 0.5f, 2.0f);
+	auto pTextureWood	= std::make_shared<CTextureRings>(gradientWood, 12.0f, pNoise);
 	auto pShaderWood	= std::make_shared<CShaderPhong>(*pScene, pTextureWood, 0.1f, 0.9f, 0.0f, 40.0f);
 
 	// Marble shader
@@ -88,16 +86,15 @@ std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const Size res
 
 	// Geometries
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, -0.52f, 0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
-
-	pScene->add(CSolidBox(pShader, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
+	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0, 0), 2.5f, 1.0f, 12.0f));
 	//pScene->add(CSolidBox(pShaderRings, Vec3f(-3, 0, 0), 2.5f, 1.0f, 12.0f));
 
 
-	auto solidSphere = CSolidSphere(pShader, Vec3f(0, 0.5f, 3), 2, 32);
-	auto primSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(3, 1, 0), 1.5f);
+	//auto solidSphere = CSolidSphere(pShader, Vec3f(0, 0.5f, 3), 2, 32);
+	//auto primSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(3, 1, 0), 1.5f);
 
 //	pScene->add(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(0, 0, 0), 1.5f));
-	pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(4, 1, 0), 1.5f));
+	pScene->add(std::make_shared<CPrimSphere>(pShaderWood, Vec3f(4, 1, 0), 1.5f));
 
 	//Light
 	if (true) {
@@ -120,6 +117,7 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 
 	// Texture
 	// auto pTextureMarble = std::make_shared<CTexture>(dataPath + "marble-light.jpg");
+	CGradient gradientRedWhite({ {0.0f, RGB(255, 255, 255)}, {1.0f, RGB(255, 0, 0)} });
 	CGradient gradientMarble(RGB(166, 208, 229), RGB(175, 152, 123));
 	gradientMarble.addColor(0.37f, RGB(128, 182, 222));
 	gradientMarble.addColor(0.54f, RGB(90, 175, 213));
@@ -127,8 +125,9 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 	gradientMarble.addColor(0.75f, RGB(28, 163, 215));
 	gradientMarble.addColor(0.84f, RGB(19, 140, 183));
 	gradientMarble.addColor(0.92f, RGB(55, 118, 149));
-	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 2021, 0, 1.5f, 0.2f, 10, 0.5f, 2.0f);
-	CGradient gradientRedWhite({{0.0f, RGB(255, 255, 255)}, {1.0f, RGB(255, 0, 0)} });
+	auto noiseMarble = std::make_shared<CPerlinNoise>(2022, 3.0f, 0.2f, 10, 0.5f, 2.0f);
+	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientMarble, 0, noiseMarble);
+
 //	auto pTextureMarble1 = std::make_shared<CTextureMarble>(gradientRedWhite, 2022, 0, 3.0f, 0.2f, 10, 0.5f, 2.0f);
 
 
@@ -193,9 +192,9 @@ int main()
 	const Vec3f		bgColor = RGB(0, 0, 0);
 	const Size		resolution = Size(3072 / 4, 1920 / 4);
 	
-	// auto pScene = buildSceneStripes(bgColor, resolution);
-	auto pScene = buildSceneTemplates(bgColor, resolution);
-	// auto pScene = buildSceneMarble(bgColor, resolution);
+	//auto pScene = buildSceneStripes(bgColor, resolution);
+	//auto pScene = buildSceneTemplates(bgColor, resolution);
+	auto pScene = buildSceneMarble(bgColor, resolution);
 	// auto pScene = buildSceneSaturn(bgColor, resolution);
 	pScene->buildAccelStructure(20, 3);
 	Timer::start("Rendering...");
