@@ -22,7 +22,7 @@ OpenRT is a cross-platform C++ library. The description here was tested on Windo
 OpenRT has only one dependency: it is based on [OpenCV](www.opencv.org) library. In order to use the OpenRT library, the OpenCV library should be also installed.
 
 ### Installing OpenCV
-- Download the latest version of the OpenCV library from https://www.opencv.org/releases.html
+- Download the latest version of the OpenCV library from https://www.opencv.org/releases
 - Build and install the library. You may follow the following guidance:
    - [Installation in Windows guide](https://docs.opencv.org/4.4.0/d3/d52/tutorial_windows_install.html) or
    - [Installation in Linux guide](https://docs.opencv.org/4.4.0/d7/d9f/tutorial_linux_install.html)
