@@ -21,8 +21,12 @@ namespace rt
 			m_needUpdateAxes = false;
 		}
 
-		float phi = 2 * Pif * (x + sample.val[0]) / width - Pif;
-		float theta = Pif * (y + sample.val[1]) / height;
+		// Normalized device coordinates \in [0; 1]
+		float ndcx = (x + sample.val[0]) / width;
+		float ndcy = (y + sample.val[1]) / height;
+
+		float phi	= Pif * (2 * ndcx - 1);
+		float theta = Pif * ndcy;
 		Vec3f eq_dir = cosf(phi) * m_zAxis + sinf(phi) * m_xAxis;	// equatorial direction
 
 		ray.org = m_pos;
@@ -36,6 +40,7 @@ namespace rt
 		ray.dir = normalize(sinf(theta) * eq_dir - cosf(theta) * m_yAxis);
 		ray.t = std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
+		ray.ndc = Vec2f(ndcx, ndcy);
 	}
 }
 

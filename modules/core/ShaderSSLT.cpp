@@ -14,7 +14,7 @@ namespace rt
 	{
 		Vec3f n = ray.hit->getNormal(ray);
 		
-		Ray I(ray.hitPoint(), ray.dir, ray.counter);
+		Ray I(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
 		Vec3f res = I.reTrace(m_scene);
 		
 		//if (ray.dir.dot(n) < 0) { // entering the surface
@@ -26,7 +26,7 @@ namespace rt
 		//}
 		//else return res;
 		
-		float opacity = getOpacity();
+		float opacity = getOpacity(ray);
 		return opacity * getDiffuseColor(ray) + (1.0f - opacity) * res;
 	}
 }

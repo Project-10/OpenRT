@@ -71,7 +71,12 @@ namespace rt {
 		 * @brief Sets the opacity
 		 * @param opacity The opacity. Number between 0 and 1
 		 */
-		DllExport void	setOpacity(float opacity) { m_opacity = MAX(0, MIN(1, opacity)); }
+		DllExport void	setOpacity(float opacity);
+		/**
+		 * @brief Sets the opacity map
+		 * @param pOpacityMap The opacity map
+		 */
+		DllExport void	setOpacity(const ptr_texture_t pOpacityMap);
 
 
 		/**
@@ -110,7 +115,7 @@ namespace rt {
 		 * @brief Returns the opacity
 		 * @return The opacity value
 		 */
-		DllExport float	getOpacity(void) const { return m_opacity; }
+		DllExport float	getOpacity(const Ray& ray) const;
 		
 		
 	private:
@@ -124,8 +129,9 @@ namespace rt {
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
 		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
 		//ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
-		ptr_texture_t	m_pBumpMap_u = nullptr;
-		ptr_texture_t	m_pBumpMap_v = nullptr;
+		ptr_texture_t	m_pBumpMap_u 		= nullptr;
+		ptr_texture_t	m_pBumpMap_v 		= nullptr;
+		ptr_texture_t	m_pOpacityMap		= nullptr;			///< The opacity map
 		
 		// --- MAPS (amount + map) ---
 		// Ambient color (usually equal to diffuse color)

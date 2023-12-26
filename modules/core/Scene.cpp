@@ -165,7 +165,8 @@ namespace rt {
 
 	Vec3f CScene::rayTrace(Ray& ray) const 
 	{ 
-		return intersect(ray) ? ray.hit->getShader()->shade(ray) : m_bgColor; 
+		if (intersect(ray)) return ray.hit->getShader()->shade(ray);	// intersection -> return color of the hit object
+		return m_bgMap ? m_bgMap->getTexel(ray) : m_bgColor;			// No intersection -> return scene background
 	}
 
 	double CScene::rayTraceDepth(Ray& ray) const 

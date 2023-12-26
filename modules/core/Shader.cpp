@@ -97,6 +97,21 @@ namespace rt {
 	//	else			return 0;
 	//}
 
+	// ================================================= Opacity =================================================
+	void CShader::setOpacity(float opacity) 
+	{ 
+		m_opacity = MAX(0, MIN(1, opacity)); 
+	}
+
+	void CShader::setOpacity(const ptr_texture_t pMap)
+	{
+		m_pOpacityMap = pMap;
+	}
+
+	float CShader::getOpacity(const Ray& ray) const
+	{ 
+		return m_pOpacityMap ? m_pOpacityMap->getTexel(ray)[0] : m_opacity;
+	}
 }
 
 

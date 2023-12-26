@@ -12,9 +12,13 @@ namespace rt {
 		RT_IF_WARNING(x >= width, "Argument x = %d exceeds the camera resolution width (%d)", x, width);
 		RT_IF_WARNING(y >= height, "Argument y = %d exceeds the camera resolution height (%d)", y, height);
 		
+		// Normalized device coordinates \in [0; 1]
+		float ndcx = (x + sample.val[0]) / width;
+		float ndcy = (y + sample.val[1]) / height;
+		
 		// Screen-space coordinates \in [-1, 1]
-		float sscx = 2 * (x + sample.val[0]) / width - 1;
-		float sscy = 2 * (y + sample.val[1]) / height - 1;
+		float sscx = 2 * ndcx - 1;
+		float sscy = 2 * ndcy - 1;
 		
 		if (m_needUpdateAxes) {
 			m_zAxis = m_dir;
@@ -27,5 +31,6 @@ namespace rt {
 		ray.dir = m_dir;
 		ray.t	= std::numeric_limits<double>::infinity();
 		ray.hit = nullptr;
+		ray.ndc = Vec2f(ndcx, ndcy);
 	}
 }

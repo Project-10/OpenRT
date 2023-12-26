@@ -51,7 +51,6 @@ source_group("Source Files\\Common\\Perlin Noise" FILES "PerlinNoise.cpp" "Perli
 source_group("Source Files\\Common\\Texture" FILES "Texture.h" "Texture.cpp")
 source_group("Source Files\\Common\\Texture\\Stripes" FILES "TextureStripes.h" "TextureStripes.cpp")
 source_group("Source Files\\Common\\Texture\\Rings" FILES "TextureRings.h" "TextureRings.cpp")
-source_group("Source Files\\Common\\Texture\\Wood" FILES "TextureWood.h" "TextureWood.cpp")
 source_group("Source Files\\Common\\Texture\\Marble" FILES "TextureMarble.h" "TextureMarble.cpp")
 source_group("Source Files\\Common\\Ray" FILES "Ray.h" "Ray.cpp")
 source_group("Source Files\\Common\\Utilities" FILES "random.h" "timer.h" "tools.h")

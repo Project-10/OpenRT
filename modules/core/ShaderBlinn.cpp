@@ -10,6 +10,7 @@ namespace rt {
 		Vec3f ambientColor	= getAmbientColor(ray);
 		Vec3f diffuseColor	= getDiffuseColor(ray);
 		float ks			= getSpecularLevel(ray);
+		float opacity		= getOpacity(ray);
 
 		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
@@ -19,10 +20,15 @@ namespace rt {
 			inside = true;
 		}
 
+		// ------ opacity ------
+		if (opacity < 1) {
+			Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
+			res += (1.0f - opacity) * R.reTrace(m_scene);
+		}
 
 		// ------ ambient ------
 		if (m_ka > 0)
-			res += m_ka * m_scene.getAmbientColor().mul(ambientColor);
+			res += m_ka * opacity * m_scene.getAmbientColor().mul(ambientColor);
 
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
@@ -40,7 +46,7 @@ namespace rt {
 						if (m_kd > 0) {
 							float cosLightNormal = I.dir.dot(shadingNormal);
 							if (cosLightNormal > 0)
-								L += m_kd * cosLightNormal * diffuseColor.mul(radiance.value());
+								L += m_kd * opacity * cosLightNormal * diffuseColor.mul(radiance.value());
 						}
 						// ------ specular ------
 						if (ks > 0) {
