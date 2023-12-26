@@ -40,10 +40,26 @@ namespace rt{
 			return c ? RGB(255, 255, 255) : RGB(127, 127, 127);
 		} else {
 			// find texel indices
-			int x = static_cast<int>(cols * u);
-			int y = static_cast<int>(rows * v);
+			float U = u * cols;
+			float V = v * rows;
 
-			return (*this).at<Vec3f>(y, x);
+			int x = static_cast<int>(U);
+			int y = static_cast<int>(V);
+
+			if (false) {
+				// Nearest neighbour
+				return (*this).at<Vec3f>(y, x);
+			}
+			else {
+				// bi-linear 
+				float dx = U - x;
+				float dy = V - y;
+
+				Vec3f a = (1.0f - dx) * (*this).at<Vec3f>(y, x) + dx * (*this).at<Vec3f>(y, x + 1);
+				Vec3f b = (1.0f - dx) * (*this).at<Vec3f>(y + 1, x) + dx * (*this).at<Vec3f>(y + 1, x + 1);
+
+				return (1.0f - dy) * a + dy * b;
+			}
 		}
 	}
 }
