@@ -47,18 +47,24 @@ namespace rt{
 			int y = static_cast<int>(V);
 
 			if (false) {
-				// Nearest neighbour
+				// --- Nearest neighbour ---
 				return (*this).at<Vec3f>(y, x);
 			}
 			else {
-				// bi-linear 
+				// --- Bi-linear ---
 				float dx = U - x;
 				float dy = V - y;
 
-				Vec3f a = (1.0f - dx) * (*this).at<Vec3f>(y, x) + dx * (*this).at<Vec3f>(y, x + 1);
-				Vec3f b = (1.0f - dx) * (*this).at<Vec3f>(y + 1, x) + dx * (*this).at<Vec3f>(y + 1, x + 1);
+				Vec3f a, b;
+				if (x + 1 >= cols) a = (*this).at<Vec3f>(y, x);
+				else a = (1.0f - dx) * (*this).at<Vec3f>(y, x) + dx * (*this).at<Vec3f>(y, x + 1);
 
-				return (1.0f - dy) * a + dy * b;
+				if (y + 1 >= rows) return a;
+				else {
+					if (x + 1 >= cols) b = (*this).at<Vec3f>(y + 1, x);
+					else b = (1.0f - dx) * (*this).at<Vec3f>(y + 1, x) + dx * (*this).at<Vec3f>(y + 1, x + 1);
+				}
+				return (1.0f - dy) * a + dy * b;;
 			}
 		}
 	}
