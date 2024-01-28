@@ -36,7 +36,7 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				intersect(Ray& ray) const = 0;
+		DllExport virtual bool						intersect(Ray& ray) const = 0;
 		/**
 		 * @brief Checks for intersection between ray \b ray and the primitive
 		 * @details This function does not modify argument \b ray and is used just to check if there is an intersection.
@@ -45,66 +45,78 @@ namespace rt {
 		 * @retval true If and only if a valid intersection has been found in the interval (epsilon; Ray::t)
 		 * @retval false Otherwise
 		 */
-		DllExport virtual bool				if_intersect(const Ray& ray) const = 0;
+		DllExport virtual bool						if_intersect(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the texture coordinates in the ray - primitive intersection point
 		 * @param ray Ray, which has hit the geometry. 
 		 * @return The texture coordinates
 		 */
-		DllExport virtual Vec2f				getTextureCoords(const Ray& ray) const = 0;
+		DllExport virtual Vec2f						getTextureCoords(const Ray& ray) const = 0;
+		/**
+		 * @brief Calculates derivatives of the primitive's surface over its parametrization parameters \a u and \a v
+		 * @param p Point in the WCS
+		 * @return A couple of vectors \f$ \frac{\partial p}{\partial u} \f$, \f$ \frac{\partial p}{\partial v} \f$
+		 */
+		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const = 0;
 		/**
 		 * @brief Returns the minimum axis-aligned bounding box, which contain the primitive
-		 * @returns The bounding box, which contain the primitive
+		 * @return The bounding box, which contain the primitive
 		 */
-		DllExport virtual CBoundingBox		getBoundingBox(void) const = 0;
+		DllExport virtual CBoundingBox				getBoundingBox(void) const = 0;
 		/**
 		 * @brief Flips the normal of the primitive.
 		 */
-		DllExport virtual void				flipNormal(void) { m_flipped = !m_flipped; }
+		DllExport virtual void						flipNormal(void) { m_flipped = !m_flipped; }
 		/**
 		 * @brief Returns the center of the primitive
 		 * @return The origin point
 		 */
-		DllExport Vec3f						getOrigin(void) const { return m_origin; }
+		DllExport Vec3f								getOrigin(void) const { return m_origin; }
 		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		 */
-		DllExport ptr_shader_t				getShader(void) const { return m_pShader; }
+		DllExport ptr_shader_t						getShader(void) const { return m_pShader; }
 		/**
 		 * @brief Sets a new name to the primitive
 		 * @param name The new name
 		 */
-		DllExport void						setName(const std::string& name) { m_name = name;}
+		DllExport void								setName(const std::string& name) { m_name = name;}
 		/**
 		 * @brief Returns the name of the primitive
 		 * @return The name of the primitive
 		 */
-		DllExport std::string				getName(void) const { return m_name; }
+		DllExport std::string						getName(void) const { return m_name; }
         /**
 		 * @brief Returns normal of the primitive. Flips the normal if it's been set to flip.
          * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-        DllExport Vec3f				        getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray): doGetNormal(ray); }
+        DllExport Vec3f								getNormal(const Ray& ray) const { return m_flipped ? -doGetNormal(ray): doGetNormal(ray); }
         /**
         * @brief Returns the  normal vector of the primitive in the ray - primitive intersection point
         * @note In contrast to the @ref doGetNormal() method, this methods takes into account the possible normal interpolation along the primitive
         * @param ray Ray intersecting the primitive
         * @return The normalized normal of the primitive at the ray - primitive intersection point
         */
-        DllExport Vec3f				        getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
+        DllExport Vec3f								getShadingNormal(const Ray& ray) const { return m_flipped ? -doGetShadingNormal(ray): doGetShadingNormal(ray); }
 		/**
 		 * @brief Performs affine transformation
 		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
 		 */
-		DllExport void						transform(const Mat& T);
+		DllExport void								transform(const Mat& T);
 		/**
-		 * @brief Translated the point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
+		 * @brief Translates the \i point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
 		 * @param p Point in the WCS
-		 * return Point \b p in OCS
+		 * @return Point \b p in OCS
 		 */
-		DllExport Vec3f						wcs2ocs(const Vec3f& p) const;
+		DllExport Vec3f								wcs2ocs(const Vec3f& p) const;
+		/**
+		* @brief Translates the \i vector \b v from OCS to WCS
+		* @param v Vector on OCS
+		* @return Vector \b v in WCS
+		*/
+		DllExport Vec3f								ocs2wcs(const Vec3f& v) const;
 
 		
     private:
@@ -113,19 +125,19 @@ namespace rt {
 		 * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-		DllExport virtual Vec3f				doGetNormal(const Ray& ray) const = 0;
+		DllExport virtual Vec3f						doGetNormal(const Ray& ray) const = 0;
 		/**
 		 * @brief Returns the  normal vector of the primitive in the ray - primitive intersection point
 		 * @note In contrast to the @ref doGetNormal() method, this methods takes into account the possible normal interpolation along the primitive
 		 * @param ray Ray intersecting the primitive
 		 * @return The normalized normal of the primitive at the ray - primitive intersection point
 		 */
-		DllExport virtual Vec3f				doGetShadingNormal(const Ray& ray) const { return doGetNormal(ray); }
+		DllExport virtual Vec3f						doGetShadingNormal(const Ray& ray) const { return doGetNormal(ray); }
 		/**
 		 * @brief Performs affine transformation
 		 * @param T Transformation matrix (size: 4 x 4; type: CV_32FC1)
 		 */
-		DllExport virtual void				doTransform(const Mat& T) = 0;
+		DllExport virtual void						doTransform(const Mat& T) = 0;
 	
 
 	private:

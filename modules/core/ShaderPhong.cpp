@@ -14,12 +14,25 @@ namespace rt {
 
 		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
+		
+		
+		auto du = getBump(ray);
+		if (du) {
+			auto  dp = ray.hit->dp(ray.hitPoint());
+			Vec3f dpdu = dp.first;
+			Vec3f dpdv = dp.second;
+
+			shadingNormal += getBumpAmount() * (du.value().first * dpdv.cross(shadingNormal) - du.value().second * dpdu.cross(shadingNormal));
+			shadingNormal = normalize(shadingNormal);
+		}
+
 		bool inside = false;
 		if (faceNormal.dot(ray.dir) > 0) {
 			shadingNormal = -shadingNormal;										// turn shading normal to front
 			inside = true;
 		}
-		
+
+
 		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;		// reflection vector
 
 #ifdef DEBUG_MODE

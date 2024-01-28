@@ -83,6 +83,11 @@ namespace rt {
         RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
     }
 
+	std::pair<Vec3f, Vec3f>	CPrimBoolean::dp(const Vec3f& p) const
+	{
+		RT_ASSERT_MSG(false, "This method should never be called. Aborting...");
+	}
+
 	void CPrimBoolean::flipNormal(void) {
 		for (auto &pPrim : m_vpPrims1) pPrim->flipNormal();
 		for (auto &pPrim : m_vpPrims2) pPrim->flipNormal();

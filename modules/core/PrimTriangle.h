@@ -75,16 +75,17 @@ namespace rt {
 
 		DllExport virtual ~CPrimTriangle(void) = default;
 		
-		DllExport virtual bool	intersect(Ray& ray) const override;
-		DllExport virtual bool	if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
-		DllExport virtual Vec2f	getTextureCoords(const Ray& ray) const override;
-		DllExport CBoundingBox	getBoundingBox(void) const override;
+		DllExport virtual bool						intersect(Ray& ray) const override;
+		DllExport virtual bool						if_intersect(const Ray& ray) const override { return MoellerTrumbore(ray).has_value(); }
+		DllExport virtual Vec2f						getTextureCoords(const Ray& ray) const override;
+		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const;
+		DllExport CBoundingBox						getBoundingBox(void) const override;
 		
 		
 	private:
-		DllExport virtual Vec3f doGetNormal(const Ray& ray) const override;
-		DllExport virtual Vec3f doGetShadingNormal(const Ray& ray) const override;
-		DllExport virtual void	doTransform(const Mat& T) override;
+		DllExport virtual Vec3f						doGetNormal(const Ray& ray) const override;
+		DllExport virtual Vec3f						doGetShadingNormal(const Ray& ray) const override;
+		DllExport virtual void						doTransform(const Mat& T) override;
 
 		
 	private:

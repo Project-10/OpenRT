@@ -40,35 +40,36 @@ namespace rt {
         DllExport explicit CPrimBoolean(const CSolid& A, const CSolid& B, BoolOp operation, int maxDepth = 20, int maxPrimitives = 3);
         DllExport virtual ~CPrimBoolean(void) override = default;
         
-		DllExport virtual bool			intersect(Ray &ray) const override;
-		DllExport virtual bool			if_intersect(const Ray &ray) const override;
-		DllExport virtual Vec2f			getTextureCoords(const Ray &ray) const override;
-		DllExport virtual CBoundingBox	getBoundingBox(void) const override { return m_boundingBox; }
-		DllExport virtual void			flipNormal(void) override;
+		DllExport virtual bool						intersect(Ray &ray) const override;
+		DllExport virtual bool						if_intersect(const Ray &ray) const override;
+		DllExport virtual Vec2f						getTextureCoords(const Ray &ray) const override;
+		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const;
+		DllExport virtual CBoundingBox				getBoundingBox(void) const override { return m_boundingBox; }
+		DllExport virtual void						flipNormal(void) override;
 
 		
     private:
-		DllExport virtual Vec3f			doGetNormal(const Ray &) const override;
-		DllExport virtual void			doTransform(const Mat& T) override;
+		DllExport virtual Vec3f						doGetNormal(const Ray &) const override;
+		DllExport virtual void						doTransform(const Mat& T) override;
 		
-		std::optional<Ray>				computeUnion(const Ray &ray) const;			///< Helper method to perform union logic
-		std::optional<Ray>				computeIntersection(const Ray& ray) const;	///< Helper method to perform intersection logic
-		std::optional<Ray>				computeSubstraction(const Ray &ray) const;	///< Helper method to perform substraction logic
-        void 							computeBoundingBox(void);					///< Helper method to recompute the composite
-		IntersectionState 				classifyRay(const Ray& ray) const;			///< Helper method to classify if a ray is entering, exiting, or missing a solid
+		std::optional<Ray>							computeUnion(const Ray &ray) const;			///< Helper method to perform union logic
+		std::optional<Ray>							computeIntersection(const Ray& ray) const;	///< Helper method to perform intersection logic
+		std::optional<Ray>							computeSubstraction(const Ray &ray) const;	///< Helper method to perform substraction logic
+        void 										computeBoundingBox(void);					///< Helper method to recompute the composite
+		IntersectionState 							classifyRay(const Ray& ray) const;			///< Helper method to classify if a ray is entering, exiting, or missing a solid
 
 		
 	private:
-		std::vector<ptr_prim_t>			m_vpPrims1;			        ///< Vector of primitives of the first geometry
-		std::vector<ptr_prim_t>			m_vpPrims2;					///< Vector of primitives of the second geometry
-		bool							m_flippedNormal = false; 	///< Flag indicating whether the normals were flipped
-		BoolOp							m_operation;				///< Type of operation
-        CBoundingBox					m_boundingBox;              ///< Bounding box of this composite geometry
+		std::vector<ptr_prim_t>						m_vpPrims1;			        ///< Vector of primitives of the first geometry
+		std::vector<ptr_prim_t>						m_vpPrims2;					///< Vector of primitives of the second geometry
+		bool										m_flippedNormal = false; 	///< Flag indicating whether the normals were flipped
+		BoolOp										m_operation;				///< Type of operation
+        CBoundingBox								m_boundingBox;              ///< Bounding box of this composite geometry
 #ifdef ENABLE_BSP
-		int								m_maxDepth;					///< The maximum allowed depth of the trees
-		int								m_maxPrimitives;			///< The minimum number of primitives in a leaf-node
-		std::unique_ptr<CBSPTree>		m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
-        std::unique_ptr<CBSPTree>		m_pBSPTree2		= nullptr;	///< Pointer to the spatial index structure for right geometry
+		int											m_maxDepth;					///< The maximum allowed depth of the trees
+		int											m_maxPrimitives;			///< The minimum number of primitives in a leaf-node
+		std::unique_ptr<CBSPTree>					m_pBSPTree1		= nullptr;	///< Pointer to the spatial index structure for left geometry
+        std::unique_ptr<CBSPTree>					m_pBSPTree2		= nullptr;	///< Pointer to the spatial index structure for right geometry
 #endif
     };
 

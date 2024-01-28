@@ -54,6 +54,30 @@ namespace rt {
 		return (1.0f - ray.b1 - ray.b2) * m_ta + ray.b1 * m_tb + ray.b2 * m_tc;
 	}
 
+	std::pair<Vec3f, Vec3f> CPrimTriangle::dp(const Vec3f&) const
+	{
+		Vec3f dpdu(1, 0, 0);
+		Vec3f dpdv(0, 0, 1);
+
+		// Compute deltas for triangle partial derivatives
+		float du1 = m_ta[0] - m_tc[0];
+		float du2 = m_tb[0] - m_tc[0];
+		float dv1 = m_ta[1] - m_tc[1];
+		float dv2 = m_tb[1] - m_tc[1];
+		Vec3f dp1 = m_a - m_c;
+		Vec3f dp2 = m_b - m_c;
+
+		float determinant = du1 * dv2 - dv1 * du2;
+		if (determinant != 0.f) {
+			float invdet = 1.f / determinant;
+			dpdu = ( dv2 * dp1 - dv1 * dp2) * invdet;
+			dpdv = (-du2 * dp1 + du1 * dp2) * invdet;
+		}
+
+		// Note that ocs2wcs is not needed here
+		return std::make_pair(dpdu, dpdv);
+	}
+
 	CBoundingBox CPrimTriangle::getBoundingBox(void) const
 	{
 		CBoundingBox res;

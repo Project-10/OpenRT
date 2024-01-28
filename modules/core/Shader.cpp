@@ -61,6 +61,42 @@ namespace rt {
 		return m_pSpecularLevelMap ? m_pSpecularLevelMap->getTexel(ray)[0] : m_specularLevel;
 	}
 
+	// ============================================== Bump Map ==============================================
+	void CShader::setBumpMap(const ptr_texture_t pBumpMap, float amount) 
+	{
+		m_bumpAmount = amount;
+		//m_pBumpMap = pBumpMap;
+		Mat a, b;
+
+		Sobel(*pBumpMap, a, CV_32F, 1, 0, 3);
+		Sobel(*pBumpMap, b, CV_32F, 0, 1, 3);
+
+		m_pBumpMap_u = std::make_shared<CTexture>(a);
+		m_pBumpMap_v = std::make_shared<CTexture>(b);
+	}
+
+	std::optional<std::pair<float, float>> CShader::getBump(const Ray& ray) const
+	{
+		if (m_pBumpMap_u) {
+			float du = m_pBumpMap_u->getTexel(ray)[0];
+			float dv = m_pBumpMap_v->getTexel(ray)[0];
+			return std::make_pair(du, dv);
+		} else return std::nullopt;
+		
+	}
+
+	//float CShader::getBumpU(const Ray& ray) const
+	//{
+	//	if (m_pBumpMap_u) return m_pBumpMap_u->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
+	//	else			return 0;
+	//}
+
+	//float CShader::getBumpV(const Ray& ray) const
+	//{
+	//	if (m_pBumpMap_v) return m_pBumpMap_v->getTexel(ray.hit->getTextureCoords(ray))[0];			// bitmap texture		
+	//	else			return 0;
+	//}
+
 	// ================================================= Opacity =================================================
 	void CShader::setOpacity(float opacity) 
 	{ 
@@ -77,3 +113,5 @@ namespace rt {
 		return m_pOpacityMap ? m_pOpacityMap->getTexel(ray)[0] : m_opacity;
 	}
 }
+
+
