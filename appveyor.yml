@@ -31,8 +31,8 @@ build_script:
 
 test_script:
   - cmd: |-
-      copy C:\tools\opencv\build\x64\vc15\bin\opencv_world???.dll  ".\bin\Release"
-      copy C:\tools\opencv\build\x64\vc15\bin\opencv_world???d.dll ".\bin\Debug"
+      copy C:\tools\opencv\build\x64\vc16\bin\opencv_world???.dll  ".\bin\Release"
+      copy C:\tools\opencv\build\x64\vc16\bin\opencv_world???d.dll ".\bin\Debug"
       .\bin\Release\Tests.exe --gtest_output=xml:tests.xml > tests.txt
 
 #after_test:
