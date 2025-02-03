@@ -39,6 +39,14 @@ namespace rt {
 	}
 
 	// ---------------- Static functions ----------------
+	Vec2f CSampler::naiveSampleDisk(const Vec2f& sample) {
+		float r = sample[0];
+		float theta = 2 * Pif * sample[1];
+		float x = r * cosf(theta);
+		float y = r * sinf(theta);
+		return Vec2f(x, y);
+	}
+	
 	// --------- from PBR book ---------
 	Vec2f CSampler::uniformSampleDisk(const Vec2f& sample) {
 		float r		= sqrtf(sample[0]);

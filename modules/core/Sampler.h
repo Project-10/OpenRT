@@ -39,6 +39,14 @@ namespace rt {
 		
 		// ---------------- Static functions ----------------
 		/**
+		* @brief Transforms a uniform sampled square into a sampled disc
+		* @details This function uses the formulas \f[\begin{align} r&=\xi_1 \\ \theta&=2\pi\xi_2 \\ x&=r\cos{\theta} \\ y&=r\sin{\theta}\end{align}\f]
+		* to transform between distributions.
+		* @param sample The pair of random variables \f$(\xi_1, \xi_2)\f$ in square \f$[0; 1)^2\f$, \a e.g. achieved with getNextSample() method
+		* @return A new pair of random variables \f$(x, y)\f$ sampling a unit disc with center in \f$(0, 0)\f$
+		*/
+		DllExport static Vec2f naiveSampleDisk(const Vec2f& sample);
+		/**
 		* @brief Transforms a uniform sampled square into a uniform sampled disc
 		* @details This function uses the formulas \f[\begin{align} r&=\sqrt{\xi_1} \\ \theta&=2\pi\xi_2 \\ x&=r\cos{\theta} \\ y&=r\sin{\theta}\end{align}\f]
 		* to transform between distributions.
