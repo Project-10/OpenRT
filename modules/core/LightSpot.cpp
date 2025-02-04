@@ -2,7 +2,7 @@
 #include "Ray.h"
 
 namespace rt {
-	std::optional<Vec3f> CLightSpot::illuminate(Ray& ray) {
+	std::optional<Vec3f> CLightSpot::illuminate(Ray& ray) const {
 		auto res = CLightOmni::illuminate(ray);
 
 		float angle = acosf(m_dir.dot(-ray.dir)) * 180 / Pif;

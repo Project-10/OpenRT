@@ -2,16 +2,19 @@
 #include "Ray.h"
 
 namespace rt {
-	std::optional<Vec3f> CLightArea::illuminate(Ray& ray)
+	std::optional<Vec3f> CLightArea::illuminate(Ray& ray) const
 	{
 		Vec2f sample = m_pSampler->getNextSample();
-		Vec3f org = m_org + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;
+		Vec3f org = m_org + sample.val[0] * m_edge1 + sample.val[1] * m_edge2;	// a random point on the surface of the light source
 
-		setOrigin(org);
-		auto res = CLightOmni::illuminate(ray);
+		// ray towards point light position
+		ray.dir = org - ray.org;
+		ray.t = norm(ray.dir);
+		ray.dir = normalize(ray.dir);
+		ray.hit = nullptr;
 
-		double cosN = -ray.dir.dot(m_normal) / ray.t;
-		if (cosN > 0)	return m_area * cosN * res.value();
+		double cosN = -ray.dir.dot(m_normal);
+		if (cosN > 0)	return getIntensity() * (m_area * cosN / (ray.t * ray.t));
 		else			return std::nullopt;
 	}
 }

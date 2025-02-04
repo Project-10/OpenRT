@@ -24,19 +24,16 @@ namespace rt {
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
 		DllExport CLightSky(Vec3f intensity, float maxDistance = 4, ptr_sampler_t pSampler = std::make_shared<CSamplerStratified>(4, true, true), bool castShadow = true)
-			: ILight(castShadow)
-			, m_intensity(intensity)
+			: ILight(intensity, castShadow)
 			, m_maxDistance(maxDistance > std::numeric_limits<float>::epsilon() ? maxDistance : std::numeric_limits<float>::infinity())
 			, m_pSampler(pSampler)
 		{}
 
-		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) override;
+		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) const override;
 		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 
-
 	private:
-		Vec3f			m_intensity;	///< The emission (red, green, blue)
 		float			m_maxDistance;	///< The radius within which the renderer looks for occluding objects
 		ptr_sampler_t	m_pSampler;		///< Pointer to the sampler ref @ref CSampler
 	};

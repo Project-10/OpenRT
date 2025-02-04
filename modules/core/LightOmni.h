@@ -21,31 +21,20 @@ namespace rt {
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
 		DllExport CLightOmni(const Vec3f& intensity, const Vec3f& org, bool castShadow = true)
-			: ILight(castShadow)
-			, m_intensity(intensity)
+			: ILight(intensity, castShadow)
 			, m_org(org)
 		{}
 		DllExport virtual ~CLightOmni(void) = default;
 
-		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) override;
+		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) const override;
 		DllExport virtual size_t				getNumSamples(void) const override { return 1; }
 		
 		// Accessors
-		/**
-		 * @brief Sets light source intensity
-		 * @param intensity The emission color and strength of the light source
-		 */
-		DllExport virtual void	setIntensity(const Vec3f& intensity) { m_intensity = intensity; }
 		/**
 		 * @brief Sets light source position (origin)
 		 * @param org The position (origin) of the light source
 		 */
 		DllExport virtual void	setOrigin(const Vec3f& org) { m_org = org; }
-		/**
-		 * @brief Returns the intensity of the light source
-		 * @return The emission color and strength of the light source
-		 */
-		DllExport Vec3f			getIntensity(void) const { return m_intensity; }
 		/**
 		 * @brief Returns the position (origin) of the light source
 		 * @return The position (origin) of the light source
@@ -54,7 +43,6 @@ namespace rt {
 
 
 	private:
-		Vec3f m_intensity;	///< The emission (red, green, blue)
 		Vec3f m_org;		///< The light source origin
 	};
 }

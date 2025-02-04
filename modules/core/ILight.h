@@ -1,5 +1,6 @@
 // Light Source Abstract Interface class
 // Written by Dr. Sergey Kosov in 2019 for Jacobs University
+// Modified by Dr. Sergey Kosov in 2024 for Project X
 #pragma once
 
 #include "types.h"
@@ -18,25 +19,37 @@ namespace rt {
 	public:
 		/**
 		 * @brief Constructor
+		 * @param intensity The emission color and strength of the light source
 		 * @param castShadow Flag indicating whether the light source casts shadows
 		 */
-		DllExport ILight(bool castShadow) : m_shadow(castShadow) {}
+		DllExport ILight(const Vec3f& intensity, bool castShadow) : m_intensity(intensity), m_shadow(castShadow) {}
 		DllExport ILight(const ILight&) = delete;
 		DllExport virtual ~ILight(void) = default;
 		DllExport const ILight& operator=(const ILight&) = delete;
 
 		/**
-		 * @brief Calculates the light intensity, at the point \b ray.org which is to be illuminated.
-		 * @details This function sets the \b ray.dir to be the the direction vector from the surface point \b ray.org to the light source.
-		 * @param[in, out] ray The ray from object point to the light source. The direction ray.dir is modified within the function
-		 * @return The intensity of light hitting the point \b ray.org
+		 * @brief Calculates and return incident radiance at the point \b ray.org and fills-out the shadow ray.
+		 * @details This method returns incident radiance (L) from the light source at a point \b ray.org 
+		 * and also returns the direction vector \b ray.dir that gives the direction from which radiance is arriving.
+		 * @param[in, out] ray The shadow ray from object point to the light source. Everything except the ray.org may be modified by this method
+		 * @return The intensity of light hitting the point \b ray.org and the shadow ray \b ray
 		 */
-		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) = 0;
+		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) const = 0;
 		/**
 		 * @brief Returns recommended number of samples for the particular light source implementation
 		 * @return The recommended number of samples
 		 */
 		DllExport virtual size_t				getNumSamples(void) const = 0;
+		/**
+		 * @brief Sets light source intensity
+		 * @param intensity The emission color and strength of the light source
+		 */
+		DllExport virtual void					setIntensity(const Vec3f& intensity) { m_intensity = intensity; }
+		/**
+		 * @brief Returns the intensity of the light source
+		 * @return The emission color and strength of the light source
+		 */
+		DllExport Vec3f							getIntensity(void) const { return m_intensity; }
 		/**
 		 * @brief Flag indicating if the light source casts shadow or not
 		 * @retval true If the light source casts shadow
@@ -54,7 +67,8 @@ namespace rt {
 		
 		
 	private:
-		bool	m_shadow;
+		Vec3f	m_intensity;	///< The emission (red, green, blue)
+		bool	m_shadow;		///< Flag indicating whether the light source casts shadows
 	};
 
 	using ptr_light_t = std::shared_ptr<ILight>;

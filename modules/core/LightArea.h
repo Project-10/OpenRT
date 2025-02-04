@@ -2,7 +2,7 @@
 // Written by Sergey Kosov in 2019 for Jacobs University
 #pragma once
 
-#include "LightOmni.h"
+#include "ILight.h"
 #include "SamplerStratified.h"
 
 namespace rt {
@@ -12,7 +12,7 @@ namespace rt {
 	 * @ingroup moduleLight
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CLightArea : public CLightOmni
+	class CLightArea : public ILight
 	{
 	public:
 		/**
@@ -28,7 +28,7 @@ namespace rt {
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
 		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, ptr_sampler_t pSampler = std::make_shared<CSamplerStratified>(4, true), bool castShadow = true)
-			: CLightOmni(intensity, p0, castShadow)
+			: ILight(intensity, castShadow)
 			, m_org(p0)
 			, m_edge1(p1 - p0)
 			, m_edge2(p3 - p0)
@@ -39,7 +39,7 @@ namespace rt {
 			m_normal = normalize(m_normal);
 		}
 
-		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) override;
+		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) const override;
 		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
 
 		/**
