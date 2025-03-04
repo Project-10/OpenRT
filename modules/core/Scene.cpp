@@ -52,11 +52,36 @@ namespace rt {
 #endif		
 	}
 
-	Mat CScene::render(ptr_sampler_t pSampler) const
+	void CScene::render_tile(Mat& img, ptr_sampler_t pSampler, int y_start, int y_end, int x_start, int x_end) const
+	{
+		ptr_camera_t activeCamera = getActiveCamera();
+		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
+		const size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
+#ifdef ENABLE_PDP		
+		parallel_for_(Range(y_start, y_end), [&](const Range& range) {
+#else		
+		const Range range(y_start, y_end);
+#endif
+		Ray ray;
+		for (int y = range.start; y < range.end; y++) {
+			Vec3f* pImg = img.ptr<Vec3f>(y);
+			for (int x = x_start; x < x_end; x++) 
+				for (size_t s = 0; s < nSamples; s++) {
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					pImg[x] += rayTrace(ray);
+				}
+		}
+#ifdef ENABLE_PDP
+		});
+#endif
+	}
+
+	Mat CScene::render(ptr_sampler_t pSampler, size_t tileSize) const
 	{
 		ptr_camera_t activeCamera = getActiveCamera();
 		RT_ASSERT_MSG(activeCamera, "Camera is not found. Add at least one camera to the scene.");
 		Mat img(activeCamera->getResolution(), CV_32FC3, Scalar(0)); 	// image array
+		const size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
 		
 #ifdef DEBUG_PRINT_INFO
 		std::cout << "\nNumber of Primitives: " << m_vpPrims.size() << std::endl;
@@ -66,28 +91,47 @@ namespace rt {
 		if (pSampler) nSamples *= pSampler->getNumSamples();
 		std::cout << "Rays per Pixel: " << nSamples << std::endl;
 #endif
+		if (tileSize > 0) {
+			const int nTilesX = static_cast<int>((img.cols + tileSize - 1) / tileSize);
+			const int nTilesY = static_cast<int>((img.rows + tileSize - 1) / tileSize);
 		
-#ifdef ENABLE_PDP
-		parallel_for_(Range(0, img.rows), [&](const Range& range) {
-#else
-		const Range range(0, img.rows);
-#endif
-		Ray ray;
-		for (int y = range.start; y < range.end; y++) {
-			Vec3f* pImg = img.ptr<Vec3f>(y);
-			for (int x = 0; x < img.cols; x++) {
-				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
-				for (size_t s = 0; s < nSamples; s++) {
-					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
-					pImg[x] += rayTrace(ray);
+			Mat img1;
+			for (int y = 0; y < nTilesY; y++)
+				for (int x = 0; x < nTilesX; x++) {
+				
+					render_tile(img, pSampler, 
+						static_cast<int>(y * tileSize),
+						std::min(static_cast<int>((y + 1) * tileSize), img.rows),
+						static_cast<int>(x * tileSize),
+						std::min(static_cast<int>((x + 1) * tileSize), img.cols)
+					);
+				
+					img.convertTo(img1, CV_8UC3, 255.0 / nSamples);
+					imshow("Render", img1);
+					waitKey(1);
 				}
-				pImg[x] = (1.0f / nSamples) * pImg[x];
-			}
 		}
+		else {
+			const Range range(0, img.rows);
 #ifdef ENABLE_PDP
-		});
+			parallel_for_(range, [&](const Range& range) {
 #endif
-		img.convertTo(img, CV_8UC3, 255);
+			Ray ray;
+			for (int y = range.start; y < range.end; y++) {
+				Vec3f* pImg = img.ptr<Vec3f>(y);
+				for (int x = 0; x < img.cols; x++) {
+					for (size_t s = 0; s < nSamples; s++) {
+						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+						pImg[x] += rayTrace(ray);
+					}
+				}
+			}
+#ifdef ENABLE_PDP
+			});
+#endif
+		}
+		
+		img.convertTo(img, CV_8UC3, 255.0 / nSamples);
 #ifdef ENABLE_CACHE
 		imwrite(m_lriFileName, img);
 #endif

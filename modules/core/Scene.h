@@ -95,9 +95,25 @@ namespace rt {
 		/**
 		 * @brief Renders the view from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
+		 * @param tileSize Size of the tile for rendering. If set to 0, the entire image is rendered at once.
+		 *                 Usually, tileSize is a power of two (e.g., 32, 64, 128). The typical value is 32.
+		 *                 Rendering with tiles allows the user to see intermediate results, but is generally slower than rendering the entire image at once.
 		 * @returns The rendered image (type: CV_8UC3)
 		 */
-		DllExport Mat					render(ptr_sampler_t pSampler = nullptr) const;
+		DllExport Mat					render(ptr_sampler_t pSampler = nullptr, size_t tileSize = 0) const;
+		/**
+		 * @brief Renders a specific tile of the image.
+		 * @details This function is used to render a specific tile of the image. It processes the pixel values within the specified tile boundaries (y_start to y_end and x_start to x_end).
+		 * Rendering in tiles allows the user to see intermediate results during the rendering process but generally takes longer than rendering the entire image at once.
+		 * @param img Reference to the image being rendered.
+		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
+		 * @param y_start Starting Y-coordinate of the tile.
+		 * @param y_end Ending Y-coordinate of the tile.
+		 * @param x_start Starting X-coordinate of the tile.
+		 * @param x_end Ending X-coordinate of the tile.
+		 */
+		void							render_tile(Mat& img, ptr_sampler_t pSampler, int y_start, int y_end, int x_start, int x_end) const;
+
 		/**
 		 * @brief Renders the depth-map from the active camera
 		 * @param pSampler Pointer to the sampler to be used for anti-aliasing.
@@ -165,7 +181,7 @@ namespace rt {
 		 * @retval nullptr If there are no cameras added yet into the scene
 		 */
 		ptr_camera_t					getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
-		
+
 		
 	private:
 		const Vec3f					m_bgColor		= Vec3f::all(0);		///< background color
