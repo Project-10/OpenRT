@@ -22,6 +22,7 @@
 #include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
 #include "core/PrimBoolean.h"
+#include "core/PrimFactory.h"
 
 #include "core/SolidQuad.h"
 #include "core/SolidBox.h"
@@ -30,14 +31,19 @@
 #include "core/SolidSphere.h"
 #include "core/SolidTorus.h"
 
-#include "core/ShaderGeneral.h"
 #include "core/ShaderFlat.h"
-#include "core/ShaderShadow.h"
+#include "core/ShaderDiffuse.h"
+#include "core/ShaderEyelight.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
+#include "core/ShaderGeneral.h"
+#include "core/ShaderGlobal.h"
+#include "core/ShaderShadow.h"
 #include "core/ShaderChrome.h"
-#include "core/ShaderEyelight.h"
 #include "core/ShaderSSLT.h"
+
+#include "core/ShaderArea.h"
+#include "core/ShaderHemisphere.h"
 
 #include "core/Sampler.h"
 #include "core/SamplerRandom.h"
