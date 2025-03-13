@@ -13,62 +13,14 @@ ptr_prim_t createCompositeDice(const ptr_shader_t& shader) {
 	auto solidSphere8 = CSolidSphere(shader, Vec3f(0, -3.5f, -7), 0.2f, 24, true);
 	auto solidSphere9 = CSolidSphere(shader, Vec3f(0.5f, -3.5f, -7), 0.2f, 24, true);
 	auto solidSphere10 = CSolidSphere(shader, Vec3f(-0.5f, -3.5f, -7), 0.2f, 24, true);
-	ptr_prim_t temp = std::make_shared<CPrimBoolean>(solidSphere2, solidSphere3, BoolOp::Union);
-	ptr_prim_t row1 = std::make_shared<CPrimBoolean>(temp, solidSphere4, BoolOp::Union);
-	ptr_prim_t temp2 = std::make_shared<CPrimBoolean>(solidSphere5, solidSphere6, BoolOp::Union);
-	ptr_prim_t row2 = std::make_shared<CPrimBoolean>(temp2, solidSphere7, BoolOp::Union);
-	ptr_prim_t temp3 = std::make_shared<CPrimBoolean>(solidSphere8, solidSphere9, BoolOp::Union);
-	ptr_prim_t row3 = std::make_shared<CPrimBoolean>(temp3, solidSphere10, BoolOp::Union);
-	ptr_prim_t temp4 = std::make_shared<CPrimBoolean>(row1, row2, BoolOp::Union);
-	return std::make_shared<CPrimBoolean>(row3, temp4, BoolOp::Union);
-}
-
-std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolution)
-{
-	auto pScene = std::make_shared<CScene>(bgColor);
-
-	// textures
-	auto pTextureEarthDiffuse = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
-	auto pTextureEarthSpecular = std::make_shared<CTexture>(dataPath + "1_earth_specular_map_8k.tif");
-	auto pTextureEarthAmbient = std::make_shared<CTexture>(dataPath + "1_earth_night_map_8k.jpg");
-
-	// Shaders
-	auto pShaderEarth = std::make_shared<CShaderPhong>(*pScene, Vec3f::all(1), 0.5f, 1.0f, 0.5f, 5.0f);
-	pShaderEarth->setAmbientColor(pTextureEarthAmbient);
-	pShaderEarth->setDiffuseColor(pTextureEarthDiffuse);
-	pShaderEarth->setSpecularLevel(pTextureEarthSpecular);
-	auto pShaderCore = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 0), 0.8f, 0.2f, 0.0f, 40.0f);
-	auto pShaderCut = std::make_shared<CShaderPhong>(*pScene, RGB(204, 51, 0), 0.3f, 0.7f, 0.0f, 40.0f);
-	auto pShaderAtmosphere = std::make_shared<CShaderSSLT>(*pScene, RGB(0, 127, 255), 0.0f);
-
-	// Geometries
-	auto earth          = CSolidSphere(pShaderEarth, Vec3f(0, 0, 0), 1, 64);
-	auto core           = CSolidSphere(pShaderCore, Vec3f(0, 0, 0), 0.55f, 64);
-	auto atmosphere		= CSolidSphere(pShaderAtmosphere, Vec3f(0, 0, 0), 1.05f, 64);
-	//ptr_prim_t earth = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 1);
-	//ptr_prim_t core = std::make_shared<CPrimSphere>(pShaderCore, Vec3f(0, 0, 0), 0.55f);
-
-	// Transform
-	CTransform T;
-	earth.transform(T.rotate(Vec3f(0, 1, 0), 45).get());
-
-	auto box = CSolidBox(pShaderCut, Vec3f(0.5f, 0.5f, 0.5f), 0.5f);
-	ptr_prim_t composite1 = std::make_shared<CPrimBoolean>(earth, box, BoolOp::Substraction);
-	ptr_prim_t composite2 = std::make_shared<CPrimBoolean>(composite1, core, BoolOp::Union);
-
-	pScene->add(composite2);
-	//pScene->add(box);
-	//pScene->add(atmosphere);
-
-	// Light
-	auto sun = std::make_shared<CLightOmni>(Vec3f::all(1e9), Vec3f(23500, 0, 0), false);
-	pScene->add(sun);
-
-	// cameras
-	auto camera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(1, 2, 3), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f);
-	pScene->add(camera);
-
-	return pScene;
+	ptr_prim_t temp = CPrimFactory::createBoolean(solidSphere2, solidSphere3, BoolOp::Union);
+	ptr_prim_t row1 = CPrimFactory::createBoolean(temp, solidSphere4, BoolOp::Union);
+	ptr_prim_t temp2 = CPrimFactory::createBoolean(solidSphere5, solidSphere6, BoolOp::Union);
+	ptr_prim_t row2 = CPrimFactory::createBoolean(temp2, solidSphere7, BoolOp::Union);
+	ptr_prim_t temp3 = CPrimFactory::createBoolean(solidSphere8, solidSphere9, BoolOp::Union);
+	ptr_prim_t row3 = CPrimFactory::createBoolean(temp3, solidSphere10, BoolOp::Union);
+	ptr_prim_t temp4 = CPrimFactory::createBoolean(row1, row2, BoolOp::Union);
+	return CPrimFactory::createBoolean(row3, temp4, BoolOp::Union);
 }
 
 ptr_prim_t biconvex(const ptr_shader_t pShader, const Vec3f& origin, float R, float r)
@@ -76,7 +28,7 @@ ptr_prim_t biconvex(const ptr_shader_t pShader, const Vec3f& origin, float R, fl
 	float x = sqrtf(R * R - r * r);
 	ptr_prim_t pSphere1 = std::make_shared<CPrimSphere>(pShader, origin - Vec3f(0, 0, x), R);
 	ptr_prim_t pSphere2 = std::make_shared<CPrimSphere>(pShader, origin + Vec3f(0, 0, x), R);
-	ptr_prim_t res = std::make_shared<CPrimBoolean>(pSphere1, pSphere2, BoolOp::Intersection);
+	ptr_prim_t res = CPrimFactory::createBoolean(pSphere1, pSphere2, BoolOp::Intersection);
 
 	return res;
 }
@@ -90,12 +42,12 @@ ptr_prim_t biconcave(const ptr_shader_t pShader, const Vec3f& origin, float R, f
 
 	ptr_prim_t pSphere1 = std::make_shared<CPrimSphere>(pShader, origin - Vec3f(0, 0, x), R);
 	ptr_prim_t pSphere2 = std::make_shared<CPrimSphere>(pShader, origin + Vec3f(0, 0, x), R);
-	ptr_prim_t pSpheres = std::make_shared<CPrimBoolean>(pSphere1, pSphere2, BoolOp::Union);
+	ptr_prim_t pSpheres = CPrimFactory::createBoolean(pSphere1, pSphere2, BoolOp::Union);
 
 	CTransform t;
 	CSolidCylinder base(pShader, origin, r, h, 1, 32, true);
 	base.transform(t.rotate(Vec3f(1, 0, 0), 90).translate(0, 0, -h / 2).get());
-	ptr_prim_t pLens = std::make_shared<CPrimBoolean>(base, pSpheres, BoolOp::Substraction);
+	ptr_prim_t pLens = CPrimFactory::createBoolean(base, pSpheres, BoolOp::Substraction);
 
 	return pLens;
 }
@@ -169,10 +121,10 @@ std::shared_ptr<CScene> buildClassicExample(const Vec3f& bgColor, const Size res
 	c2.transform(T.rotate(Vec3f(1, 0, 0), 90.0f).translate(0, 0, -3).get());
 	c3.transform(T.rotate(Vec3f(0, 0, 1), 90.0f).translate(3, 0, 0).get());
 
-	ptr_prim_t	u1 = std::make_shared<CPrimBoolean>(c1, c2, BoolOp::Union);
-	ptr_prim_t	u2 = std::make_shared<CPrimBoolean>(u1, c3, BoolOp::Union);
-	ptr_prim_t	i1 = std::make_shared<CPrimBoolean>(b1, s1, BoolOp::Intersection);
-	ptr_prim_t	d1 = std::make_shared<CPrimBoolean>(i1, u2, BoolOp::Substraction);
+	ptr_prim_t	u1 = CPrimFactory::createBoolean(c1, c2, BoolOp::Union);
+	ptr_prim_t	u2 = CPrimFactory::createBoolean(u1, c3, BoolOp::Union);
+	ptr_prim_t	i1 = CPrimFactory::createBoolean(b1, s1, BoolOp::Intersection);
+	ptr_prim_t	d1 = CPrimFactory::createBoolean(i1, u2, BoolOp::Substraction);
 
 	pScene->add(c1);
 	pScene->add(c2);
@@ -207,7 +159,7 @@ std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resoluti
 	auto sphere2 = std::make_shared<CPrimSphere>(pShader4, Vec3f::all(0), 1);
 	//ptr_prim_t largeSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 5.0f);
 	//ptr_prim_t smallSphere = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, -5), 1.0f);
-	//ptr_prim_t composite = std::make_shared<CPrimBoolean>(largeSphere, smallSphere, BoolOp::Substraction);
+	//ptr_prim_t composite = CPrimFactory::createBoolean(largeSphere, smallSphere, BoolOp::Substraction);
 
 	CTransform T;
 	box1.transform(T.translate(0, 1, 0).get());
@@ -215,8 +167,8 @@ std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resoluti
 	box2.transform(T.translate(0, 1, 0).get());
 	sphere2->transform(T.translate(-1, 2, -1).get());
 
-	auto composite1 = std::make_shared<CPrimBoolean>(box1, CSolid(sphere1), BoolOp::Substraction);
-	auto composite2 = std::make_shared<CPrimBoolean>(box2, CSolid(sphere2), BoolOp::Substraction);
+	auto composite1 = CPrimFactory::createBoolean(box1, CSolid(sphere1), BoolOp::Substraction);
+	auto composite2 = CPrimFactory::createBoolean(box2, CSolid(sphere2), BoolOp::Substraction);
 
 	composite1->transform(T.translate(3, 0, 0).rotate(Vec3f(0, 1, 0), 30).get());
 	composite2->transform(T.translate(-1, 0, 0).scale(2).rotate(Vec3f(0, 1, 0), -60).get());

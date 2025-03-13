@@ -73,6 +73,11 @@ namespace rt {
 		 */
 		DllExport Vec3f								getOrigin(void) const { return m_origin; }
 		/**
+		 * @brief Updates theprimitive's shader
+		 * @param pShader Pointer to the shader to be applied for the primitive
+		 */
+		DllExport void								setShader(const ptr_shader_t pShader) { m_pShader = pShader; }
+		/**
 		 * @brief Returns the primitive's shader
 		 * @return The pointer to the primitive's shader
 		 */
@@ -106,13 +111,13 @@ namespace rt {
 		 */
 		DllExport void								transform(const Mat& T);
 		/**
-		 * @brief Translates the \i point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
+		 * @brief Translates the \a point \b p from World Coordiante System (WCS) to the Object CoordinateSystem (OCS)
 		 * @param p Point in the WCS
 		 * @return Point \b p in OCS
 		 */
 		DllExport Vec3f								wcs2ocs(const Vec3f& p) const;
 		/**
-		* @brief Translates the \i vector \b v from OCS to WCS
+		* @brief Translates the \a vector \b v from OCS to WCS
 		* @param v Vector on OCS
 		* @return Vector \b v in WCS
 		*/
@@ -141,10 +146,10 @@ namespace rt {
 	
 
 	private:
-		const ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
-		Vec3f				m_origin;			///< Position of the center of the primitive
-		std::string			m_name;				///< Optional name of the primitive.
-		bool			    m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
-		Mat					m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
+		ptr_shader_t	m_pShader;			///< Pointer to the shader, see @ref  IShader.
+		Vec3f			m_origin;			///< Position of the center of the primitive
+		std::string		m_name;				///< Optional name of the primitive.
+		bool			m_flipped = false;	///< Flag which helps decide whether to flip the normal or not.
+		Mat				m_t;				///< The transformation matrix (size: 4 x 4) needed for transition from WCS to OCS
 	};
 }

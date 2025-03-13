@@ -35,7 +35,7 @@ namespace rt {
          * @param B THe second operand
          * @param operation The boolean operation on operands \b A and \b B
          * @param maxDepth The max depth of the BSP tree of the solids. Only used if BSP support is enabled
-         * @param maxDepth The max number of primitives in the leaf nodes of the BSP tree of the solids. Only used if BSP support is enabled
+         * @param maxPrimitives The max number of primitives in the leaf nodes of the BSP tree of the solids. Only used if BSP support is enabled
 		 */
         DllExport explicit CPrimBoolean(const CSolid& A, const CSolid& B, BoolOp operation, int maxDepth = 20, int maxPrimitives = 3);
         DllExport virtual ~CPrimBoolean(void) override = default;

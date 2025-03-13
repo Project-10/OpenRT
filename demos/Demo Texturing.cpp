@@ -137,6 +137,66 @@ std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size resoluti
 	return pScene;
 }
 
+std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolution)
+{
+	auto pScene = std::make_shared<CScene>(bgColor);
+
+	// textures
+	bool highres = false;
+
+	auto pTextureEarthDiffuse = std::make_shared<CTexture>(dataPath + (highres ? "earth_color_43K.tif" : "8081_earthmap10k.jpg"));
+	auto pTextureEarthBump = std::make_shared<CTexture>(dataPath + (highres ? "topography_21K.png" : "8081_earthbump10k.jpg"));
+	auto pTextureEarthSpecular = std::make_shared<CTexture>(dataPath + "8081_earthspec10k.jpg");
+	auto pTextureEarthClouds = std::make_shared<CTexture>(dataPath + (highres ? "earth_clouds_43K.tif" : "earth_clouds_8K.tif"));
+	
+	//auto pTextureEarthAmbient = std::make_shared<CTexture>(dataPath + "1_earth_night_map_8k.jpg");
+
+	// Shaders
+	// Shader surface
+	auto pShaderSurface = std::make_shared<CShaderPhong>(*pScene, RGB(200, 255, 200), 0.0f, 1.0f, 0.0f, 10.0f);
+	//pShaderSurface->setAmbientColor(pTextureEarthAmbient);
+	//pShaderSurface->setDiffuseColor(pTextureEarthDiffuse);
+	//pShaderSurface->setBumpMap(pTextureEarthBump, 0.1f);
+	//pShaderSurface->setSpecularLevel(pTextureEarthSpecular);
+
+	// Shader clouds
+	auto pShaderClouds = std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 200), 0.0f, 1.0f, 0, 10.0f);
+	//pShaderClouds->setDiffuseColor(pTextureEarthClouds);
+	pShaderClouds->setOpacity(pTextureEarthClouds);
+	//pShaderClouds->setBumpMap(pTextureEarthClouds, 0.01f);
+
+	auto pShaderAtmosphere = std::make_shared<CShaderSSLT>(*pScene, RGB(0, 127, 255), 0.5f);
+
+	// Geometries
+	//auto surface	= CSolidSphere(pShaderSurface, Vec3f(0, 0, 0), 6.371f, 64);
+	auto surface	= CPrimFactory::createSphere(*pScene, Vec3f::all(0), 6.371f);
+	auto clouds		= CSolidSphere(pShaderClouds, Vec3f(0, 0, 0), 7.383f, 64);
+	auto atmosphere	= CSolidSphere(pShaderAtmosphere, Vec3f(0, 0, 0), 6.471f, 64);
+
+
+	// Transform
+	CTransform T;
+	Mat t = T.rotate(Vec3f(0, 1, 0), 120).rotate(Vec3f(0, 0, 1), -23.5f).get();
+	surface->transform(t);
+	clouds.transform(t);
+
+
+	pScene->add(surface);
+	pScene->add(clouds);
+	//pScene->add(atmosphere);
+
+	// Light
+	auto sun = std::make_shared<CLightOmni>(Vec3f::all(2e10), Vec3f(149600, 0, 0), true);
+	pScene->add(sun);
+
+	// cameras
+	auto camera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(10, 12, 24), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f);
+	//auto camera = std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(2, 0, 6.3f), Vec3f(149600, 0, -100000), Vec3f(0, 0, 1), 90.0f);
+	pScene->add(camera);
+
+	return pScene;
+}
+
 // --- Test Gradient ---
 //Mat m(100, 600, CV_32FC3);
 //CGradient g(RGB(0, 0, 0), RGB(255, 255, 255));
@@ -206,28 +266,33 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 std::shared_ptr<CScene> buildSceneSaturn(const Vec3f& bgColor, const Size resolution) {
 	auto pScene = std::make_shared<CScene>(bgColor);
 
-	Mat saturn_diff = imread(dataPath + "1_saturn_8k.jpg");
-	auto pShaderSaturn = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
-	pShaderSaturn->setDiffuseColor(std::make_shared<CTexture>(saturn_diff));
+	// Geometry
+	auto saturn = CPrimFactory::createSphere(*pScene, Vec3f(0, 0, 0), 60.33f);
+	auto rings  = CPrimFactory::createDisc(*pScene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 142.0f, 72.0f);
 
-	auto pTextureDiff		= std::make_shared<CTexture>(dataPath + "8k_saturn_ring.png");
-	auto pTextureOpacity	= std::make_shared<CTexture>(dataPath + "8k_saturn_ring_alpha.png");
-	auto pSahderRings		= std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1.5f, 0, 0);
-	pSahderRings->setDiffuseColor(pTextureDiff);
-	pSahderRings->setOpacity(pTextureOpacity);
+	pScene->add(saturn);
+	pScene->add(rings);
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e18), Vec3f(0, 0, 1430e6), true));													// sun
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-1000.0f, 300, 670), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 9.0f));	// camera
 
-	auto saturn = std::make_shared<CPrimSphere>(pShaderSaturn, Vec3f(0, 0, 0), 60.33f);
-	auto rings = std::make_shared<CPrimDisc>(pSahderRings, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 142.0f, 72.0f);
+	// Transforming the geometry
 	CTransform t;
 	Mat T = t.rotate(Vec3f(1, 0, 0), 28.f).get();
 	saturn->transform(T);
 	rings->transform(T);
 
-	//pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f));
-	pScene->add(saturn);
-	pScene->add(rings);
-	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(2e18), Vec3f(0, 0, 1430e6), true));
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-1000.0f, 300, 670), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 9.0f));
+	// Textures
+	auto saturn_diffuse	= std::make_shared<CTexture>(dataPath + "1_saturn_8k.jpg");
+	auto rings_diffuse	= std::make_shared<CTexture>(dataPath + "8k_saturn_ring.png");
+	auto rings_opacity	= std::make_shared<CTexture>(dataPath + "8k_saturn_ring_alpha.png");
+
+	// Shaders
+	auto pShaderSaturn	= std::make_shared<CShaderDiffuse>(*pScene, saturn_diffuse);
+	auto pShaderRings	= std::make_shared<CShaderDiffuse>(*pScene, rings_diffuse);
+	pShaderRings->setOpacity(rings_opacity);
+	
+	saturn->setShader(pShaderSaturn);
+	rings->setShader(pShaderRings);
 
 	return pScene;
 }
@@ -235,13 +300,15 @@ std::shared_ptr<CScene> buildSceneSaturn(const Vec3f& bgColor, const Size resolu
 int main()
 {
 	const Vec3f		bgColor = RGB(0, 0, 0);
-	const Size		resolution = Size(1920, 1080);
+	const Size		resolution = Size(1200, 800);
+	//const Size		resolution = Size(3072, 1920);
 	
 	//auto pScene = buildSceneStripes(bgColor, resolution);
 	//auto pScene = buildSceneTemplates(bgColor, resolution);
 	//auto pScene = buildSceneMarble(bgColor, resolution);
-	//auto pScene = buildSceneSaturn(bgColor, resolution);
+	auto pScene = buildSceneSaturn(bgColor, resolution);
 	//auto pScene = buildSceneMoon(bgColor, resolution);
+	//auto pScene = buildSceneEarth(bgColor, resolution);
 	//pScene->buildAccelStructure(20, 3);
 	//Timer::start("Rendering...");
 	//Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true, true));
@@ -250,50 +317,57 @@ int main()
 	////imwrite("D:\\renders\\Saturn.jpg", img);
 	//char key = waitKey();
 
-	auto pScene = std::make_shared<CScene>(bgColor);
+	//auto pScene = std::make_shared<CScene>(bgColor);
 
-	Mat diff = imread(dataPath + "lroc_color_poles_4k.tif");
-	Mat bump = imread(dataPath + "ldem_16_uint.tif");
+	//Mat diff = imread(dataPath + "lroc_color_poles_4k.tif");
+	//Mat bump = imread(dataPath + "ldem_16_uint.tif");
 
 	//resize(diff, diff, Size(4000, 2000), 0, 0, INTER_AREA);
 	//resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
 
-	auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
-	pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
-	pShader->setBumpMap(std::make_shared<CTexture>(bump), 1.0f);
-	//pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
+	//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
+	//pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
+	////pShader->setBumpMap(std::make_shared<CTexture>(bump), 1.0f);
+	////pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));
 
-	auto moon = CSolidSphere(pShader, Vec3f(0, 0, 0), 1.7374f, 64);
-	//auto moon = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
-	CTransform t;
-	auto T = t.rotate(Vec3f(0, 1, 0), 0.25f).get();
-	//moon.transform(t.rotate(Vec3f(0, 1, 0), 90).get());
-	auto pLight = std::make_shared<CLightOmni>(Vec3f::all(2e16), Vec3f(-150e6 * cosf(Pif * 60 / 180), 0, -150e6 * sinf(Pif * 60 / 180)), true);
+	//auto moon = CSolidSphere(pShader, Vec3f(0, 0, 0), 1.7374f, 64);
+	////auto moon = std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f);
+	//CTransform t;
+	//auto T = t.rotate(Vec3f(0, 1, 0), 0.25f).get();
+	////moon.transform(t.rotate(Vec3f(0, 1, 0), 90).get());
+	//auto pLight = std::make_shared<CLightOmni>(Vec3f::all(2e16), Vec3f(-150e6 * cosf(Pif * 60 / 180), 0, -150e6 * sinf(Pif * 60 / 180)), true);
 
-	//pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f));
-	pScene->add(moon);
-	pScene->add(pLight);
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
+	////pScene->add(std::make_shared<CPrimSphere>(pShader, Vec3f(0, 0, 0), 1.7374f));
+	//pScene->add(moon);
+	//pScene->add(pLight);
+	//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-384.4f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 0.8f));
+	
 	pScene->buildAccelStructure(20, 3);
+	Timer::start("Rendering...");
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, false, true), 64);
+	Timer::stop();
+	imwrite("D:/renders/Saturn1.jpg", img);
+	imshow("Image", img);
+	waitKey();
 
-	VideoWriter videoWriter;
-	auto codec = VideoWriter::fourcc('M', 'J', 'P', 'G');		// Native windows codec
+	//VideoWriter videoWriter;
+	//auto codec = VideoWriter::fourcc('M', 'J', 'P', 'G');		// Native windows codec
 	//auto codec = VideoWriter::fourcc('H', '2', '6', '4');		// Try it on MacOS
-	videoWriter.open("D:\\Renders\\moon.avi", codec, 30, resolution);
-	if (!videoWriter.isOpened()) printf("ERROR: Can't open vide file for writing\n");
+	//videoWriter.open("D:\\Renders\\moon.avi", codec, 30, resolution);
+	//if (!videoWriter.isOpened()) printf("ERROR: Can't open vide file for writing\n");
 
-	for (int i = 30; i < 330; i+= 1) {
-		pLight->setOrigin(Vec3f(150e6 * cosf(Pif * i / 180), 150e6 * sinf(Pif * i / 180), 0));
-		Timer::start("Rendering...");
-		Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, false, true));
-		Timer::stop();
-		videoWriter << img;
-		imshow("Image", img);
-		
-		//moon.transform(T);
-		//-imwrite("D:\\renders\\procedural marble.png", img);
-		char key = waitKey(1);
-		if (key == 27) break;
-	}
+	//for (int i = 130; i < 330; i+= 1) {
+	//	pLight->setOrigin(Vec3f(150e6 * cosf(Pif * i / 180), 150e6 * sinf(Pif * i / 180), 0));
+	//	Timer::start("Rendering...");
+	//	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, false, true));
+	//	Timer::stop();
+	//	//videoWriter << img;
+	//	imshow("Image", img);
+	//	
+	//	//moon.transform(T);
+	//	imwrite("D:\\renders\\moon no bump.png", img);
+	//	char key = waitKey();
+	//	if (key == 27) break;
+	//}
 	return 0;
 }
