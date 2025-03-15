@@ -127,5 +127,11 @@ namespace rt {
 	{
 		for(auto pPrim : m_vpPrims) pPrim->flipNormal();
 	}
+
+	void CSolid::setShader(const ptr_shader_t pShader)
+	{
+		for (auto pPrim : m_vpPrims) pPrim->setShader(pShader);
+	}
+
 }
 

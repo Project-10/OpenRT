@@ -73,7 +73,7 @@ namespace rt {
 		 */
 		DllExport Vec3f								getOrigin(void) const { return m_origin; }
 		/**
-		 * @brief Updates theprimitive's shader
+		 * @brief Updates the primitive's shader
 		 * @param pShader Pointer to the shader to be applied for the primitive
 		 */
 		DllExport void								setShader(const ptr_shader_t pShader) { m_pShader = pShader; }

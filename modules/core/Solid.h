@@ -43,6 +43,11 @@ namespace rt {
 		 */
 		DllExport void								flipNormal(void);
 		/**
+		 * @brief Updates the sodild's shader
+		 * @param pShader Pointer to the shader to be applied for the solid
+		 */
+		DllExport void								setShader(const ptr_shader_t pShader);
+		/**
 		 * @brief Returns the primitives which build the solid
 		 * @return The vector with pointers to the primitives which build the solid
 		 */
