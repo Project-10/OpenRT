@@ -12,7 +12,7 @@ int main() {
 	
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	auto pShaderFloor	= std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(39, 174, 96), 0.02f);
+	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(39, 174, 96), 0.2f);
 	
 	scene.add(CSolidQuad(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(0, 0, 1), 500));
 	
@@ -32,7 +32,7 @@ int main() {
 	scene.buildAccelStructure(25, 5);
 
 	Timer::start("Rendering...");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(2, true, true), 32);
 	Timer::stop();
 	imshow("image", img);
 	waitKey();

@@ -39,9 +39,10 @@ namespace rt {
 			res += (1.0f - opacity) * R.reTrace(m_scene);
 		}
 
-		// ------ diffuse ------
-		Ray shadowRay(ray.hitPoint(shadingNormal));						// shadow ray
 
+		// Gathering incoming light (incident radiance)
+		Vec3f incident_radiance(0, 0, 0);
+		Ray shadowRay(ray.hitPoint(shadingNormal));						// shadow ray
 		for (auto& pLight : m_scene.getLights()) {
 			Vec3f L = Vec3f::all(0);
 			const size_t nSamples = pLight->getNumSamples();
@@ -58,11 +59,13 @@ namespace rt {
 					// ------ diffuse ------
 					float cosLightNormal = shadowRay.dir.dot(shadingNormal);
 					if (cosLightNormal > 0)
-						L += opacity * cosLightNormal * k_occlusion * diffuseColor.mul(radiance.value());
+						L += cosLightNormal * k_occlusion * radiance.value();
 				}
 			} // s
-			res += (1.0f / nSamples) * L;
+			incident_radiance += (1.0f / nSamples) * L;
 		} // pLight
+
+		res += opacity * diffuseColor.mul(incident_radiance);
 
 		return res;
 	}
