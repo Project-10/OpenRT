@@ -27,8 +27,10 @@ namespace rt {
 					if (cosLightNormal > 0) {
 						Vec3f L = avg * cosLightNormal * radiance.value();
 						L_possible += L;
-						if (!pLight->shadow() || !m_scene.if_intersect(I))
-							L_actual += L;
+						
+						// Check shadow (light sourse is occluded)
+						float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(I) : 1.0f;
+						L_actual += k_occlusion * L;
 					}
 				}
 			} // s

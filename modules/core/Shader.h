@@ -111,11 +111,8 @@ namespace rt {
 		//DllExport float getBumpU(const Ray& ray) const;
 		//DllExport float getBumpV(const Ray& ray) const;
 
-		/**
-		 * @brief Returns the opacity
-		 * @return The opacity value
-		 */
-		DllExport float	getOpacity(const Ray& ray) const;
+
+		DllExport virtual float	getOpacity(const Ray& ray) const override final;
 		
 		
 	private:

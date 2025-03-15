@@ -189,22 +189,42 @@ namespace rt {
         bool hit = false;
 		for (auto& pPrim : m_vpPrims)
 			hit |= pPrim->intersect(ray);
-		
-		
 
 		return hit;
 #endif
 	}
 
-	bool CScene::if_intersect(const Ray& ray) const 
+	bool CScene::if_intersect(const Ray& ray) const
 	{
 #ifdef ENABLE_BSP
 		return m_pBSPTree->intersect(lvalue_cast(Ray(ray)));
 #else
 		for (auto& pPrim : m_vpPrims)
-            if (pPrim->if_intersect(ray)) return true;
+			if (pPrim->if_intersect(ray)) return true;
 		return false;
 #endif
+	}
+
+	float CScene::evalOcclusion(const Ray& ray) const
+	{
+		if (false) {
+			return if_intersect(ray) ? 0.0f : 1.0f;
+		}
+		else {
+			Ray r = ray;
+			
+			float res = 1.0f;	// percentage of light arriving to the surface
+			if (intersect(r)) {
+				res = 1.0f - r.hit->getShader()->getOpacity(r);
+				if ((res >= Epsilon) && (r.counter++ < maxRayCounter)) {
+					r.org = r.hitPoint();
+					r.t = ray.t - r.t;
+					r.hit = nullptr;
+					res *= evalOcclusion(r);
+				}
+			}
+			return res;
+		}
 	}
 
 	Vec3f CScene::rayTrace(Ray& ray) const 

@@ -149,15 +149,11 @@ namespace rt {
 		 */
 		bool							intersect(Ray& ray) const;
 		/**
-		 * @brief Checks intersection between ray \b ray and the geometry present in scene
-		 * @details In contrast to the intersect() method, this method does not modify argument \b ray and returns once the first intersection found. Thus this method
-		 * is faster then intersect() and may be used to check occlusions.
-		 * @note This method is to be used only in OpenRT shaders
-		 * @param ray The ray (Ref. @ref Ray for details)
-		 * @retval true If point \b ray.org is occluded
-		 * @retval false otherwise
+		 * @brief Evaluates the degree of occlusion from the light source
+		 * @param ray The shadow ray (Ref. @ref Ray for details). Usually a ray originating at a shading point of an object and pointing to a light source
+		 * @retval A coefficient (between 0 and 1) indicating the percentage of light coming to the object's point. 1 - means that 100% of light reaching the surface, 0 - total occlusion.
 		 */
-		bool							if_intersect(const Ray& ray) const;
+		float							evalOcclusion(const Ray& ray) const;
 		/**
 		 * @brief Traces the given ray and shades it
 		 * @note This method is to be used only in OpenRT shaders
@@ -181,6 +177,16 @@ namespace rt {
 		 * @retval nullptr If there are no cameras added yet into the scene
 		 */
 		ptr_camera_t					getActiveCamera(void) const { return m_vpCameras.empty() ? nullptr : m_vpCameras.at(m_activeCamera); }
+		/**
+		 * @brief Checks intersection between ray \b ray and the geometry present in scene
+		 * @details In contrast to the intersect() method, this method does not modify argument \b ray and returns once the first intersection found. Thus this method
+		 * is faster then intersect() and may be used to check occlusions.
+		 * @note This method is to be used only in OpenRT shaders
+		 * @param ray The ray (Ref. @ref Ray for details)
+		 * @retval true If point \b ray.org is occluded
+		 * @retval false otherwise
+		 */
+		bool							if_intersect(const Ray& ray) const;
 
 		
 	private:

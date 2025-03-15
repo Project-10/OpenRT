@@ -33,7 +33,7 @@ namespace rt {
 		}
 
 
-		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;		// reflection vector
+		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;			// reflection vector
 
 #ifdef DEBUG_MODE
 		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
@@ -50,27 +50,32 @@ namespace rt {
 
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
-			Ray I(ray.hitPoint(shadingNormal));												// shadow ray
+			Ray shadowRay(ray.hitPoint(shadingNormal));												// shadow ray
 
 			for (auto& pLight : m_scene.getLights()) {
 				Vec3f L = Vec3f::all(0);
 				const size_t nSamples = pLight->getNumSamples();
 				for (size_t s = 0; s < nSamples; s++) {
+					
 					// get direction to light, and intensity
-					I.hit = ray.hit;	// TODO: double check
-					auto radiance = pLight->illuminate(I);
-					if (radiance && (!pLight->shadow() || !m_scene.if_intersect(I))) {
+					shadowRay.hit = ray.hit;	// Needed for the skylight
+					auto radiance = pLight->illuminate(shadowRay);
+					if (radiance) {
+						// Check shadow (light sourse is occluded)
+						float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(shadowRay) : 1.0f;
+						if (k_occlusion < Epsilon) continue;
+
 						// ------ diffuse ------
 						if (m_kd > 0) {
-							float cosLightNormal = I.dir.dot(shadingNormal);
+							float cosLightNormal = shadowRay.dir.dot(shadingNormal);
 							if (cosLightNormal > 0)
-								L += m_kd * opacity * cosLightNormal * diffuseColor.mul(radiance.value());
+								L += m_kd * opacity * cosLightNormal * k_occlusion * diffuseColor.mul(radiance.value());
 						}
 						// ------ specular ------
 						if (ks > 0) {
-							float cosLightReflect = I.dir.dot(reflected.dir);
+							float cosLightReflect = shadowRay.dir.dot(reflected.dir);
 							if (cosLightReflect > 0)
-								L += ks * powf(cosLightReflect, m_ke) * radiance.value();
+								L += ks * powf(cosLightReflect, m_ke) * k_occlusion * radiance.value();
 						}
 					}
 				} // s

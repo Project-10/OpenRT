@@ -27,6 +27,12 @@ namespace rt {
 		 * @return The color of the hit objesct
 		 */
 		DllExport virtual Vec3f shade(const Ray& ray) const = 0;
+		/**
+		 * @brief Returns the opacity of the hit by the ray \b ray object
+		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
+		 * @return The opacity value
+		 */
+		DllExport virtual float getOpacity(const Ray& ray) const = 0;
 	};
 
 	using ptr_shader_t = std::shared_ptr<IShader>;

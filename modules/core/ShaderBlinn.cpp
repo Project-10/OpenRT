@@ -41,19 +41,23 @@ namespace rt {
 					// get direction to light, and intensity
 					I.hit = ray.hit;	// TODO: double check
 					auto radiance = pLight->illuminate(I);
-					if (radiance && (!pLight->shadow() || !m_scene.if_intersect(I))) {
+					if (radiance) { 
+						// Check shadow (light sourse is occluded)
+						float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(I) : 1.0f;
+						if (k_occlusion < Epsilon) continue;
+						
 						// ------ diffuse ------
 						if (m_kd > 0) {
 							float cosLightNormal = I.dir.dot(shadingNormal);
 							if (cosLightNormal > 0)
-								L += m_kd * opacity * cosLightNormal * diffuseColor.mul(radiance.value());
+								L += m_kd * opacity * cosLightNormal * k_occlusion * diffuseColor.mul(radiance.value());
 						}
 						// ------ specular ------
 						if (ks > 0) {
 							Vec3f H = normalize(I.dir - ray.dir);
 							float cosHalfwayNormal = H.dot(shadingNormal);
 							if (cosHalfwayNormal > 0)
-								L += ks * powf(cosHalfwayNormal, m_ke) * radiance.value();
+								L += ks * powf(cosHalfwayNormal, m_ke) * k_occlusion * radiance.value();
 						}
 					}
 				} // s
