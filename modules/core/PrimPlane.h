@@ -32,7 +32,7 @@ namespace rt {
 		DllExport virtual bool 						intersect(Ray& ray) const override;
 		DllExport virtual bool 						if_intersect(const Ray& ray) const override;
 		DllExport virtual Vec2f						getTextureCoords(const Ray& ray) const override;
-		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const;
+		DllExport virtual std::pair<Vec3f, Vec3f>	dp(const Vec3f& p) const override;
 		DllExport virtual CBoundingBox				getBoundingBox(void) const override;
 
 		
