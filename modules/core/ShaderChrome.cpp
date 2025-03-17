@@ -22,7 +22,7 @@ namespace rt {
 			if (reflected.dir.dot(normal) < -0.001f) 
 				continue;
 
-			res += reflected.reTrace(m_scene);
+			res += reflected.reTrace(getScene());
 			k++;
 		}
 		if (k != 0)

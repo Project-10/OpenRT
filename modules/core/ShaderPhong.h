@@ -1,6 +1,6 @@
 // Phong shader class
 // Written by Dr. Sergey G. Kosov in 2019 for Project X
-#include "Shader.h"
+#include "ShaderScene.h"
 
 #pragma once
 
@@ -12,7 +12,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderPhong : public CShader
+	class CShaderPhong : public CShaderScene
 	{
 	public:
 		/**
@@ -25,8 +25,7 @@ namespace rt {
 		 * @param ke The shininess exponent
 		 */
 		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
-			: CShader(color)
-			, m_scene(scene)
+			: CShaderScene(scene, color)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
@@ -43,8 +42,7 @@ namespace rt {
 		 * @param ke The shininess exponent
 		 */
 		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
-			: CShader(pTexture)
-			, m_scene(scene)
+			: CShaderScene(scene, pTexture)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
@@ -57,8 +55,6 @@ namespace rt {
 	
 		
 	private:
-		const CScene& m_scene;		///< Reference to the scene object
-		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
 		float m_ke;    				///< The shininess exponent

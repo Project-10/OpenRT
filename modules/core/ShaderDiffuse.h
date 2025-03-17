@@ -1,6 +1,6 @@
 // Diffuse shader class
 // Written by Dr. Sergey G. Kosov in 2025 for Project X
-#include "Shader.h"
+#include "ShaderScene.h"
 
 #pragma once
 
@@ -12,7 +12,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderDiffuse : public CShader
+	class CShaderDiffuse : public CShaderScene
 	{
 	public:
 		/**
@@ -21,8 +21,7 @@ namespace rt {
 		 * @param color The color of the object
 		 */
 		DllExport CShaderDiffuse(const CScene& scene, const Vec3f& color)
-			: CShader(color)
-			, m_scene(scene)
+			: CShaderScene(scene, color)
 		{ }
 		/**
 		 * @brief Constructor
@@ -30,15 +29,10 @@ namespace rt {
 		 * @param pTexture Pointer to the texture
 		 */
 		DllExport CShaderDiffuse(const CScene& scene, const ptr_texture_t pTexture)
-			: CShader(pTexture)
-			, m_scene(scene)
+			: CShaderScene(scene, pTexture)
 		{ }
 		DllExport virtual ~CShaderDiffuse(void) = default;
 
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
-
-
-	private:
-		const CScene& m_scene;		///< Reference to the scene object
 	};
 }

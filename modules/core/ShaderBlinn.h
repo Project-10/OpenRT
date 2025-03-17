@@ -1,6 +1,6 @@
 // Blinn shader class
 // Written by Dr. Sergey G. Kosov in 2019 for Project X
-#include "Shader.h"
+#include "ShaderScene.h"
 
 #pragma once
 
@@ -13,7 +13,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderBlinn : public CShader
+	class CShaderBlinn : public CShaderScene
 	{
 	public:
 		/**
@@ -26,8 +26,7 @@ namespace rt {
 		 * @param ke The shininess exponent (should be 4 times larger than for Phong to have the same highlight)
 		 */
 		DllExport CShaderBlinn(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke)
-			: CShader(color)
-			, m_scene(scene)
+			: CShaderScene(scene, color)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(4 * ke)
@@ -44,8 +43,7 @@ namespace rt {
 		 * @param ke The shininess exponent (should be 4 times larger than for Phong to have the same highlight)
 		 */
 		DllExport CShaderBlinn(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke)
-			: CShader(pTexture)
-			, m_scene(scene)
+			: CShaderScene(scene, pTexture)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(4 * ke)
@@ -56,8 +54,6 @@ namespace rt {
 
 		
 	private:
-		const CScene& m_scene;		///< Reference to the scene object
-		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficient
 		float m_ke;    				///< The shininess exponent

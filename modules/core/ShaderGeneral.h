@@ -2,7 +2,7 @@
 // Written by Dr. Sergey G. Kosov in 2019 for Project X
 #pragma once
 
-#include "Shader.h"
+#include "ShaderScene.h"
 #include "Sampler.h"
 
 namespace rt {
@@ -13,7 +13,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderGeneral : public CShader
+	class CShaderGeneral : public CShaderScene
 	{
 	public:
 		/**
@@ -30,8 +30,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderGeneral(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr )
-			: CShader(color)
-			, m_scene(scene)
+			: CShaderScene(scene, color)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
@@ -54,8 +53,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderGeneral(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr)
-			: CShader(pTexture)
-			, m_scene(scene)
+			: CShaderScene(scene, pTexture)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
@@ -70,8 +68,6 @@ namespace rt {
 	
 	
 	private:
-		const CScene& m_scene;		///< Reference to the scene object
-		
 		float m_ka;    				///< The ambient coefficient
 		float m_kd;    				///< The diffuse reflection coefficients
 		float m_ke;    				///< The shininess exponent

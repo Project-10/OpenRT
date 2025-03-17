@@ -36,18 +36,18 @@ namespace rt {
 			// ------ opacity ------
 			if (opacity < 1) {
 				Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
-				res += (1.0f - opacity) * R.reTrace(m_scene);
+				res += (1.0f - opacity) * R.reTrace(getScene());
 			}
 			
 			// ------ ambient ------
 			if (m_ka > 0)
-				res += m_ka * opacity * m_scene.getAmbientColor().mul(ambientColor);
+				res += m_ka * opacity * getScene().getAmbientColor().mul(ambientColor);
 
 			// ------ diffuse and/or specular ------
 			if (m_kd > 0 || m_ke > 0) {
 				Ray I(ray.hitPoint(shadingNormal));
 
-				for (auto& pLight : m_scene.getLights()) {
+				for (auto& pLight : getScene().getLights()) {
 					Vec3f L = Vec3f::all(0);
 					const size_t nSamples = pLight->getNumSamples();
 					for (size_t s = 0; s < nSamples; s++) {
@@ -56,7 +56,7 @@ namespace rt {
 						auto radiance = pLight->illuminate(I);
 						if (radiance) {
 							// Check shadow (light sourse is occluded)
-							float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(I) : 1.0f;
+							float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;
 							if (k_occlusion < Epsilon) continue;
 
 							// ------ diffuse ------
@@ -80,16 +80,16 @@ namespace rt {
 			// ------ reflection ------
 			std::optional<Vec3f> reflection = std::nullopt;		// reflected color
 			if (m_km > 0) {
-				reflection = reflected.reTrace(m_scene);
+				reflection = reflected.reTrace(getScene());
 				res += m_km * reflection.value();
 			}
 
 			// ------ refraction ------
 			if (m_kt > 0) {
 				auto refracted = ray.refracted(n, inside ? m_refractiveIndex : 1.0f / m_refractiveIndex);
-				if (refracted) 			res += m_kt * refracted.value().reTrace(m_scene);
+				if (refracted) 			res += m_kt * refracted.value().reTrace(getScene());
 				else if (reflection)	res += m_kt * reflection.value();
-				else 					res += m_kt * reflected.reTrace(m_scene);	
+				else 					res += m_kt * reflected.reTrace(getScene());
 			}
 		} // ns
 		

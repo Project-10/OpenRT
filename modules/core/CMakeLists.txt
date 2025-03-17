@@ -33,6 +33,7 @@ source_group("Source Files\\Geometry\\Solids\\sphere" FILES "SolidSphere.h" "Sol
 source_group("Source Files\\Geometry\\Solids\\torus" FILES "SolidTorus.h" "SolidTorus.cpp")
 source_group("Source Files\\Shaders" FILES "IShader.h")
 source_group("Source Files\\Shaders" FILES "Shader.h" "Shader.cpp")
+source_group("Source Files\\Shaders" FILES "ShaderScene.h" "ShaderScene.cpp")
 source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp")
 source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
 source_group("Source Files\\Shaders\\diffuse" FILES "ShaderDiffuse.h" "ShaderDiffuse.cpp")

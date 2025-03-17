@@ -7,7 +7,7 @@ namespace rt {
 	{
 		// Traverse ray behind the geometry to make it fully transparent
 		Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);	// traverse ray
-		Vec3f res = R.reTrace(m_scene);
+		Vec3f res = R.reTrace(getScene());
 		
 		// Gathering shadows
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);
@@ -15,7 +15,7 @@ namespace rt {
 		Ray I(ray.hitPoint(shadingNormal));				// shadow ray
 		Vec3f L_possible = Vec3f::all(0);
 		Vec3f L_actual = Vec3f::all(0);
-		for (auto& pLight : m_scene.getLights()) {
+		for (auto& pLight : getScene().getLights()) {
 			const size_t nSamples = pLight->getNumSamples();
 			const float avg = 1.0f / nSamples;
 			for (size_t s = 0; s < nSamples; s++) {
@@ -29,7 +29,7 @@ namespace rt {
 						L_possible += L;
 						
 						// Check shadow (light sourse is occluded)
-						float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(I) : 1.0f;
+						float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;
 						L_actual += k_occlusion * L;
 					}
 				}

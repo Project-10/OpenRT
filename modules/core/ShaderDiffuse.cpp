@@ -13,7 +13,6 @@ namespace rt {
 		Vec3f faceNormal = ray.hit->getNormal(ray);							// face normal
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);				// shading normal
 
-
 		auto du = getBump(ray);
 		if (du) {
 			auto  dp = ray.hit->dp(ray.hitPoint());
@@ -36,35 +35,11 @@ namespace rt {
 		// ------ opacity ------
 		if (opacity < 1) {
 			Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
-			res += (1.0f - opacity) * R.reTrace(m_scene);
+			res += (1.0f - opacity) * R.reTrace(getScene());
 		}
 
-
 		// Gathering incoming light (incident radiance)
-		Vec3f incident_radiance(0, 0, 0);
-		Ray shadowRay(ray.hitPoint(shadingNormal));						// shadow ray
-		for (auto& pLight : m_scene.getLights()) {
-			Vec3f L = Vec3f::all(0);
-			const size_t nSamples = pLight->getNumSamples();
-			for (size_t s = 0; s < nSamples; s++) {
-
-				// get direction to light, and intensity
-				shadowRay.hit = ray.hit;	// Needed for the skylight
-				auto radiance = pLight->illuminate(shadowRay);
-				if (radiance) {
-					// Check shadow (light sourse is occluded)
-					float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(shadowRay) : 1.0f;
-					if (k_occlusion < Epsilon) continue;
-
-					// ------ diffuse ------
-					float cosLightNormal = shadowRay.dir.dot(shadingNormal);
-					if (cosLightNormal > 0)
-						L += cosLightNormal * k_occlusion * radiance.value();
-				}
-			} // s
-			incident_radiance += (1.0f / nSamples) * L;
-		} // pLight
-
+		Vec3f incident_radiance = eval_IR_LS(ray);
 		res += opacity * diffuseColor.mul(incident_radiance);
 
 		return res;

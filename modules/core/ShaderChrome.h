@@ -2,7 +2,7 @@
 // Written by Sergey G. Kosov in 2020 for Project X
 #pragma once
 
-#include "Shader.h"
+#include "ShaderScene.h"
 #include "Sampler.h"
 
 namespace rt {
@@ -14,7 +14,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
-	class CShaderChrome : public CShader
+	class CShaderChrome : public CShaderScene
 	{
 	public:
 		/**
@@ -23,7 +23,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderChrome(const CScene& scene, ptr_sampler_t pSampler = nullptr)
-			: m_scene(scene)
+			: CShaderScene(scene, Vec3f::all(0))
 			, m_pSampler(pSampler)
 		{}
 		DllExport virtual ~CShaderChrome(void) = default;
@@ -32,7 +32,6 @@ namespace rt {
 		
 		
 	private:
-		const CScene& 	m_scene;		///< Reference to the scene object
 		ptr_sampler_t	m_pSampler;		///< Pointer to the sampler to be used for perturbing the shape normal during shading
 	};
 }
