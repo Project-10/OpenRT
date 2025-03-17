@@ -1,5 +1,5 @@
 #include "Solid.h"
-#include "PrimTriangle.h"
+#include "TriangleBuilder.h"
 #include "Transform.h"
 #include <fstream> 
 #include <utility>
@@ -8,8 +8,8 @@ namespace rt {
 	// Constructor
 	CSolid::CSolid(ptr_shader_t pShader, const std::string& fileName) : m_pivot(Vec3f::all(0))
 	{
-		const Vec3f org = Vec3f::all(0);
-		
+		CTriangleBuilder builder(pShader, Vec3f::all(0));
+
 		std::ifstream file(fileName);
 
 		if (file.is_open()) {
@@ -75,23 +75,22 @@ namespace rt {
 					bool ifTextures = T.val[0] > 0 && T.val[0] < vTextures.size();
 					bool ifNormals = N.val[0] > 0 && N.val[0] < vNormals.size();
 
-					if (!ifTextures && !ifNormals) {
-						add(std::make_shared<CPrimTriangle>(pShader, org, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]));
-						if (i == 4)
-							add(std::make_shared<CPrimTriangle>(pShader, org, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]]));
-					} else if (!ifTextures) {
-						add(std::make_shared<CPrimTriangle>(pShader, org, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-																		  Vec2f::all(0), Vec2f::all(0), Vec2f::all(0),
-																		  vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
-					} else {
-						add(std::make_shared<CPrimTriangle>(pShader, org, vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]],
-																		  vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]],
-																		  vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]));
+					
+					builder.setVertices(vVertexes[V.val[0]], vVertexes[V.val[1]], vVertexes[V.val[2]]);
+					if (ifTextures)
+						builder.setTextureCoords(vTextures[T.val[0]], vTextures[T.val[1]], vTextures[T.val[2]]);
+					if (ifNormals)
+						builder.setNormals(vNormals[N.val[0]], vNormals[N.val[1]], vNormals[N.val[2]]);
+					add(builder.build());
 
-						if (i == 4)
-							add(std::make_shared<CPrimTriangle>(pShader, org, vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]],
-																			  vTextures[T.val[0]], vTextures[T.val[2]], vTextures[T.val[3]],
-																			  vNormals[N.val[0]], vNormals[N.val[2]], vNormals[N.val[3]]));
+
+					if (i == 4) {
+						builder.setVertices(vVertexes[V.val[0]], vVertexes[V.val[2]], vVertexes[V.val[3]]);
+						if (ifTextures)
+							builder.setTextureCoords(vTextures[T.val[0]], vTextures[T.val[2]], vTextures[T.val[3]]);
+						if (ifNormals)
+							builder.setNormals(vNormals[N.val[0]], vNormals[N.val[2]], vNormals[N.val[3]]);
+						add(builder.build());
 					}
 	
 				}
