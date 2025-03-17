@@ -25,7 +25,7 @@ namespace rt {
 		 * @param radius Radius of the sphere
 		 * @param color The color of the object
 		 */
-		DllExport static std::shared_ptr<CPrimSphere> createSphere(const CScene& scene, const Vec3f& origin, float radius, const Vec3f& color = Vec3f::all(1)) {
+		DllExport static std::shared_ptr<CPrimSphere> createSphere(const CScene& scene, const Vec3f& origin = Vec3f::all(0), float radius = 1.0f, const Vec3f& color = Vec3f::all(1)) {
 			auto shader = std::make_shared<CShaderDiffuse>(scene, color);
 			return std::make_shared<CPrimSphere>(shader, origin, radius);
 		}
@@ -37,7 +37,7 @@ namespace rt {
 		 * @param normal Normal to the plane
 		 * @param color The color of the object
 		 */
-		DllExport static std::shared_ptr<CPrimPlane> createPlane(const CScene& scene, const Vec3f& origin, const Vec3f& normal, const Vec3f& color = Vec3f::all(1)) {
+		DllExport static std::shared_ptr<CPrimPlane> createPlane(const CScene& scene, const Vec3f& origin = Vec3f::all(0), const Vec3f& normal = Vec3f(0, 1, 0), const Vec3f& color = Vec3f::all(1)) {
 			auto shader = std::make_shared<CShaderDiffuse>(scene, color);
 			return std::make_shared<CPrimPlane>(shader, origin, normal);
 		}
@@ -51,7 +51,7 @@ namespace rt {
 		 * @param innerRadius The disc can also be generalized to an annulus by specifying an inner radius
 		 * @param color The color of the object
 		 */
-		DllExport static std::shared_ptr<CPrimDisc> createDisc(const CScene& scene, const Vec3f& origin, const Vec3f& normal, float radius, float innerRadius = 0.0f, const Vec3f& color = Vec3f::all(1)) {
+		DllExport static std::shared_ptr<CPrimDisc> createDisc(const CScene& scene, const Vec3f& origin = Vec3f::all(0), const Vec3f& normal = Vec3f(0, 1, 0), float radius = 1.0f, float innerRadius = 0.0f, const Vec3f& color = Vec3f::all(1)) {
 			auto shader = std::make_shared<CShaderDiffuse>(scene, color);
 			return std::make_shared<CPrimDisc>(shader, origin, normal, radius, innerRadius);
 		}
