@@ -27,7 +27,7 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used with the area light
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
-		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, ptr_sampler_t pSampler = std::make_shared<CSamplerStratified>(4, true), bool castShadow = true)
+		DllExport CLightArea(Vec3f intensity, Vec3f p0, Vec3f p1, Vec3f p2, Vec3f p3, ptr_sampler_t pSampler = nullptr, bool castShadow = true)
 			: ILight(intensity, castShadow)
 			, m_org(p0)
 			, m_edge1(p1 - p0)
@@ -40,7 +40,7 @@ namespace rt {
 		}
 
 		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) const override;
-		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler->getNumSamples(); }
+		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler ? m_pSampler->getNumSamples() : 1; }
 
 		/**
 		 * @brief Returns the normal of area light surface
