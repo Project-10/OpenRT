@@ -12,14 +12,12 @@ int main()
 	// Scene
 	CScene scene(bgColor);
 	
-	// Shaders
-	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderGlass = std::make_shared<CShaderGeneral>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto floor = CPrimFactory::createDisc(scene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
+	scene.add(floor);
 
-	// Floor
-	float s = 50;
-	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
+	// Shaders
+	auto pShaderDragon = std::make_shared<CShaderDiffuse>(scene, RGB(255, 255, 255));
+	auto pShaderGlass = std::make_shared<CShaderGeneral>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// Stanford Dragon
 	CSolid dragon(pShaderDragon, dataPath + "Stanford Dragon.obj");
@@ -31,25 +29,25 @@ int main()
 	// Camera
 	float r = 35;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f::all(r), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
-	auto pLight		= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 2 * r, 0));
+	auto pLightOmni	= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 2 * r, 0));
 	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(4, true, true));
 	
 	
 	scene.add(pCamera);
-//	scene.add(pLight);
+//	scene.add(pLightOmni);
 	scene.add(pLightSky);
 
 	
 	scene.buildAccelStructure(20, 3);
 	
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true), 64);
 	//Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4, true, true));
 	//depth.convertTo(img, CV_8UC1);
 	Timer::stop();
 
 	imshow("image", img);
-	imwrite("D:\\renders\\res.jpg", img);
+	imwrite("D:\\renders\\res2.jpg", img);
 	waitKey();
 	return 0;
 }

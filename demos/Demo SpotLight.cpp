@@ -8,14 +8,12 @@ int main() {
 	
 	CScene scene(bgColor);
 																			
-	auto pShaderFloor = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
-	auto pShaderBall  = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.9f, 40.0f);
-	
-	//Floor
-	float s = 50;
-	scene.add(CSolidQuad(pShaderFloor, Vec3f(-s, 0, -s), Vec3f(-s, 0, s), Vec3f(s, 0, s), Vec3f(s, 0, -s)));
-	//Ball
-	scene.add(std::make_shared<CPrimSphere>(pShaderBall, Vec3f(0, 0.5f, 0), 0.5f));
+	// Geometry
+	auto floor	= CPrimFactory::createDisc(scene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
+	auto sphere = CPrimFactory::createSphere(scene, Vec3f(0, 0.5f, 0), 0.5f);
+
+	scene.add(floor);
+	scene.add(sphere);
 
 	const float r = 4;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(Size(640, 480), Vec3f(4, 4, 4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f);
@@ -35,9 +33,8 @@ int main() {
 	scene.add(pLightBlue);
 	scene.add(pLightGreen);
 	
-
 #ifdef ENABLE_BSP
-	scene.buildAccelStructure();
+	scene.buildAccelStructure(0, 0);
 #endif
 	Timer::start("Rendering 1 frame... ");
 	for (int i = 0; ; i++) {

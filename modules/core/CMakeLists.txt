@@ -44,7 +44,6 @@ source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrom
 source_group("Source Files\\Shaders\\sslt" FILES "ShaderSSLT.h" "ShaderSSLT.cpp")
 source_group("Source Files\\Shaders\\general" FILES "ShaderGeneral.h" "ShaderGeneral.cpp")
 source_group("Source Files\\Shaders\\global" FILES "ShaderGlobal.h" "ShaderGlobal.cpp")
-source_group("Source Files\\Shaders\\area" FILES "ShaderArea.h" "ShaderArea.cpp")
 source_group("Source Files\\Shaders\\hemisphere" FILES "ShaderHemisphere.h" "ShaderHemisphere.cpp")
 source_group("Source Files\\Scene" FILES "Scene.h" "Scene.cpp")
 source_group("Source Files\\Common\\BSP Tree" FILES "BSPNode.h" "BSPNode.cpp" "BSPTree.h" "BSPTree.cpp" "BoundingBox.h" "BoundingBox.cpp")

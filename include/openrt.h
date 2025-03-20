@@ -43,7 +43,6 @@
 #include "core/ShaderChrome.h"
 #include "core/ShaderSSLT.h"
 
-#include "core/ShaderArea.h"
 #include "core/ShaderHemisphere.h"
 
 #include "core/Sampler.h"
