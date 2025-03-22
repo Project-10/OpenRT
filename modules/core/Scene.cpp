@@ -1,5 +1,10 @@
 #include "Scene.h"
 #include "Ray.h"
+#include "ShaderDiffuse.h"
+#include "PrimSphere.h"
+#include "PrimPlane.h"
+#include "PrimTriangle.h"
+#include "PrimDisc.h"
 #include "Solid.h"
 #include "macroses.h"
 
@@ -13,6 +18,41 @@ namespace rt {
 		m_activeCamera = 0;
 	}
 	
+	std::shared_ptr<CPrimSphere> CScene::addSphere(const Vec3f& origin, float radius, const Vec3f& color) {
+		auto shader = std::make_shared<CShaderDiffuse>(*this, color);
+		auto prim = std::make_shared<CPrimSphere>(shader, origin, radius);
+		add(prim);
+		return prim;
+	}
+
+	std::shared_ptr<CPrimPlane> CScene::addPlane(const Vec3f& origin, const Vec3f& normal, const Vec3f& color) {
+		auto shader = std::make_shared<CShaderDiffuse>(*this, color);
+		auto prim = std::make_shared<CPrimPlane>(shader, origin, normal);
+		add(prim);
+		return prim;
+	}
+
+	std::shared_ptr<CPrimDisc> CScene::addDisc(const Vec3f& origin, const Vec3f& normal, float radius, float innerRadius, const Vec3f& color) {
+		auto shader = std::make_shared<CShaderDiffuse>(*this, color);
+		auto prim = std::make_shared<CPrimDisc>(shader, origin, normal, radius, innerRadius);
+		add(prim);
+		return prim;
+	}
+
+	std::shared_ptr<CPrimTriangle> CScene::addTriangle(const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, std::optional<Vec3f> na, std::optional<Vec3f> nb, std::optional<Vec3f> nc, const Vec3f& color) {
+		auto shader = std::make_shared<CShaderDiffuse>(*this, color);
+		auto prim = std::make_shared<CPrimTriangle>(shader, a, b, c, ta, tb, tc, na, nb, nc);
+		add(prim);
+		return prim;
+	}
+
+	std::shared_ptr<CPrimTriangle> CScene::addTriangle(const Vec3f& origin, const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec2f& ta, const Vec2f& tb, const Vec2f& tc, std::optional<Vec3f> na, std::optional<Vec3f> nb, std::optional<Vec3f> nc, const Vec3f& color) {
+		auto shader = std::make_shared<CShaderDiffuse>(*this, color);
+		auto prim = std::make_shared<CPrimTriangle>(shader, origin, a, b, c, ta, tb, tc, na, nb, nc);
+		add(prim);
+		return prim;
+	}
+
 	void CScene::add(const ptr_prim_t pPrim) 
 	{ 
 		m_vpPrims.push_back(pPrim);

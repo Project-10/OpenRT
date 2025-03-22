@@ -12,8 +12,7 @@ int main()
 	// Scene
 	CScene scene(bgColor);
 	
-	auto floor = CPrimFactory::createDisc(scene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
-	scene.add(floor);
+	scene.addPlane(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
 
 	// Shaders
 	auto pShaderDragon = std::make_shared<CShaderDiffuse>(scene, RGB(255, 255, 255));

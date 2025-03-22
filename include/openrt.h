@@ -22,7 +22,6 @@
 #include "core/PrimDisc.h"
 #include "core/PrimTriangle.h"
 #include "core/PrimBoolean.h"
-#include "core/PrimFactory.h"
 #include "core/TriangleBuilder.h"
 
 #include "core/SolidQuad.h"

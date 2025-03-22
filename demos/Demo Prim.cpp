@@ -1,21 +1,19 @@
 #include "openrt.h"
 #include "core/timer.h"
+#include "core/random.h"
 
 using namespace rt;
 
 std::shared_ptr<CScene> buildpSceneColorSphere(const Vec3f& bgColor, const Size resolution)
 {
 	auto pScene		= std::make_shared<CScene>(bgColor);
-	auto pShader	= std::make_shared<CShaderBlinn>(*pScene, Vec3f::all(1), 0.1f, 0.9f, 0.0f, 0.0f);
-	auto pPlane		= std::make_shared<CPrimPlane>(pShader, Vec3f::all(0), Vec3f(0, 1, 0));
-	auto pSphere	= std::make_shared<CPrimSphere>(pShader, Vec3f::all(0), 1.0f);
 	auto pLight1	= std::make_shared<CLightOmni>(Vec3f(0, 0, 200), Vec3f(10, 10, 0), true);
 	auto pLight2	= std::make_shared<CLightOmni>(Vec3f(0, 200, 0), Vec3f(-5, 10, 8.66f), true);
 	auto pLight3	= std::make_shared<CLightOmni>(Vec3f(200, 0, 0), Vec3f(-5, 10, -8.66f), true);
 	auto pCamera	= std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 10, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 30.0f);
 
-	pScene->add(pPlane);
-	pScene->add(pSphere);
+	pScene->addPlane();
+	pScene->addSphere();
 	pScene->add(pLight1);
 	pScene->add(pLight2);
 	pScene->add(pLight3);
@@ -28,44 +26,36 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 {
 	auto pScene			= std::make_shared<CScene>(bgColor);
 	
-	// texture
-	//auto pTextureRoom	= std::make_shared<CTexture>(dataPath + "room.jpg");
-	auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
+	// Geometry
+	const float R		= 150.0f;		// The size of the world
+	auto floor			= pScene->addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), R, 0.0f, RGB(133, 153, 180));
+	auto environment	= pScene->addSphere(Vec3f(0, 0, 0), R);
+	auto sphere_center	= pScene->addSphere(Vec3f(0, 1, 0), 1.0f, RGB(230, 191, 179));
+	auto sphere_left	= pScene->addSphere(Vec3f(-2, 1, 0), 1.0f, RGB(230, 191, 179));
+	auto sphere_right	= pScene->addSphere(Vec3f(2, 1, 0), 1.0f, RGB(230, 191, 179));
 
-	// shaders
-	auto pShaderFloor	= std::make_shared<CShaderBlinn>(*pScene, /*pTextureEarth*/ RGB(133, 153, 180), 0.1f, 0.9f, 0.0f, 0.0f);
-	auto pShaderMirror	= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-	auto pShaderTop		= std::make_shared<CShaderBlinn>(*pScene, RGB(230, 191, 179), 0.2f, 0.8f, 0.0f, 40.0f);
-	auto pShaderChrome	= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
-	auto pSHaderGlass	= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	environment->flipNormal();
+
+	//pScene->add(std::make_shared<CLightSky>(Vec3f::all(0.5f)));	// light source
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f));
+
+	// Shaders
+	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
+	auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
+	auto pShaderMirror		= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderChrome		= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShaderGlass		= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlobal1		= std::make_shared<CShaderGlobal>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShaderGlobal2		= std::make_shared<CShaderGlobal>(*pScene, RGB(230, 191, 179), std::make_shared<CSamplerStratified>(4, true, true));
+
 	pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
-	//auto pShaderRoom	= std::make_shared<CShaderFlat>(pTextureRoom);
 
-	// geometry
-	auto pFloor			= std::make_shared<CPrimDisc>(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), 150.0f);
-	auto pSphere1		= std::make_shared<CPrimSphere>(pShaderMirror, Vec3f(-2, 1, 0), 1.0f);
-	auto pSphere2		= std::make_shared<CPrimSphere>(pShaderTop, Vec3f(0, 1, 0), 1.0f);
-	ptr_prim_t pSphere3		= std::make_shared<CPrimSphere>(pSHaderGlass, Vec3f(2, 1, 0), 1.0f);
-	ptr_prim_t pSphere4		= std::make_shared<CPrimSphere>(pSHaderGlass, Vec3f(2, 1, 0), 0.5f);
+	environment->setShader(pShaderEnvironment);
+	sphere_left->setShader(pShaderMirror);
+	floor->setShader(pShaderGlobal1);
+	sphere_center->setShader(pShaderGlobal2);
+	sphere_right->setShader(pShaderChrome);
 	
-	//pSphere4->flipNormal();
-	auto pTest			= std::make_shared<CPrimBoolean>(pSphere3, pSphere4, BoolOp::Substraction);
-
-	//auto pSphereRoom	= std::make_shared<CPrimSphere>(pShaderRoom, Vec3f(2, 1, 0), 100.0f);
-
-	auto pLight			= std::make_shared<CLightSky>(Vec3f::all(1));
-	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f);
-
-	pScene->add(pFloor);
-	pScene->add(pSphere1);
-	pScene->add(pSphere2);
-	pScene->add(pTest);
-	//pScene->add(pSphere3);
-	//pScene->add(pSphere4);
-	//pScene->add(pSphereRoom);
-	pScene->add(pLight);
-	pScene->add(pCamera);
-
 	return pScene;
 }
 
@@ -73,7 +63,19 @@ std::shared_ptr<CScene> buildScenePlanets(const Vec3f& bgColor, const Size resol
 {
 	auto pScene				= std::make_shared<CScene>(bgColor);
 
-	// textures
+	// Geometry
+	auto floor		= pScene->addPlane();
+	auto mercury	= pScene->addSphere(Vec3f(-3, 0.383f, -1), 0.383f); 
+	auto venus		= pScene->addSphere(Vec3f(2.5f, 0.95f, 5), 0.95f);
+	auto earth		= pScene->addSphere(Vec3f(-3, 1.0f, -2.6f), 1.0f);
+	auto mars		= pScene->addSphere(Vec3f(-2.5f, 0.5321f, 1.5f), 0.5321f);
+	//auto jupiter	= pScene->addSphere(Vec3f(0, 3.3f, 0), 3.3f); // real r = 10.973f
+	auto neptune	= pScene->addSphere(Vec3f(0, 3.8647f, 0), 3.8647f);
+
+	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 0.0f, std::make_shared<CSamplerStratified>(4, true, true)));	// light
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 5, 0), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 40.0f));	// camera
+
+	// Textures
 	auto pTextureMercury	= std::make_shared<CTexture>(dataPath + "1_mercury_8k.jpg");
 	auto pTextureVenus		= std::make_shared<CTexture>(dataPath + "1_venus_4k.jpg");
 	auto pTextureEarth		= std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
@@ -81,7 +83,7 @@ std::shared_ptr<CScene> buildScenePlanets(const Vec3f& bgColor, const Size resol
 	auto pTextureJupiter	= std::make_shared<CTexture>(dataPath + "1_jupiter_8k.jpg");
 	auto pTextureNeptune	= std::make_shared<CTexture>(dataPath + "1_neptune_2k.jpg");
 
-	// shaders
+	// Shaders
 	auto pShaderFloor		= std::make_shared<CShaderPhong>(*pScene, std::make_shared<CTexture>()/*RGB(0.522f, 0.6f, 0.7f)*/, 0.0f, 1.0f, 0.0f, 40.0f);
 	auto pShaderMercury		= std::make_shared<CShaderPhong>(*pScene, pTextureMercury, 0.3f, 1.2f, 0.0f, 40.0f);
 	auto pShaderVenus		= std::make_shared<CShaderPhong>(*pScene, pTextureVenus, 0.3f, 1.2f, 0.0f, 40.0f);
@@ -90,30 +92,13 @@ std::shared_ptr<CScene> buildScenePlanets(const Vec3f& bgColor, const Size resol
 	auto pShaderJupiter		= std::make_shared<CShaderPhong>(*pScene, pTextureJupiter, 0.3f, 1.2f, 0.0f, 40.0f);
 	auto pShaderNeptune		= std::make_shared<CShaderPhong>(*pScene, pTextureNeptune, 0.3f, 1.2f, 0.0f, 40.0f);
 
-	// primitives
-	auto floor				= std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0));
-	auto mercury			= std::make_shared<CPrimSphere>(pShaderMercury, Vec3f(-3, 0.383f, -1), 0.383f);
-	auto venus				= std::make_shared<CPrimSphere>(pShaderVenus, Vec3f(2.5f, 0.95f, 5), 0.95f);
-	auto earth				= std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(-3, 1.0f, -2.6f), 1.0f);
-	auto mars				= std::make_shared<CPrimSphere>(pShaderMars, Vec3f(-2.5f, 0.5321f, 1.5f), 0.5321f);
-	auto jupiter			= std::make_shared<CPrimSphere>(pShaderJupiter, Vec3f(0, 3.3f, 0), 3.3f); // real r = 10.973f
-	auto neptune			= std::make_shared<CPrimSphere>(pShaderNeptune, Vec3f(0, 3.8647f, 0), 3.8647f);
-
-	// light
-	auto pLight				= std::make_shared<CLightSky>(Vec3f::all(1), 0.0f);
-
-	// camera
-	auto pCamera			= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 5, 0), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 40.0f);
-
-	pScene->add(floor);
-	pScene->add(mercury);
-	pScene->add(venus);
-	pScene->add(earth);
-	pScene->add(mars);
-	//pScene->add(jupiter);
-	pScene->add(neptune);
-	pScene->add(pLight);
-	pScene->add(pCamera);
+	floor->setShader(pShaderFloor);
+	mercury->setShader(pShaderMercury);
+	venus->setShader(pShaderVenus);
+	earth->setShader(pShaderEarth);
+	mars->setShader(pShaderMars);
+	//jupiter->setShader(pShaderJupiter);
+	neptune->setShader(pShaderNeptune);
 
 	return pScene;
 }
@@ -192,59 +177,93 @@ std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const Size res
 {
 	auto pScene = std::make_shared<CScene>(bgColor);
 	
-	// shaders
-	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderFloor	= std::make_shared<CShaderPhong>(*pScene, RGB(133, 153, 180), 0.2f, 0.8f, 0.0f, 40.0f);
+	// Geometry
+	auto floor	= pScene->addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 10.0f, 0.0f, RGB(133, 153, 180));
+	auto sphere	= pScene->addSphere(Vec3f(0, 0.5f, 0), 0.5f);
+	
+	// Shaders
+	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1.2f));
 	auto pShaderGlass	= std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
+
+	//floor->setShader(pShaderGlobal);
+	//sphere->setShader(pShaderGlass);
 	
 	// geometry
-	CSolidQuad floor(pShaderFloor, Vec3f::all(0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 1000);
 	CSolidQuad lightPanel(pShaderWhite, Vec3f(0, 2.1f, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 1);
-	CSolid torusKnot(pShaderFloor, dataPath + "mercedes.obj");
-
-	CTransform t;
-	//torusKnot.transform(t.scale(10.0f).get());
-
+	CSolid torusKnot(std::make_shared<CShaderDiffuse>(*pScene, Vec3f::all(0.8f)), dataPath + "Torus Knot.obj");
+	
 	// light
 	//auto pLight = std::make_shared<CLightOmni>(Vec3f::all(3e2), Vec3f(0, 20, 0));
-	//auto pLight				= std::make_shared<CLightArea>(Vec3f::all(30), Vec3f(-10, 20, -10), Vec3f(10, 20, -10), Vec3f(10, 20, 10), Vec3f(-10, 20, 10));
-	auto pLight		= std::make_shared<CLightSky>(Vec3f::all(1));
+	auto pLight				= std::make_shared<CLightArea>(Vec3f::all(1), Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 2, 1), Vec3f(-1, 2, 1), std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pLight		= std::make_shared<CLightSky>(Vec3f::all(1));
 
 	// camera
-	auto pCamera			= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-50, 20, 100), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 10.0f);
+	auto pCamera			= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-5, 4, 10), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 10.0f);
 	
 	pScene->add(floor);
-	//pScene->add(lightPanel);
+	pScene->add(lightPanel);
 	pScene->add(torusKnot);
+	
+	pScene->add(sphere);
 	pScene->add(pLight);
 	pScene->add(pCamera);
 		
 	return pScene;
 }
 
+std::shared_ptr<CScene> buidSceneOcclusions(const Vec3f& bgColor, const Size resolution) {
+	auto pScene = std::make_shared<CScene>(bgColor);
 
+	// Geometry
+	//auto plane	= pScene->addPlane();
+	//auto sphere	= pScene->addSphere();
 
+	for (int i = 0; i < 1000; i++) {
+		auto pShader = std::make_shared<CShaderDiffuse>(*pScene, RGB(random::u(0, 255), random::u(0, 255), random::u(0, 255)));
+		pShader->setOpacity(static_cast<float>(random::u(100, 500)) / 1000);
+		auto solid = CSolidQuad(pShader, Vec3f(random::u(-40, 40), static_cast<float>(random::u(1000, 60000)) / 1000, random::u(-40, 40)), Vec3f(0, 1, 0), Vec3f(1, 0, 0), static_cast<float>(random::u(1000, 5000)) / 1000);
+		pScene->add(solid);
+	}
 
+	auto s2 = std::make_shared<CShaderDiffuse>(*pScene, RGB(20, 155, 20));
+	s2->setOpacity(0.5f);
+	auto s3 = std::make_shared<CShaderDiffuse>(*pScene, RGB(155, 20, 20));
+	s3->setOpacity(0.4f);
+
+	
+	auto q2 = CSolidQuad(s2, Vec3f(-2, 30, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 4);
+	auto q3 = CSolidQuad(s3, Vec3f(-2, 40, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 1);
+
+	//pScene->add(q2);
+	//pScene->add(q3);
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(5e3), Vec3f(0, 100, 0)));
+	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(20, 100, 20), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f));
+
+	return pScene;
+}
 
 int main(int argc, char* argv[])
 {
-	const Vec3f	bgColor = RGB(196, 209, 227);
-	const Size resolution(1 * 960, 1 * 600);
+	//const Vec3f	bgColor = RGB(196, 209, 227);
+	const Vec3f	bgColor = RGB(0, 0, 0);
+	const Size resolution(960, 600);
 	//const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
 	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
-	//auto pScene = buildScenePlanets(bgColor, resolution);
+	auto pScene = buildScenePlanets(bgColor, resolution);
 	//auto pScene = buildSceneBox(bgColor, resolution);
-	auto pScene = buildSceneTorusKnot(bgColor, resolution);
+	//auto pScene = buildSceneTorusKnot(bgColor, resolution);
+	//auto pScene = buidSceneOcclusions(bgColor, resolution);
 	
-	pScene->buildAccelStructure(30, 3);
+	pScene->buildAccelStructure(0, 3);
 
 	Timer::start("Rendering...");
-	Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true), 64);
 	Timer::stop();
 	imshow("pScene", render);
-	imwrite("D:\\renders\\Torus Knot.png", render);
+	imwrite("D:\\renders\\Render.png", render);
 	waitKey();
 	return 0;
 }

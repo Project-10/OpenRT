@@ -9,11 +9,8 @@ int main() {
 	CScene scene(bgColor);
 																			
 	// Geometry
-	auto floor	= CPrimFactory::createDisc(scene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
-	auto sphere = CPrimFactory::createSphere(scene, Vec3f(0, 0.5f, 0), 0.5f);
-
-	scene.add(floor);
-	scene.add(sphere);
+	scene.addPlane(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
+	scene.addSphere(Vec3f(0, 0.5f, 0), 0.5f);
 
 	const float r = 4;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(Size(640, 480), Vec3f(4, 4, 4), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 45.0f);

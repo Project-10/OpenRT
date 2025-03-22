@@ -20,7 +20,7 @@ TEST_F(CTestBoundingBox, solid_sphere) {
     auto pShaderSphere = std::make_shared<CShaderEyelight>(RGB(255, 255, 255));
     auto solidSphere1 = CSolidSphere(pShaderSphere, Vec3f(0, 0, 0), 1.0f, 24, true);
     auto solidSphere2 = CSolidSphere(pShaderSphere, Vec3f(1, 0, 0), 1.0f, 24, true);
-    ptr_prim_t 	pComposite = CPrimFactory::createBoolean(solidSphere1, solidSphere2, BoolOp::Union);
+    ptr_prim_t 	pComposite = std::make_shared<CPrimBoolean>(solidSphere1, solidSphere2, BoolOp::Union);
     auto boxCenter = pComposite->getBoundingBox().getCenter();
     EXPECT_NEAR(boxCenter[0], 0.5, Epsilon);
     EXPECT_NEAR(boxCenter[1], 0, Epsilon);

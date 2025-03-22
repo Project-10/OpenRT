@@ -13,11 +13,8 @@ int main()
 	CScene scene(bgColor);
 
 	// Geometry
-	auto floor	= CPrimFactory::createDisc(scene, Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
-	auto ball	= CPrimFactory::createSphere(scene, Vec3f(0, 0.75f, 0), 0.75f);
-
-	scene.add(floor);
-	scene.add(ball);
+	auto floor	= scene.addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
+	auto ball	= scene.addSphere(Vec3f(0, 0.75f, 0), 0.75f);
 
 	// Shaders
 	auto pShaderGlobal	= std::make_shared<CShaderGlobal>(scene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(7, true, true));
