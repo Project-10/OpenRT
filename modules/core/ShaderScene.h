@@ -1,3 +1,5 @@
+// Shader intermediate class, which operates with the scene and random samples generator
+// Written by Sergey Kosov in 2025 for Project X
 #pragma once
 
 #include "Shader.h"

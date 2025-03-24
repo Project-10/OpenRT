@@ -42,6 +42,7 @@ source_group("Source Files\\Shaders\\phong" FILES "ShaderPhong.h" "ShaderPhong.c
 source_group("Source Files\\Shaders\\blinn" FILES "ShaderBlinn.h" "ShaderBlinn.cpp")
 source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrome.cpp")
 source_group("Source Files\\Shaders\\sslt" FILES "ShaderSSLT.h" "ShaderSSLT.cpp")
+source_group("Source Files\\Shaders\\volume scatter" FILES "ShaderVolumeScatter.h" "ShaderVolumeScatter.cpp")
 source_group("Source Files\\Shaders\\general" FILES "ShaderGeneral.h" "ShaderGeneral.cpp")
 source_group("Source Files\\Shaders\\global" FILES "ShaderGlobal.h" "ShaderGlobal.cpp")
 source_group("Source Files\\Shaders\\hemisphere" FILES "ShaderHemisphere.h" "ShaderHemisphere.cpp")

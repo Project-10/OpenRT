@@ -1,6 +1,6 @@
 #include "LightArea.h"
 #include "Ray.h"
-#include "random.h";
+#include "random.h"
 
 namespace rt {
 	std::optional<Vec3f> CLightArea::illuminate(Ray& ray) const
