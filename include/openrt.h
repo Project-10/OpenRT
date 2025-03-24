@@ -41,6 +41,7 @@
 #include "core/ShaderShadow.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderSSLT.h"
+#include "core/ShaderVolumeScatter.h"
 
 #include "core/ShaderHemisphere.h"
 

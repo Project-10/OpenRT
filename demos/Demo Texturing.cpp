@@ -160,7 +160,7 @@ std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size resolut
 	pShaderClouds->setBumpMap(clouds_opacity, 0.01f);
 	clouds->setShader(pShaderClouds);
 
-	auto pShaderAtmosphere = std::make_shared<CShaderSSLT>(*pScene, 1.5f * RGB(0, 127, 255), 0.05f);
+	auto pShaderAtmosphere = std::make_shared<CShaderVolumeScatter>(*pScene, 1.5f * RGB(0, 127, 255), nullptr, 0.05f);
 	atmosphere->setShader(pShaderAtmosphere);
 
 	return pScene;
