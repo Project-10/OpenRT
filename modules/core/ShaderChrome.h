@@ -23,16 +23,11 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderChrome(const CScene& scene, ptr_sampler_t pSampler = nullptr)
-			: CShaderScene(scene, Vec3f::all(0))
-			, m_pSampler(pSampler)
+			: CShaderScene(scene, Vec3f::all(0), pSampler)
 		{}
 		DllExport virtual ~CShaderChrome(void) = default;
 		
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
-		
-		
-	private:
-		ptr_sampler_t	m_pSampler;		///< Pointer to the sampler to be used for perturbing the shape normal during shading
 	};
 }
 

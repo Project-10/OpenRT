@@ -30,14 +30,13 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderGeneral(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr )
-			: CShaderScene(scene, color)
+			: CShaderScene(scene, color, pSampler)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
 			, m_km(km)
 			, m_kt(kt)
 			, m_refractiveIndex(refractiveIndex)
-			, m_pSampler(pSampler)
 		{}
 		/**
 		 * @brief Constructor
@@ -53,14 +52,13 @@ namespace rt {
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
 		DllExport CShaderGeneral(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke, float km, float kt, float refractiveIndex, ptr_sampler_t pSampler = nullptr)
-			: CShaderScene(scene, pTexture)
+			: CShaderScene(scene, pTexture, pSampler)
 			, m_ka(ka)
 			, m_kd(kd)
 			, m_ke(ke)
 			, m_km(km)
 			, m_kt(kt)
 			, m_refractiveIndex(refractiveIndex)
-			, m_pSampler(pSampler)
 		{}
 		DllExport virtual ~CShaderGeneral(void) = default;
 		
@@ -75,8 +73,6 @@ namespace rt {
 		float m_kt;					///< The perfect transmission coefficient
 		
 		float m_refractiveIndex;	///< The refractive index for transmitted rays
-		
-		ptr_sampler_t	m_pSampler;	///< Pointer to the sampler to be used for perturbing the shape normal during shading
 	};
 
 	// ================================ Glass Shader Class ================================

@@ -21,13 +21,13 @@ namespace rt {
 		}
 
 
-		size_t nNormalSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
+		size_t nNormalSamples = getSampler() ? getSampler()->getNumSamples() : 1;
 		for (size_t ns = 0; ns < nNormalSamples; ns++) {
 
 			// Distort the normal vector
 			Vec3f n = shadingNormal;
-			if (m_pSampler) {
-				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 10), n);
+			if (getSampler()) {
+				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(getSampler()->getNextSample(), 10), n);
 			}
 
 			// Needed by ks, km, kt

@@ -9,13 +9,14 @@ namespace rt {
 
 		Vec3f normal = ray.hit->getShadingNormal(ray);									// shading normal
 
-		size_t nSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
+		size_t nSamples = getSampler() ? getSampler()->getNumSamples() : 1;
 		size_t k = 0;
 		for (size_t s = 0; s < nSamples; s++) {
-
 			Vec3f n = normal;
-			if (m_pSampler) {
-				n = CSampler::transformSampleToWCS(CSampler::uniformSampleHemisphere(m_pSampler->getNextSample(), 25), n);
+			if (getSampler()) {
+				Vec2f sample = getSampler()->getNextSample();
+				Vec3f hemisphereSample = CSampler::uniformSampleHemisphere(sample, 25);
+				n = CSampler::transformSampleToWCS(hemisphereSample, n);
 			}
 
 			Ray reflected = ray.reflected(n);
