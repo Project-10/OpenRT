@@ -25,6 +25,7 @@
 #include "core/TriangleBuilder.h"
 
 #include "core/SolidQuad.h"
+#include "core/SolidDisc.h"
 #include "core/SolidBox.h"
 #include "core/SolidCone.h"
 #include "core/SolidCylinder.h"
