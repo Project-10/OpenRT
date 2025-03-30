@@ -69,6 +69,12 @@ cmake_dependent_option(ENABLE_AMP "Use AMP Algorithms Library for parallel GPU c
 option(ENABLE_BSP "Use Binary Space Partitioning (BSP) Tree for optimized ray traversal" ON)
 option(ENABLE_CACHE "Cache the last render and revoke it whenever possible" ON)
 
+# Define a cache variable to select the type of shadow processing.
+# Possible values are: FAST, TRANSPARENT, or COLORED.
+set(SHADOW_TYPE "FAST" CACHE STRING "Select shadow processing type: FAST, TRANSPARENT, or COLORED")
+# Restrict the SHADOW_TYPE variable to the specified values.
+set_property(CACHE SHADOW_TYPE PROPERTY STRINGS "FAST" "TRANSPARENT" "COLORED")
+
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(modules/core)
 add_subdirectory(tests)

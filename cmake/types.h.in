@@ -11,6 +11,7 @@
 #cmakedefine ENABLE_AMP
 #cmakedefine ENABLE_CACHE
 
+#define SHADOW_TYPE_@SHADOW_TYPE@
 
 #include <optional>
 #include <limits>
@@ -37,10 +38,11 @@ using namespace cv;
 	using qword	= uint64_t;
 #endif
 
-static const double	Pi	= 3.1415926;			///< Pi number
-static const float	Pif	= 3.1415926f;			///< Pi number
-static const float	Infty 	= std::numeric_limits<float>::infinity();
-static const float	Epsilon = 1E-5f;
+constexpr double	Pi		= 3.14159265358979323846;			///< Pi number
+constexpr float		Pif		= 3.14159265358979323846f;			///< Pi number
+constexpr float 	InvPif 	= 0.31830988618379067154f;			///< 1 / Pi 
+constexpr float		Infty 	= std::numeric_limits<float>::infinity();
+constexpr float		Epsilon = 1E-5f;
 
 template <class T>  T& lvalue_cast(T&& t) { return t; }
 #ifdef _WIN32
@@ -58,6 +60,6 @@ namespace rt {
 	using ptr_bspnode_t = std::shared_ptr<CBSPNode>;
 	
 #define RGB(r, g, b)  Vec3f((b), (g), (r)) / 255.0f
-	static const size_t maxRayCounter	= @MAX_RAY_COUNTER@;
-	static const Vec3f	exitColor		= Vec3f(0.4f, 0.4f, 0.4f);
+	constexpr size_t maxRayCounter	= @MAX_RAY_COUNTER@;
+	static const Vec3f	exitColor	= Vec3f(0.4f, 0.4f, 0.4f);
 }

@@ -247,24 +247,27 @@ namespace rt {
 
 	float CScene::evalOcclusion(const Ray& ray) const
 	{
-		if (false) {
-			return if_intersect(ray) ? 0.0f : 1.0f;
-		}
-		else {
-			Ray r = ray;
+#ifdef SHADOW_TYPE_FAST
+		return if_intersect(ray) ? 0.0f : 1.0f;
+#elif defined(SHADOW_TYPE_TRANSPARENT)
+		Ray r = ray;
 			
-			float res = 1.0f;	// percentage of light arriving to the surface
-			if (intersect(r)) {
-				res = 1.0f - r.hit->getShader()->getOpacity(r);
-				if ((res >= Epsilon) && (r.counter++ < maxRayCounter)) {
-					r.org = r.hitPoint();
-					r.t = ray.t - r.t;
-					r.hit = nullptr;
-					res *= evalOcclusion(r);
-				}
+		float res = 1.0f;	// percentage of light arriving to the surface
+		if (intersect(r)) {
+			res = 1.0f - r.hit->getShader()->getOpacity(r);
+			if ((res >= Epsilon) && (r.counter++ < maxRayCounter)) {
+				r.org = r.hitPoint();
+				r.t = ray.t - r.t;
+				r.hit = nullptr;
+				res *= evalOcclusion(r);
 			}
-			return res;
 		}
+		return res;
+#elif defined(SHADOW_TYPE_COLORED)
+	#error "The COLORED shadow type is not implemented. Please use another shadow model."
+#else
+	#error "Unknown shadow processing type. Please choose FAST, TRANSPARENT, or COLORED."
+#endif
 	}
 
 	Vec3f CScene::rayTrace(Ray& ray) const 
