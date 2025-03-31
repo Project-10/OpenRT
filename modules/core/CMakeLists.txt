@@ -1,6 +1,7 @@
 file(GLOB CORE_INCLUDE  ${PROJECT_SOURCE_DIR}/include/openrt.h
                         ${PROJECT_SOURCE_DIR}/include/types.h
                         ${PROJECT_SOURCE_DIR}/include/macroses.h
+						${PROJECT_SOURCE_DIR}/include/mathutils.h
 						)
 file(GLOB CORE_SOURCES "*.cpp")
 file(GLOB CORE_HEADERS "*.h")
@@ -37,12 +38,14 @@ source_group("Source Files\\Shaders" FILES "Shader.h" "Shader.cpp")
 source_group("Source Files\\Shaders" FILES "ShaderScene.h" "ShaderScene.cpp")
 source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp")
 source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
+source_group("Source Files\\Shaders\\lambertian" FILES "ShaderLambertian.h" "ShaderLambertian.cpp")
+source_group("Source Files\\Shaders\\oren-nayar" FILES "ShaderOrenNayar.h" "ShaderOrenNayar.cpp")
 source_group("Source Files\\Shaders\\diffuse" FILES "ShaderDiffuse.h" "ShaderDiffuse.cpp")
 source_group("Source Files\\Shaders\\shadow" FILES "ShaderShadow.h" "ShaderShadow.cpp")
 source_group("Source Files\\Shaders\\phong" FILES "ShaderPhong.h" "ShaderPhong.cpp")
 source_group("Source Files\\Shaders\\blinn" FILES "ShaderBlinn.h" "ShaderBlinn.cpp")
 source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrome.cpp")
-source_group("Source Files\\Shaders\\sslt" FILES "ShaderSSLT.h" "ShaderSSLT.cpp")
+source_group("Source Files\\Shaders\\subsurface scattering" FILES "ShaderSubsurfaceScattering.h" "ShaderSubsurface Scattering.cpp")
 source_group("Source Files\\Shaders\\volume scatter" FILES "ShaderVolumeScatter.h" "ShaderVolumeScatter.cpp")
 source_group("Source Files\\Shaders\\general" FILES "ShaderGeneral.h" "ShaderGeneral.cpp")
 source_group("Source Files\\Shaders\\global" FILES "ShaderGlobal.h" "ShaderGlobal.cpp")

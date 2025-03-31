@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Prim.h"
+#include "mathutils.h"
 
 namespace rt {
 	// ================================ Disc Primitive Class ================================
@@ -28,8 +29,7 @@ namespace rt {
 			, m_radius(radius)
 			, m_innerRadius(innerRadius)
 			, m_n(normal)
-			, m_t((normal.dot(Vec3f(1, 0, 0)) < 0.9f) ? normalize(normal.cross(Vec3f(1, 0, 0))) : normalize(normal.cross(Vec3f(0, 1, 0))))
-			//, m_t(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
+			, m_t(tangent(normal))
 			, m_r(radius)
 			, m_ri(innerRadius)
 		{}

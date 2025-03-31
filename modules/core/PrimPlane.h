@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Prim.h"
+#include "mathutils.h"
 
 namespace rt {
 	// ================================ Infinite Plane Primitive Class ================================
@@ -23,8 +24,8 @@ namespace rt {
 		DllExport CPrimPlane(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal)
 			: CPrim(pShader, origin)
 			, m_normal(normal)
-			, m_u(normal[1] < 1.0f ? Vec3f(0, 1, 0).cross(normal) : normal.cross(Vec3f(0, 0, 1)))
-			, m_v(m_u.cross(normal))
+			, m_u(tangent(normal))
+			, m_v(normal.cross(m_u))
 		{}
           
 		DllExport virtual ~CPrimPlane(void) = default;

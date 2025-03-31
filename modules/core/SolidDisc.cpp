@@ -1,12 +1,13 @@
 #include "SolidDisc.h"
 #include "SolidQuad.h"
 #include "PrimTriangle.h"
+#include "mathutils.h"
 
 rt::CSolidDisc::CSolidDisc(const ptr_shader_t pShader, const Vec3f& origin, const Vec3f& normal, float radius, float innerRadius, size_t sides) : CSolid(origin)
 {
 	const float dPhi = 2 * Pif / sides;	// delta phi - the angle step
-	const Vec3f axis1 = (normal.dot(Vec3f(1, 0, 0)) < 0.9f) ? normalize(normal.cross(Vec3f(1, 0, 0))) : normalize(normal.cross(Vec3f(0, 1, 0)));		// Choose an arbitrary vector for one axis
-	const Vec3f axis2 = normalize(normal.cross(axis1));
+	const Vec3f axis1 = tangent(normal);		// Choose an arbitrary vector for one axis
+	const Vec3f axis2 = normal.cross(axis1);
 	
 	Vec3f P0 = origin + radius * axis1;			// Initial outter point: phi = 0
 	Vec3f p0 = origin + innerRadius * axis1;	// Initial inner point: phi = 0
