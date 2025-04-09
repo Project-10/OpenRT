@@ -12,7 +12,7 @@ namespace rt {
 		// Gathering shadows
 		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);
 		
-		Ray I(ray.hitPoint(shadingNormal));				// shadow ray
+		
 		Vec3f L_possible = Vec3f::all(0);
 		Vec3f L_actual = Vec3f::all(0);
 		for (auto& pLight : getScene().getLights()) {
@@ -20,8 +20,8 @@ namespace rt {
 			const float avg = 1.0f / nSamples;
 			for (size_t s = 0; s < nSamples; s++) {
 				// get direction to light, and intensity
-				I.hit = ray.hit;	// TODO: double check
-				auto radiance = pLight->illuminate(I);
+				thread_local Ray I;
+				auto radiance = pLight->illuminate(I, ray.hitPoint(shadingNormal), shadingNormal);
 				if (radiance) {
 					float cosLightNormal = I.dir.dot(shadingNormal);
 					if (cosLightNormal > 0) {

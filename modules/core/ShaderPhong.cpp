@@ -50,16 +50,14 @@ namespace rt {
 
 		// ------ diffuse and/or specular ------
 		if (m_kd > 0 || m_ke > 0) {
-			Ray shadowRay(ray.hitPoint(shadingNormal));												// shadow ray
-
 			for (auto& pLight : getScene().getLights()) {
 				Vec3f L = Vec3f::all(0);
 				const size_t nSamples = pLight->getNumSamples();
 				for (size_t s = 0; s < nSamples; s++) {
 					
 					// get direction to light, and intensity
-					shadowRay.hit = ray.hit;	// Needed for the skylight
-					auto radiance = pLight->illuminate(shadowRay);
+					Ray shadowRay;
+					auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(shadingNormal), shadingNormal);
 					if (radiance) {
 						// Check shadow (light sourse is occluded)
 						float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(shadowRay) : 1.0f;

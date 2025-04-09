@@ -13,14 +13,14 @@ int main() {
 	scene.addDisc(Vec3f::all(0), Vec3f(0, 1, 0), 50.0f);
 
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(39, 174, 96), 1.0f);
+	//auto pShaderSSLT	= std::make_shared<CShaderSSLT>(scene, RGB(39, 174, 96), 1.0f);
 	
 	auto disc = scene.addDisc(Vec3f(0, 15, -40.1f), Vec3f(0, 0, -1), 15.0f);
 	disc->setShader(pShaderWhite);
 
 	
 	// Stanford Dragon
-	CSolid dragon(pShaderSSLT, dataPath + "Stanford Dragon.obj");
+	CSolid dragon(pShaderWhite, dataPath + "Stanford Dragon.obj");
 	CTransform t;
 	dragon.transform(t.scale(2.01f).get());
 	scene.add(dragon);

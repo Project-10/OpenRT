@@ -12,7 +12,7 @@ int main()
 	// Scene
 	CScene scene(bgColor);
 	
-	scene.addPlane(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
+	scene.addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
 
 	// Shaders
 	auto pShaderDragon = std::make_shared<CShaderDiffuse>(scene, RGB(255, 255, 255));
@@ -29,12 +29,12 @@ int main()
 	float r = 35;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f::all(r), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pLightOmni	= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 2 * r, 0));
-	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 0, std::make_shared<CSamplerStratified>(4, true, true));
 	
 	
 	scene.add(pCamera);
-//	scene.add(pLightOmni);
-	scene.add(pLightSky);
+	scene.add(pLightOmni);
+	//scene.add(pLightSky);
 
 	
 	scene.buildAccelStructure(20, 3);

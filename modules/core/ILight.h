@@ -28,13 +28,15 @@ namespace rt {
 		DllExport const ILight& operator=(const ILight&) = delete;
 
 		/**
-		 * @brief Calculates and return incident radiance at the point \b ray.org and fills-out the shadow ray.
-		 * @details This method returns incident radiance (L) from the light source at a point \b ray.org 
-		 * and also returns the direction vector \b ray.dir that gives the direction from which radiance is arriving.
-		 * @param[in, out] ray The shadow ray from object point to the light source. Everything except the ray.org may be modified by this method
+		 * @brief Calculates and return incident radiance at the point \b point and fills-out the \b shadowray.
+		 * @details This method returns incident radiance (L) from the light source at a point \b point 
+		 * and also returns the shadoew ray \b shadowray that gives the direction from which radiance is arriving.
+		 * @param[out] shadowray The shadow ray from object point given by \b point to the light source
+		 * @param[in] point The point of space in WCS to be illuminated
+		 * @param[in] normal The normal to the surface at that point (if exists). Some light sources (e.g. Sky light source) may need it
 		 * @return The intensity of light hitting the point \b ray.org and the shadow ray \b ray
 		 */
-		DllExport virtual std::optional<Vec3f>  illuminate(Ray& ray) const = 0;
+		DllExport virtual std::optional<Vec3f>  illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal = Vec3f::all(0)) const = 0;
 		/**
 		 * @brief Returns recommended number of samples for the particular light source implementation
 		 * @return The recommended number of samples

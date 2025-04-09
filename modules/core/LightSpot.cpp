@@ -2,10 +2,10 @@
 #include "Ray.h"
 
 namespace rt {
-	std::optional<Vec3f> CLightSpot::illuminate(Ray& ray) const {
-		auto res = CLightOmni::illuminate(ray);
+	std::optional<Vec3f> CLightSpot::illuminate(Ray& shadowray, const Vec3f& point, const Vec3f&) const {
+		auto res = CLightOmni::illuminate(shadowray, point);
 
-		float angle = acosf(m_dir.dot(-ray.dir)) * 180 / Pif;
+		float angle = acosf(m_dir.dot(-shadowray.dir)) * 180 / Pif;
 		if (angle > (m_alpha + m_beta)) return std::nullopt;	// no light
 		if (angle <= m_alpha) return res;						// 100% light
 
