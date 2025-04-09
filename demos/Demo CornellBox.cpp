@@ -20,7 +20,7 @@ std::shared_ptr<CScene> build_test_2d(const Vec3f& bgColor, const Size resolutio
 
 	// Shaders
 	auto pShaderArea = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
-	auto pShaderHemisphere = std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(32, true, true));
+	//auto pShaderHemisphere = std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(32, true, true));
 	auto pShaderWhite = std::make_shared<CShaderFlat>(Vec3f::all(intensity));
 
 	plane->setShader(pShaderArea);
@@ -67,9 +67,9 @@ std::shared_ptr<CScene> buildSceneCornellBox(const Vec3f& bgColor, const Size re
 	auto pShaderRed = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 0, 0));
 	auto pShaderGreen = std::make_shared<CShaderDiffuse>(*pScene, RGB(0, 255, 0));
 
-	auto pShaderGlobal = std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255)/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
-	auto pShaderGlobalR = std::make_shared<CShaderHemisphere>(*pScene, color_red/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
-	auto pShaderGlobalG = std::make_shared<CShaderHemisphere>(*pScene, color_green/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
+	//auto pShaderGlobal = std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255)/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
+	//auto pShaderGlobalR = std::make_shared<CShaderHemisphere>(*pScene, color_red/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
+	//auto pShaderGlobalG = std::make_shared<CShaderHemisphere>(*pScene, color_green/*, std::make_shared<CSamplerStratified>(4, true, true)*/);
 
 
 	// Lights
@@ -77,8 +77,8 @@ std::shared_ptr<CScene> buildSceneCornellBox(const Vec3f& bgColor, const Size re
 	auto pLightOmni = std::make_shared<CLightOmni>(intensity * RGB(255, 255, 255) /*RGB(255, 214, 126)*/, Vec3f(278, 548.78f, 279.5f));
 
 	// Blocks
-	CSolidBox shortBlock(pShaderGlobal, Vec3f(185.5f, 82.5f, 169), 165, 165, 168);
-	CSolidBox tallBlock(pShaderGlobal, Vec3f(368.5f, 165, 351.25f), 165, 330, 167);
+	CSolidBox shortBlock(pShaderWhite, Vec3f(185.5f, 82.5f, 169), 165, 165, 168);
+	CSolidBox tallBlock(pShaderWhite, Vec3f(368.5f, 165, 351.25f), 165, 330, 167);
 
 	shortBlock.transform(CTransform().rotate(Vec3f(0, 1, 0), -16.7f).get());
 	tallBlock.transform(CTransform().rotate(Vec3f(0, 1, 0), 17.1f).get());
@@ -87,15 +87,15 @@ std::shared_ptr<CScene> buildSceneCornellBox(const Vec3f& bgColor, const Size re
 	pScene->add(pLightArea);
 
 	// ceiling with a whole
-	auto ceiling = CSolidQuad(pShaderGlobal, Vec3f(556, 548.8f, 0), Vec3f(556, 548.8f, 559.2f), Vec3f(0, 548.8f, 559.2f), Vec3f(0, 548.8f, 0));
+	auto ceiling = CSolidQuad(pShaderWhite, Vec3f(556, 548.8f, 0), Vec3f(556, 548.8f, 559.2f), Vec3f(0, 548.8f, 559.2f), Vec3f(0, 548.8f, 0));
 	auto ceiling_lamp_hole = CSolidBox(pShaderWhite, Vec3f(278, 548, 279.5f), 130, 2, 105);
 	auto ceiling_with_hole = std::make_shared<CPrimBoolean>(ceiling, ceiling_lamp_hole, BoolOp::Substraction, 0);
 
-	pScene->add(CSolidQuad(pShaderGlobal, Vec3f(552.8f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 0, 559.2f), Vec3f(549.6f, 0, 559.2f)));					// floor
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(552.8f, 0, 0), Vec3f(0, 0, 0), Vec3f(0, 0, 559.2f), Vec3f(549.6f, 0, 559.2f)));					// floor
 	pScene->add(ceiling);		// ceiling
-	pScene->add(CSolidQuad(pShaderGlobal, Vec3f(549.6f, 0, 559.2f), Vec3f(0, 0, 559.2f), Vec3f(0, 548.8f, 559.2f), Vec3f(556, 548.8f, 559.2f)));	// back wall
-	pScene->add(CSolidQuad(pShaderGlobalG, Vec3f(0, 0, 559.2f), Vec3f(0, 0, 0), Vec3f(0, 548.8f, 0), Vec3f(0, 548.8f, 559.2f)));					// right wall
-	pScene->add(CSolidQuad(pShaderGlobalR, Vec3f(552.8f, 0, 0), Vec3f(549.6f, 0, 559.2f), Vec3f(556, 548.8f, 559.2f), Vec3f(556, 548.8f, 0)));		// left wall
+	pScene->add(CSolidQuad(pShaderWhite, Vec3f(549.6f, 0, 559.2f), Vec3f(0, 0, 559.2f), Vec3f(0, 548.8f, 559.2f), Vec3f(556, 548.8f, 559.2f)));	// back wall
+	pScene->add(CSolidQuad(pShaderGreen, Vec3f(0, 0, 559.2f), Vec3f(0, 0, 0), Vec3f(0, 548.8f, 0), Vec3f(0, 548.8f, 559.2f)));					// right wall
+	pScene->add(CSolidQuad(pShaderRed, Vec3f(552.8f, 0, 0), Vec3f(549.6f, 0, 559.2f), Vec3f(556, 548.8f, 559.2f), Vec3f(556, 548.8f, 0)));		// left wall
 	pScene->add(CSolidQuad(pShaderLight, Vec3f(343, 548.79f, 227), Vec3f(343, 548.79f, 332), Vec3f(213, 548.79f, 332), Vec3f(213, 548.79f, 227)));// light
 
 	pScene->add(shortBlock);

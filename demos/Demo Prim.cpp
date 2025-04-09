@@ -45,15 +45,15 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 	auto pShaderMirror		= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 	auto pShaderChrome		= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
 	auto pShaderGlass		= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
-	auto pShaderGlobal1		= std::make_shared<CShaderGlobal>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
-	auto pShaderGlobal2		= std::make_shared<CShaderGlobal>(*pScene, RGB(230, 191, 179), std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pShaderGlobal1		= std::make_shared<CShaderGlobal>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pShaderGlobal2		= std::make_shared<CShaderGlobal>(*pScene, RGB(230, 191, 179), std::make_shared<CSamplerStratified>(4, true, true));
 
 	pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
 
 	environment->setShader(pShaderEnvironment);
 	sphere_left->setShader(pShaderMirror);
-	floor->setShader(pShaderGlobal1);
-	sphere_center->setShader(pShaderGlobal2);
+	//floor->setShader(pShaderGlobal1);
+	//sphere_center->setShader(pShaderGlobal2);
 	sphere_right->setShader(pShaderChrome);
 	
 	return pScene;
@@ -184,7 +184,7 @@ std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const Size res
 	// Shaders
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1.2f));
 	auto pShaderGlass	= std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
-	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
 
 	//floor->setShader(pShaderGlobal);
 	//sphere->setShader(pShaderGlass);
