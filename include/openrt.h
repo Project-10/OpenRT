@@ -38,7 +38,6 @@
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
 #include "core/ShaderGeneral.h"
-#include "core/ShaderGlobal.h"
 #include "core/ShaderShadow.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderSubsurfaceScattering.h"
@@ -46,8 +45,6 @@
 #include "core/NewShader.h"
 #include "core/NewShaderPhong.h"
 #include "core/NewShaderMirror.h"
-
-#include "core/ShaderHemisphere.h"
 
 #include "core/Sampler.h"
 #include "core/SamplerRandom.h"

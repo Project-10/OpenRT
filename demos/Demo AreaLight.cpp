@@ -17,7 +17,7 @@ int main()
 	auto ball	= scene.addSphere(Vec3f(0, 0.75f, 0), 0.75f);
 
 	// Shaders
-	auto pShaderGlobal	= std::make_shared<CShaderGlobal>(scene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(7, true, true));
+	//auto pShaderGlobal	= std::make_shared<CShaderGlobal>(scene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(7, true, true));
 	auto pSHaderGlass	= std::make_shared<CShaderGeneral>(scene, Vec3f::all(0), 0, 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	//auto pShaderGlass	= std::make_shared<CShaderGeneral>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderRed		= std::make_shared<CShaderFlat>(RGB(2550, 0, 0));

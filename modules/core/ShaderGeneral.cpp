@@ -45,15 +45,13 @@ namespace rt {
 
 			// ------ diffuse and/or specular ------
 			if (m_kd > 0 || m_ke > 0) {
-				Ray I(ray.hitPoint(shadingNormal));
-
 				for (auto& pLight : getScene().getLights()) {
 					Vec3f L = Vec3f::all(0);
 					const size_t nSamples = pLight->getNumSamples();
 					for (size_t s = 0; s < nSamples; s++) {
 						// get direction to light, and intensity
-						I.hit = ray.hit;	// TODO: double check
-						auto radiance = pLight->illuminate(I);
+						thread_local Ray I;
+						auto radiance = pLight->illuminate(I, ray.hitPoint(shadingNormal), shadingNormal);
 						if (radiance) {
 							// Check shadow (light sourse is occluded)
 							float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;

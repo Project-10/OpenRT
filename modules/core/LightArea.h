@@ -39,7 +39,7 @@ namespace rt {
 			m_normal = normalize(m_normal);
 		}
 
-		DllExport virtual std::optional<Vec3f>	illuminate(Ray& ray) const override;
+		DllExport virtual std::optional<Vec3f>	illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal = Vec3f::all(0)) const override;
 		DllExport virtual size_t				getNumSamples(void) const override { return m_pSampler ? m_pSampler->getNumSamples() : 1; }
 
 		/**
