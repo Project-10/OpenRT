@@ -33,16 +33,19 @@
 #include "core/SolidTorus.h"
 
 #include "core/ShaderFlat.h"
-#include "core/ShaderDiffuse.h"
 #include "core/ShaderEyelight.h"
+#include "core/ShaderDiffuse.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
 #include "core/ShaderGeneral.h"
 #include "core/ShaderGlobal.h"
 #include "core/ShaderShadow.h"
 #include "core/ShaderChrome.h"
-#include "core/ShaderSSLT.h"
+#include "core/ShaderSubsurfaceScattering.h"
 #include "core/ShaderVolumeScatter.h"
+#include "core/NewShader.h"
+#include "core/NewShaderPhong.h"
+#include "core/NewShaderMirror.h"
 
 #include "core/ShaderHemisphere.h"
 
@@ -110,6 +113,7 @@ The OpenRT framework consist of the following essential blocks:
 	- <b>Glass:</b> @ref rt::CShaderGlass
 	- <b>Mirror:</b> @ref rt::CShaderMirror
 	- <b>General Purpose Shader:</b> @ref rt::CShader
+	- <b>Subsurface Scattering:</b> @ref rt::CShaderSubsurfaceScattering
 */
 
 /**

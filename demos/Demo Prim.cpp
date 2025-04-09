@@ -7,9 +7,9 @@ using namespace rt;
 std::shared_ptr<CScene> buildpSceneColorSphere(const Vec3f& bgColor, const Size resolution)
 {
 	auto pScene		= std::make_shared<CScene>(bgColor);
-	auto pLight1	= std::make_shared<CLightOmni>(Vec3f(0, 0, 200), Vec3f(10, 10, 0), true);
-	auto pLight2	= std::make_shared<CLightOmni>(Vec3f(0, 200, 0), Vec3f(-5, 10, 8.66f), true);
-	auto pLight3	= std::make_shared<CLightOmni>(Vec3f(200, 0, 0), Vec3f(-5, 10, -8.66f), true);
+	auto pLight1	= std::make_shared<CLightOmni>(Vec3f(0, 0, 600), Vec3f(10, 10, 0), true);
+	auto pLight2	= std::make_shared<CLightOmni>(Vec3f(0, 600, 0), Vec3f(-5, 10, 8.66f), true);
+	auto pLight3	= std::make_shared<CLightOmni>(Vec3f(600, 0, 0), Vec3f(-5, 10, -8.66f), true);
 	auto pCamera	= std::make_shared<CCameraPerspective>(resolution, Vec3f(0, 10, 0), Vec3f(0, -1, 0), Vec3f(1, 0, 0), 30.0f);
 
 	pScene->addPlane();
@@ -29,14 +29,14 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 	// Geometry
 	const float R		= 150.0f;		// The size of the world
 	auto floor			= pScene->addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), R, 0.0f, RGB(133, 153, 180));
-	auto environment	= pScene->addSphere(Vec3f(0, 0, 0), R);
-	auto sphere_center	= pScene->addSphere(Vec3f(0, 1, 0), 1.0f, RGB(230, 191, 179));
-	auto sphere_left	= pScene->addSphere(Vec3f(-2, 1, 0), 1.0f, RGB(230, 191, 179));
-	auto sphere_right	= pScene->addSphere(Vec3f(2, 1, 0), 1.0f, RGB(230, 191, 179));
+	//auto environment	= pScene->addSphere(Vec3f(0, 0, 0), R);
+	//auto sphere_center	= pScene->addSphere(Vec3f(0, 1, 0), 1.0f, RGB(230, 191, 179));
+	//auto sphere_left	= pScene->addSphere(Vec3f(-2, 1, 0), 1.0f, RGB(230, 191, 179));
+	//auto sphere_right	= pScene->addSphere(Vec3f(2, 1, 0), 1.0f, RGB(230, 191, 179));
 
-	environment->flipNormal();
+	//environment->flipNormal();
 
-	//pScene->add(std::make_shared<CLightSky>(Vec3f::all(0.5f)));	// light source
+	pScene->add(std::make_shared<CLightSky>(Vec3f::all(0.5f)));	// light source
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f));
 
 	// Shaders
@@ -50,11 +50,11 @@ std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, const Size 
 
 	pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
 
-	environment->setShader(pShaderEnvironment);
-	sphere_left->setShader(pShaderMirror);
-	floor->setShader(pShaderGlobal1);
-	sphere_center->setShader(pShaderGlobal2);
-	sphere_right->setShader(pShaderChrome);
+	//environment->setShader(pShaderEnvironment);
+	//sphere_left->setShader(pShaderMirror);
+	//floor->setShader(pShaderGlobal1);
+	//sphere_center->setShader(pShaderGlobal2);
+	//sphere_right->setShader(pShaderChrome);
 	
 	return pScene;
 }
@@ -107,9 +107,12 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 {
 	bool usePrims = true;
 	
-	
 	auto pScene = std::make_shared<CScene>(bgColor);
 
+	// primitives
+	auto s1		= pScene->addSphere(Vec3f(3, 1, 0));
+	auto s2		= pScene->addSphere(Vec3f(-3, 1, 0));
+	auto earth	= pScene->addSphere(Vec3f(0, 0, 0), 4.0f);
 
 	// textures
 	auto pTextureEarth	= std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
@@ -124,11 +127,8 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 	auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
 	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderMirror = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
-
-	// primitives
 	
 	// floor
-	//pScene->add(std::make_shared<CPrimPlane>(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0)));
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(100, 0, 0)));
 
 	// --- light panel ---
@@ -142,23 +142,23 @@ std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size resolutio
 	pScene->add(CSolidQuad(pShaderSide, Vec3f(0, 1, -1), Vec3f(0, 0, -1), Vec3f(-1, 0, 0)));
 	// --- ---- ---
 
-	//pScene->add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(3, 1.0f, 0), 1.0f));
-	//pScene->add(std::make_shared<CPrimSphere>(pShaderChrome, Vec3f(-3, 1.0f, 0), 1.0f));
+
 	//pScene->add(CSolidSphere(pShaderChrome, Vec3f(3, 1.0f, 0), 1, 24));
 	//pScene->add(CSolidSphere(pShaderChrome, Vec3f(-3, 1.0f, 0), 1, 24));		
-
+	s1->setShader(pShaderChrome);
+	s2->setShader(pShaderChrome);
 
 	
 	CTransform t;
 
-	//pScene->add(std::make_shared<CPrimSphere>(std::make_shared<CShaderEyelight>(Vec3f::all(1)), Vec3f::all(0), 3.0f));
-	auto earth = std::make_shared<CPrimSphere>(pShaderEarth, Vec3f(0, 0, 0), 4.0f);
+	
+
+	earth->setShader(pShaderEarth);
 	auto cylinder = CSolidCylinder(pShaderEarth, Vec3f(0, 0, 0), 4, 4, 5, 36, true);
 	auto cone = CSolidCone(pShaderEarth, Vec3f(0, 0, 0), 4, 5, 5, 24, true);
 	//	auto cube		= CSolidBox(pShaderFloorTxt, Vec3f(0, 1, 0), 1);
 	//cylinder.transform(CTransform().reflectY().reflectX().get());
-	pScene->add(cone);
-	//	pScene->add(std::make_shared<CPrimSphere>(std::make_shared<CShaderBlinn>(scene, RGB(0, 0, 255),   0.2f, 0.5f, 0.5f, 40.0f), Vec3f(2, 1.8f, -3), 2));
+	//pScene->add(cone);
 	//	pScene->add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderBlinn>(scene, RGB(0, 255, 255), 0.2f, 0.5f, 0.5f, 40.0f), Vec3f(-3, 4.7f, -1), Vec3f(0, 3, 0), Vec3f(2, 3.8f, -3)));
 	//	pScene->add(std::make_shared<CPrimTriangle>(std::make_shared<CShaderBlinn>(scene, RGB(1, 255, 255), 0.2f, 0.5f, 0.5f, 40.0f), Vec3f(2, 3, 2), Vec3f(2, 3, -4), Vec3f(-4, 3, -4)));
 
@@ -243,27 +243,96 @@ std::shared_ptr<CScene> buidSceneOcclusions(const Vec3f& bgColor, const Size res
 	return pScene;
 }
 
+
 int main(int argc, char* argv[])
 {
 	//const Vec3f	bgColor = RGB(196, 209, 227);
-	const Vec3f	bgColor = RGB(0, 0, 0);
-	const Size resolution(960, 600);
+	const Vec3f	bgColor = RGB(200, 200, 200);
+	const Size resolution(800, 600);
 	//const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
-	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
-	auto pScene = buildScenePlanets(bgColor, resolution);
+	auto pScene = buildSceneMirrorSphere(bgColor, resolution);
+	//auto pScene = buildScenePlanets(bgColor, resolution);
 	//auto pScene = buildSceneBox(bgColor, resolution);
 	//auto pScene = buildSceneTorusKnot(bgColor, resolution);
 	//auto pScene = buidSceneOcclusions(bgColor, resolution);
 	
-	pScene->buildAccelStructure(0, 3);
 
-	Timer::start("Rendering...");
-	Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true), 64);
-	Timer::stop();
-	imshow("pScene", render);
-	imwrite("D:\\renders\\Render.png", render);
-	waitKey();
+	// ------------------------- TEST -------------------------
+	//auto pScene = std::make_shared<CScene>(bgColor);
+	////auto floor = pScene->addDisc(Vec3f(0, -1, 0), Vec3f(0, 1, 0), 150.0f);
+	//
+	////pScene->setAmbientColor(Vec3f::all(0.5f));
+
+	//auto s1 = pScene->addSphere(Vec3f(4.4f, 0, 0));
+	//auto s2 = pScene->addSphere(Vec3f(2.2f, 0, 0));
+	//auto s3 = pScene->addSphere(Vec3f(0, 0, 0));
+	//auto s4 = pScene->addSphere(Vec3f(-2.2f, 0, 0));
+	//auto s5 = pScene->addSphere(Vec3f(-4.4f, 0, 0));
+	//
+	//auto texture		= std::make_shared<CTexture>(dataPath + "b13.jpg");
+	//auto test			= std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 200, 200));
+	//auto lambertian		= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200));
+	//auto diffuse		= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200));
+	//auto oren_nayar00	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 0.0f);
+	//auto oren_nayar02	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 11.46f);
+	//auto oren_nayar035	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 20.0f);
+	//auto oren_nayar05	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 60.0f);
+	//auto oren_nayar10	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 90.0f);
+	//auto newphong		= std::make_shared<CNewShaderPhong>(*pScene, texture, 1.0f, 0.6f, 1.0f, 250.0f);
+	//auto phong			= std::make_shared<CShaderPhong>(*pScene, InvPif * RGB(255, 200, 200), 1.0f, 0.6f, 0.15f, 250.0f);
+	//auto mirror			= std::make_shared<CNewShaderMirror>(*pScene);
+	//
+	////floor->setShader(lambertian);
+	////s1->setShader(oren_nayar10);
+	//s2->setShader(mirror);
+	//s3->setShader(diffuse);
+	////s4->setShader(phong);
+	////s5->setShader(newphong);
+
+	//auto shader = std::make_shared<CShaderDiffuse>(*pScene, texture);
+
+	////auto pdisc = pScene->addDisc(Vec3f(-2, 0, 0), normalize(Vec3f(0, 0, -1)), 1.2f, 0.2f);
+	////auto cdisk = CSolidDisc(shader, Vec3f(2, 0, 0), normalize(Vec3f(0, 0, -1)), 1.2f, 0.2f, 32);
+
+	////pdisc->setShader(shader);
+	////pScene->add(cdisk);
+	//auto pLight = std::make_shared<CLightOmni>(3e2 * RGB(255, 255, 255), Vec3f(0, 10, 0), false);
+	//pScene->add(pLight);
+	////pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e2), Vec3f(0, 10,  -2)));
+	//pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 10, -10), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f));
+	
+	// --------------------------------------------------------
+
+
+	pScene->buildAccelStructure(0, 2);
+
+	if (false) {
+		Timer::start("Rendering 100 frames...");
+		for (size_t x = 0;; x++) {
+			Mat render = pScene->render(std::make_shared<CSamplerStratified>(1, false, false));
+			imshow("Render", render);
+			
+			float X = static_cast<float>(x % 200) / 10.0f - 5.0f; // [-5; 15)
+			if (X >= 5) X = 10.0f - X;
+			//pLight->setOrigin(Vec3f(X, 10, 0));
+
+			if (x && x % 100 == 0) {
+				Timer::stop();
+				Timer::start("Rendering 100 frames...");
+			}
+
+			if (waitKey(1) == 'q') break;
+		}
+	}
+	else {
+		Timer::start("Rendering...");
+		Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true), 48);
+		Timer::stop();
+		imshow("pScene", render);
+		imwrite("D:\\renders\\res__1.png", render);
+		waitKey();
+	}
 	return 0;
 }

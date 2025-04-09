@@ -11,14 +11,15 @@ namespace rt {
 		m_pAmbientColorMap = nullptr;
 	}
 
-	void CShader::setAmbientColor(const ptr_texture_t pMap)
+	void CShader::setAmbientColor(const ptr_texture_t pMap, float amount)
 	{
 		m_pAmbientColorMap = pMap;
+		m_ambientAmount = amount;
 	}
 
 	Vec3f CShader::getAmbientColor(const Ray& ray) const
 	{
-		return m_pAmbientColorMap ? m_pAmbientColorMap->getTexel(ray) : m_ambientColor;
+		return m_pAmbientColorMap ? m_ambientAmount * m_pAmbientColorMap->getTexel(ray) : m_ambientColor;
 	}
 
 	// ============================================== Diffuse Color ==============================================

@@ -39,8 +39,9 @@ namespace rt {
 		/**
 		 * @brief Sets the ambient color map
 		 * @param pMap The pointer to the ambient texture
+		 * @param amount The power of the ambient texture (applies only on the texture)
 		 */
-		DllExport void	setAmbientColor(const ptr_texture_t pMap);
+		DllExport void	setAmbientColor(const ptr_texture_t pMap, float amount = 1.0f);
 		/**
 		 * @brief Sets the diffuse color
 		 * @param color The color color
@@ -118,11 +119,13 @@ namespace rt {
 	private:
 		Vec3f			m_ambientColor		= Vec3f::all(0);	///< The ambient color
 		Vec3f			m_diffuseColor		= Vec3f::all(0);	///< The diffuse color
-		float			m_specularLevel		= 0;				///< The specular level
-		float			m_opacity			= 1;				///< The opacity
-		float			m_bumpAmount		= 1;				///< The power of bump map
+		
+		float			m_ambientAmount;						///< The scale factor for ambient texture (applies only to the texture)
+		float			m_specularLevel		= 0;				///< The specular level (may be replaced by the map)
+		float			m_opacity			= 1.0f;				///< The opacity
+		float			m_bumpAmount		= 0.3f;				///< The power of bump map
 
-		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map
+		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map (initializes from diffuse)
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
 		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
 		//ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
