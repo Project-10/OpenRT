@@ -6,9 +6,10 @@
 #include "random.h"
 
 namespace {
-	Matx33f World2LocalMatix(const Vec3f& n) {
-		Vec3f t = tangent(n);
-		Vec3f s = n.cross(t);
+	Matx33f World2LocalMatix(const Vec3f& n, const Vec3f& aux = Vec3f(1.0f, .0f, .0f)) {
+		Vec3f t = normalize(tangent(n, aux));
+		Vec3f s = t.cross(n);
+
 		return Matx33f(
 			s[0], s[1], s[2],
 			t[0], t[1], t[2],
@@ -20,7 +21,14 @@ namespace {
 Vec3f rt::CNewShader::shade(const Ray& ray) const
 {
 	const Vec3f		woW = -ray.dir;								// view direction to camera in WCS
-	Vec3f			n	= ray.hit->getShadingNormal(ray);		// shading normal in WLC
+	
+	Vec3f faceNormal = ray.hit->getNormal(ray);					// face normal
+	Vec3f n = ray.hit->getShadingNormal(ray);					// shading normal in WLC
+	bool inside = false;
+	if (faceNormal.dot(ray.dir) > 0) {
+		//n = -n;													// turn normal to front
+		inside = true;
+	}
 	
 	// Bump Mapping
 	auto du = getBump(ray);
@@ -33,70 +41,84 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 		n = normalize(n);
 	}
 	
-	const Vec3f		p	= ray.hitPoint(n);						// The hit point to be shaded
-	const Matx33f	M	= World2LocalMatix(n);					// WCS to LCS matrix
+	const Vec3f		p	= ray.hitPoint(n);						// The hit point to be shaded (the positive hitpoint)
+	const Matx33f	M	= World2LocalMatix(n, -woW);			// WCS to LCS matrix
 	const Vec3f		wo	= M * woW;								// view direction to camera in LCS
 
 	// TODO: If there are textures, the same calculation of the texture coordinates are done 4 times here
 	Vec3f ambientColor	= getAmbientColor(ray);
 	Vec3f diffuseColor	= getDiffuseColor(ray);
-	float ks			= getSpecularLevel(ray);
+	Vec3f specularColor	= getSpecularColor(ray);
 	float opacity		= getOpacity(ray);
 
 	// TODO: Debug Mode
-	// TODO: Opacity
 
 	Vec3f res(0, 0, 0);
-	
-	// Ambient light is not a part of integration
+
+	// ------ ambient ------
 	res += getScene().getAmbientColor().mul(ambientColor);
 
 	// Diffuse light: calculate the Incident Radiance
-	Vec3f ir = eval_IR_LS(p, n, [this, M, wo, ks](const Vec3f& wiW) {
+	if ((m_type & (BxDFType::diffuse | BxDFType::specular)) != BxDFType::unset) {
+		Vec3f ir = eval_IR_LS(p, n, [this, M, wo, diffuseColor, specularColor](const Vec3f& wiW) {
 		
-		Vec3f wi = M * wiW;			// Transform the wiW vector from WCS to LCS
-	
-		float res = 0;
-		for (const auto& bxdfPair : this->m_vpBxDFs) {
-			float k = bxdfPair.second->MatchesFlags(BxDFType::specular) ? ks : 1.0f;
-			res += k * bxdfPair.first * bxdfPair.second->f(wo, wi);
-		}
-		return  res;
+			Vec3f wi = M * wiW;			// Transform the wiW vector from WCS to LCS
 
-	});
-	res += ir.mul(diffuseColor);
+			// This lambda-function shoud return a float onstead of color. We return color just because we use 
+			// the Phong and Blinn specular shaders, which are not phisically correct shaders.	
+			Vec3f res(0, 0, 0);
+			for (const auto& bxdfPair : this->m_vpBxDFs) {
+				Vec3f color = bxdfPair.second->MatchesFlags(BxDFType::specular) ? specularColor : diffuseColor;
+				res += bxdfPair.first * bxdfPair.second->f(wo, wi) * color;
+			}
+			return  res;
+
+		});
+		res += ir;
+	}
 	
 	// Re-Tracing components
-	for (const auto& bxdfPair : this->m_vpBxDFs) {
-		thread_local Vec3f wi;
-		float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi);
+	if ((m_type & (BxDFType::reflection | BxDFType::transmission)) != BxDFType::unset) 
+		for (const auto& bxdfPair : this->m_vpBxDFs) {
+			thread_local Vec3f wi;
+			float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi);
+			if (weight > Epsilon) {
+				Vec3f org = p;	// positive hitpoint
+				if (bxdfPair.second->MatchesFlags(BxDFType::transmission) && wi[2] < 0) 
+					org = ray.hitPoint(-n);	// negative hitpoint - below surface
+				Ray newRay(org, M.t() * wi, ray.ndc, ray.counter);
+				res += weight * newRay.reTrace(getScene());
+			}
+		}
 
-		Ray newRay(p, M.t() * wi, ray.ndc, ray.counter);
-		res += weight * newRay.reTrace(getScene());
+	// ------ opacity ------
+	if (opacity < 1 - Epsilon) {
+		Ray newRay(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
+		res = opacity * res + (1.0f - opacity) * newRay.reTrace(getScene());
 	}
-
+	
 	return res;
 }
 
-void rt::CNewShader::add(const ptr_BxDF_t pBxDF, float scale)
+void rt::CNewShader::addBSDF(const ptr_BxDF_t pBxDF, float scale)
 {
 	m_vpBxDFs.push_back(std::make_pair(scale, pBxDF));
+	m_type |= pBxDF->getType();
 }
 
 
 // TODO: Rework getScene() 
-// TODO: Test with sky light
 
 Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_function brdf) const {
 	Vec3f res(0, 0, 0);
 
-	Ray shadowRay(point);
+	
 	for (auto& pLight : getScene().getLights()) {
 		Vec3f L = Vec3f::all(0);
 		const size_t nSamples = pLight->getNumSamples();
 		for (size_t s = 0; s < nSamples; s++) {
-			//shadowRay.hit = ray.hit;	// Needed for the skylight
-			auto radiance = pLight->illuminate(shadowRay);
+			Ray shadowRay;
+			auto radiance = pLight->illuminate(shadowRay, point, normal);
 			if (radiance) {
 				// Check shadow (light sourse is occluded)
 				float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(shadowRay) : 1.0f;
@@ -104,7 +126,7 @@ Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_f
 
 				float cosLightNormal = shadowRay.dir.dot(normal);
 				if (cosLightNormal > 0)
-					L += cosLightNormal * k_occlusion * brdf(shadowRay.dir) * radiance.value();
+					L += cosLightNormal * k_occlusion * brdf(shadowRay.dir).mul(radiance.value());
 			}
 		}
 		res += (1.0f / nSamples) * L;

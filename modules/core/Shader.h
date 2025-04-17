@@ -10,7 +10,7 @@ namespace rt {
 	/**
 	 * @brief Shader intermediate class for storing textures
 	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
 	class CShader : public IShader
 	{
@@ -39,7 +39,7 @@ namespace rt {
 		/**
 		 * @brief Sets the ambient color map
 		 * @param pMap The pointer to the ambient texture
-		 * @param amount The power of the ambient texture (applies only on the texture)
+		 * @param amount The power of the texture (applies only on the texture)
 		 */
 		DllExport void	setAmbientColor(const ptr_texture_t pMap, float amount = 1.0f);
 		/**
@@ -50,24 +50,26 @@ namespace rt {
 		/**
 		 * @brief Sets the diffuse map
 		 * @param pColorMap The pointer to the diffuse texture
+		 * @param amount The power of the texture (applies only on the texture)
 		 */
-		DllExport void	setDiffuseColor(const ptr_texture_t pColorMap);
+		DllExport void	setDiffuseColor(const ptr_texture_t pColorMap, float amount = 1.0f);
 		/**
-		 * @brief Sets the specular level value
-		 * @param level The specular level value
+		 * @brief Sets the specular color
+		 * @param color The specular color
 		 */
-		DllExport void	setSpecularLevel(float level);
+		DllExport void	setSpecularColor(const Vec3f& color);
 		/**
 		 * @brief Sets the specular level map
 		 * @param pSpecularLevel The specular level map
+		 * @param amount The power of the ambient texture (applies only on the texture)
 		 */
-		DllExport void	setSpecularLevel(const ptr_texture_t pSpecularLevel);
+		DllExport void	setSpecularColor(const ptr_texture_t pSpecularLevel, float amount = 1.0f);
 		/**
 		* @brief Sets the bump map
 		* @param pBumpMap The bump map
 		* @param amount The power of bump
 		*/
-		DllExport void setBumpMap(const ptr_texture_t pBumpMap, float amount = 1.0f);
+		DllExport void setBumpMap(const ptr_texture_t pBumpMap, float amount = 0.3f);
 		/**
 		 * @brief Sets the opacity
 		 * @param opacity The opacity. Number between 0 and 1
@@ -76,8 +78,9 @@ namespace rt {
 		/**
 		 * @brief Sets the opacity map
 		 * @param pOpacityMap The opacity map
+		 * @param amount The power of the ambient texture (applies only on the texture)
 		 */
-		DllExport void	setOpacity(const ptr_texture_t pOpacityMap);
+		DllExport void	setOpacity(const ptr_texture_t pOpacityMap, float amount = 1.0f);
 
 
 		/**
@@ -93,11 +96,11 @@ namespace rt {
 		 */
 		DllExport Vec3f	getDiffuseColor(const Ray& ray) const;
 		/**
-		 * @brief Returns the specular level value at the intersection point
+		 * @brief Returns the specular color value at the intersection point
 		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
-		 * @return The specular level value at the intersection point
+		 * @return The specular color value at the intersection point
 		 */
-		DllExport float getSpecularLevel(const Ray& ray) const;
+		DllExport Vec3f getSpecularColor(const Ray& ray) const;
 		/**
 		* @brief Returns the bump map value at the intersection point
 		* @param ray The ray hitting the primitive. ray.hit must point to the primitive
@@ -117,17 +120,21 @@ namespace rt {
 		
 		
 	private:
-		Vec3f			m_ambientColor		= Vec3f::all(0);	///< The ambient color
-		Vec3f			m_diffuseColor		= Vec3f::all(0);	///< The diffuse color
+		Vec3f			m_ambientColor		= RGB(150, 150, 150);	///< The ambient color (initializes from diffuse)
+		Vec3f			m_diffuseColor		= RGB(150, 150, 150);	///< The diffuse color
+		Vec3f			m_specularColor		= RGB(255, 255, 255);	///< The specular color
 		
-		float			m_ambientAmount;						///< The scale factor for ambient texture (applies only to the texture)
-		float			m_specularLevel		= 0;				///< The specular level (may be replaced by the map)
+		float			m_ambientAmount		= 1.0f;				///< The scale factor for ambient texture (applies only to the texture)
+		float			m_diffuseAmount		= 1.0f;				///< The scale factor for diffuse texture (mixes with the diffuse color)
+		float			m_specularAmount	= 1.0f;				///< The scale factor for the specular texture
+		float			m_specularLevel		= 0;				///< The specular level (parameter of the reflectiove BRDFs)
 		float			m_opacity			= 1.0f;				///< The opacity
 		float			m_bumpAmount		= 0.3f;				///< The power of bump map
+		float			m_opacityAmount		= 1.0f;				///< The scale factor for opacity map
 
 		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map (initializes from diffuse)
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
-		ptr_texture_t	m_pSpecularLevelMap	= nullptr;			///< The specular level map
+		ptr_texture_t	m_pSpecularColorMap	= nullptr;			///< The specular color map
 		//ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
 		ptr_texture_t	m_pBumpMap_u 		= nullptr;
 		ptr_texture_t	m_pBumpMap_v 		= nullptr;

@@ -1,86 +1,23 @@
 #include "ShaderPhong.h"
-#include "Scene.h"
-#include "Ray.h"
+#include "BRDFLambertian.h"
+#include "BRDFOrenNayar.h"
+#include "BRDFPhong.h"
 
-namespace rt {
-	Vec3f CShaderPhong::shade(const Ray& ray) const
-	{
-		Vec3f res(0, 0, 0);
+rt::CShaderPhong::CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke) : CNewShader(scene, color)
+{
+	addBSDF(std::make_shared<CBRDFLambertian>(), kd);
+	//addBSDF(std::make_shared<CBRDFOrenNayar>(90.0f), kd);
+	addBSDF(std::make_shared<CBRDFPhong>(ke), 1.0f);
+	setAmbientColor(Vec3f::all(ka));
+	setSpecularColor(Vec3f::all(ks));
+	// TODO: Now the specular level may be passed eigther throus the scale of the BRDF function, or via setSpecularLevel. We need to set both and sent one of them to 1.
+}
 
-		Vec3f ambientColor	= getAmbientColor(ray);
-		Vec3f diffuseColor	= getDiffuseColor(ray);
-		float ks 			= getSpecularLevel(ray);
-		float opacity		= getOpacity(ray);
-
-		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
-		Vec3f shadingNormal = ray.hit->getShadingNormal(ray);					// shading normal
-		
-		
-		auto du = getBump(ray);
-		if (du) {
-			auto  dp = ray.hit->dp(ray.hitPoint());
-			Vec3f dpdu = dp.first;
-			Vec3f dpdv = dp.second;
-
-			shadingNormal += getBumpAmount() * (du.value().first * dpdv.cross(shadingNormal) - du.value().second * dpdu.cross(shadingNormal));
-			shadingNormal = normalize(shadingNormal);
-		}
-
-		bool inside = false;
-		if (faceNormal.dot(ray.dir) > 0) {
-			shadingNormal = -shadingNormal;										// turn shading normal to front
-			inside = true;
-		}
-
-
-		Ray reflected = (ks > 0) ? ray.reflected(shadingNormal) : ray;			// reflection vector
-
-#ifdef DEBUG_MODE
-		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
-#endif
-		// ------ opacity ------
-		if (opacity < 1) {
-			Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
-			res += (1.0f - opacity) * R.reTrace(getScene());
-		}
-
-		// ------ ambient ------
-		if (m_ka > 0)
-			res += m_ka * opacity * getScene().getAmbientColor().mul(ambientColor);
-
-		// ------ diffuse and/or specular ------
-		if (m_kd > 0 || m_ke > 0) {
-			for (auto& pLight : getScene().getLights()) {
-				Vec3f L = Vec3f::all(0);
-				const size_t nSamples = pLight->getNumSamples();
-				for (size_t s = 0; s < nSamples; s++) {
-					
-					// get direction to light, and intensity
-					Ray shadowRay;
-					auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(shadingNormal), shadingNormal);
-					if (radiance) {
-						// Check shadow (light sourse is occluded)
-						float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(shadowRay) : 1.0f;
-						if (k_occlusion < Epsilon) continue;
-
-						// ------ diffuse ------
-						if (m_kd > 0) {
-							float cosLightNormal = shadowRay.dir.dot(shadingNormal);
-							if (cosLightNormal > 0)
-								L += m_kd * opacity * cosLightNormal * k_occlusion * diffuseColor.mul(radiance.value());
-						}
-						// ------ specular ------
-						if (ks > 0) {
-							float cosLightReflect = shadowRay.dir.dot(reflected.dir);
-							if (cosLightReflect > 0)
-								L += ks * powf(cosLightReflect, m_ke) * k_occlusion * radiance.value();
-						}
-					}
-				} // s
-				res += (1.0f / nSamples) * L;
-			} // pLight
-		}
-		
-		return res;
-	}
+rt::CShaderPhong::CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke) : CNewShader(scene, pTexture)
+{
+	addBSDF(std::make_shared<CBRDFLambertian>(), kd);
+	//addBSDF(std::make_shared<CBRDFOrenNayar>(), kd);
+	addBSDF(std::make_shared<CBRDFPhong>(ke), 1.0f);
+	setAmbientColor(pTexture, 1.0f);
+	setSpecularColor(Vec3f::all(ks));
 }

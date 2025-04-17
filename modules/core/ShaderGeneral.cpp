@@ -9,7 +9,7 @@ namespace rt {
 
 		Vec3f ambientColor	= getAmbientColor(ray);
 		Vec3f diffuseColor	= getDiffuseColor(ray);
-		float ks 			= getSpecularLevel(ray);
+		Vec3f specularColor	= getSpecularColor(ray);
 		float opacity		= getOpacity(ray);
 
 		Vec3f faceNormal	= ray.hit->getNormal(ray);							// face normal
@@ -31,7 +31,7 @@ namespace rt {
 			}
 
 			// Needed by ks, km, kt
-			Ray reflected = (ks > 0 || m_km > 0 || m_kt > 0) ? ray.reflected(n) : ray;	// reflection vector
+			Ray reflected = (specularColor[0] > 0 || m_km > 0 || m_kt > 0) ? ray.reflected(n) : ray;	// reflection vector
 
 			// ------ opacity ------
 			if (opacity < 1) {
@@ -64,10 +64,10 @@ namespace rt {
 									L += m_kd * opacity * cosLightNormal * k_occlusion * diffuseColor.mul(radiance.value());
 							}
 							// ------ specular ------
-							if (ks > 0) {
+							if (specularColor[0] > 0) {
 								float cosLightReflect = I.dir.dot(reflected.dir);
 								if (cosLightReflect > 0)
-									L += ks * powf(cosLightReflect, m_ke) * k_occlusion * radiance.value();
+									L += powf(cosLightReflect, m_ke) * k_occlusion * specularColor.mul(radiance.value());
 							}
 						}
 					} // s

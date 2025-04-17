@@ -11,7 +11,7 @@ namespace rt {
 	/**
 	 * @brief Flat shader class
 	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
+	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
 	class CShaderGeneral : public CShaderScene
 	{
@@ -73,41 +73,5 @@ namespace rt {
 		float m_kt;					///< The perfect transmission coefficient
 		
 		float m_refractiveIndex;	///< The refractive index for transmitted rays
-	};
-
-	// ================================ Glass Shader Class ================================
-	/**
-	 * @brief Glass shader 
-	 * @details Fully transparent shader
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderGlass : public CShaderGeneral
-	{
-	public:
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 * @param refractiveIndex The refractive index of the medium (for glass use 1.517)
-		 */
-		DllExport CShaderGlass(const CScene& scene, float refractiveIndex) : CShaderGeneral(scene, Vec3f::all(0), 0, 0, 0, 0, 0, 1, refractiveIndex) {}
-		DllExport virtual ~CShaderGlass(void) = default;
-	};
-
-	// ================================ Mirror Shader Class ================================
-	/**
-	 * @brief Mirror shader
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderMirror : public CShaderGeneral
-	{
-	public:
-		/**
-		 * @brief Constructor
-		 * @param scene The reference to the scene
-		 */
-		DllExport CShaderMirror(const CScene& scene) : CShaderGeneral(scene, Vec3f::all(0), 0, 0, 0, 0, 1, 0, 0) {}
-		DllExport virtual ~CShaderMirror(void) = default;
 	};
 }

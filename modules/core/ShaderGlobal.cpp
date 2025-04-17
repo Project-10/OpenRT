@@ -13,8 +13,6 @@ namespace rt {
 		res = diffuseColor * 0.1f;
 
 		// ------ diffuse and/or specular ------
-		Ray I(ray.hitPoint(shadingNormal));												// shadow ray
-
 		
 		// Gather direct light from the light sources
 		Vec3f L = Vec3f::all(0);
@@ -25,8 +23,8 @@ namespace rt {
 			size_t nSamples = pLight->getNumSamples();
 			for (size_t s = 0; s < nSamples; s++) {
 				// get direction to light, and intensity
-				I.hit = ray.hit;	// TODO: double check
-				auto radiance = pLight->illuminate(I);
+				Ray I;
+				auto radiance = pLight->illuminate(I, ray.hitPoint(shadingNormal), shadingNormal);
 				if (radiance) {
 					// Check shadow (light sourse is occluded)
 					float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;

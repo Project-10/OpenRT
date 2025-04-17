@@ -6,14 +6,29 @@
 #include "Ray.h"
 
 namespace rt {
-	enum class BxDFType {
-		unset		= 0,
-		reflection	= 1 << 0,
-		transmission= 1 << 1,
-		diffuse		= 1 << 2,
-		glossy		= 1 << 3,
-		specular	= 1 << 4
+	enum class BxDFType : byte {
+		unset			= 0,
+		reflection		= 1 << 0,
+		transmission	= 1 << 1,
+		diffuse			= 1 << 2,
+		glossy			= 1 << 3,
+		specular		= 1 << 4
 	};
+
+	inline BxDFType operator|(BxDFType lhs, BxDFType rhs) {
+		return static_cast<BxDFType>(static_cast<byte>(lhs) | static_cast<byte>(rhs));
+	}
+
+	inline BxDFType& operator|=(BxDFType& lhs, BxDFType rhs) {
+		lhs = static_cast<BxDFType>(static_cast<byte>(lhs) | static_cast<byte>(rhs));
+		return lhs;
+	}
+
+	inline BxDFType operator&(BxDFType lhs, BxDFType rhs) {
+		return static_cast<BxDFType>(static_cast<byte>(lhs) & static_cast<byte>(rhs));
+	}
+
+
 	// ================================ BxDF Interface Class ================================
 	/**
 	 * @brief Basic BRDF / BTDF functions abstract interface class
@@ -23,7 +38,7 @@ namespace rt {
 	class IBxDF
 	{
 	public:
-		DllExport IBxDF(BxDFType type = BxDFType::unset) : m_type(static_cast<byte>(type)) {}
+		DllExport IBxDF(BxDFType type) : m_type(type) {}
 		DllExport IBxDF(const IBxDF&) = delete;
 		DllExport virtual ~IBxDF(void) = default;
 		DllExport const IBxDF& operator=(const IBxDF&) = delete;
@@ -39,10 +54,11 @@ namespace rt {
 		// This method will be needed for 
 		DllExport virtual float Sample_f(const Vec3f& wo, Vec3f& wi) const { return 0; }
 
-		DllExport bool	MatchesFlags(BxDFType flags) const { return (m_type & static_cast<byte>(flags)) == m_type; }
+		DllExport BxDFType	getType(void) const { return m_type; } 
+		DllExport bool		MatchesFlags(BxDFType flags) const { return (m_type & flags) == m_type; }
 
 
 		private:
-			byte	m_type;
+			BxDFType	m_type;
 	};
 }

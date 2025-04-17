@@ -9,13 +9,12 @@ Vec3f rt::CShaderScene::eval_IR_LS(const Ray& ray) const {
 
 	Vec3f n = ray.hit->getShadingNormal(ray);				// shading normal
 
-	Ray shadowRay(ray.hitPoint(n));
 	for (auto& pLight : m_scene.getLights()) {
 		Vec3f L = Vec3f::all(0);
 		const size_t nSamples = pLight->getNumSamples();
 		for (size_t s = 0; s < nSamples; s++) {
-			shadowRay.hit = ray.hit;	// Needed for the skylight
-			auto radiance = pLight->illuminate(shadowRay);
+			thread_local Ray shadowRay;  
+			auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(n), n);
 			if (radiance) {
 				// Check shadow (light sourse is occluded)
 				float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(shadowRay) : 1.0f;

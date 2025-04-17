@@ -5,15 +5,15 @@
 // Constructor
 rt::CShaderDiffuse::CShaderDiffuse(const CScene& scene, const Vec3f& color, float sigma) : CNewShader(scene, color)
 {
-	if (sigma < Epsilon) add(std::make_unique<CBRDFLambertian>());
-	else add(std::make_shared<CBRDFOrenNayar>(sigma));
+	if (sigma < Epsilon) addBSDF(std::make_unique<CBRDFLambertian>());
+	else addBSDF(std::make_shared<CBRDFOrenNayar>(sigma));
 }
 	
 // Constructor
 rt::CShaderDiffuse::CShaderDiffuse(const CScene& scene, const ptr_texture_t pTexture, float sigma) : CNewShader(scene, pTexture)
 {
-	if (sigma < Epsilon) add(std::make_unique<CBRDFLambertian>());
-	else add(std::make_shared<CBRDFOrenNayar>(sigma));
+	if (sigma < Epsilon) addBSDF(std::make_unique<CBRDFLambertian>());
+	else addBSDF(std::make_shared<CBRDFOrenNayar>(sigma));
 }
 
 //	Vec3f CShaderDiffuse::shade(const Ray& ray) const

@@ -1,26 +1,39 @@
 #include "BSDFSpecularTransmission.h"
 
-float rt::CBRDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi) const
-{
-	if (m_refractiveIndex == 1) {
-		wi = -wo;
-		return 1.0f;
+namespace {
+	inline float CosTheta(const Vec3f& w) {
+		return w[2];
 	}
 
-	// TODO: complete this implementation
-	Vec3f normal = Vec3f(0, 0, 1);
-	bool inside = true; // TODO: or false
-	float k = inside ? m_refractiveIndex : 1.0f / m_refractiveIndex;
+	inline float Cos2Theta(const Vec3f& w) {
+		return w[2] * w[2];
+	}
+
+	inline float Sin2Theta(const Vec3f& w) {
+		return std::max(0.0f, 1.0f - Cos2Theta(w));
+	}
+}
+
+float rt::CBRDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi) const
+{
+	float cos_o = CosTheta(wo);
+
+	float k = cos_o < 0 ? m_refractiveIndex : 1.0f / m_refractiveIndex;
 	
-	float cos_alpha = wo.dot(normal);
-	float sin_2_alpha = 1.0f - cos_alpha * cos_alpha;
-	float k_2_sin_2_alpha = k * k * sin_2_alpha;
-	if (k_2_sin_2_alpha <= 1) {
-		float cos_beta = sqrtf(1.0f - k * k * sin_2_alpha);
-		wi = normalize((k * cos_alpha - cos_beta) * normal + k * (-wo));
+	float sin2_o	= Sin2Theta(wo);	
+	float sin2_i	= k * k * sin2_o;	
+	if (sin2_i > 1)	{
+		wi = Vec3f(-wo[0], -wo[1], wo[2]);
+		return 1.0f;
 	}
-	else {
-		wi = Vec3f(-wo[0], -wo[1], wo[2]);	// reflected direction
-	}
+	float cos_i		= sqrtf(1.0f - sin2_i);
+	if (cos_o < 0)
+		cos_i = -cos_i;
+	
+	wi = normalize((k * cos_o - cos_i) * Vec3f(0, 0, 1) - k * wo);
+	//wi = -k * wo;
+	//wi[2] = -cos_i;
+	//wi = Vec3f(-k * wo[0], -k * wo[1], -cos_i);
+
 	return 1.0f;
 }

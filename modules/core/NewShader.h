@@ -4,7 +4,7 @@
 #pragma once
 
 namespace rt {
-	using brdf_function = std::function<float(const Vec3f&)>;
+	using brdf_function = std::function<Vec3f(const Vec3f&)>;
 	class Scene;
 
 	class CNewShader : public CShaderScene
@@ -20,7 +20,8 @@ namespace rt {
 
 		DllExport virtual Vec3f shade(const Ray& ray) const override;
 
-		DllExport void			add(const ptr_BxDF_t pBxDF, float scale = 1.0f);
+		// Rename and add the type of the BRDF to be added here.
+		DllExport void			addBSDF(const ptr_BxDF_t pBxDF, float scale = 1.0f);
 
 	
 	protected:
@@ -28,6 +29,7 @@ namespace rt {
 
 
 	private:
-		std::vector<std::pair<float, ptr_BxDF_t>> m_vpBxDFs;
+		std::vector<std::pair<float, ptr_BxDF_t>>	m_vpBxDFs;
+		BxDFType									m_type = BxDFType::unset;
 	};
 }
