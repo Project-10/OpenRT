@@ -25,7 +25,7 @@ namespace rt {
 	Vec3f CPrimTriangle::doGetShadingNormal(const Ray& ray) const
 	{
 		if (m_na && m_nb && m_nc)
-			return (1.0f - ray.b1 - ray.b2) * m_na.value() + ray.b1 * m_nb.value() + ray.b2 * m_nc.value();
+			return normalize((1.0f - ray.b1 - ray.b2) * m_na.value() + ray.b1 * m_nb.value() + ray.b2 * m_nc.value()); // Need to normalize to increase the accuracy
 		else
 			return m_normal;
 	}
