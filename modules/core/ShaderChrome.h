@@ -1,20 +1,12 @@
-// Chrome shader experimental class
-// Written by Sergey G. Kosov in 2020 for Project X
-#pragma once
+// Chrome shader class
+// Written by Dr. Sergey G. Kosov in 2025 for Open RT
+#include "NewShader.h"
 
-#include "ShaderScene.h"
-#include "Sampler.h"
+#pragma once
 
 namespace rt {
 	class CScene;
-	// ================================ Chrome Shader Class ================================
-	/**
-	 * @brief Chrome shader
-	 * @details This is an experimental class as a preparation step fpr path-tracing
-	 * @ingroup moduleShader
-	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
-	 */
-	class CShaderChrome : public CShaderScene
+	class CShaderChrome : public CNewShader
 	{
 	public:
 		/**
@@ -22,14 +14,7 @@ namespace rt {
 		 * @param scene The reference to the scene
 		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
 		 */
-		DllExport CShaderChrome(const CScene& scene, ptr_sampler_t pSampler = nullptr)
-			: CShaderScene(scene, Vec3f::all(0), pSampler)
-		{}
+		DllExport CShaderChrome(const CScene& scene, ptr_sampler_t pSampler = nullptr);
 		DllExport virtual ~CShaderChrome(void) = default;
-		
-		DllExport virtual Vec3f shade(const Ray& ray) const override;
 	};
 }
-
-
-

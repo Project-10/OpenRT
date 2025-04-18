@@ -28,35 +28,38 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	
 	// Geometry
 	const float R		= 150.0f;		// The size of the world
-	auto floor			= pScene->addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), R, 0.0f, RGB(133, 153, 180));
+	auto floor			= pScene->addPlane(Vec3f(0, 0, 0), Vec3f(0, 1, 0), RGB(133, 153, 180));
 	//auto environment	= pScene->addSphere(Vec3f(0, 0, 0), R);
 	auto sphere_center	= pScene->addSphere(Vec3f( 0, 1, 0), 1.0f, RGB(230, 191, 179));
-	auto sphere_left	= pScene->addSphere(Vec3f(-2, 1, 0), 1.0f, RGB(230, 191, 179));
-	auto sphere_right	= pScene->addSphere(Vec3f(+2, 1, 0), 1.0f, RGB(230, 191, 179));
+	auto sphere_left	= pScene->addSphere(Vec3f(-2.01f, 1, 0), 1.0f, RGB(230, 191, 179));
+	auto sphere_right	= pScene->addSphere(Vec3f(+2.01f, 1, 0), 1.0f, RGB(230, 191, 179));
 
 	//environment->flipNormal();
 
 	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.25f), 4.0f, std::make_shared<CSamplerStratified>(4, true, true)));	// light source
-	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f));
+	auto camera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f);
+	auto cameraDoF	= std::make_shared<CCameraThinLens>(camera, 0.3f, 10.77f);
+	pScene->add(camera);
 
 	// Shaders
+	auto pShader				= std::make_shared<CShaderDiffuse>(*pScene, std::make_shared<CTexture>());
 	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 20.f);
 	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
 	auto pShaderMirror			= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 	auto pShaderGlass			= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
 	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
-	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 1.5f);
-	//auto pShaderChrome		= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
+	auto pNewShaderChrome		= std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
 	
 
 	//pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
 
 	//environment->setShader(pShaderEnvironment);
-	//sphere_right->setShader(pShaderChrome);
+	floor->setShader(pShader);
 	sphere_center->setShader(pShaderDiffuse);
-	sphere_left->setShader(pNewShaderMirror);
-	sphere_right->setShader(pShaderGlass);
+	sphere_left->setShader(pShaderDiffuse);
+	sphere_right->setShader(pNewShaderChrome);
 	
 	return pScene;
 }
@@ -262,11 +265,11 @@ int main(int argc, char* argv[])
 	//const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
-	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
+	auto pScene = buildSceneMirrorSphere(bgColor, resolution);
 	//auto pScene = buildScenePlanets(bgColor, resolution);
 	//auto pScene = buildSceneBox(bgColor, resolution);
 	//auto pScene = buildSceneTorusKnot(bgColor, resolution);
-	auto pScene = buidSceneOcclusions(bgColor, resolution);
+	//auto pScene = buidSceneOcclusions(bgColor, resolution);
 	
 
 	// ------------------------- TEST -------------------------
@@ -319,7 +322,7 @@ int main(int argc, char* argv[])
 	// --------------------------------------------------------
 
 
-	pScene->buildAccelStructure(20, 3);
+	pScene->buildAccelStructure(0, 3);
 
 	if (false) {
 		Timer::start("Rendering 100 frames...");

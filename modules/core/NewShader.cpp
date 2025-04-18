@@ -80,15 +80,24 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 	// Re-Tracing components
 	if ((m_type & (BxDFType::reflection | BxDFType::transmission)) != BxDFType::unset) 
 		for (const auto& bxdfPair : this->m_vpBxDFs) {
+			const size_t nSamples = bxdfPair.second->getNumSamples();
+			if (!nSamples) continue;
+			size_t nContributions = 0;
 			thread_local Vec3f wi;
-			float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi);
-			if (weight > Epsilon) {
-				Vec3f org = p;	// positive hitpoint
-				if (bxdfPair.second->MatchesFlags(BxDFType::transmission) && wi[2] < 0) 
-					org = ray.hitPoint(-n);	// negative hitpoint - below surface
-				Ray newRay(org, M.t() * wi, ray.ndc, ray.counter);
-				res += weight * newRay.reTrace(getScene());
+			Vec3f aux(0, 0, 0);
+			for (size_t s = 0; s < nSamples; s++) {
+				float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi);
+				if (weight > Epsilon) {
+					Vec3f org = p;	// positive hitpoint
+					if (bxdfPair.second->MatchesFlags(BxDFType::transmission) && wi[2] < 0)
+						org = ray.hitPoint(-n);	// negative hitpoint - below surface
+					Ray newRay(org, M.t() * wi, ray.ndc, ray.counter);
+					aux += weight * newRay.reTrace(getScene());
+					nContributions++;
+				}
 			}
+			if (nContributions)
+				res += (1.0f / nContributions) * aux;
 		}
 
 	// ------ opacity ------
@@ -111,7 +120,6 @@ void rt::CNewShader::addBSDF(const ptr_BxDF_t pBxDF, float scale)
 
 Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_function brdf) const {
 	Vec3f res(0, 0, 0);
-
 	
 	for (auto& pLight : getScene().getLights()) {
 		Vec3f L = Vec3f::all(0);

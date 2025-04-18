@@ -49,10 +49,16 @@ namespace rt {
 		 * @param wi The direction to the viewer (outgoing light)
 		 * @return The value of the distribution function for the given pair of directions
 		 */
-		DllExport virtual float f(const Vec3f& wo, const Vec3f& wi) const = 0;
+		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const = 0;
 
 		// This method will be needed for 
-		DllExport virtual float Sample_f(const Vec3f& wo, Vec3f& wi) const { return 0; }
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const = 0;
+
+		/**
+		 * @brief Returns recommended number of samples for the particular light source implementation
+		 * @return The recommended number of samples
+		 */
+		DllExport virtual size_t	getNumSamples(void) const = 0;
 
 		DllExport BxDFType	getType(void) const { return m_type; } 
 		DllExport bool		MatchesFlags(BxDFType flags) const { return (m_type & flags) == m_type; }

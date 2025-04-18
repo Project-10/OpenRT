@@ -38,7 +38,7 @@ namespace rt {
 		double t0 = (-b - root) / (2 * a);
 		double t1 = (-b + root) / (2 * a);
 #endif
-		RT_ASSERT(t0 <= t1);
+		RT_ASSERT_MSG(t0 <= t1, "Delta: %f", delta);
 
 		if (t0 > ray.t) return false;
 

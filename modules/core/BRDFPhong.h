@@ -21,7 +21,9 @@ namespace rt {
 		{}
 		DllExport virtual ~CBRDFPhong(void) = default;
 
-		DllExport virtual float f(const Vec3f& wo, const Vec3f& wi) const override;
+		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override { return 0; }
+		DllExport virtual size_t	getNumSamples(void) const override { return 0; }
 
 
 	private:

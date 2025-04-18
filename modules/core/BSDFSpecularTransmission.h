@@ -5,7 +5,6 @@
 #pragma once
 
 namespace rt {
-
 	class CBRDFSpecularTransmission : public IBxDF
 	{
 	public:
@@ -17,8 +16,9 @@ namespace rt {
 			, m_refractiveIndex(refractiveIndex)
 		{}
 		DllExport virtual ~CBRDFSpecularTransmission(void) = default;
-		DllExport virtual float f(const Vec3f& wo, const Vec3f& wi) const { return 0; }
-		DllExport float Sample_f(const Vec3f& wo, Vec3f& wi) const override;
+		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const { return 0; }
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
+		DllExport virtual size_t	getNumSamples(void) const override { return 1; }
 
 
 	private:

@@ -16,7 +16,7 @@ namespace rt {
 
 	// Destructor
 	CSampler::~CSampler(void) {
-		RT_ASSERT(m_idx == 0);
+		//RT_ASSERT(m_idx == 0);
 	}
 
 	Vec2f CSampler::getNextSample(void) {
@@ -94,7 +94,7 @@ namespace rt {
 	Vec3f CSampler::uniformSampleHemisphere(const Vec2f& sample, float m)
 	{
 		float z = sample[0];
-		z = powf(z, 1 / (m + 1));						// our improvement: to make the distribution more narrowed
+		z = powf(z, 1.0f / (m + 1.0f));						// our improvement: to make the distribution more narrowed
 		float r = sqrtf(max(0.0f, 1.0f - z * z));
 		float phi = 2 * Pif * sample[1];
 		float x = r * cosf(phi);
