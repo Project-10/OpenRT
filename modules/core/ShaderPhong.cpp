@@ -57,7 +57,7 @@ namespace rt {
 					
 					// get direction to light, and intensity
 					Ray shadowRay;
-					auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(shadingNormal), shadingNormal);
+					auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(shadingNormal), shadingNormal, s);
 					if (radiance) {
 						// Check shadow (light sourse is occluded)
 						float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(shadowRay) : 1.0f;

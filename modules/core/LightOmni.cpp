@@ -2,7 +2,7 @@
 #include "Ray.h"
 
 namespace rt {
-	std::optional<Vec3f> CLightOmni::illuminate(Ray& shadowray, const Vec3f& point, const Vec3f&) const
+	std::optional<Vec3f> CLightOmni::illuminate(Ray& shadowray, const Vec3f& point, const Vec3f&, size_t) const
 	{
 		shadowray		= Ray(point);
 		shadowray.dir	= m_org - shadowray.org;

@@ -18,10 +18,10 @@ int main() {
 	Mat samples_uniform(resolution, CV_8UC3, CV_RGB(255, 255, 255));
 	Mat samples_concentric(resolution, CV_8UC3, CV_RGB(255, 255, 255));
 	
-	auto pSampler = std::make_shared<rt::CSamplerStratified>(N, false, true);
+	auto pSampler = std::make_shared<rt::CSamplerStratified>(N, true);
 
 	for (size_t i = 0; i < N * N; i++) {
-		Vec2f sample = pSampler->getNextSample();
+		Vec2f sample = pSampler->getNextSample(i);
 		Vec2f s_naive		= rt::CSampler::naiveSampleDisk(sample);
 		Vec2f s_uniform		= rt::CSampler::uniformSampleDisk(sample);
 		Vec2f s_concentric	= rt::CSampler::concentricSampleDisk(sample);

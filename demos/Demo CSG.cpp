@@ -204,7 +204,7 @@ int main() {
 
 	// Add everything to scene
 	Timer::start("Rendering... ");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true));
 	Timer::stop();
 
 	imshow("image", img);

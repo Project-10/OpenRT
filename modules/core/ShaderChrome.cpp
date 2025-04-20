@@ -14,7 +14,7 @@ namespace rt {
 		for (size_t s = 0; s < nSamples; s++) {
 			Vec3f n = normal;
 			if (getSampler()) {
-				Vec2f sample = getSampler()->getNextSample();
+				Vec2f sample = getSampler()->getNextSample(s);
 				Vec3f hemisphereSample = CSampler::uniformSampleHemisphere(sample, 25);
 				n = CSampler::transformSampleToWCS(hemisphereSample, n);
 			}
