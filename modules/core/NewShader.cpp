@@ -51,8 +51,6 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 	Vec3f specularColor	= getSpecularColor(ray);
 	float opacity		= getOpacity(ray);
 
-	// TODO: Debug Mode
-
 	Vec3f res(0, 0, 0);
 
 	// ------ ambient ------
@@ -60,7 +58,7 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 
 	// Diffuse light: calculate the Incident Radiance
 	if ((m_type & (BxDFType::diffuse | BxDFType::specular)) != BxDFType::unset) {
-		Vec3f ir = eval_IR_LS(p, n, [this, M, wo, diffuseColor, specularColor](const Vec3f& wiW) {
+		res += eval_IR_LS(p, n, [this, M, wo, diffuseColor, specularColor](const Vec3f& wiW) {
 		
 			Vec3f wi = M * wiW;			// Transform the wiW vector from WCS to LCS
 
@@ -74,7 +72,6 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 			return  res;
 
 		});
-		res += ir;
 	}
 	
 	// Re-Tracing components
@@ -117,6 +114,7 @@ void rt::CNewShader::addBSDF(const ptr_BxDF_t pBxDF, float scale)
 
 
 // TODO: Rework getScene() 
+// TODO: Rework getSampler()
 
 Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_function brdf) const {
 	Vec3f res(0, 0, 0);
@@ -141,3 +139,4 @@ Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_f
 	}
 	return res;
 }
+

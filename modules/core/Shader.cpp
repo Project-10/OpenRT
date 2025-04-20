@@ -66,7 +66,7 @@ namespace rt {
 
 	Vec3f CShader::getSpecularColor(const Ray& ray) const
 	{
-		return m_pSpecularColorMap ? m_specularAmount * m_pSpecularColorMap->getTexel(ray) : m_specularLevel;
+		return m_pSpecularColorMap ? m_specularAmount * m_pSpecularColorMap->getTexel(ray) : m_specularColor;
 	}
 
 	// ============================================== Bump Map ==============================================

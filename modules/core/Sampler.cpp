@@ -94,7 +94,8 @@ namespace rt {
 	Vec3f CSampler::uniformSampleHemisphere(const Vec2f& sample, float m)
 	{
 		float z = sample[0];
-		z = powf(z, 1.0f / (m + 1.0f));						// our improvement: to make the distribution more narrowed
+		//z = powf(z, 1.0f / (m + 1.0f));						// our improvement: to make the distribution more narrowed
+		z = powf(z, m);
 		float r = sqrtf(max(0.0f, 1.0f - z * z));
 		float phi = 2 * Pif * sample[1];
 		float x = r * cosf(phi);

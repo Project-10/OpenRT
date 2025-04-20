@@ -9,7 +9,7 @@ Vec3f rt::CShaderSubsurfaceScattering::shade(const Ray& ray) const
 
 	// Gathering incoming light (incident radiance)
 	Vec3f incident_radiance = eval_IR_LS(ray);
-	Vec3f res = diffuseColor.mul(incident_radiance);
+	Vec3f res = InvPif * diffuseColor.mul(incident_radiance);
 		
 	if (ray.dir.dot(n) < 0 && ray.counter % 2 == 0) {						// entering the surface
 			

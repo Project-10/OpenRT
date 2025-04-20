@@ -5,25 +5,24 @@
 #pragma once
 
 namespace rt {
-
 	// ================================ Phong BRDF Interface Class ================================
 	/**
 	 * @brief Phong specular BRDF interface class
-	 * @ingroup moduleBxDF
+	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
 	class CBRDFPhong : public IBxDF
 	{
 	public:
-		DllExport CBRDFPhong(float ke) 
-			: IBxDF(BxDFType::specular)
-			, m_ke(ke) 
-		{}
+		/**
+		 * @brief Constructor 
+		 * @param ke The shininess exponent
+		 */
+		DllExport CBRDFPhong(float ke);
 		DllExport virtual ~CBRDFPhong(void) = default;
 
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override { return 0; }
-		DllExport virtual size_t	getNumSamples(void) const override { return 0; }
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
 
 
 	private:

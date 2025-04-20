@@ -37,7 +37,7 @@
 #include "core/BRDFPhong.h"
 #include "core/BRDFBlinn.h"
 #include "core/BRDFSpecularReflection.h"
-#include "core/BSDFSpecularTransmission.h"
+#include "core/BTDFSpecularTransmission.h"
 
 #include "core/ShaderFlat.h"
 #include "core/ShaderEyelight.h"

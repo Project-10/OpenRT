@@ -7,9 +7,8 @@ rt::CShaderPhong::CShaderPhong(const CScene& scene, const Vec3f& color, float ka
 {
 	addBSDF(std::make_shared<CBRDFLambertian>(), kd);
 	//addBSDF(std::make_shared<CBRDFOrenNayar>(90.0f), kd);
-	addBSDF(std::make_shared<CBRDFPhong>(ke), 1.0f);
+	addBSDF(std::make_shared<CBRDFPhong>(ke), ks);
 	setAmbientColor(Vec3f::all(ka));
-	setSpecularColor(Vec3f::all(ks));
 	// TODO: Now the specular level may be passed eigther throus the scale of the BRDF function, or via setSpecularLevel. We need to set both and sent one of them to 1.
 }
 
@@ -17,7 +16,6 @@ rt::CShaderPhong::CShaderPhong(const CScene& scene, const ptr_texture_t pTexture
 {
 	addBSDF(std::make_shared<CBRDFLambertian>(), kd);
 	//addBSDF(std::make_shared<CBRDFOrenNayar>(), kd);
-	addBSDF(std::make_shared<CBRDFPhong>(ke), 1.0f);
+	addBSDF(std::make_shared<CBRDFPhong>(ke), ks);
 	setAmbientColor(pTexture, 1.0f);
-	setSpecularColor(Vec3f::all(ks));
 }

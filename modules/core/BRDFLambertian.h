@@ -5,21 +5,19 @@
 #pragma once
 
 namespace rt {
-
 	// ================================ Lambertian BRDF Interface Class ================================
 	/**
 	 * @brief Lambertian BRDF interface class
-	 * @ingroup moduleBxDF
+	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
 	class CBRDFLambertian : public IBxDF
 	{
 	public:
-		DllExport CBRDFLambertian(void) : IBxDF(BxDFType::diffuse) {}
+		DllExport CBRDFLambertian(void);
 		DllExport virtual ~CBRDFLambertian(void) = default;
 
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override { return 0; }
-		DllExport virtual size_t	getNumSamples(void) const override { return 0; }
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
 	};
 }

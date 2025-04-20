@@ -22,7 +22,7 @@ namespace rt
 			//const double f = k * R.t * R.t;
 			const double alpha = MIN(1, f);
 
-			return alpha * diffuseColor.mul(incident_radiance) + (1 - alpha) * res;
+			return alpha * InvPif * diffuseColor.mul(incident_radiance) + (1 - alpha) * res;
 		}
 		else return res;
 		//

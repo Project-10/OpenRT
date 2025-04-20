@@ -12,9 +12,10 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
-		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading
+		 * @param roughness Input for the surface roughness resulting in sharp to blurry reflections.
+		 * @param pSampler Pointer to the sampler to be used for perturbing the shape normal during shading.
 		 */
-		DllExport CShaderChrome(const CScene& scene, ptr_sampler_t pSampler = nullptr);
+		DllExport CShaderChrome(const CScene& scene, float roughness, ptr_sampler_t pSampler = nullptr);
 		DllExport virtual ~CShaderChrome(void) = default;
 	};
 }

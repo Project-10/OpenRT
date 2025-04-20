@@ -1,20 +1,17 @@
-#include "BSDFSpecularTransmission.h"
+#include "BTDFSpecularTransmission.h"
 
-namespace {
-	inline float CosTheta(const Vec3f& w) {
-		return w[2];
-	}
+// Constructor
+ rt::CBTDFSpecularTransmission::CBTDFSpecularTransmission(float refractiveIndex)
+	: IBxDF(BxDFType::transmission, 1)
+	, m_refractiveIndex(refractiveIndex)
+{ }
 
-	inline float Cos2Theta(const Vec3f& w) {
-		return w[2] * w[2];
-	}
-
-	inline float Sin2Theta(const Vec3f& w) {
-		return std::max(0.0f, 1.0f - Cos2Theta(w));
-	}
+float rt::CBTDFSpecularTransmission::f(const Vec3f&, const Vec3f&) const 
+{ 
+	return 0; 
 }
 
-float rt::CBRDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi) const
+float rt::CBTDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi) const
 {
 	float cos_o = CosTheta(wo);
 

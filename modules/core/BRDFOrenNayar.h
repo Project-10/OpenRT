@@ -9,22 +9,25 @@ namespace rt {
 	// ================================ Oren-Nayar BRDF Interface Class ================================
 	/**
 	 * @brief Oren-Nayar BRDF interface class
-	 * @ingroup moduleBxDF
+	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
 	class CBRDFOrenNayar : public IBxDF
 	{
 	public:
+		/**
+		 * @brief Constructor
+		 * @param sigma The standard deviation of the microfacet orientation angle in degrees. 0° gives Lambertian model. 90° gives maximum effect.
+		 */
 		DllExport CBRDFOrenNayar(float sigma = 20.0f);
 		DllExport virtual ~CBRDFOrenNayar(void) = default;
 
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override { return 0; }
-		DllExport virtual size_t	getNumSamples(void) const override { return 0; }
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
 
 
 	private:
-		float m_A;
-		float m_B;
+		float m_A;	///< Oren-Nayar BRDF parameter (is calculated in the class constructor)
+		float m_B;	///< Oren-Nayar BRDF parameter (is calculated in the class constructor)
 	};
 }

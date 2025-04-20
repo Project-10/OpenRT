@@ -1,19 +1,19 @@
 #include "BRDFPhong.h"
 
-namespace {
-	Vec3f Reflect(const Vec3f& w, const Vec3f& n) {
-		return -w + 2 * w.dot(n) * n;
-	}
-}
+rt::CBRDFPhong::CBRDFPhong(float ke) 
+	: IBxDF(BxDFType::specular, 0)
+	, m_ke(ke)
+{}
 
-float rt::CBRDFPhong::f(const Vec3f& wo, const Vec3f& wi) const {
-	// Only specular component
-
-	const Vec3f n = Vec3f(0, 0, 1.0f);
-	const Vec3f r = Reflect(wo, n);
-	
-	float cosLightReflect = std::max(0.0f, r.dot(wi));
+float rt::CBRDFPhong::f(const Vec3f& wo, const Vec3f& wi) const 
+{
+	const Vec3f reflected(-wo[0], -wo[1], wo[2]);
+	float cosLightReflect = std::max(0.0f, reflected.dot(wi));
 	float specular = std::powf(cosLightReflect, m_ke);
 	
 	return specular;
+}
+
+float rt::CBRDFPhong::Sample_f(const Vec3f&, Vec3f&) const {
+	return 0;
 }
