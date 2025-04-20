@@ -34,9 +34,10 @@ namespace rt {
 		 * @param[out] shadowray The shadow ray from object point given by \b point to the light source
 		 * @param[in] point The point of space in WCS to be illuminated
 		 * @param[in] normal The normal to the surface at that point (if exists). Some light sources (e.g. Sky light source) may need it
+		 * @param[in] s The index of the sample to be used
 		 * @return The intensity of light hitting the point \b ray.org and the shadow ray \b ray
 		 */
-		DllExport virtual std::optional<Vec3f>  illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal = Vec3f::all(0)) const = 0;
+		DllExport virtual std::optional<Vec3f>  illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal = Vec3f::all(0), size_t s = 0) const = 0;
 		/**
 		 * @brief Returns recommended number of samples for the particular light source implementation
 		 * @return The recommended number of samples

@@ -107,7 +107,7 @@ namespace rt {
 			Vec3f* pImg = img.ptr<Vec3f>(y);
 			for (int x = x_start; x < x_end; x++) 
 				for (size_t s = 0; s < nSamples; s++) {
-					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample(s) : Vec2f::all(0.5f));
 					pImg[x] += rayTrace(ray);
 				}
 		}
@@ -161,7 +161,7 @@ namespace rt {
 				Vec3f* pImg = img.ptr<Vec3f>(y);
 				for (int x = 0; x < img.cols; x++) {
 					for (size_t s = 0; s < nSamples; s++) {
-						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+						activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample(s) : Vec2f::all(0.5f));
 						pImg[x] += rayTrace(ray);
 					}
 				}
@@ -195,7 +195,7 @@ namespace rt {
 			for (int x = 0; x < depth.cols; x++) {
 				size_t nSamples = pSampler ? pSampler->getNumSamples() : 1;
 				for (size_t s = 0; s < nSamples; s++) {
-					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample() : Vec2f::all(0.5f));
+					activeCamera->InitRay(ray, x, y, pSampler ? pSampler->getNextSample(s) : Vec2f::all(0.5f));
 					pDepth[x] += rayTraceDepth(ray);
 				}
 				pDepth[x] = (1.0f / nSamples) * pDepth[x];

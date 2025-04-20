@@ -16,19 +16,14 @@ namespace rt {
 		/**
 		* @brief Constructor
 		* @param nSamples Square root of number of samples in one series
-		* @param isRenewable Flag indicating whether the series should be renewed after exhaustion
 		* @param jitter Flag indicating if the samples shoild be jittered within the corresponding stratae
 		*/
-		DllExport CSamplerStratified(size_t nSamples, bool isRenewable = true, bool jitter = true)
-			: CSampler(nSamples, isRenewable)
+		DllExport CSamplerStratified(size_t nSamples, bool jitter = true)
+			: CSampler(nSamples)
 			, m_jitter(jitter)
 		{}
 		DllExport virtual ~CSamplerStratified(void) = default;
-
-
-	protected:
-		DllExport virtual void generateSeries(std::vector<Vec2f>& samples) const override;
-
+		DllExport virtual Vec2f	getNextSample(size_t i) const override;
 
 	private:
 		const bool m_jitter;		//< Flag indicating if the samples shoild be jittered within the corresponding stratae

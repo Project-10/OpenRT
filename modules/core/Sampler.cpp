@@ -2,42 +2,6 @@
 #include "macroses.h"
 
 namespace rt {
-#ifdef ENABLE_PDP
-	thread_local size_t CSampler::m_idx = 0;
-#endif
-
-	// Constructor
-	CSampler::CSampler(size_t nSamples, bool isRenewable)
-		: m_vSamples(nSamples * nSamples)
-		, m_renewable(isRenewable)
-	{
-		m_idx = 0;
-	}
-
-	// Destructor
-	CSampler::~CSampler(void) {
-		//RT_ASSERT(m_idx == 0);
-	}
-
-	Vec2f CSampler::getNextSample(void) {
-		// if nSamples = 0 return the middle value (e.g. center of a pixel)
-		if (m_vSamples.empty())
-			return Vec2f::all(0.5f);
-
-		if (m_idx == 0 && m_needGeneration) {
-			m_needGeneration = m_renewable;
-			generateSeries(m_vSamples);
-		}
-
-		Vec2f res = m_vSamples[m_idx];
-		
-		// Update the index of next sample in the series
-		if (m_idx < m_vSamples.size() - 1) 	m_idx++;
-		else 								m_idx = 0;
-
-		return res;
-	}
-
 	// ---------------- Static functions ----------------
 	Vec2f CSampler::naiveSampleDisk(const Vec2f& sample) {
 		float r = sample[0];
@@ -94,8 +58,7 @@ namespace rt {
 	Vec3f CSampler::uniformSampleHemisphere(const Vec2f& sample, float m)
 	{
 		float z = sample[0];
-		//z = powf(z, 1.0f / (m + 1.0f));						// our improvement: to make the distribution more narrowed
-		z = powf(z, m);
+		z = powf(z, 1 / (m + 1));						// our improvement: to make the distribution more narrowed
 		float r = sqrtf(max(0.0f, 1.0f - z * z));
 		float phi = 2 * Pif * sample[1];
 		float x = r * cosf(phi);

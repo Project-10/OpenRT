@@ -16,13 +16,9 @@ namespace rt {
 		/**
 		* @brief Constructor
 		* @param nSamples Square root of number of samples in one series
-		* @param isRenewable Flag indicating whether the series should be renewed after exhaustion
 		*/
-		DllExport CSamplerRandom(size_t nSamples, bool isRenewable = true) : CSampler(nSamples, isRenewable) {}
+		DllExport CSamplerRandom(size_t nSamples) : CSampler(nSamples) {}
 		DllExport virtual ~CSamplerRandom(void) = default;
-
-
-	protected:
-		DllExport virtual void generateSeries(std::vector<Vec2f>& samples) const override;
+		DllExport virtual Vec2f	getNextSample(size_t i) const override;
 	};
 }

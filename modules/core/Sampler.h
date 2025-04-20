@@ -8,7 +8,6 @@ namespace rt {
 	// ================================ Sampler Class ================================
 	/**
 	 * @brief Sampler abstract class
-	 * @warning This class is not thread-safe
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
 	class CSampler {
@@ -16,25 +15,25 @@ namespace rt {
 		/**
 		* @brief Constructor
 		* @param nSamples Square root of number of samples in one series
-		* @param isRenewable Flag indicating whether the series should be renewed after exhaustion 
 		*/
-		DllExport CSampler(size_t nSamples, bool isRenewable);
+		DllExport CSampler(size_t nSamples) : m_nSamples(std::max(static_cast<size_t>(1), nSamples)) {}
 		DllExport CSampler(const CSampler&) = delete;
-		DllExport virtual ~CSampler(void);
+		DllExport virtual ~CSampler(void) = default;
 		DllExport const CSampler& operator=(const CSampler&) = delete;
 		
 		/**
 		* @brief Returns the next sample from a series
 		* @details This function returns a pair of uniformly distributed random variables \f$(\xi_1, \xi_2)\f$ in square \f$[0; 1)^2\f$. 
 		* Thus, it returs samples uniformly covering a unit square.
+		* @param i The index of the sample
 		* @return The next sample from a series
 		*/
-		DllExport Vec2f			getNextSample(void);
+		DllExport virtual Vec2f	getNextSample(size_t i) const = 0;
 		/**
 		* @brief Returns the number of samples in a series 
 		* @return The number of samples in a series 
 		*/
-		DllExport size_t		getNumSamples(void) const { return MAX(1, m_vSamples.size()); }
+		DllExport size_t		getNumSamples(void) const { return m_nSamples * m_nSamples; }
 		
 		
 		// ---------------- Static functions ----------------
@@ -104,23 +103,7 @@ namespace rt {
 
 
 	protected:
-		/**
-		* @brief Generates a new series of samples and fills \b samples container
-		* @details Dependency Injection function that is called from getNextSample() and must be implemented in all derived classes
-		* @param[in,out] samples The container for new samples
-		*/
-		virtual void generateSeries(std::vector<Vec2f>& samples) const = 0;
-
-	
-	private:
-		std::vector<Vec2f> 			m_vSamples;					///< Samples container
-		const bool					m_renewable;				///< Flag indicating whether the series should be renewed after exhaustion 
-		bool						m_needGeneration = true;	///< Flag indicating whether the series of samples should be generated upon calling getNextSample() method
-#ifdef ENABLE_PDP
-		thread_local static size_t	m_idx;
-#else
-		size_t 						m_idx = 0;
-#endif
+		const size_t m_nSamples;			///< The number of samples inthe series
 	};
 	using ptr_sampler_t = std::shared_ptr<CSampler>;
 }

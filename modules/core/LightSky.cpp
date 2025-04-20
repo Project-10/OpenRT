@@ -4,9 +4,9 @@
 #include "random.h"
 
 namespace rt{
-	std::optional<Vec3f> CLightSky::illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal) const
+	std::optional<Vec3f> CLightSky::illuminate(Ray& shadowray, const Vec3f& point, const Vec3f& normal, size_t s) const
 	{
-		Vec2f sample = m_pSampler ? m_pSampler->getNextSample() : Vec2f(random::U<float>(), random::U<float>());
+		Vec2f sample = m_pSampler ? m_pSampler->getNextSample(s) : Vec2f(random::U<float>(), random::U<float>());
 		Vec3f hemisphereSample	= CSampler::cosineSampleHemisphere(sample);
 		//Vec3f hemisphereSample	= CSampler::uniformSampleHemisphere(sample);
 

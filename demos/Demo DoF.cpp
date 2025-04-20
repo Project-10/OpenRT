@@ -49,7 +49,7 @@ std::shared_ptr<CScene> buildSceneBalls(const Vec3f& bgColor, const Size resolut
 	auto pCamera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-2, 3, -4), Vec3f(0, 0.75f, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pCameraDoF		= std::make_shared<CCameraThinLens>(pCamera, 0.3f, 6.5f, 6);
 	auto pLightOmni		= std::make_shared<CLightOmni>(Vec3f::all(1e4), Vec3f(0, 100, 40));
-	auto pLightSky		= std::make_shared<CLightSky>(Vec3f::all(1), 0, std::make_shared<CSamplerStratified>(1, false, false));
+	auto pLightSky		= std::make_shared<CLightSky>(Vec3f::all(1), 0, std::make_shared<CSamplerStratified>(1, false));
 
 	pScene->add(pCameraDoF);
 	pScene->add(pLightOmni);
