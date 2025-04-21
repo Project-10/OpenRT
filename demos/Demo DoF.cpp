@@ -30,7 +30,7 @@ std::shared_ptr<CScene> buildSceneBalls(const Vec3f& bgColor, const Size resolut
 
 	// Shaders
 	auto pShaderFloor = std::make_shared<CShaderDiffuse>(*pScene, std::make_shared<CTexture>());
-	auto pShaderBall = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.1f, 0.9f, 4.0f, 120.0f);
+	auto pShaderBall = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0.9f, 4.0f, 120.0f);
 
 	
 	// Geometry

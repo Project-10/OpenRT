@@ -18,8 +18,8 @@ int main()
 
 	// Shaders
 	//auto pShaderGlobal	= std::make_shared<CShaderGlobal>(scene, RGB(255, 255, 255), std::make_shared<CSamplerStratified>(7));
-	auto pSHaderGlass	= std::make_shared<CShaderPrincipled>(scene, Vec3f::all(0), 0, 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
-	//auto pShaderGlass	= std::make_shared<CShaderPrincipled>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pSHaderGlass	= std::make_shared<CShaderPrincipled>(scene, Vec3f::all(0), 0, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	//auto pShaderGlass	= std::make_shared<CShaderPrincipled>(scene, RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderRed		= std::make_shared<CShaderFlat>(RGB(2550, 0, 0));
 	auto pShaderGreen	= std::make_shared<CShaderFlat>(RGB(0, 2550, 0));
 	auto pShaderBlue	= std::make_shared<CShaderFlat>(RGB(0, 0, 2550));

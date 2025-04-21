@@ -19,22 +19,20 @@ namespace rt {
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 * @param color The color of the object
-		 * @param ka The ambient coefficient
 		 * @param kd The diffuse reflection coefficient
 		 * @param ks The specular reflection coefficient
 		 * @param ke The shininess exponent
 		 */
-		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float ka, float kd, float ks, float ke);
+		DllExport CShaderPhong(const CScene& scene, const Vec3f& color, float kd, float ks, float ke);
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 * @param pTexture Pointer to the texture
-		 * @param ka The ambient coefficient
 		 * @param kd The diffuse reflection coefficient
 		 * @param ks The specular refelection coefficient
 		 * @param ke The shininess exponent
 		 */
-		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float ka, float kd, float ks, float ke);
+		DllExport CShaderPhong(const CScene& scene, const ptr_texture_t pTexture, float kd, float ks, float ke);
 		DllExport virtual ~CShaderPhong(void) = default;
 	};
 }

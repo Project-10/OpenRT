@@ -15,8 +15,8 @@ int main()
 	auto floor = scene.addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 50.0f);
 
 	// Shaders
-	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.0f, 1.0f, 0.15f, 250.0f);
-	auto pShaderGlass = std::make_shared<CShaderPrincipled>(scene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderDragon = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 1.0f, 0.15f, 250.0f);
+	auto pShaderGlass = std::make_shared<CShaderPrincipled>(scene, RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderShadow = std::make_shared<CShaderShadow>(scene);
 
 	// Stanford Dragon

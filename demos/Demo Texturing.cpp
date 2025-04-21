@@ -31,10 +31,10 @@ static std::shared_ptr<CScene> buildSceneStripes(const Vec3f& bgColor, const Siz
 	auto pTexture		 = std::make_shared<CTexture>(dataPath + "b13.jpg");
 
 	// Shaders
-	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 1.0f, 0.9f, 2.0f, 320.0f);
-	auto pShaderRings	= std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.1f, 0.9f, 2.0f, 320.0f);
-	auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 2.0f, 320.0f);
-	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 1.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderStripes = std::make_shared<CShaderPhong>(*pScene, pTextureStripes, 0.9f, 2.0f, 320.0f);
+	auto pShaderRings	= std::make_shared<CShaderPhong>(*pScene, pTextureRings, 0.9f, 2.0f, 320.0f);
+	auto pShaderMarble	= std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.9f, 2.0f, 320.0f);
+	auto pShader = std::make_shared<CShaderPhong>(*pScene, pTexture, 1.0f, 0.0f, 0.0f);
 	
 	sphere->setShader(pShaderMarble);
 
@@ -74,7 +74,7 @@ static std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const S
 	// Marble shader
 	//CGradient gradientMarble(RGB(255, 255, 255), RGB(119, 135, 153));
 	//auto pTextureMarble = std::make_shared<CTextureMarble>(gradientMarble, 0.5f, 6, 0.24f, 2.4f, 2.5f, 0.35f, false);
-	//auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.1f, 0.9f, 0.0f, 40.0f);
+	//auto pShaderMarble = std::make_shared<CShaderPhong>(*pScene, pTextureMarble, 0.9f, 0.0f, 40.0f);
 
 	// Geometries
 	pScene->add(CSolidBox(pShaderWood, Vec3f(0, 0.5f, 0), 2.5f, 1.0f, 12.0f));
@@ -163,7 +163,7 @@ static std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size 
 	auto surface	= pScene->addSphere(Vec3f(0, 0, 0), 6.371f);
 	auto clouds		= pScene->addSphere(Vec3f(0, 0, 0), 6.383f);
 	auto atmosphere = pScene->addSphere(Vec3f(0, 0, 0), 6.451f);
-	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e11), Vec3f(149600, 0, 0), true));		// sun
+	pScene->add(std::make_shared<CLightOmni>(Vec3f::all(1e11f), Vec3f(149600, 0, 0), true));		// sun
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(2, 0, 6.3f), Vec3f(149600, 0, -100000), Vec3f(0, 0, 1), 60.0f));
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(10, 12, 24), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 35.0f));
 
@@ -183,7 +183,7 @@ static std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size 
 	
 
 	// Shaders
-	auto pShaderSurface = std::make_shared<CShaderPhong>(*pScene, surface_diffuse, 0.0f, 1.0f, 0.01f, 15.0f);
+	auto pShaderSurface = std::make_shared<CShaderPhong>(*pScene, surface_diffuse, 1.0f, 0.01f, 15.0f);
 	pShaderSurface->setAmbientColor(surface_ambient);
 	pShaderSurface->setBumpMap(surface_bump, 0.1f);
 	pShaderSurface->setSpecularColor(surface_specular);
@@ -235,8 +235,8 @@ static std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size
 
 	// Shader
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	//auto pShaderMarble	= std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble, 1.0f, 1.0f, 0, 0, 0.2f, 0, 1);
-	auto pShaderMarble1 = std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble1, 1.0f, 1.0f, 0, 0, 0.2f, 0, 1);
+	//auto pShaderMarble	= std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble, 1.0f, 0, 0, 0.2f, 0, 1);
+	auto pShaderMarble1 = std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble1, 1.0f, 0, 0, 0.2f, 0, 1);
 
 	// Geometry
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
@@ -300,7 +300,7 @@ int main()
 	//resize(diff, diff, Size(4000, 2000), 0, 0, INTER_AREA);
 	//resize(bump, bump, Size(1400, 700), 0, 0, INTER_AREA);
 
-	//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 0, 1, 0, 0);
+	//auto pShader = std::make_shared<CShaderPhong>(*pScene, RGB(255, 255, 255), 1, 0, 0);
 	//pShader->setDiffuseColor(std::make_shared<CTexture>(diff));
 	////pShader->setBumpMap(std::make_shared<CTexture>(bump), 1.0f);
 	////pShader->setBumpMap(std::make_shared<CTexture>(dataPath + "golfball.jpg"));

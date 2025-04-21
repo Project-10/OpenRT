@@ -47,8 +47,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 20.f);
 	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
-	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-	auto pShaderGlass			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0, 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
+	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderGlass			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
 	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
 	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
 	auto pShaderChrome			= std::make_shared<CShaderChrome>(*pScene, 0.0f, std::make_shared<CSamplerStratified>(16));
@@ -129,12 +129,12 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	auto pShaderFloor = std::make_shared<CShaderDiffuse>(*pScene, RGB(133, 153, 180));
 	auto pShaderWhite = std::make_shared<CShaderFlat>(Vec3f::all(1));
 	//auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4));
-	auto pShaderGlass = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
-	auto pShaderGlassP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlassP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderNewGlass	= std::make_shared<CShaderGlass>(*pScene, 1.5f);
-	//auto pShaderMirror = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
-	auto pShaderMirror	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179),  0.0f, 0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-	auto pShaderMirrorP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179),		  0.0f, 0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	//auto pShaderMirror = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
+	auto pShaderMirror	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179),  0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	auto pShaderMirrorP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179),		  0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 	
 	// floor
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(100, 0, 0)));
@@ -178,7 +178,7 @@ static std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const S
 	// Shaders
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(2.2f));
 	auto pShaderDiffuse = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
-	auto pShaderGlass	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pNewShaderGlass= std::make_shared<CShaderGlass>(*pScene, 1.5f);
 	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4));
 
@@ -302,8 +302,8 @@ int main(int argc, char* argv[])
 	//auto oren_nayar035	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 20.0f);
 	//auto oren_nayar05	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 60.0f);
 	//auto oren_nayar10	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 200, 200), 90.0f);
-	//auto phong			= std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 200), 0.0f, 1.0f, 0.5f, 250.0f);
-	//auto blinn			= std::make_shared<CShaderBlinn>(*pScene, RGB(255, 200, 200), 0.0f, 1.0f, 0.5f, 250.0f);
+	//auto phong			= std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 200), 1.0f, 0.5f, 250.0f);
+	//auto blinn			= std::make_shared<CShaderBlinn>(*pScene, RGB(255, 200, 200), 1.0f, 0.5f, 250.0f);
 	//auto mirror			= std::make_shared<CShaderMirror>(*pScene);
 	//
 	////floor->setShader(lambertian);
