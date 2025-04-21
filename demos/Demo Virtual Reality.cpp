@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     CScene scene(bgColor);
     
     // matherials
-    auto pShader = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.1f, 0.9f, 0.0f, 40.0f);
+    auto pShader = std::make_shared<CShaderPhong>(scene, RGB(255, 255, 255), 0.9f, 0.0f, 40.0f);
 
 	// For the room.obj - 118 world units correspond to 3 meters in real life.
 	// The average inter-pupilary distance for an adult man is 64mm

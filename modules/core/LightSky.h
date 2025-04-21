@@ -24,7 +24,7 @@ namespace rt {
 		 * @param castShadow Flag indicatin whether the light source casts shadow
 		 */
 		DllExport CLightSky(Vec3f intensity, float maxDistance = 4, ptr_sampler_t pSampler = nullptr, bool castShadow = true)
-			: ILight(intensity, castShadow)
+			: ILight(Pif * intensity, castShadow)
 			, m_maxDistance(maxDistance > std::numeric_limits<float>::epsilon() ? maxDistance : std::numeric_limits<float>::infinity())
 			, m_pSampler(pSampler)
 		{}

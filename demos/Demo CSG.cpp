@@ -64,9 +64,9 @@ std::shared_ptr<CScene> buildSceneLens(const Vec3f& bgColor, const Size resoluti
 	auto pTextureEarth = std::make_shared<CTexture>(dataPath + "1_earth_8k.jpg");
 
 	// shaders
-	auto pShaderPage = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderPage = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 1.0f, 0.0f, 0.0f);
 	auto pShaderTest = std::make_shared<CShaderFlat>(RGB(127, 127, 127));
-	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// geometry
 	CSolidQuad book(pShaderTest, Vec3f(0, 0, 0), Vec3f(0, 0, -1), Vec3f(1, 0, 0), 10);
@@ -104,9 +104,9 @@ std::shared_ptr<CScene> buildClassicExample(const Vec3f& bgColor, const Size res
 	auto pScene = std::make_shared<CScene>(bgColor);
 
 	// shaders
-	auto pShaderRed		= std::make_shared<CShaderBlinn>(*pScene, RGB(255, 0, 0), 0.4f, 0.6f, 1.0f, 2.0f);
-	auto pShaderGreen	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 255, 0), 0.4f, 0.6f, 1.0f, 2.0f);
-	auto pShaderBlue	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 0, 255), 0.4f, 0.6f, 1.0f, 2.0f);
+	auto pShaderRed		= std::make_shared<CShaderBlinn>(*pScene, RGB(255, 0, 0), 0.6f, 1.0f, 2.0f);
+	auto pShaderGreen	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 255, 0), 0.6f, 1.0f, 2.0f);
+	auto pShaderBlue	= std::make_shared<CShaderBlinn>(*pScene, RGB(0, 0, 255), 0.6f, 1.0f, 2.0f);
 
 	CTransform T;
 
@@ -147,10 +147,10 @@ std::shared_ptr<CScene> buildSceneTest(const Vec3f& bgColor, const Size resoluti
 	auto pScene = std::make_shared<CScene>(bgColor);
 
 	// shaders
-	auto pShader1 = std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 100), 0.1f, 0.9f, 0.5f, 40.0f);
-	auto pShader3 = std::make_shared<CShaderPhong>(*pScene, RGB(100, 200, 255), 0.1f, 0.9f, 0.5f, 40.0f);
-	auto pShader2 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 255, 100), 0.1f, 0.9f, 0.5f, 40.0f);
-	auto pShader4 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 100, 255), 0.1f, 0.9f, 0.5f, 40.0f);
+	auto pShader1 = std::make_shared<CShaderPhong>(*pScene, RGB(255, 200, 100), 0.9f, 0.5f, 40.0f);
+	auto pShader3 = std::make_shared<CShaderPhong>(*pScene, RGB(100, 200, 255), 0.9f, 0.5f, 40.0f);
+	auto pShader2 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 255, 100), 0.9f, 0.5f, 40.0f);
+	auto pShader4 = std::make_shared<CShaderPhong>(*pScene, RGB(200, 100, 255), 0.9f, 0.5f, 40.0f);
 
 	// geometry
 	auto box1 = CSolidBox(pShader1);
@@ -204,7 +204,7 @@ int main() {
 
 	// Add everything to scene
 	Timer::start("Rendering... ");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true));
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4));
 	Timer::stop();
 
 	imshow("image", img);

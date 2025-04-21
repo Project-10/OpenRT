@@ -26,11 +26,12 @@ namespace rt {
 					float cosLightNormal = I.dir.dot(shadingNormal);
 					if (cosLightNormal > 0) {
 						Vec3f L = avg * cosLightNormal * radiance.value();
-						L_possible += L;
 						
 						// Check shadow (light sourse is occluded)
 						float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;
-						L_actual += k_occlusion * L;
+
+						L_possible += L;
+						L_actual   += k_occlusion * L;
 					}
 				}
 			} // s

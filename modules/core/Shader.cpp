@@ -11,14 +11,15 @@ namespace rt {
 		m_pAmbientColorMap = nullptr;
 	}
 
-	void CShader::setAmbientColor(const ptr_texture_t pMap)
+	void CShader::setAmbientColor(const ptr_texture_t pMap, float amount)
 	{
 		m_pAmbientColorMap = pMap;
+		m_ambientAmount = amount;
 	}
 
 	Vec3f CShader::getAmbientColor(const Ray& ray) const
 	{
-		return m_pAmbientColorMap ? m_pAmbientColorMap->getTexel(ray) : m_ambientColor;
+		return m_pAmbientColorMap ? m_ambientAmount * m_pAmbientColorMap->getTexel(ray) : m_ambientColor;
 	}
 
 	// ============================================== Diffuse Color ==============================================
@@ -28,9 +29,10 @@ namespace rt {
 		m_pDiffuseColorMap = nullptr;
 	}
 	
-	void CShader::setDiffuseColor(const ptr_texture_t pColorMap)
+	void CShader::setDiffuseColor(const ptr_texture_t pMap, float amount)
 	{
-		m_pDiffuseColorMap = pColorMap;
+		m_pDiffuseColorMap = pMap;
+		m_diffuseAmount = amount;
 	}
 
 	Vec3f CShader::getDiffuseColor(const Ray& ray) const
@@ -41,24 +43,30 @@ namespace rt {
 		bool inside = normal.dot(ray.dir) > 0;			// true if normal points outward the ray origin
 		res = inside ? RGB(255, 0, 0) : RGB(0, 0, 255);
 #endif
-		return m_pDiffuseColorMap ? m_pDiffuseColorMap->getTexel(ray) : res;
+		if (m_pDiffuseColorMap) {
+			res = m_diffuseAmount < 1.0f 
+				? m_diffuseAmount * m_pDiffuseColorMap->getTexel(ray) + (1.0f - m_diffuseAmount) * res
+				: m_pDiffuseColorMap->getTexel(ray);
+		}
+		return res;
 	}
 
 
 	// ============================================== Specular Level ==============================================
-	void CShader::setSpecularLevel(float level)
+	void CShader::setSpecularColor(const Vec3f& color)
 	{
-		m_specularLevel = level;
+		m_specularColor = color;
 	}
 
-	void CShader::setSpecularLevel(const ptr_texture_t pMap)
+	void CShader::setSpecularColor(const ptr_texture_t pMap, float amount)
 	{
-		m_pSpecularLevelMap = pMap;
+		m_pSpecularColorMap = pMap;
+		m_specularAmount = amount;
 	}
 
-	float CShader::getSpecularLevel(const Ray& ray) const
+	Vec3f CShader::getSpecularColor(const Ray& ray) const
 	{
-		return m_pSpecularLevelMap ? m_pSpecularLevelMap->getTexel(ray)[0] : m_specularLevel;
+		return m_pSpecularColorMap ? m_specularAmount * m_pSpecularColorMap->getTexel(ray) : m_specularColor;
 	}
 
 	// ============================================== Bump Map ==============================================
@@ -103,9 +111,10 @@ namespace rt {
 		m_opacity = MAX(0, MIN(1, opacity)); 
 	}
 
-	void CShader::setOpacity(const ptr_texture_t pMap)
+	void CShader::setOpacity(const ptr_texture_t pMap, float amount)
 	{
 		m_pOpacityMap = pMap;
+		m_opacityAmount = amount;
 	}
 
 	float CShader::getOpacity(const Ray& ray) const

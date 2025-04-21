@@ -32,16 +32,28 @@
 #include "core/SolidSphere.h"
 #include "core/SolidTorus.h"
 
+#include "core/BRDFLambertian.h"
+#include "core/BRDFOrenNayar.h"
+#include "core/BRDFPhong.h"
+#include "core/BRDFBlinn.h"
+#include "core/BRDFSpecularReflection.h"
+#include "core/BTDFSpecularTransmission.h"
+
 #include "core/ShaderFlat.h"
-#include "core/ShaderDiffuse.h"
 #include "core/ShaderEyelight.h"
+#include "core/ShaderDiffuse.h"
+#include "core/ShaderPrincipled.h"
+#include "core/ShaderShadow.h"
+#include "core/ShaderGlossy.h"
+#include "core/ShaderSubsurfaceScattering.h"
+#include "core/ShaderVolumeScatter.h"
+#include "core/NewShader.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
-#include "core/ShaderGeneral.h"
-#include "core/ShaderShadow.h"
-#include "core/ShaderChrome.h"
-#include "core/ShaderSSLT.h"
-#include "core/ShaderVolumeScatter.h"
+#include "core/ShaderMirror.h"
+#include "core/ShaderGlass.h"
+#include "core/ShaderHemisphere.h"
+#include "core/ShaderGlobal.h"
 
 #include "core/Sampler.h"
 #include "core/SamplerRandom.h"
@@ -107,6 +119,7 @@ The OpenRT framework consist of the following essential blocks:
 	- <b>Glass:</b> @ref rt::CShaderGlass
 	- <b>Mirror:</b> @ref rt::CShaderMirror
 	- <b>General Purpose Shader:</b> @ref rt::CShader
+	- <b>Subsurface Scattering:</b> @ref rt::CShaderSubsurfaceScattering
 */
 
 /**
@@ -146,7 +159,7 @@ The OpenRT framework consist of the following essential blocks:
 @page s3 Installation
 OpenRT is a cross-platform C++ library. The description here was tested on Windows 10 / Visual Studio 2019, macOS Catalina 10.15.6 / Xcode 11.4 and Ubuntu 18.04 / gcc 7.3.0. 
 If you encounter errors after following the steps described below, feel free to contact us via our 
-<a href="https://project-10.de/forum/viewforum.php?f=33">User Q&A forum</a> or <a href="https://github.com/Project-10/OpenRT/issues">Issues</a>. We'll do our best to help you out.<br>
+<a href="https://openrt.org/forum/viewforum.php?f=33">User Q&A forum</a> or <a href="https://github.com/Project-10/OpenRT/issues">Issues</a>. We'll do our best to help you out.<br>
 
 OpenRT has only one dependency: it is based on <a href="https://www.opencv.org/">OpenCV</a> library.
 In order to use the OpenRT library, the OpenCV library should be also installed.
@@ -158,7 +171,7 @@ In order to use the OpenRT library, the OpenCV library should be also installed.
 	- <a href="https://docs.opencv.org/4.4.0/d7/d9f/tutorial_linux_install.html" target="_blank">Installation in Linux guide</a>
 
 @section sec_install_OpenRT Installing OpenRT
-- Download either the latest stable OpenRT version from <a href="https://research.project-10.de/OpenRT/#downloads" target="_blank">Project X Research</a>
+- Download either the latest stable OpenRT version from <a href="https://research.openrt.org/OpenRT/#downloads" target="_blank">Project X Research</a>
   or fork the latest snapshot from our <a href="https://github.com/Project-10/OpenRT" target="_blank">GitHub repository</a>
 - Unpack it to your local folder (for example to disk @b C:\\ for Windows or to @b /Users/username/ for MacOS, so the library path will be @b C:\\OpenRT\\ or @b /Users/username/OpenRT/)
 @subsection sec_install_OpenRT_win Installation in Windows and macOS
@@ -206,7 +219,7 @@ directly from your IDE.
 The corresponding description may be found in @ref demo. Do not hesitate to modify these demo projects for your needs or start your own project based on our demo code.
 
 If you wish to generate a new project, which will use OpenRT, or add OpenRT to an existing project we highly recommend you to use <a href="https://cmake.org" target="_blank">CMake</a> and follow the
-<a href="https://project-10.de/forum/viewtopic.php?f=31&t=1028&sid=09c4a9156520f7cf81bd474ac278ed51" target="_blank">Using OpenRT library with CMake</a> guidance, where template \b CMakeLists.txt
+<a href="https://openrt.org/forum/viewtopic.php?f=31&t=1028&sid=09c4a9156520f7cf81bd474ac278ed51" target="_blank">Using OpenRT library with CMake</a> guidance, where template \b CMakeLists.txt
 file is provided.<br>
 Alternatively, you can specify the following paths and library in your IDE manually:
 - Add to Configuration Properties -> C/C++ -> General -> Additional Include Directories the path \b install_folder/include

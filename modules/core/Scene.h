@@ -200,6 +200,12 @@ namespace rt {
 		 */
 		const std::vector<ptr_light_t>	getLights(void) const { return m_vpLights; }
 		/**
+		 * @brief Sets the ambient color
+		 * @details By default, scene has black ambient color, which deactivates completely ambient light in the scene.
+		 * @param color The coolor
+		 */
+		void							setAmbientColor(const Vec3f& color) { m_ambientColor = color; }
+		/**
 		 * @brief Returns the ambient
 		 */
 		Vec3f							getAmbientColor(void) const { return m_ambientColor; }
@@ -256,7 +262,7 @@ namespace rt {
 		
 	private:
 		const Vec3f					m_bgColor		= Vec3f::all(0);		///< background color
-		const Vec3f					m_ambientColor	= Vec3f::all(1);		///< ambient color
+		Vec3f						m_ambientColor	= Vec3f::all(0);		///< ambient color
 		const ptr_texture_t			m_bgMap			= nullptr;				///< background texture map
 		std::vector<ptr_prim_t>		m_vpPrims;								///< Primitives
 		std::vector<ptr_light_t>	m_vpLights;								///< Lights

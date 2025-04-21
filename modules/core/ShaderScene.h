@@ -39,13 +39,11 @@ namespace rt {
 		/**
 		 */
 		ptr_sampler_t getSampler(void) const { return m_pSampler; }
-	
 
 	protected:
 		Vec3f eval_IR_LS(const Ray& ray) const;
 		Vec3f eval_IR_all(const Ray& ray) const;
-
-
+	
 	private:
 		const CScene&	m_scene;		///< Reference to the scene object
 		ptr_sampler_t	m_pSampler;		///< Pointer to the sampler to be used for sampling the hemisphere around the shading point

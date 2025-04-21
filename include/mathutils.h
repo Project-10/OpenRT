@@ -21,8 +21,8 @@ inline double fastPow(double a, double b)
 //inline T SIGN(T a) {return (a >= 0) ? 1 : -1;}
 
 // Compute a tangent vector for a given normalized vector
-inline Vec3f tangent(const Vec3f& v) { 
-	return (fabs(v.dot(Vec3f(1, 0, 0))) < 0.999f) 
-		? normalize(Vec3f(1, 0, 0).cross(v)) 
-		: normalize(Vec3f(0, 0, 1).cross(v)); 
+inline Vec3f tangent(const Vec3f& v, const Vec3f& aux = Vec3f(1.0f, .0f, .0f)) { 
+	return (fabs(v.dot(aux)) < 0.999f) 
+		? normalize(aux.cross(v)) 
+		: normalize(Vec3f(aux[1], aux[0], aux[2]).cross(v));
 }
