@@ -42,7 +42,7 @@
 #include "core/ShaderFlat.h"
 #include "core/ShaderEyelight.h"
 #include "core/ShaderDiffuse.h"
-#include "core/ShaderGeneral.h"
+#include "core/ShaderPrincipled.h"
 #include "core/ShaderShadow.h"
 #include "core/ShaderChrome.h"
 #include "core/ShaderSubsurfaceScattering.h"

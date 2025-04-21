@@ -47,8 +47,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 20.f);
 	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
-	auto pShaderMirror			= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-	auto pShaderGlass			= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
+	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	auto pShaderGlass			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0, 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
 	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
 	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
 	auto pShaderChrome			= std::make_shared<CShaderChrome>(*pScene, 0.0f, std::make_shared<CSamplerStratified>(16));
@@ -61,8 +61,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	//environment->setShader(pShaderEnvironment);
 	floor->setShader(pShader);
 	sphere_center->setShader(pShaderDiffuse);
-	sphere_left->setShader(pShaderVolume);
-	sphere_right->setShader(pShaderChrome);
+	sphere_left->setShader(pShaderGlass);
+	sphere_right->setShader(pShaderMirror);
 	
 	return pScene;
 }
@@ -120,6 +120,7 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	// primitives
 	auto s1		= pScene->addSphere(Vec3f(3, 1, 0));
 	auto s2		= pScene->addSphere(Vec3f(-3, 1, 0));
+	auto sc		= pScene->addSphere(Vec3f(0, 1, 0));
 
 
 	// shaders
@@ -128,9 +129,12 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	auto pShaderFloor = std::make_shared<CShaderDiffuse>(*pScene, RGB(133, 153, 180));
 	auto pShaderWhite = std::make_shared<CShaderFlat>(Vec3f::all(1));
 	//auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4));
-	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlassP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderNewGlass	= std::make_shared<CShaderGlass>(*pScene, 1.5f);
-	auto pShaderMirror = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
+	//auto pShaderMirror = std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
+	auto pShaderMirror	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179),  0.0f, 0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	auto pShaderMirrorP = std::make_shared<CShaderPrincipled>(*pScene, RGB(140, 166, 179),		  0.0f, 0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 	
 	// floor
 	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(100, 0, 0)));
@@ -139,15 +143,16 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(0, 10.01f, 0), Vec3f(0, -1, 0), Vec3f(10, 0, 0)));
 
 	// --- cube ---
-	pScene->add(CSolidQuad(pShaderTop,  Vec3f(0, 2, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0)));
-	pScene->add(CSolidQuad(pShaderSide, Vec3f(1, 1, 0), Vec3f(1, 0, 0), Vec3f(0, 0, 1)));
-	pScene->add(CSolidQuad(pShaderSide, Vec3f(-1, 1, 0), Vec3f(-1, 0, 0), Vec3f(0, 0, 1)));
-	pScene->add(CSolidQuad(pShaderSide, Vec3f(0, 1, 1), Vec3f(0, 0, 1), Vec3f(1, 0, 0)));
-	pScene->add(CSolidQuad(pShaderSide, Vec3f(0, 1, -1), Vec3f(0, 0, -1), Vec3f(-1, 0, 0)));
+	//pScene->add(CSolidQuad(pShaderTop,  Vec3f(0, 2, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0)));
+	//pScene->add(CSolidQuad(pShaderSide, Vec3f(1, 1, 0), Vec3f(1, 0, 0), Vec3f(0, 0, 1)));
+	//pScene->add(CSolidQuad(pShaderSide, Vec3f(-1, 1, 0), Vec3f(-1, 0, 0), Vec3f(0, 0, 1)));
+	//pScene->add(CSolidQuad(pShaderSide, Vec3f(0, 1, 1), Vec3f(0, 0, 1), Vec3f(1, 0, 0)));
+	//pScene->add(CSolidQuad(pShaderSide, Vec3f(0, 1, -1), Vec3f(0, 0, -1), Vec3f(-1, 0, 0)));
 	// --- ---- ---
 
-	s1->setShader(pShaderNewGlass);
-	s2->setShader(pShaderMirror);
+	s1->setShader(pShaderMirror);
+	sc->setShader(pShaderMirror);
+	s2->setShader(pShaderMirrorP);
 
 	// lights
 	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(5e1), Vec3f(-4, 6, 3), true));
@@ -173,7 +178,7 @@ static std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const S
 	// Shaders
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(2.2f));
 	auto pShaderDiffuse = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
-	auto pShaderGlass	= std::make_shared<CShaderGeneral>(*pScene, InvPif * RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass	= std::make_shared<CShaderPrincipled>(*pScene, InvPif * RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pNewShaderGlass= std::make_shared<CShaderGlass>(*pScene, 1.5f);
 	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4));
 
@@ -268,9 +273,9 @@ int main(int argc, char* argv[])
 	//const Size resolution(3072, 1920);
 
 	//auto pScene = buildpSceneColorSphere(bgColor, resolution);
-	auto pScene = buildSceneMirrorSphere(bgColor, resolution);
+	//auto pScene = buildSceneMirrorSphere(bgColor, resolution);
 	//auto pScene = buildScenePlanets(bgColor, resolution);
-	//auto pScene = buildSceneBox(bgColor, resolution);
+	auto pScene = buildSceneBox(bgColor, resolution);
 	//auto pScene = buildSceneTorusKnot(bgColor, resolution);
 	//auto pScene = buidSceneOcclusions(bgColor, resolution);
 	
@@ -348,7 +353,7 @@ int main(int argc, char* argv[])
 		Mat render = pScene->render(std::make_shared<CSamplerStratified>(4), 48);
 		Timer::stop();
 		imshow("pScene", render);
-		imwrite("D:\\renders\\res__5.png", render);
+		imwrite("D:\\renders\\res__6.png", render);
 		waitKey();
 	}
 	return 0;

@@ -66,7 +66,7 @@ std::shared_ptr<CScene> buildSceneLens(const Vec3f& bgColor, const Size resoluti
 	// shaders
 	auto pShaderPage = std::make_shared<CShaderBlinn>(*pScene, pTextureEarth, 0.0f, 1.0f, 0.0f, 0.0f);
 	auto pShaderTest = std::make_shared<CShaderFlat>(RGB(127, 127, 127));
-	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
+	auto pShaderGlass = std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 
 	// geometry
 	CSolidQuad book(pShaderTest, Vec3f(0, 0, 0), Vec3f(0, 0, -1), Vec3f(1, 0, 0), 10);

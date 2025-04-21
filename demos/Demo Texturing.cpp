@@ -201,16 +201,18 @@ static std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size 
 	return pScene;
 }
 
-std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolution) {
-	auto pScene = std::make_shared<CScene>(bgColor);
+static std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolution) {
+	auto pScene = std::make_shared<CScene>(RGB(12, 12, 12));
+	pScene->setAmbientColor(Vec3f::all(0.1f));
 
 	// Geometry
-	auto disc = pScene->addDisc(Vec3f(0, 5.1f, 0), Vec3f(0, -1, 0), 1);
+	auto floor	= pScene->addDisc(Vec3f(0, 0, 0), Vec3f(0, 1, 0), 100.0f, .0f, RGB(120, 120, 120));
+	auto disc	= pScene->addDisc(Vec3f(0, 5.1f, 0), Vec3f(0, -1, 0), 1);
 	auto sphere = pScene->addSphere(Vec3f(0, 1.3f, 0), 1);
 	
 	// Light
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4)));
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(10), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(10), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4)));
 
 	// Camera
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 1.5f, -3), Vec3f(0, 1.2f, 0), Vec3f(0, 1, 0), 60));
@@ -233,16 +235,15 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 
 	// Shader
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderFloor	= std::make_shared<CShaderBlinn>(*pScene, RGB(120, 120, 120), 0.1f, 0.9f, 0, 0);
-	//auto pShaderMarble	= std::make_shared<CShaderGeneral>(*pScene, pTextureMarble, 0.1f, 0.9f, 0, 0, 0.2f, 0, 1);
-	auto pShaderMarble1	= std::make_shared<CShaderGeneral>(*pScene, pTextureMarble1, 0.1f, 0.9f, 0, 0, 0.2f, 0, 1);
+	//auto pShaderMarble	= std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble, 1.0f, 1.0f, 0, 0, 0.2f, 0, 1);
+	auto pShaderMarble1 = std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble1, 1.0f, 1.0f, 0, 0, 0.2f, 0, 1);
 
 	// Geometry
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 3, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -2), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
 	pScene->add(CSolidQuad(pShaderWhite, Vec3f(3.1f, 2, -3), Vec3f(-1, 0, 0), Vec3f(0, 0, -1), 0.45f));
-	pScene->add(CSolidQuad(pShaderFloor, Vec3f(0, 0, 0), Vec3f(0, 1, 0), Vec3f(1, 0, 0), 100));
+
 
 	disc->setShader(pShaderWhite);
 	sphere->setShader(pShaderMarble1);
@@ -281,8 +282,8 @@ int main()
 	//auto pScene = buildSceneTemplates(bgColor, resolution);
 	//auto pScene = buildSceneMoon(bgColor, resolution);
 	//auto pScene = buildSceneSaturn(bgColor, resolution);
-	auto pScene = buildSceneEarth(bgColor, resolution);
-	//auto pScene = buildSceneMarble(bgColor, resolution);
+	//auto pScene = buildSceneEarth(bgColor, resolution);
+	auto pScene = buildSceneMarble(bgColor, resolution);
 	//pScene->buildAccelStructure(20, 3);
 	//Timer::start("Rendering...");
 	//Mat img = pScene->render(std::make_shared<CSamplerStratified>(2));
