@@ -1,7 +1,7 @@
 #include "NewShader.h"
 #include "Ray.h"
 #include "Scene.h"
-#include "IBxDF.h"
+#include "BxDF.h"
 #include "mathutils.h"
 #include "random.h"
 
@@ -59,7 +59,6 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 	// Diffuse light: calculate the Incident Radiance
 	if ((m_type & (BxDFType::diffuse | BxDFType::specular)) != BxDFType::unset) {
 		res += eval_IR_LS(p, n, [this, M, wo, diffuseColor, specularColor](const Vec3f& wiW) {
-		
 			Vec3f wi = M * wiW;			// Transform the wiW vector from WCS to LCS
 
 			// This lambda-function shoud return a float onstead of color. We return color just because we use 
@@ -70,12 +69,11 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 				res += bxdfPair.first * bxdfPair.second->f(wo, wi) * color;
 			}
 			return  res;
-
 		});
 	}
 	
 	// Re-Tracing components
-	if ((m_type & (BxDFType::reflection | BxDFType::transmission)) != BxDFType::unset) 
+	if ((m_type & (BxDFType::reflection | BxDFType::transmission | BxDFType::diffuse)) != BxDFType::unset) 
 		for (const auto& bxdfPair : this->m_vpBxDFs) {
 			const size_t nSamples = bxdfPair.second->getNumSamples();
 			if (!nSamples) continue;

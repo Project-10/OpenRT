@@ -1,5 +1,5 @@
 #include "ShaderScene.h"
-#include "IBxDF.h"
+#include "BxDF.h"
 
 #pragma once
 
@@ -18,7 +18,7 @@ namespace rt {
 		{ }
 		DllExport virtual ~CNewShader(void) = default;
 
-		DllExport virtual Vec3f shade(const Ray& ray) const override;
+		DllExport Vec3f			shade(const Ray& ray) const override;
 
 		// Rename and add the type of the BRDF to be added here.
 		DllExport void			addBSDF(const ptr_BxDF_t pBxDF, float scale = 1.0f);

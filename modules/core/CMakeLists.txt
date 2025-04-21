@@ -51,7 +51,7 @@ source_group("Source Files\\Shaders\\subsurface scattering" FILES "ShaderSubsurf
 source_group("Source Files\\Shaders\\principled" FILES "ShaderPrincipled.h" "ShaderPrincipled.cpp")
 source_group("Source Files\\Shaders\\global" FILES "ShaderGlobal.h" "ShaderGlobal.cpp")
 source_group("Source Files\\Shaders\\hemisphere" FILES "ShaderHemisphere.h" "ShaderHemisphere.cpp")
-source_group("Source Files\\BxDFs" FILES "IBxDF.h")
+source_group("Source Files\\BxDFs" FILES "BxDF.h" "BxDF.cpp")
 source_group("Source Files\\BxDFs\\lambertian" FILES "BRDFLambertian.h" "BRDFLambertian.cpp")
 source_group("Source Files\\BxDFs\\oren-nayar" FILES "BRDFOrenNayar.h" "BRDFOrenNayar.cpp")
 source_group("Source Files\\BxDFs\\phong" FILES "BRDFPhong.h" "BRDFPhong.cpp")

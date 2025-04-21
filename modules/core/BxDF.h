@@ -40,7 +40,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
-	class IBxDF
+	class CBxDF
 	{
 	public:
 		/**
@@ -48,13 +48,13 @@ namespace rt {
 		 * @param type The type of the BxDF (@ref BxDFType)
 		 * @param nSamples Number of samples for stochastic recursive ray-tracing (if applicable)
 		 */
-		DllExport IBxDF(BxDFType type, size_t nSamples) 
+		DllExport CBxDF(BxDFType type, size_t nSamples)
 			: m_type(type)
 			, m_nSamples(nSamples)
 		{}
-		DllExport IBxDF(const IBxDF&) = delete;
-		DllExport virtual ~IBxDF(void) = default;
-		DllExport const IBxDF& operator=(const IBxDF&) = delete;
+		DllExport CBxDF(const CBxDF&) = delete;
+		DllExport virtual ~CBxDF(void) = default;
+		DllExport const CBxDF& operator=(const CBxDF&) = delete;
 
 		/**
 		 * @brief Calculates value of the distribution function for the given pair of directions \b wo and \b wi
@@ -76,7 +76,7 @@ namespace rt {
 		 * @param[in] s The index of the sample to be used
 		 * @returns The value of the BxDF for the pair of directions
 		 */
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const = 0;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const;
 		/**
 		 * @brief Returns recommended number of samples for the particular BxDF to be estimated
 		 * @details The usual value here is 1 for the BxDFs, which have recursive ray-tracing part (i.e. use @ref Sample_f method)

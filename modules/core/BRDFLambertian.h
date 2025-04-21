@@ -1,6 +1,6 @@
 // Lambertian BRDF class
 // Written by Dr. Sergey G. Kosov in 2025 for OpenRT.org
-#include "IBxDF.h"
+#include "BxDF.h"
 
 #pragma once
 
@@ -11,13 +11,12 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
-	class CBRDFLambertian : public IBxDF
+	class CBRDFLambertian : public CBxDF
 	{
 	public:
 		DllExport CBRDFLambertian(void);
 		DllExport virtual ~CBRDFLambertian(void) = default;
 
-		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
+		DllExport float		f(const Vec3f& wo, const Vec3f& wi) const override;
 	};
 }

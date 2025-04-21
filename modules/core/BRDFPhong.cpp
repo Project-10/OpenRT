@@ -1,7 +1,7 @@
 #include "BRDFPhong.h"
 
 rt::CBRDFPhong::CBRDFPhong(float ke) 
-	: IBxDF(BxDFType::specular, 0)
+	: CBxDF(BxDFType::specular, 0)
 	, m_ke(ke)
 {}
 
@@ -12,8 +12,4 @@ float rt::CBRDFPhong::f(const Vec3f& wo, const Vec3f& wi) const
 	float specular = std::powf(cosLightReflect, m_ke);
 	
 	return specular;
-}
-
-float rt::CBRDFPhong::Sample_f(const Vec3f&, Vec3f&, size_t) const {
-	return 0;
 }

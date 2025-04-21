@@ -1,6 +1,6 @@
 // Oren-Nayar BRDF class
 // Written by Dr. Sergey G. Kosov in 2025 for OpenRT.org
-#include "IBxDF.h"
+#include "BxDF.h"
 
 #pragma once
 
@@ -12,7 +12,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
-	class CBRDFOrenNayar : public IBxDF
+	class CBRDFOrenNayar : public CBxDF
 	{
 	public:
 		/**
@@ -22,8 +22,7 @@ namespace rt {
 		DllExport CBRDFOrenNayar(float sigma = 20.0f);
 		DllExport virtual ~CBRDFOrenNayar(void) = default;
 
-		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
+		DllExport float		f(const Vec3f& wo, const Vec3f& wi) const override;
 
 
 	private:

@@ -2,7 +2,7 @@
 
 // Constructor
  rt::CBTDFSpecularTransmission::CBTDFSpecularTransmission(float refractiveIndex)
-	: IBxDF(BxDFType::transmission, 1)
+	: CBxDF(BxDFType::transmission, 1)
 	, m_refractiveIndex(refractiveIndex)
 { }
 

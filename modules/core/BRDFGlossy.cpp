@@ -3,7 +3,7 @@
 
 // Constructor
 rt::CBRDFGlossy::CBRDFGlossy(float roughness, ptr_sampler_t pSampler)
-	: IBxDF(BxDFType::reflection | BxDFType::glossy, pSampler ? pSampler->getNumSamples() : 1)
+	: CBxDF(BxDFType::reflection | BxDFType::glossy, pSampler ? pSampler->getNumSamples() : 1)
 	, m_roughness(roughness)
 	, m_pSampler(pSampler)
 {}

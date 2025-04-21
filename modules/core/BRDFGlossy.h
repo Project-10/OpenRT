@@ -1,6 +1,6 @@
 // Glossy BRDF class
 // Written by Dr. Sergey G. Kosov in 2025 for OpenRT.org
-#include "IBxDF.h"
+#include "BxDF.h"
 #include "Sampler.h"
 
 #pragma once
@@ -13,7 +13,7 @@ namespace rt {
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@openrt.org
 	 */
-	class CBRDFGlossy : public IBxDF
+	class CBRDFGlossy : public CBxDF
 	{
 	public:
 		/**
@@ -23,8 +23,8 @@ namespace rt {
 		 */
 		DllExport CBRDFGlossy(float roughness, ptr_sampler_t pSampler = nullptr);
 		DllExport virtual ~CBRDFGlossy(void) = default;
-		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
+		DllExport float		f(const Vec3f& wo, const Vec3f& wi) const;
+		DllExport float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
 
 	
 	private:

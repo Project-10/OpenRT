@@ -1,7 +1,7 @@
 #include "BRDFOrenNayar.h"
 
 // Constructor
-rt::CBRDFOrenNayar::CBRDFOrenNayar(float sig) : IBxDF(BxDFType::diffuse, 0)
+rt::CBRDFOrenNayar::CBRDFOrenNayar(float sig) : CBxDF(BxDFType::diffuse, 0)
 {
 	float sigma = sig * Pif / 180;
 	float sigma2 = sigma * sigma;
@@ -35,8 +35,4 @@ float rt::CBRDFOrenNayar::f(const Vec3f& wo, const Vec3f& wi) const {
 
 	float OrenNayar = m_A + m_B * maxCos * sinAlpha * tanBeta;
 	return OrenNayar * InvPif;
-}
-
-float rt::CBRDFOrenNayar::Sample_f(const Vec3f& wo, Vec3f& wi, size_t) const {
-	return 0;
 }
