@@ -51,7 +51,7 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	auto pShaderGlass			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
 	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
 	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
-	auto pShaderChrome			= std::make_shared<CShaderChrome>(*pScene, 0.0f, std::make_shared<CSamplerStratified>(16));
+	auto pShaderChrome			= std::make_shared<CShaderGlossy>(*pScene, RGB(255, 200, 200), 0.0f, std::make_shared<CSamplerStratified>(16));
 	auto pShaderSSLT			= std::make_shared<CShaderSubsurfaceScattering>(*pScene, RGB(255, 200, 200), std::make_shared<CSamplerStratified>(4));
 	auto pShaderVolume			= std::make_shared<CShaderVolumeScatter>(*pScene, RGB(255, 200, 200));
 	

@@ -40,7 +40,7 @@ source_group("Source Files\\Shaders\\flat" FILES "ShaderFlat.h" "ShaderFlat.cpp"
 source_group("Source Files\\Shaders\\eyelight" FILES "ShaderEyelight.h" "ShaderEyelight.cpp")
 source_group("Source Files\\Shaders\\diffuse" FILES "ShaderDiffuse.h" "ShaderDiffuse.cpp")
 source_group("Source Files\\Shaders\\shadow" FILES "ShaderShadow.h" "ShaderShadow.cpp")
-source_group("Source Files\\Shaders\\chrome" FILES "ShaderChrome.h" "ShaderChrome.cpp")
+source_group("Source Files\\Shaders\\glossy" FILES "ShaderGlossy.h" "ShaderGlossy.cpp")
 source_group("Source Files\\Shaders\\new shader" FILES "NewShader.h" "NewShader.cpp")
 source_group("Source Files\\Shaders\\mirror" FILES "ShaderMirror.h" "ShaderMirror.cpp")
 source_group("Source Files\\Shaders\\phong" FILES "ShaderPhong.h" "ShaderPhong.cpp")

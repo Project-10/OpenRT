@@ -44,7 +44,7 @@
 #include "core/ShaderDiffuse.h"
 #include "core/ShaderPrincipled.h"
 #include "core/ShaderShadow.h"
-#include "core/ShaderChrome.h"
+#include "core/ShaderGlossy.h"
 #include "core/ShaderSubsurfaceScattering.h"
 #include "core/ShaderVolumeScatter.h"
 #include "core/NewShader.h"
