@@ -83,7 +83,7 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 			thread_local Vec3f wi;
 			Vec3f aux(0, 0, 0);
 			for (size_t s = 0; s < nSamples; s++) {
-				float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi);
+				float weight = bxdfPair.first * bxdfPair.second->Sample_f(wo, wi, s);
 				if (weight > Epsilon) {
 					Vec3f org = p;	// positive hitpoint
 					if (bxdfPair.second->MatchesFlags(BxDFType::transmission) && wi[2] < 0)
@@ -124,7 +124,7 @@ Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_f
 		const size_t nSamples = pLight->getNumSamples();
 		for (size_t s = 0; s < nSamples; s++) {
 			Ray shadowRay;
-			auto radiance = pLight->illuminate(shadowRay, point, normal);
+			auto radiance = pLight->illuminate(shadowRay, point, normal, s);
 			if (radiance) {
 				// Check shadow (light sourse is occluded)
 				float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(shadowRay) : 1.0f;

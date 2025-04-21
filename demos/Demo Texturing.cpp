@@ -87,7 +87,7 @@ static std::shared_ptr<CScene> buildSceneTemplates(const Vec3f& bgColor, const S
 		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, 100, 50)));
 		pScene->add(std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(0, -100, -50), false));
 	}
-	else pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 5.0f, std::make_shared<CSamplerStratified>(4, true, true)));
+	else pScene->add(std::make_shared<CLightSky>(Vec3f::all(1), 5.0f, std::make_shared<CSamplerStratified>(4)));
 
 
 	//Cameras
@@ -209,8 +209,8 @@ std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size resolu
 	auto sphere = pScene->addSphere(Vec3f(0, 1.3f, 0), 1);
 	
 	// Light
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4, true)));
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4, true)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(3, 3.5f, -1.5f), Vec3f(3, 3.5f, -3.5f), Vec3f(3, 1.5f, -3.5f), Vec3f(3, 1.5f, -1.5f), std::make_shared<CSamplerStratified>(4)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(3), Vec3f(-1, 5, -1), Vec3f(1, 5, -1), Vec3f(1, 5, 1), Vec3f(-1, 5, 1), std::make_shared<CSamplerStratified>(4)));
 
 	// Camera
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 1.5f, -3), Vec3f(0, 1.2f, 0), Vec3f(0, 1, 0), 60));
@@ -285,7 +285,7 @@ int main()
 	//auto pScene = buildSceneMarble(bgColor, resolution);
 	//pScene->buildAccelStructure(20, 3);
 	//Timer::start("Rendering...");
-	//Mat img = pScene->render(std::make_shared<CSamplerStratified>(2, true));
+	//Mat img = pScene->render(std::make_shared<CSamplerStratified>(2));
 	//Timer::stop();
 	//imshow("Image", img);
 	////imwrite("D:\\renders\\Saturn.jpg", img);
@@ -316,7 +316,7 @@ int main()
 	
 	pScene->buildAccelStructure(20, 3);
 	Timer::start("Rendering...");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true), 64);
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4), 64);
 	Timer::stop();
 	imwrite("D:/renders/Render30.jpg", img);
 	imshow("Image", img);
@@ -331,7 +331,7 @@ int main()
 	//for (int i = 130; i < 330; i+= 1) {
 	//	pLight->setOrigin(Vec3f(150e6 * cosf(Pif * i / 180), 150e6 * sinf(Pif * i / 180), 0));
 	//	Timer::start("Rendering...");
-	//	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4, true));
+	//	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4));
 	//	Timer::stop();
 	//	//videoWriter << img;
 	//	imshow("Image", img);

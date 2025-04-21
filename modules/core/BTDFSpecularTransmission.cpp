@@ -11,7 +11,7 @@ float rt::CBTDFSpecularTransmission::f(const Vec3f&, const Vec3f&) const
 	return 0; 
 }
 
-float rt::CBTDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi) const
+float rt::CBTDFSpecularTransmission::Sample_f(const Vec3f& wo, Vec3f& wi, size_t) const
 {
 	float cos_o = CosTheta(wo);
 

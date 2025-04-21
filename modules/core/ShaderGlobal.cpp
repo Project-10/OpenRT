@@ -24,7 +24,7 @@ namespace rt {
 			for (size_t s = 0; s < nSamples; s++) {
 				// get direction to light, and intensity
 				Ray I;
-				auto radiance = pLight->illuminate(I, ray.hitPoint(shadingNormal), shadingNormal);
+				auto radiance = pLight->illuminate(I, ray.hitPoint(shadingNormal), shadingNormal, s);
 				if (radiance) {
 					// Check shadow (light sourse is occluded)
 					float k_occlusion = pLight->shadow() ? getScene().evalOcclusion(I) : 1.0f;
@@ -43,7 +43,7 @@ namespace rt {
 		for (size_t s = 0; s < nSamples; s++) {
 			Vec3f dir = shadingNormal;
 			if (getSampler()) {
-				Vec2f sample = getSampler()->getNextSample();
+				Vec2f sample = getSampler()->getNextSample(s);
 				Vec3f hemisphereSample = CSampler::cosineSampleHemisphere(sample);
 				dir = CSampler::transformSampleToWCS(hemisphereSample, shadingNormal);	// sample the hemisphere in respect to the object's normal
 			}

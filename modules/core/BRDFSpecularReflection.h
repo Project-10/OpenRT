@@ -18,6 +18,6 @@ namespace rt {
 		DllExport CBRDFSpecularReflection(void) : IBxDF(BxDFType::reflection, 1) {}
 		DllExport virtual ~CBRDFSpecularReflection(void) = default;
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const { return 0; }
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
 	};
 }

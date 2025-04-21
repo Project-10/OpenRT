@@ -14,7 +14,7 @@ Vec3f rt::CShaderScene::eval_IR_LS(const Ray& ray) const {
 		const size_t nSamples = pLight->getNumSamples();
 		for (size_t s = 0; s < nSamples; s++) {
 			thread_local Ray shadowRay;  
-			auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(n), n);
+			auto radiance = pLight->illuminate(shadowRay, ray.hitPoint(n), n, s);
 			if (radiance) {
 				// Check shadow (light sourse is occluded)
 				float k_occlusion = pLight->shadow() ? m_scene.evalOcclusion(shadowRay) : 1.0f;
@@ -37,7 +37,7 @@ Vec3f rt::CShaderScene::eval_IR_all(const Ray& ray) const {
 
 	const size_t nSamples = m_pSampler ? m_pSampler->getNumSamples() : 1;
 	for (size_t s = 0; s < nSamples; s++) {
-		Vec2f sample = m_pSampler ? m_pSampler->getNextSample() : Vec2f(random::U<float>(), random::U<float>());
+		Vec2f sample = m_pSampler ? m_pSampler->getNextSample(s) : Vec2f(random::U<float>(), random::U<float>());
 		Vec3f hemisphereSample = CSampler::cosineSampleHemisphere(sample);
 		//Vec3f hemisphereSample = CSampler::uniformSampleHemisphere(sample);
 		Vec3f dir = CSampler::transformSampleToWCS(hemisphereSample, n);	// sample the hemisphere in respect to the object's normal

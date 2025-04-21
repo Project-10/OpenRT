@@ -73,9 +73,10 @@ namespace rt {
 		 * directions from BxDFs that scatter light along multiple directions; 
 		 * @param[in] wo Outgoing angle: the direction to the viewer (outgoing light)
 		 * @param[out] wi Incoming angle: the direction to the light source (incident light)
+		 * @param[in] s The index of the sample to be used
 		 * @returns The value of the BxDF for the pair of directions
 		 */
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const = 0;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const = 0;
 		/**
 		 * @brief Returns recommended number of samples for the particular BxDF to be estimated
 		 * @details The usual value here is 1 for the BxDFs, which have recursive ray-tracing part (i.e. use @ref Sample_f method)

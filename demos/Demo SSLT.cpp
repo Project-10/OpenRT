@@ -18,7 +18,7 @@ int main() {
 	//scene.addDisc(Vec3f::all(0), Vec3f(0, 1, 0), 50.0f);
 
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
-	auto pShaderSSLT	= std::make_shared<CShaderSubsurfaceScattering>(scene, col_white, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShaderSSLT	= std::make_shared<CShaderSubsurfaceScattering>(scene, col_white, std::make_shared<CSamplerStratified>(4));
 	
 	//auto disc = scene.addDisc(Vec3f(0, 15, -40.1f), Vec3f(0, 0, -1), 50.0f);
 	//disc->setShader(pShaderWhite);
@@ -34,14 +34,14 @@ int main() {
 	auto pLightSpot = std::make_shared<CLightSpotTarget>(Vec3f::all(intensity), Vec3f(0, 100, 0), Vec3f(0, 0, 0), 15.0f, 30.0f);
 	scene.add(pCamera);
 	scene.add(std::make_shared<CLightOmni>(intensity * col_gold, Vec3f(-15, 1.5f, -40)));
-	scene.add(std::make_shared<CLightSky>(Vec3f::all(0.2f), 0, std::make_shared<CSamplerStratified>(4, true, true)));
+	scene.add(std::make_shared<CLightSky>(Vec3f::all(0.2f), 0, std::make_shared<CSamplerStratified>(4)));
 	//if (true) scene.add(pLightOmni);
 	//else scene.add(pLightSpot);
 
 	scene.buildAccelStructure(25, 5);
 
 	Timer::start("Rendering...");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true), 64);
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4), 64);
 	Timer::stop();
 	imshow("image", img);
 	waitKey();

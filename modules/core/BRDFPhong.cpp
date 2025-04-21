@@ -14,6 +14,6 @@ float rt::CBRDFPhong::f(const Vec3f& wo, const Vec3f& wi) const
 	return specular;
 }
 
-float rt::CBRDFPhong::Sample_f(const Vec3f&, Vec3f&) const {
+float rt::CBRDFPhong::Sample_f(const Vec3f&, Vec3f&, size_t) const {
 	return 0;
 }

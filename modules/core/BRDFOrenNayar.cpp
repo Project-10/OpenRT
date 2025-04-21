@@ -37,6 +37,6 @@ float rt::CBRDFOrenNayar::f(const Vec3f& wo, const Vec3f& wi) const {
 	return OrenNayar * InvPif;
 }
 
-float rt::CBRDFOrenNayar::Sample_f(const Vec3f& wo, Vec3f& wi) const {
+float rt::CBRDFOrenNayar::Sample_f(const Vec3f& wo, Vec3f& wi, size_t) const {
 	return 0;
 }

@@ -31,7 +31,7 @@ int main()
 	float r = 35;
 	auto pCamera	= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f::all(r), Vec3f(0, 5, 0), Vec3f(0, 1, 0), 45.0f);
 	auto pLightOmni	= std::make_shared<CLightOmni>(Vec3f::all(intensity), Vec3f(r, 2 * r, 0));
-	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(4, true, true));
+	auto pLightSky	= std::make_shared<CLightSky>(Vec3f::all(1.0f), 50.0f, std::make_shared<CSamplerStratified>(4));
 	
 	
 	scene.add(pCamera);
@@ -42,8 +42,8 @@ int main()
 	scene.buildAccelStructure(20, 3);
 	
 	Timer::start("Rendering... ");
-	Mat img = scene.render(std::make_shared<CSamplerStratified>(4, true, true), 0);
-	//Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4, true, true));
+	Mat img = scene.render(std::make_shared<CSamplerStratified>(4), 0);
+	//Mat depth = scene.renderDepth(std::make_shared<CSamplerStratified>(4));
 	//depth.convertTo(img, CV_8UC1);
 	Timer::stop();
 

@@ -36,7 +36,7 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 
 	//environment->flipNormal();
 
-	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.25f), 4.0f, std::make_shared<CSamplerStratified>(16, true, true)));	// light source
+	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.25f), 4.0f, std::make_shared<CSamplerStratified>(4)));	// light source
 	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e2), Vec3f(0, 10, 0)));	// light source
 	auto camera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f);
 	auto cameraDoF	= std::make_shared<CCameraThinLens>(camera, 0.3f, 10.77f);
@@ -51,8 +51,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	auto pShaderGlass			= std::make_shared<CShaderGeneral>(*pScene, Vec3f::all(0), 0, 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
 	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
 	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
-	auto pShaderChrome			= std::make_shared<CShaderChrome>(*pScene, 0.5f, std::make_shared<CSamplerStratified>(4, true, true));
-	auto pShaderSSLT			= std::make_shared<CShaderSubsurfaceScattering>(*pScene, RGB(255, 200, 200), std::make_shared<CSamplerStratified>(4, false, true));
+	auto pShaderChrome			= std::make_shared<CShaderChrome>(*pScene, 0.0f, std::make_shared<CSamplerStratified>(16));
+	auto pShaderSSLT			= std::make_shared<CShaderSubsurfaceScattering>(*pScene, RGB(255, 200, 200), std::make_shared<CSamplerStratified>(4));
 	auto pShaderVolume			= std::make_shared<CShaderVolumeScatter>(*pScene, RGB(255, 200, 200));
 	
 
@@ -81,7 +81,7 @@ static std::shared_ptr<CScene> buildScenePlanets(const Vec3f& bgColor, const Siz
 	//auto jupiter	= pScene->addSphere(Vec3f(0, 3.3f, 0), 3.3f); // real r = 10.973f
 	auto neptune	= pScene->addSphere(Vec3f(0, 3.8647f, 0), 3.8647f);
 
-	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.0f), 0.0f, std::make_shared<CSamplerStratified>(4, true, true)));	// light	
+	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.0f), 0.0f, std::make_shared<CSamplerStratified>(4)));	// light	
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-10, 5, 0), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 40.0f));	// camera
 
 	// Textures
@@ -127,7 +127,7 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	auto pShaderSide = std::make_shared<CShaderDiffuse>(*pScene, RGB(140, 166, 179));
 	auto pShaderFloor = std::make_shared<CShaderDiffuse>(*pScene, RGB(133, 153, 180));
 	auto pShaderWhite = std::make_shared<CShaderFlat>(Vec3f::all(1));
-	//auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pShaderChrome = std::make_shared<CShaderChrome>(*pScene, std::make_shared<CSamplerStratified>(4));
 	auto pShaderGlass = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pShaderNewGlass	= std::make_shared<CShaderGlass>(*pScene, 1.5f);
 	auto pShaderMirror = std::make_shared<CShaderGeneral>(*pScene, RGB(140, 166, 179), 0.0f, 0.1f, 2.0f, 80.0f, 1.0f, 0.0f, 1.5f);
@@ -152,8 +152,8 @@ static std::shared_ptr<CScene> buildSceneBox(const Vec3f& bgColor, const Size re
 	// lights
 	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(5e1), Vec3f(-4, 6, 3), true));
 	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(5e1), Vec3f(0, 10, 0), true));
-	pScene->add(std::make_shared<CLightArea>(Vec3f::all(2.0f), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4, true, true)));
-	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.0f), 0, std::make_shared<CSamplerStratified>(4, true, true)));
+	pScene->add(std::make_shared<CLightArea>(Vec3f::all(2.0f), Vec3f(-10, 10, -10), Vec3f(10, 10, -10), Vec3f(10, 10, 10), Vec3f(-10, 10, 10), std::make_shared<CSamplerStratified>(4)));
+	pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.0f), 0, std::make_shared<CSamplerStratified>(4)));
 
 	// camera
 	pScene->add(std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-5, 5, 5), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 45.0f));
@@ -175,7 +175,7 @@ static std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const S
 	auto pShaderDiffuse = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
 	auto pShaderGlass	= std::make_shared<CShaderGeneral>(*pScene, InvPif * RGB(140, 166, 179), 0, 0.1f, 2.0f, 80.0f, 0.2f, 0.8f, 1.5f);
 	auto pNewShaderGlass= std::make_shared<CShaderGlass>(*pScene, 1.5f);
-	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4, true, true));
+	auto pShaderGlobal  = std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4));
 
 	//floor->setShader(pShaderDiffuse);
 	//sphere->setShader(pShaderDiffuse);
@@ -188,8 +188,8 @@ static std::shared_ptr<CScene> buildSceneTorusKnot(const Vec3f& bgColor, const S
 
 	// light
 	//auto pLight = std::make_shared<CLightOmni>(Vec3f::all(1e3), Vec3f(0, 20, 0));
-	//auto pLight				= std::make_shared<CLightArea>(Vec3f::all(Pif), Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 2, 1), Vec3f(-1, 2, 1), std::make_shared<CSamplerStratified>(4, true, true));
-	auto pLight		= std::make_shared<CLightSky>(Vec3f::all(1), 2.0f, std::make_shared<CSamplerStratified>(4, true, true));
+	//auto pLight				= std::make_shared<CLightArea>(Vec3f::all(Pif), Vec3f(-1, 2, -1), Vec3f(1, 2, -1), Vec3f(1, 2, 1), Vec3f(-1, 2, 1), std::make_shared<CSamplerStratified>(4));
+	auto pLight		= std::make_shared<CLightSky>(Vec3f::all(1), 2.0f, std::make_shared<CSamplerStratified>(4));
 
 	// camera
 	auto pCamera			= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(-5, 4, 10), Vec3f(0, 0.5f, 0), Vec3f(0, 1, 0), 10.0f);
@@ -328,7 +328,7 @@ int main(int argc, char* argv[])
 	if (false) {
 		Timer::start("Rendering 100 frames...");
 		for (size_t x = 0;; x++) {
-			Mat render = pScene->render(std::make_shared<CSamplerStratified>(1, false, false));
+			Mat render = pScene->render(std::make_shared<CSamplerStratified>(1, false));
 			imshow("Render", render);
 			
 			float X = static_cast<float>(x % 200) / 10.0f - 5.0f; // [-5; 15)
@@ -345,7 +345,7 @@ int main(int argc, char* argv[])
 	}
 	else {
 		Timer::start("Rendering...");
-		Mat render = pScene->render(std::make_shared<CSamplerStratified>(4, true, true), 48);
+		Mat render = pScene->render(std::make_shared<CSamplerStratified>(4), 48);
 		Timer::stop();
 		imshow("pScene", render);
 		imwrite("D:\\renders\\res__5.png", render);

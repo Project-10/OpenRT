@@ -23,7 +23,7 @@ namespace rt {
 		DllExport virtual ~CBRDFOrenNayar(void) = default;
 
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const override;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
 
 
 	private:

@@ -24,7 +24,7 @@ namespace rt {
 		DllExport CBRDFGlossy(float roughness, ptr_sampler_t pSampler = nullptr);
 		DllExport virtual ~CBRDFGlossy(void) = default;
 		DllExport virtual float		f(const Vec3f& wo, const Vec3f& wi) const;
-		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi) const override;
+		DllExport virtual float		Sample_f(const Vec3f& wo, Vec3f& wi, size_t s) const override;
 
 	
 	private:
