@@ -115,7 +115,7 @@ static std::shared_ptr<CScene> buildSceneMoon(const Vec3f& bgColor, const Size r
 	auto moon_bump		= std::make_shared<CTexture>(dataPath + "ldem_16_uint.tif");
 
 	// Shaders
-	auto pShaderMoon	= std::make_shared<CShaderDiffuse>(*pScene, moon_diffuse, 20);
+	auto pShaderMoon	= std::make_shared<CShaderDiffuse>(*pScene, moon_diffuse, 0.2);
 	pShaderMoon->setBumpMap(moon_bump);
 
 	moon->setShader(pShaderMoon);
@@ -144,8 +144,8 @@ static std::shared_ptr<CScene> buildSceneSaturn(const Vec3f& bgColor, const Size
 	auto rings_opacity = std::make_shared<CTexture>(dataPath + "8k_saturn_ring_alpha.png");
 
 	// Shaders
-	auto pShaderSaturn = std::make_shared<CShaderDiffuse>(*pScene, saturn_diffuse, 5.0f);
-	auto pShaderRings = std::make_shared<CShaderDiffuse>(*pScene, rings_diffuse, 30.0f);
+	auto pShaderSaturn = std::make_shared<CShaderDiffuse>(*pScene, saturn_diffuse, .05f);
+	auto pShaderRings = std::make_shared<CShaderDiffuse>(*pScene, rings_diffuse, .3f);
 	pShaderRings->setOpacity(rings_opacity);
 
 	saturn->setShader(pShaderSaturn);
@@ -189,13 +189,13 @@ static std::shared_ptr<CScene> buildSceneEarth(const Vec3f& bgColor, const Size 
 	pShaderSurface->setSpecularColor(surface_specular);
 	surface->setShader(pShaderSurface);
 
-	auto pShaderClouds = std::make_shared<CShaderDiffuse>(*pScene, 1.4f * RGB(255, 255, 255), 30.0f);
+	auto pShaderClouds = std::make_shared<CShaderDiffuse>(*pScene, 1.4f * RGB(255, 255, 255), .3f);
 	pShaderClouds->setAmbientColor(Vec3f::all(0));
 	pShaderClouds->setOpacity(clouds_opacity);
 	pShaderClouds->setBumpMap(clouds_opacity, 0.01f);
 	clouds->setShader(pShaderClouds);
 
-	auto pShaderAtmosphere = std::make_shared<CShaderVolumeScatter>(*pScene, 0.5f * RGB(0, 127, 255), nullptr, 0.05f);
+	auto pShaderAtmosphere = std::make_shared<CShaderVolumeScatter>(*pScene, 0.5f * RGB(0, 127, 255), 0.05f);
 	atmosphere->setShader(pShaderAtmosphere);
 
 	return pScene;

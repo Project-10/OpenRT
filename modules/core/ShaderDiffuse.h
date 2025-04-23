@@ -9,6 +9,7 @@ namespace rt {
 	// ================================ Diffuse Shader Class ================================
 	/**
 	 * @brief Diffuse shader
+	 * @details The Diffuse shader is used to add Lambertian and Oren-Nayar diffuse reflection.
 	 * @ingroup moduleShader
 	 * @author Sergey G. Kosov, sergey.kosov@project-10.de
 	 */
@@ -18,15 +19,15 @@ namespace rt {
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
-		 * @param color The color of the object
-		 * @param sigma
+		 * @param color Color of the surface
+		 * @param roughness Surface roughness; 0.0 gives standard Lambertian reflection, higher values activate the Oren-Nayar BRDF.
 		 */
-		DllExport CShaderDiffuse(const CScene& scene, const Vec3f& color, float sigma = 0);
+		DllExport CShaderDiffuse(const CScene& scene, const Vec3f& color, float roughness = 0);
 		/**
 		 * @brief Constructor
 		 * @param scene The reference to the scene
 		 * @param pTexture Pointer to the texture
-		 * @param sigma
+		 * @param roughness Surface roughness; 0.0 gives standard Lambertian reflection, higher values activate the Oren-Nayar BRDF.
 		 */
 		DllExport CShaderDiffuse(const CScene& scene, const ptr_texture_t pTexture, float sigma = 0);
 		DllExport virtual ~CShaderDiffuse(void) = default;

@@ -44,7 +44,7 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 
 	// Shaders
 	auto pShader				= std::make_shared<CShaderDiffuse>(*pScene, std::make_shared<CTexture>());
-	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 20.f);
+	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), .3f);
 	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
 	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);

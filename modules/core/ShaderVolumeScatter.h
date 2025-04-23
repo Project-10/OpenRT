@@ -20,8 +20,8 @@ namespace rt {
 		 * @param color The color of the material
 		 * @param opacity The opacity of the material
 		 */
-		DllExport CShaderVolumeScatter(const CScene& scene, const Vec3f& color, ptr_sampler_t pSampler = nullptr, float opacity = 1.0f)
-			: CShaderScene(scene, color, pSampler)
+		DllExport CShaderVolumeScatter(const CScene& scene, const Vec3f& color, float opacity = 1.0f)
+			: CShaderScene(scene, color)
 		{ setOpacity(opacity); }
 
 
