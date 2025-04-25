@@ -41,8 +41,8 @@ namespace rt {
 		ptr_sampler_t getSampler(void) const { return m_pSampler; }
 
 	protected:
-		Vec3f eval_IR_LS(const Ray& ray) const;
-		Vec3f eval_IR_all(const Ray& ray) const;
+		Vec3f eval_IR_LS(const Vec3f& point, const Vec3f& normal) const;
+		Vec3f eval_IR_all(const Vec3f& point, const Vec3f& normal, size_t counter) const;
 	
 	private:
 		const CScene&	m_scene;		///< Reference to the scene object

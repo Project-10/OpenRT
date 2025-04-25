@@ -8,14 +8,15 @@ namespace rt
 	{
 		Vec3f diffuseColor = getDiffuseColor(ray);
 		float opacity = getOpacity(ray);
+		Vec3f n = ray.hit->getShadingNormal(ray);				// shading normal
+		Vec3f p = ray.hitPoint(n);
 
 		// Gathering incoming light (incident radiance)
-		Vec3f incident_radiance = eval_IR_LS(ray);
+		Vec3f incident_radiance = eval_IR_LS(p, n);
 
 		Ray R(ray.hitPoint(), ray.dir, ray.ndc, ray.counter);
 		Vec3f res = R.reTrace(getScene());
 
-		Vec3f n = ray.hit->getShadingNormal(ray);				// shading normal
 		if (ray.dir.dot(n) < 0) { // entering the surface
 			const double k = 0.35;	  // dencity
 			const double f = k * R.t; // linear
