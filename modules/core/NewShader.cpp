@@ -61,7 +61,7 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 		res += eval_IR_LS(p, n, [this, M, wo, diffuseColor, specularColor](const Vec3f& wiW) {
 			Vec3f wi = M * wiW;			// Transform the wiW vector from WCS to LCS
 
-			// This lambda-function shoud return a float onstead of color. We return color just because we use 
+			// This lambda-function shoud return a float instead of color. We return color just because we use 
 			// the Phong and Blinn specular shaders, which are not phisically correct shaders.	
 			Vec3f res(0, 0, 0);
 			for (const auto& bxdfPair : this->m_vpBxDFs) {

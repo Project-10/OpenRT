@@ -234,6 +234,7 @@ static std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size
 
 
 	// Shader
+	auto test = std::make_shared<CShaderFlat>(RGB(255, 0, 0));
 	auto pShaderWhite	= std::make_shared<CShaderFlat>(Vec3f::all(1));
 	//auto pShaderMarble	= std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble, 1.0f, 0, 0, 0.2f, 0, 1);
 	auto pShaderMarble1 = std::make_shared<CShaderPrincipled>(*pScene, pTextureMarble1, 1.0f, 0, 0, 0.2f, 0, 1);
@@ -246,11 +247,10 @@ static std::shared_ptr<CScene> buildSceneMarble(const Vec3f& bgColor, const Size
 
 
 	disc->setShader(pShaderWhite);
-	sphere->setShader(pShaderMarble1);
+	sphere->setShader(test);
 
 	return pScene;
 }
-
 
 
 // --- Test Gradient ---

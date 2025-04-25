@@ -20,7 +20,6 @@ namespace rt {
 		DllExport virtual ~IShader(void) = default;
 		DllExport const IShader& operator=(const IShader&) = delete;
 
-		
 		/**
 		 * @brief Calculates the color of the hit by the ray \b ray object
 		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
