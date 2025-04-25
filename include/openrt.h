@@ -53,7 +53,6 @@
 #include "core/ShaderMirror.h"
 #include "core/ShaderGlass.h"
 #include "core/ShaderHemisphere.h"
-#include "core/ShaderGlobal.h"
 
 #include "core/Sampler.h"
 #include "core/SamplerRandom.h"

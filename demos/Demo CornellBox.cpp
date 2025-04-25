@@ -63,17 +63,17 @@ std::shared_ptr<CScene> buildSceneCornellBox(const Vec3f& bgColor, const Size re
 	// Shaders
 	auto pShaderLight = std::make_shared<CShaderFlat>(intensity * light_source);
 	
-	auto pShaderWhite = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
-	auto pShaderRed = std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 0, 0));
-	auto pShaderGreen = std::make_shared<CShaderDiffuse>(*pScene, RGB(0, 255, 0));
+	//auto pShaderWhite	= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 255, 255));
+	//auto pShaderRed		= std::make_shared<CShaderDiffuse>(*pScene, RGB(255, 0, 0));
+	//auto pShaderGreen	= std::make_shared<CShaderDiffuse>(*pScene, RGB(0, 255, 0));
 
-//	auto pShaderGlobal = std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255)/*, std::make_shared<CSamplerStratified>(4)*/);
-//	auto pShaderGlobalR = std::make_shared<CShaderHemisphere>(*pScene, color_red/*, std::make_shared<CSamplerStratified>(4)*/);
-//	auto pShaderGlobalG = std::make_shared<CShaderHemisphere>(*pScene, color_green/*, std::make_shared<CSamplerStratified>(4)*/);
+	auto pShaderWhite	= std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 255, 255)/*, std::make_shared<CSamplerStratified>(4)*/);
+	auto pShaderRed		= std::make_shared<CShaderHemisphere>(*pScene, RGB(255, 0, 0)/*, std::make_shared<CSamplerStratified>(4)*/);
+	auto pShaderGreen	= std::make_shared<CShaderHemisphere>(*pScene, RGB(0, 255, 0)/*, std::make_shared<CSamplerStratified>(4)*/);
 
 
 	// Lights
-	auto pLightArea = std::make_shared<CLightArea>(intensity * light_source, Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227), std::make_shared<CSamplerStratified>(4));
+	auto pLightArea = std::make_shared<CLightArea>(intensity * light_source, Vec3f(343, 548.78f, 227), Vec3f(343, 548.78f, 332), Vec3f(213, 548.78f, 332), Vec3f(213, 548.78f, 227)/*, std::make_shared<CSamplerStratified>(4)*/);
 	auto pLightOmni = std::make_shared<CLightOmni>(intensity * RGB(255, 255, 255) /*RGB(255, 214, 126)*/, Vec3f(278, 548.78f, 279.5f));
 
 	// Blocks
@@ -116,10 +116,10 @@ int main()
 	auto pScene = buildSceneCornellBox(bgColor, resolution);
 	
 	Timer::start("Rendering... ");
-	Mat img = pScene->render(std::make_shared<CSamplerStratified>(4), 64);
+	Mat img = pScene->render(std::make_shared<CSamplerStratified>(16), 64);
 	Timer::stop();
 	imshow("image", img);
-	imwrite("D:\\renders\\area-3bounces.jpg", img);
+	imwrite("D:\\renders\\area-3bounces1.jpg", img);
 	waitKey();
 	return 0;
 }
