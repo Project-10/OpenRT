@@ -65,10 +65,11 @@ namespace rt {
 		* @details This function uses the formulas \f[\begin{align} \phi&=\arccos{\xi_1} \\ \theta&=2\pi\xi_2 \\ x&=\sin{\phi}\cos{\theta} \\ y&=\sin{\phi}\sin{\theta} \\ z&=\cos{\phi} \end{align}\f]
 		* to transform between distributions. The resulting probability of a sample is: \f[ p(\phi, \theta) = \frac{r}{\pi}\f].
 		* @param sample The pair of random variables \f$(\xi_1, \xi_2)\f$ in square \f$[0; 1)^2\f$, \a e.g. achieved with getNextSample() method
-		* @param m A coefficiet pushing the distribution toward the upper pole of the hemisphere. It modulates the z-value of resulting vector as \f$ z= \sqrt[\leftroot{-2}\uproot{2}{1+m}]{z} \f$
+		* @param m A coefficiet pushing the distribution toward the upper pole of the hemisphere. It modulates the z-value of resulting vector as \f$ z = 1 + (z - 1) * m^2;	 \f$
+		* m = 0 means gives result \f$(0, 0, 1)\f$, and m = 1 gives real uniform sampling
 		* @return A new triple of random variables \f$(x, y, z)\f$ sampling a unit hemisphere with center in \f$(0, 0)\f$ 
 		*/
-		DllExport static Vec3f	uniformSampleHemisphere(const Vec2f& sample, float m = 0);
+		DllExport static Vec3f	uniformSampleHemisphere(const Vec2f& sample, float m = 1.0f);
 		/**
 		* @brief Transforms a uniform sampled square into a uniform sampled n-sided regular polygon
 		* @details This function samples from a triangle using the formula \f$P = (1 - sqrt(r1)) * A + (sqrt(r1) * (1 - r2)) * B + (sqrt(r1) * r2) * C \f$ 

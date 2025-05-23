@@ -20,7 +20,7 @@ Vec3f rt::CShaderSubsurfaceScattering::shade(const Ray& ray) const
 			Vec3f dir = n;
 			if (getSampler()) {
 				Vec2f sample = getSampler()->getNextSample(s);
-				Vec3f hemisphereSample = CSampler::uniformSampleHemisphere(sample, 2);
+				Vec3f hemisphereSample = CSampler::uniformSampleHemisphere(sample, 0.7f);
 				dir = CSampler::transformSampleToWCS(hemisphereSample, n);
 			}
 
