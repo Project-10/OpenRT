@@ -36,10 +36,11 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 
 	//environment->flipNormal();
 
-	//pScene->add(std::make_shared<CLightSky>(Vec3f::all(1.25f), 4.0f, std::make_shared<CSamplerStratified>(4)));	// light source
-	auto pLight = std::make_shared<CLightArea>(Vec3f::all(1e1), Vec3f(-2, 5, -2), Vec3f(2, 5, -2), Vec3f(2, 5, 2), Vec3f(-2, 5, 2), std::make_shared<CSamplerStratified>(4));
+	auto pLightSky = std::make_shared<CLightSky>(Vec3f::all(1.0f), 4.0f, std::make_shared<CSamplerStratified>(4));	// light source
+	auto pLightArea = std::make_shared<CLightArea>(Vec3f::all(4.0f), Vec3f(-2, 5, -2), Vec3f(2, 5, -2), Vec3f(2, 5, 2), Vec3f(-2, 5, 2), std::make_shared<CSamplerStratified>(4));
 	//pScene->add(std::make_shared<CLightOmni>(Vec3f::all(3e2), Vec3f(0, 10, 0)));	// light source
-	pScene->add(pLight);
+	pScene->add(pLightSky);
+	pScene->add(pLightArea);
 	auto camera		= std::make_shared<CCameraPerspectiveTarget>(resolution, Vec3f(0, 5, 10), Vec3f(0, 1, 0), Vec3f(0, 1, 0), 23.0f);
 	auto cameraDoF	= std::make_shared<CCameraThinLens>(camera, 0.3f, 10.77f);
 	pScene->add(camera);
@@ -52,12 +53,11 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
 	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 	auto pShaderGlass			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0, 0.0f, 80.0f, 0.0f, 1.0f, 1.5f);
-	auto pNewShaderMirror		= std::make_shared<CShaderMirror>(*pScene);
 	auto pNewShaderGlass		= std::make_shared<CShaderGlass>(*pScene, 2.5f);
-	auto pShaderChrome			= std::make_shared<CShaderGlossy>(*pScene, RGB(255, 200, 200), 0.0f, std::make_shared<CSamplerStratified>(16));
+	auto pShaderChrome			= std::make_shared<CShaderGlossy>(*pScene, RGB(230, 191, 179), 0.1f, std::make_shared<CSamplerStratified>(8));
 	auto pShaderSSLT			= std::make_shared<CShaderSubsurfaceScattering>(*pScene, RGB(255, 200, 200), std::make_shared<CSamplerStratified>(4));
 	auto pShaderVolume			= std::make_shared<CShaderVolumeScatter>(*pScene, RGB(255, 200, 200));
-	auto pShaderWhite			= std::make_shared<CShaderFlat>(Vec3f::all(10));
+	auto pShaderWhite			= std::make_shared<CShaderFlat>(Vec3f::all(4));
 	
 
 	//pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
@@ -66,9 +66,9 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	pScene->add(lightPanel);
 
 	//environment->setShader(pShaderEnvironment);
-	floor->setShader(pShaderGlobal);
+	floor->setShader(pShader);
 	sphere_center->setShader(pShaderDiffuse);
-	sphere_left->setShader(pShaderGlass);
+	sphere_left->setShader(pShaderChrome);
 	sphere_right->setShader(pShaderDiffuse);
 	
 	return pScene;

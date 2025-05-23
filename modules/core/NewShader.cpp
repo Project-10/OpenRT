@@ -49,6 +49,7 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 	Vec3f ambientColor	= getAmbientColor(ray);
 	Vec3f diffuseColor	= getDiffuseColor(ray);
 	Vec3f specularColor	= getSpecularColor(ray);
+	Vec3f reflectColor	= getReflectColor(ray);
 	float opacity		= getOpacity(ray);
 
 	Vec3f res(0, 0, 0);
@@ -91,8 +92,13 @@ Vec3f rt::CNewShader::shade(const Ray& ray) const
 					nContributions++;
 				}
 			}
-			if (nContributions)
-				res += (1.0f / nContributions) * aux;
+			if (nContributions) {
+				//-printf("Type: %d\n", static_cast<byte>(bxdfPair.second->getType()));
+				
+				if (bxdfPair.second->MatchesFlags(BxDFType::reflection))
+					aux =  aux.mul(reflectColor);
+				res += (1.0f / nContributions) * aux; //.mul(diffuseColor); // TODO: we multiply by diffuseColor just for Glossy shader, but it is not diffuse color, but kind of reflectance color
+			}
 		}
 
 	// ------ opacity ------
@@ -109,7 +115,6 @@ void rt::CNewShader::addBSDF(const ptr_BxDF_t pBxDF, float scale)
 	m_vpBxDFs.push_back(std::make_pair(scale, pBxDF));
 	m_type |= pBxDF->getType();
 }
-
 
 // TODO: Rework getScene() 
 // TODO: Rework getSampler()
@@ -137,4 +142,3 @@ Vec3f rt::CNewShader::eval_IR_LS(const Vec3f& point, const Vec3f& normal, brdf_f
 	}
 	return res;
 }
-

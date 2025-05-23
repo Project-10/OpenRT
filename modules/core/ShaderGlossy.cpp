@@ -1,18 +1,23 @@
 #include "ShaderGlossy.h"
-#include "BRDFLambertian.h"
-#include "BRDFOrenNayar.h"
+#include "BRDFSpecularReflection.h"
 #include "BRDFGlossy.h"
 
 rt::CShaderGlossy::CShaderGlossy(const CScene& scene, const Vec3f& color, float roughness, ptr_sampler_t pSampler)
-	: CNewShader(scene, color)
+	: CNewShader(scene, Vec3f::all(0))
 {
-	//addBSDF(std::make_shared<CBRDFOrenNayar>(roughness * 90.0f), 0.5f);
-	addBSDF(std::make_shared<CBRDFGlossy>(roughness, pSampler), 1.0f);
+	if (roughness < Epsilon) addBSDF(std::make_shared<CBRDFSpecularReflection>());
+	else {
+		addBSDF(std::make_shared<CBRDFGlossy>(roughness, pSampler));
+	}
+	setReflectColor(color);
 }
 
 rt::CShaderGlossy::CShaderGlossy(const CScene& scene, const ptr_texture_t pTexture, float roughness, ptr_sampler_t pSampler)
-	: CNewShader(scene, pTexture)
+	: CNewShader(scene, Vec3f::all(0))
 {
-	//addBSDF(std::make_shared<CBRDFOrenNayar>(roughness * 90.0f), 0.5f);
-	addBSDF(std::make_shared<CBRDFGlossy>(roughness, pSampler), 1.0f);
+	if (roughness < Epsilon) addBSDF(std::make_shared<CBRDFSpecularReflection>());
+	else {
+		addBSDF(std::make_shared<CBRDFGlossy>(roughness, pSampler));
+	}
+	setReflectColor(pTexture);
 }

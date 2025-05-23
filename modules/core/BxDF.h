@@ -91,11 +91,12 @@ namespace rt {
 		 */
 		DllExport BxDFType			getType(void) const { return m_type; } 
 		/**
-		 * @brief The utility method which determines if the BxDF matches the user-supplied type flags
-		 * @retval true The flags match
-		 * @retval false The flags do not match
+		 * @brief The utility method which determines if the BxDF matches the user-supplied type flag
+		 * @param flag The user-supplied type flag to be checked
+		 * @retval true The flag matches
+		 * @retval false The flag does not match
 		 */
-		DllExport bool				MatchesFlags(BxDFType flags) const { return (m_type & flags) == m_type; }
+		DllExport bool				MatchesFlags(BxDFType flag) const { return (m_type & flag) == flag; }
 
 
 	private:
