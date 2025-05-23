@@ -65,6 +65,17 @@ namespace rt {
 		 */
 		DllExport void	setSpecularColor(const ptr_texture_t pSpecularLevel, float amount = 1.0f);
 		/**
+		 * @brief Sets the reflection color
+		 * @param color The reflection color
+		 */
+		DllExport void	setReflectColor(const Vec3f& color);
+		/**
+		 * @brief Sets the reflection color map
+		 * @param pMap The pointer to the reflection texture
+		 * @param amount The power of the texture (applies only on the texture)
+		 */
+		DllExport void	setReflectColor(const ptr_texture_t pColorMap, float amount = 1.0f);
+		/**
 		* @brief Sets the bump map
 		* @param pBumpMap The bump map
 		* @param amount The power of bump
@@ -102,6 +113,12 @@ namespace rt {
 		 */
 		DllExport Vec3f getSpecularColor(const Ray& ray) const;
 		/**
+		 * @brief Returns the reflection color value at the intersection point
+		 * @param ray The ray hitting the primitive. ray.hit must point to the primitive
+		 * @return The reflection color value at the intersection point
+		*/
+		DllExport Vec3f getReflectColor(const Ray& ray) const;
+		/**
 		* @brief Returns the bump map value at the intersection point
 		* @param ray The ray hitting the primitive. ray.hit must point to the primitive
 		* @return The bump map value at the intersection point
@@ -123,11 +140,13 @@ namespace rt {
 		Vec3f			m_ambientColor		= RGB(150, 150, 150);	///< The ambient color (initializes from diffuse)
 		Vec3f			m_diffuseColor		= RGB(150, 150, 150);	///< The diffuse color
 		Vec3f			m_specularColor		= RGB(255, 255, 255);	///< The specular color
+		Vec3f			m_reflectColor		= RGB(255, 255, 255);	///< The reflect color
 		
 		float			m_ambientAmount		= 1.0f;				///< The scale factor for ambient texture (applies only to the texture)
 		float			m_diffuseAmount		= 1.0f;				///< The scale factor for diffuse texture (mixes with the diffuse color)
 		float			m_specularAmount	= 1.0f;				///< The scale factor for the specular texture
 		float			m_specularLevel		= 0;				///< The specular level (parameter of the reflectiove BRDFs)
+		float			m_reflectAmount		= 1.0f;				///< The scale factor for the reflect texture
 		float			m_opacity			= 1.0f;				///< The opacity
 		float			m_bumpAmount		= 0.3f;				///< The power of bump map
 		float			m_opacityAmount		= 1.0f;				///< The scale factor for opacity map
@@ -135,6 +154,7 @@ namespace rt {
 		ptr_texture_t	m_pAmbientColorMap	= nullptr;			///< The ambient color map (initializes from diffuse)
 		ptr_texture_t	m_pDiffuseColorMap 	= nullptr;			///< The diffuse color map (main texture)
 		ptr_texture_t	m_pSpecularColorMap	= nullptr;			///< The specular color map
+		ptr_texture_t	m_pReflectColorMap	= nullptr;			///< The reflect color map
 		//ptr_texture_t	m_pBumpMap			= nullptr;			///< The bump map
 		ptr_texture_t	m_pBumpMap_u 		= nullptr;
 		ptr_texture_t	m_pBumpMap_v 		= nullptr;
@@ -153,7 +173,6 @@ namespace rt {
 		// Reflection
 		// Refraction
 		// Displacement
-
 	};
 
 

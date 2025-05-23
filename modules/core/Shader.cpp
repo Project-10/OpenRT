@@ -52,7 +52,7 @@ namespace rt {
 	}
 
 
-	// ============================================== Specular Level ==============================================
+	// ============================================== Specular Color ==============================================
 	void CShader::setSpecularColor(const Vec3f& color)
 	{
 		m_specularColor = color;
@@ -67,6 +67,21 @@ namespace rt {
 	Vec3f CShader::getSpecularColor(const Ray& ray) const
 	{
 		return m_pSpecularColorMap ? m_specularAmount * m_pSpecularColorMap->getTexel(ray) : m_specularColor;
+	}
+
+	// ============================================= Reflection Color =============================================
+	void CShader::setReflectColor(const Vec3f& color) {
+		m_reflectColor = color;
+	}
+
+	void CShader::setReflectColor(const ptr_texture_t pColorMap, float amount) {
+		m_pReflectColorMap = pColorMap;
+		m_reflectAmount = amount;
+	}
+
+	Vec3f CShader::getReflectColor(const Ray& ray) const
+	{
+		return m_pReflectColorMap ? m_reflectAmount * m_pReflectColorMap->getTexel(ray) : m_reflectColor;
 	}
 
 	// ============================================== Bump Map ==============================================
