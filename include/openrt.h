@@ -50,7 +50,6 @@
 #include "core/NewShader.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"
-#include "core/ShaderMirror.h"
 #include "core/ShaderGlass.h"
 #include "core/ShaderHemisphere.h"
 

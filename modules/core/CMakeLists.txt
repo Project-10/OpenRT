@@ -42,7 +42,6 @@ source_group("Source Files\\Shaders\\diffuse" FILES "ShaderDiffuse.h" "ShaderDif
 source_group("Source Files\\Shaders\\shadow" FILES "ShaderShadow.h" "ShaderShadow.cpp")
 source_group("Source Files\\Shaders\\glossy" FILES "ShaderGlossy.h" "ShaderGlossy.cpp")
 source_group("Source Files\\Shaders\\new shader" FILES "NewShader.h" "NewShader.cpp")
-source_group("Source Files\\Shaders\\mirror" FILES "ShaderMirror.h" "ShaderMirror.cpp")
 source_group("Source Files\\Shaders\\phong" FILES "ShaderPhong.h" "ShaderPhong.cpp")
 source_group("Source Files\\Shaders\\blinn" FILES "ShaderBlinn.h" "ShaderBlinn.cpp")
 source_group("Source Files\\Shaders\\glass" FILES "ShaderGlass.h" "ShaderGlass.cpp")
