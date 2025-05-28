@@ -47,6 +47,7 @@
 #include "core/ShaderGlossy.h"
 #include "core/ShaderSubsurfaceScattering.h"
 #include "core/ShaderVolumeScatter.h"
+#include "core/ShaderVolumeAbsorption.h"
 #include "core/NewShader.h"
 #include "core/ShaderPhong.h"
 #include "core/ShaderBlinn.h"

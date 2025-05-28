@@ -48,7 +48,7 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	// Shaders
 	auto pShaderGlobal			= std::make_shared<CShaderHemisphere>(*pScene, RGB(133, 153, 180), std::make_shared<CSamplerStratified>(4));
 	auto pShader				= std::make_shared<CShaderDiffuse>(*pScene, std::make_shared<CTexture>());
-	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 1.0f);
+	auto pShaderDiffuse			= std::make_shared<CShaderDiffuse>(*pScene, RGB(230, 191, 179), 0.0f);
 	//auto pShaderEnvironment	= std::make_shared<CShaderFlat>(std::make_shared<CTexture>(dataPath + "earth_color_43K.tif"));
 	//auto pShaderEnvironment = std::make_shared<CShaderFlat>(RGB(255, 255, 255));
 	auto pShaderMirror			= std::make_shared<CShaderPrincipled>(*pScene, Vec3f::all(0), 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
@@ -58,6 +58,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	auto pShaderSSLT			= std::make_shared<CShaderSubsurfaceScattering>(*pScene, RGB(255, 200, 200), std::make_shared<CSamplerStratified>(4));
 	auto pShaderVolume			= std::make_shared<CShaderVolumeScatter>(*pScene, RGB(255, 200, 200));
 	auto pShaderWhite			= std::make_shared<CShaderFlat>(Vec3f::all(4));
+	auto pShaderVolumeS			= std::make_shared<CShaderVolumeScatter>(*pScene, RGB(230, 191, 179));
+	auto pShaderVolumeA			= std::make_shared<CShaderVolumeAbsorption>(*pScene, RGB(204, 204, 204), 5.0f);
 	
 
 	//pShaderChrome->setDiffuseColor(RGB(255, 127, 0));
@@ -68,8 +70,8 @@ static std::shared_ptr<CScene> buildSceneMirrorSphere(const Vec3f& bgColor, cons
 	//environment->setShader(pShaderEnvironment);
 	floor->setShader(pShader);
 	sphere_center->setShader(pShaderDiffuse);
-	sphere_left->setShader(pShaderChrome);
-	sphere_right->setShader(pShaderDiffuse);
+	sphere_left->setShader(pShaderVolumeS);
+	sphere_right->setShader(pShaderVolumeA);
 	
 	return pScene;
 }
